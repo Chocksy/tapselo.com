@@ -13,112 +13,73 @@ import {
   TrendingUp,
   Terminal,
 } from "@lucide/astro";
-
-const features = [
-  {
-    name: "Offline-first",
-    description:
-      "Vinde fara internet. Datele se sincronizeaza automat cand revine conexiunea.",
-    icon: WifiOff,
-  },
-  {
-    name: "Bon fiscal Datecs",
-    description:
-      "Suport nativ pentru imprimantele fiscale Datecs. Bon complet, conform legislatiei.",
-    icon: Printer,
-  },
-  {
-    name: "Cantar Dibal integrat",
-    description:
-      "Citire automata cod bare cantar. Greutate, pret pe kg, totul calculat instant.",
-    icon: Scale,
-  },
-  {
-    name: "Dashboard AI",
-    description:
-      "Insights generate de AI: marje, forecast vanzari, analiza ABC, matrice profit.",
-    icon: BrainCircuit,
-  },
-  {
-    name: "Multi-magazin",
-    description:
-      "Gestioneaza mai multe puncte de vanzare dintr-un singur panou admin.",
-    icon: Store,
-  },
-  {
-    name: "Ecran client",
-    description:
-      "Afiseaza produsele scanate si totalul pe un al doilea monitor, pentru clienti.",
-    icon: Monitor,
-  },
-  {
-    name: "Activare in 6 caractere",
-    description:
-      "Cod de activare scurt, generat din admin. Fara setup complicat.",
-    icon: KeyRound,
-  },
-  {
-    name: "Update OTA automat",
-    description:
-      "Aplicatia se actualizeaza singura. Fara interventie manuala, fara downtime.",
-    icon: RefreshCw,
-  },
-  {
-    name: "Import MicroERP",
-    description:
-      "Migrezi de la MicroERP? Import automat produse, preturi, categorii, furnizori.",
-    icon: Database,
-  },
-  {
-    name: "Receptie OCR",
-    description:
-      "Fotografiezi factura, OCR-ul extrage produsele. Receptia in 5 minute.",
-    icon: ScanText,
-  },
-  {
-    name: "P&L complet",
-    description:
-      "Profit & Loss detaliat: venituri, TVA, cheltuieli, profitabilitate pe produs.",
-    icon: TrendingUp,
-  },
-  {
-    name: "Terminal Linux",
-    description:
-      "Ruleaza pe Linux fara licenta. Orice PC vechi devine terminal POS performant.",
-    icon: Terminal,
-  },
-];
 ---
 
 <section id="features" class="bg-white py-24">
   <div class="mx-auto max-w-6xl px-6">
-    <div class="mb-16 text-center">
-      <h2
-        class="text-sm font-semibold tracking-widest text-brand-600 uppercase"
-      >
-        Functionalitati
-      </h2>
-      <p class="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-        Tot ce ai nevoie intr-un singur sistem
-      </p>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
-        De la vanzare si bon fiscal pana la AI insights si management
-        multi-magazin.
-      </p>
+    <h2 class="text-4xl font-black tracking-tight text-gray-900 sm:text-5xl">
+      Tot ce ai nevoie.<br />
+      <span class="text-gray-300">Nimic in plus.</span>
+    </h2>
+
+    <!-- Bento grid — mixed sizes -->
+    <div class="mt-16 grid gap-4 md:grid-cols-3">
+      <!-- Large: Offline -->
+      <div class="md:col-span-2 rounded-3xl bg-gray-900 p-8 md:p-10 text-white">
+        <WifiOff class="h-8 w-8 text-brand-400 mb-6" />
+        <h3 class="text-2xl font-black">Offline-first</h3>
+        <p class="mt-3 max-w-md text-base leading-relaxed text-gray-400">
+          Vinde fara internet. Datele se sincronizeaza automat cand revine conexiunea.
+          Zero downtime, zero vanzari pierdute. PGLite local, Electric sync in cloud.
+        </p>
+      </div>
+
+      <!-- Fiscal -->
+      <div class="rounded-3xl border-2 border-gray-100 p-8">
+        <Printer class="h-7 w-7 text-gray-900 mb-4" />
+        <h3 class="text-lg font-black text-gray-900">Bon fiscal Datecs</h3>
+        <p class="mt-2 text-sm leading-relaxed text-gray-500">
+          Suport nativ. Conform legislatiei. Plug & play pe USB serial.
+        </p>
+      </div>
+
+      <!-- Cantar -->
+      <div class="rounded-3xl bg-brand-50 border-2 border-brand-100 p-8">
+        <Scale class="h-7 w-7 text-brand-700 mb-4" />
+        <h3 class="text-lg font-black text-gray-900">Cantar Dibal</h3>
+        <p class="mt-2 text-sm leading-relaxed text-gray-500">
+          Cod bare EAN-13, greutate, pret/kg. Totul automat, fara configurari.
+        </p>
+      </div>
+
+      <!-- Large: Dashboard AI -->
+      <div class="md:col-span-2 rounded-3xl bg-brand-600 p-8 md:p-10 text-white">
+        <BrainCircuit class="h-8 w-8 text-brand-200 mb-6" />
+        <h3 class="text-2xl font-black">Dashboard AI</h3>
+        <p class="mt-3 max-w-md text-base leading-relaxed text-brand-100/80">
+          Marje, forecast, analiza ABC, matrice profit. Motorul AI genereaza
+          recomandari concrete: ce sa promovezi, ce sa scoti, unde pierzi bani.
+        </p>
+      </div>
     </div>
 
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        features.map(({ name, description, icon: Icon }) => (
-          <div class="group rounded-2xl border border-gray-100 bg-gray-50/50 p-6 transition-all hover:border-brand-200 hover:bg-brand-50/50 hover:shadow-sm">
-            <div class="mb-4 inline-flex rounded-xl bg-brand-100 p-3 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white">
-              <Icon class="h-5 w-5" />
-            </div>
-            <h3 class="mb-2 text-base font-semibold text-gray-900">{name}</h3>
-            <p class="text-sm leading-relaxed text-gray-500">{description}</p>
-          </div>
-        ))
-      }
+    <!-- Rest as pills -->
+    <div class="mt-8 flex flex-wrap gap-3">
+      {[
+        { name: "Multi-magazin", icon: Store },
+        { name: "Ecran client", icon: Monitor },
+        { name: "Activare in 6 cifre", icon: KeyRound },
+        { name: "Update OTA", icon: RefreshCw },
+        { name: "Import MicroERP", icon: Database },
+        { name: "Receptie OCR", icon: ScanText },
+        { name: "P&L complet", icon: TrendingUp },
+        { name: "Terminal Linux", icon: Terminal },
+      ].map(({ name, icon: Icon }) => (
+        <div class="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm font-semibold text-gray-700 transition-colors hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
+          <Icon class="h-4 w-4 text-gray-400" />
+          {name}
+        </div>
+      ))}
     </div>
   </div>
 </section>

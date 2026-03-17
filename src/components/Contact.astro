@@ -5,16 +5,11 @@ import { Mail, Phone, Clock } from "@lucide/astro";
 <section id="contact" class="bg-white py-24">
   <div class="mx-auto max-w-6xl px-6">
     <div class="grid gap-16 lg:grid-cols-2">
-      <!-- Left side — text -->
+      <!-- Left: copy -->
       <div>
-        <h2
-          class="text-sm font-semibold tracking-widest text-brand-600 uppercase"
-        >
-          Contact
-        </h2>
-        <p class="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+        <h2 class="text-3xl font-black tracking-tight text-gray-900 sm:text-4xl">
           Solicita o demonstratie
-        </p>
+        </h2>
         <p class="mt-4 text-lg leading-relaxed text-gray-500">
           Spune-ne despre magazinul tau si iti pregatim o demonstratie
           personalizata. Gratuit, fara obligatii.
@@ -22,102 +17,90 @@ import { Mail, Phone, Clock } from "@lucide/astro";
 
         <div class="mt-10 space-y-6">
           <div class="flex items-start gap-4">
-            <div class="rounded-xl bg-brand-100 p-3 text-brand-600">
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
               <Clock class="h-5 w-5" />
             </div>
             <div>
-              <h4 class="font-semibold text-gray-900">Raspuns rapid</h4>
+              <h4 class="font-bold text-gray-900">Raspuns rapid</h4>
               <p class="text-sm text-gray-500">Raspundem in 24 de ore</p>
             </div>
           </div>
           <div class="flex items-start gap-4">
-            <div class="rounded-xl bg-brand-100 p-3 text-brand-600">
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
               <Mail class="h-5 w-5" />
             </div>
             <div>
-              <h4 class="font-semibold text-gray-900">Email</h4>
+              <h4 class="font-bold text-gray-900">Email</h4>
               <p class="text-sm text-gray-500">contact@tapselo.com</p>
             </div>
           </div>
           <div class="flex items-start gap-4">
-            <div class="rounded-xl bg-brand-100 p-3 text-brand-600">
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
               <Phone class="h-5 w-5" />
             </div>
             <div>
-              <h4 class="font-semibold text-gray-900">Telefon</h4>
+              <h4 class="font-bold text-gray-900">Telefon</h4>
               <p class="text-sm text-gray-500">Disponibil dupa programare</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Right side — form -->
+      <!-- Right: form -->
       <div>
         <form
-          class="space-y-5 rounded-2xl border border-gray-100 bg-gray-50 p-8"
+          class="space-y-5 rounded-2xl border border-gray-100 bg-gray-50 p-6 md:p-8"
           action="#"
           method="POST"
         >
           <div>
-            <label
-              for="name"
-              class="mb-1.5 block text-sm font-medium text-gray-700"
-              >Nume complet</label
-            >
+            <label for="name" class="mb-1.5 block text-sm font-semibold text-gray-700">Nume complet</label>
             <input
               type="text"
               id="name"
               name="name"
               required
-              class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 transition-colors focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+              autocomplete="name"
+              class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 transition-colors duration-150 placeholder:text-gray-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
               placeholder="Ion Popescu"
             />
           </div>
           <div>
-            <label
-              for="email"
-              class="mb-1.5 block text-sm font-medium text-gray-700">Email</label
-            >
+            <label for="email" class="mb-1.5 block text-sm font-semibold text-gray-700">Email</label>
             <input
               type="email"
               id="email"
               name="email"
               required
-              class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 transition-colors focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+              autocomplete="email"
+              class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 transition-colors duration-150 placeholder:text-gray-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
               placeholder="ion@magazin.ro"
             />
           </div>
           <div>
-            <label
-              for="phone"
-              class="mb-1.5 block text-sm font-medium text-gray-700"
-              >Telefon</label
-            >
+            <label for="phone" class="mb-1.5 block text-sm font-semibold text-gray-700">Telefon</label>
             <input
               type="tel"
               id="phone"
               name="phone"
-              class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 transition-colors focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+              autocomplete="tel"
+              class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 transition-colors duration-150 placeholder:text-gray-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
               placeholder="07XX XXX XXX"
             />
           </div>
           <div>
-            <label
-              for="message"
-              class="mb-1.5 block text-sm font-medium text-gray-700"
-              >Mesaj</label
-            >
+            <label for="message" class="mb-1.5 block text-sm font-semibold text-gray-700">Mesaj</label>
             <textarea
               id="message"
               name="message"
               rows="4"
-              class="w-full resize-none rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 transition-colors focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
-              placeholder="Spune-ne despre magazinul tau: cate terminale ai, ce imprimanta fiscala folosesti, etc."
+              class="w-full resize-none rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 transition-colors duration-150 placeholder:text-gray-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+              placeholder="Cate terminale ai nevoie, ce imprimanta fiscala folosesti, etc."
             ></textarea>
           </div>
           <button
             type="submit"
-            class="w-full rounded-xl bg-brand-500 py-3.5 text-base font-semibold text-white transition-colors hover:bg-brand-600"
+            class="w-full rounded-xl bg-gray-900 py-3.5 text-base font-bold text-white transition-colors duration-200 hover:bg-gray-800 active:scale-[0.99]"
           >
             Trimite mesajul
           </button>

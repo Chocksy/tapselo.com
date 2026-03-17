@@ -1,82 +1,25 @@
 ---
-import { WifiOff, ShieldCheck, TrendingUp, Zap } from "@lucide/astro";
-
-const problems = [
-  {
-    problem: "POS-ul nu merge cand cade netul",
-    solution: "Vanzari 100% offline, sync automat",
-    icon: WifiOff,
-    iconColor: "text-red-400",
-    bgColor: "bg-red-500/10",
-    borderColor: "border-red-500/20",
-    solutionColor: "text-brand-400",
-  },
-  {
-    problem: "Licente Windows scumpe",
-    solution: "Linux gratuit, instalare de pe USB",
-    icon: ShieldCheck,
-    iconColor: "text-orange-400",
-    bgColor: "bg-orange-500/10",
-    borderColor: "border-orange-500/20",
-    solutionColor: "text-brand-400",
-  },
-  {
-    problem: "Nu stiu ce produse imi aduc profit",
-    solution: "Dashboard AI cu marje si forecast",
-    icon: TrendingUp,
-    iconColor: "text-yellow-400",
-    bgColor: "bg-yellow-500/10",
-    borderColor: "border-yellow-500/20",
-    solutionColor: "text-brand-400",
-  },
-  {
-    problem: "Receptia de marfa dureaza ore",
-    solution: "OCR pe factura, 5 minute",
-    icon: Zap,
-    iconColor: "text-purple-400",
-    bgColor: "bg-purple-500/10",
-    borderColor: "border-purple-500/20",
-    solutionColor: "text-brand-400",
-  },
-];
 ---
 
-<section class="relative bg-gray-950 py-20">
+<section class="bg-gray-900 py-16 md:py-20">
   <div class="mx-auto max-w-6xl px-6">
-    <div class="mb-12 text-center">
-      <h2 class="text-sm font-semibold tracking-widest text-brand-400 uppercase">
-        Probleme reale, solutii concrete
-      </h2>
-    </div>
-
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      {
-        problems.map(
-          ({
-            problem,
-            solution,
-            icon: Icon,
-            iconColor,
-            bgColor,
-            borderColor,
-            solutionColor,
-          }) => (
-            <div class="group relative rounded-2xl border border-white/5 bg-white/[0.02] p-6 transition-all hover:border-white/10 hover:bg-white/[0.04]">
-              <div
-                class={`mb-4 inline-flex rounded-xl ${bgColor} border ${borderColor} p-3`}
-              >
-                <Icon class={`h-5 w-5 ${iconColor}`} />
-              </div>
-              <p class="mb-3 text-sm font-medium text-gray-400 line-through decoration-gray-600">
-                {problem}
-              </p>
-              <p class={`text-base font-semibold ${solutionColor}`}>
-                {solution}
-              </p>
-            </div>
-          ),
-        )
-      }
+    <div class="grid gap-8 sm:grid-cols-2">
+      <div>
+        <p class="text-sm text-red-400/70 line-through decoration-red-500/40">POS-ul nu merge cand cade netul</p>
+        <p class="mt-2 text-xl font-black text-white md:text-2xl">Vanzari 100% offline, sync automat</p>
+      </div>
+      <div>
+        <p class="text-sm text-red-400/70 line-through decoration-red-500/40">Licente Windows scumpe</p>
+        <p class="mt-2 text-xl font-black text-white md:text-2xl">Linux gratuit, de pe USB</p>
+      </div>
+      <div>
+        <p class="text-sm text-red-400/70 line-through decoration-red-500/40">Nu stiu ce produse imi aduc profit</p>
+        <p class="mt-2 text-xl font-black text-white md:text-2xl">Dashboard AI cu marje si forecast</p>
+      </div>
+      <div>
+        <p class="text-sm text-red-400/70 line-through decoration-red-500/40">Receptia de marfa dureaza ore</p>
+        <p class="mt-2 text-xl font-black text-white md:text-2xl">OCR pe factura, 5 minute</p>
+      </div>
     </div>
   </div>
 </section>
