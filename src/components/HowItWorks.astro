@@ -1,0 +1,68 @@
+---
+import { Usb, KeyRound, Zap } from "@lucide/astro";
+
+const steps = [
+  {
+    number: "01",
+    title: "Instalezi de pe USB",
+    description:
+      "Stick USB bootabil cu Linux si Tapselo preinstalat. Pornesti PC-ul, astepti 15 minute, gata.",
+    icon: Usb,
+  },
+  {
+    number: "02",
+    title: "Activezi cu un cod",
+    description:
+      "Genereaza un cod de 6 caractere din panoul admin. Il introduci pe terminal si dispozitivul e activ.",
+    icon: KeyRound,
+  },
+  {
+    number: "03",
+    title: "Vinzi",
+    description:
+      "Scanezi, incasezi, tiparesti bon. Offline sau online, totul se sincronizeaza automat in cloud.",
+    icon: Zap,
+  },
+];
+---
+
+<section id="how-it-works" class="bg-gray-50 py-24">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="mb-16 text-center">
+      <h2
+        class="text-sm font-semibold tracking-widest text-brand-600 uppercase"
+      >
+        Cum functioneaza
+      </h2>
+      <p class="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+        De la cutie la prima vanzare in 20 de minute
+      </p>
+    </div>
+
+    <div class="relative grid gap-8 md:grid-cols-3">
+      <!-- Connecting line (desktop only) -->
+      <div
+        class="pointer-events-none absolute top-24 right-[calc(33%+1rem)] left-[calc(33%-1rem)] hidden h-px bg-gradient-to-r from-brand-300 via-brand-400 to-brand-300 md:block"
+        aria-hidden="true"
+      >
+      </div>
+
+      {
+        steps.map(({ number, title, description, icon: Icon }) => (
+          <div class="relative text-center">
+            <div class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-brand-200 bg-white shadow-sm">
+              <Icon class="h-8 w-8 text-brand-500" />
+            </div>
+            <div class="mb-2 text-xs font-bold tracking-widest text-brand-500 uppercase">
+              Pasul {number}
+            </div>
+            <h3 class="mb-3 text-xl font-bold text-gray-900">{title}</h3>
+            <p class="mx-auto max-w-xs text-sm leading-relaxed text-gray-500">
+              {description}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

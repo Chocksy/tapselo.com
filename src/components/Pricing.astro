@@ -1,0 +1,76 @@
+---
+import { Check, ArrowRight } from "@lucide/astro";
+
+const included = [
+  "Aplicatie POS cu offline complet",
+  "Panou admin cu dashboard AI",
+  "Bon fiscal Datecs integrat",
+  "Cantar Dibal integrat",
+  "Multi-magazin din acelasi cont",
+  "Update-uri OTA automate",
+  "Import MicroERP inclus",
+  "Suport tehnic prin email",
+];
+---
+
+<section id="pricing" class="bg-gray-50 py-24">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="mb-16 text-center">
+      <h2
+        class="text-sm font-semibold tracking-widest text-brand-600 uppercase"
+      >
+        Pret
+      </h2>
+      <p class="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+        Simplu si transparent
+      </p>
+    </div>
+
+    <div class="mx-auto max-w-xl">
+      <div
+        class="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm"
+      >
+        <div class="bg-gradient-to-br from-gray-900 to-gray-800 p-8 text-center">
+          <h3 class="text-lg font-semibold text-white">Tapselo POS</h3>
+          <p class="mt-2 text-sm text-gray-400">
+            Tot ce ai nevoie pentru un magazin modern
+          </p>
+          <div class="mt-6 border-t border-white/10 pt-6">
+            <p class="text-sm text-gray-400">
+              Contacteaza-ne pentru o oferta personalizata
+            </p>
+          </div>
+        </div>
+
+        <div class="p-8">
+          <ul class="space-y-4">
+            {
+              included.map((item) => (
+                <li class="flex items-start gap-3">
+                  <Check class="mt-0.5 h-5 w-5 shrink-0 text-brand-500" />
+                  <span class="text-sm text-gray-700">{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+
+          <div class="mt-8 rounded-xl bg-brand-50 p-4 text-center">
+            <p class="text-sm font-medium text-brand-800">
+              Fara licenta Windows = economie de ~600 lei / terminal
+            </p>
+          </div>
+
+          <a
+            href="#contact"
+            class="group mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-brand-500 py-3.5 text-base font-semibold text-white transition-all hover:bg-brand-600"
+          >
+            Solicita oferta
+            <ArrowRight
+              class="h-4 w-4 transition-transform group-hover:translate-x-1"
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
