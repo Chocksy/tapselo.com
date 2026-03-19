@@ -49,9 +49,8 @@ import { Mail, Phone, Clock } from "@lucide/astro";
       <!-- Right: form -->
       <div class="animate-on-scroll animate-from-right">
         <form
+          id="contact-form"
           class="space-y-5 rounded-xl border border-border bg-surface p-6 md:p-8"
-          action="#"
-          method="POST"
         >
           <div>
             <label for="name" class="mb-1.5 block text-sm font-bold text-primary">Nume complet</label>
@@ -98,14 +97,21 @@ import { Mail, Phone, Clock } from "@lucide/astro";
               placeholder="Cate terminale ai nevoie, ce imprimanta fiscala folosesti, etc."
             ></textarea>
           </div>
+
+          <!-- Cloudflare Turnstile -->
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAACtT6gLbdqQrMEwT" data-theme="light"></div>
+
+          <div id="form-status" class="hidden rounded-md p-3 text-sm font-medium"></div>
+
           <button
             type="submit"
-            class="w-full rounded-md bg-accent py-3.5 text-base font-bold text-white transition-all hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/25 active:scale-[0.98]"
+            id="submit-btn"
+            class="w-full rounded-md bg-accent py-3.5 text-base font-bold text-white transition-all hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/25 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Trimite mesajul
           </button>
           <p class="text-center text-xs text-text-muted">
-            Nu facem spam. Datele tale sunt in siguranta.
+            Protejat de Cloudflare. Datele tale sunt in siguranta.
           </p>
         </form>
       </div>

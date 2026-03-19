@@ -28,6 +28,7 @@ const {
     <meta property="og:image" content="/logo.png" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   </head>
   <body class="font-sans antialiased">
     <slot />
@@ -49,6 +50,51 @@ const {
         document.querySelectorAll(".animate-on-scroll").forEach((el) => {
           observer.observe(el);
         });
+      });
+
+      // Contact form submission
+      const form = document.getElementById("contact-form");
+      form?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById("submit-btn");
+        const status = document.getElementById("form-status");
+        const turnstileInput = form.querySelector('[name="cf-turnstile-response"]');
+
+        btn.disabled = true;
+        btn.textContent = "Se trimite...";
+        status.className = "hidden";
+
+        try {
+          const res = await fetch("/api/contact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: form.querySelector("#name").value,
+              email: form.querySelector("#email").value,
+              phone: form.querySelector("#phone").value || "",
+              message: form.querySelector("#message").value,
+              turnstileToken: turnstileInput?.value || "",
+            }),
+          });
+
+          const data = await res.json();
+
+          if (data.success) {
+            status.className = "rounded-md p-3 text-sm font-medium bg-green-50 text-green-700 border border-green-200";
+            status.textContent = data.message;
+            form.reset();
+            if (window.turnstile) window.turnstile.reset();
+          } else {
+            status.className = "rounded-md p-3 text-sm font-medium bg-red-50 text-red-700 border border-red-200";
+            status.textContent = data.error || "Eroare. Incearca din nou.";
+          }
+        } catch {
+          status.className = "rounded-md p-3 text-sm font-medium bg-red-50 text-red-700 border border-red-200";
+          status.textContent = "Eroare de retea. Incearca din nou.";
+        }
+
+        btn.disabled = false;
+        btn.textContent = "Trimite mesajul";
       });
     </script>
   </body>
