@@ -2,21 +2,23 @@
 import { ArrowRight } from "@lucide/astro";
 ---
 
-<section class="relative overflow-hidden bg-primary pt-20 pb-0 md:pt-24">
-  <div class="pointer-events-none absolute inset-0 opacity-5" style="background-image: radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px); background-size: 32px 32px;" aria-hidden="true"></div>
+<section class="relative overflow-hidden bg-white pt-24 pb-16 md:pt-32 md:pb-20">
+  <!-- Playful background shapes -->
+  <div class="pointer-events-none absolute top-20 right-10 h-64 w-64 rounded-full bg-pink-light opacity-40 blur-3xl" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute bottom-10 left-10 h-48 w-48 rounded-full bg-blue-light opacity-40 blur-3xl" aria-hidden="true"></div>
 
-  <div class="relative mx-auto max-w-6xl px-6 pt-8 md:pt-12">
-    <div class="max-w-3xl">
-      <p class="animate-on-scroll mb-5 inline-flex items-center rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-accent ring-1 ring-accent/30">
-        Pentru magazine alimentare din Romania
+  <div class="relative mx-auto max-w-5xl px-6">
+    <div class="max-w-2xl">
+      <p class="animate-on-scroll mb-4 inline-flex items-center rounded-md bg-pink-light px-3 py-1 text-[12px] font-bold text-pink border border-pink/20">
+        // pentru magazine alimentare din Romania
       </p>
 
-      <h1 class="animate-on-scroll animate-delay-100 font-display text-[44px] font-bold uppercase leading-[1.02] tracking-wide text-white sm:text-[56px] md:text-[68px]">
+      <h1 class="animate-on-scroll animate-delay-100 text-[32px] font-bold leading-[1.15] text-neutral-900 sm:text-[36px] md:text-[40px]">
         POS-ul care vinde<br />
-        <span class="text-accent">fara internet</span>
+        <span class="text-gradient-pink-blue">fara internet</span>
       </h1>
 
-      <p class="animate-on-scroll animate-delay-200 mt-5 max-w-lg text-lg leading-relaxed text-text-on-primary">
+      <p class="animate-on-scroll animate-delay-200 mt-4 max-w-md text-[16px] leading-relaxed text-text-secondary">
         Bon fiscal Datecs. Cantar Dibal. Dashboard AI.
         Pe orice PC, fara Windows.
       </p>
@@ -24,41 +26,41 @@ import { ArrowRight } from "@lucide/astro";
       <div class="animate-on-scroll animate-delay-300 mt-8 flex flex-col gap-3 sm:flex-row">
         <a
           href="#contact"
-          class="group inline-flex items-center justify-center gap-2 rounded-md bg-accent px-7 py-4 text-base font-bold text-white transition-all duration-150 hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/25 active:scale-[0.98]"
+          class="group inline-flex items-center justify-center gap-2 rounded-md bg-pink px-6 py-3 text-[14px] font-bold text-white transition-all duration-150 hover:bg-pink-hover hover:shadow-lg hover:shadow-pink/25 active:scale-[0.97]"
         >
           Solicita Demo
-          <ArrowRight class="h-5 w-5 transition-transform duration-150 group-hover:translate-x-0.5" />
+          <ArrowRight class="h-4 w-4 transition-transform duration-150 group-hover:translate-x-1" />
         </a>
         <a
           href="#features"
-          class="inline-flex items-center justify-center rounded-md border border-white/20 px-7 py-4 text-base font-bold text-white transition-all duration-150 hover:border-white/40 hover:bg-white/5"
+          class="inline-flex items-center justify-center rounded-md border-2 border-neutral-900 px-6 py-3 text-[14px] font-bold text-neutral-900 transition-all duration-150 hover:bg-neutral-900 hover:text-white"
         >
           Vezi functionalitati
         </a>
       </div>
     </div>
 
-    <!-- Stat cards with stagger -->
-    <div class="mt-12 grid grid-cols-2 gap-3 md:grid-cols-4 pb-12">
-      <div class="animate-on-scroll rounded-lg bg-white/10 backdrop-blur-sm p-5 border border-white/10 transition-transform duration-300 hover:-translate-y-1">
-        <div class="font-display text-4xl font-bold text-white md:text-5xl">100%</div>
-        <div class="mt-1 text-sm font-medium text-accent">Offline functional</div>
-        <p class="mt-2 text-xs text-text-on-primary/60 hidden md:block">Vinde non-stop, cu sau fara net.</p>
+    <!-- Stat cards — playful with color accents -->
+    <div class="mt-12 grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div class="animate-on-scroll rounded-md border-2 border-neutral-900 bg-neutral-900 p-4 transition-transform duration-200 hover:-translate-y-1 hover:rotate-[-1deg]">
+        <div class="text-[24px] font-bold text-white md:text-[32px]">100%</div>
+        <div class="mt-1 text-[12px] font-bold text-pink">offline_functional</div>
+        <p class="mt-2 text-[11px] text-neutral-400 hidden md:block">Vinde non-stop, cu sau fara net.</p>
       </div>
-      <div class="animate-on-scroll animate-delay-100 rounded-lg bg-accent p-5 transition-transform duration-300 hover:-translate-y-1">
-        <div class="font-display text-4xl font-bold text-white md:text-5xl">15<span class="text-2xl">min</span></div>
-        <div class="mt-1 text-sm font-medium text-white/80">Instalare USB</div>
-        <p class="mt-2 text-xs text-white/50 hidden md:block">Stick bootabil, pornesti, gata.</p>
+      <div class="animate-on-scroll animate-delay-100 rounded-md border-2 border-pink bg-pink p-4 transition-transform duration-200 hover:-translate-y-1 hover:rotate-[1deg]">
+        <div class="text-[24px] font-bold text-white md:text-[32px]">15<span class="text-[16px]">min</span></div>
+        <div class="mt-1 text-[12px] font-bold text-pink-light">instalare_usb</div>
+        <p class="mt-2 text-[11px] text-white/60 hidden md:block">Stick bootabil, pornesti, gata.</p>
       </div>
-      <div class="animate-on-scroll animate-delay-200 rounded-lg bg-surface p-5 transition-transform duration-300 hover:-translate-y-1">
-        <div class="font-display text-4xl font-bold text-primary md:text-5xl">0<span class="text-2xl">lei</span></div>
-        <div class="mt-1 text-sm font-medium text-warning">Licenta Windows</div>
-        <p class="mt-2 text-xs text-text-secondary hidden md:block">Economie ~600 lei / terminal.</p>
+      <div class="animate-on-scroll animate-delay-200 rounded-md border-2 border-blue bg-blue-light p-4 transition-transform duration-200 hover:-translate-y-1 hover:rotate-[-1deg]">
+        <div class="text-[24px] font-bold text-blue md:text-[32px]">0<span class="text-[16px]">lei</span></div>
+        <div class="mt-1 text-[12px] font-bold text-blue">licenta_windows</div>
+        <p class="mt-2 text-[11px] text-text-secondary hidden md:block">Economie ~600 lei / terminal.</p>
       </div>
-      <div class="animate-on-scroll animate-delay-300 rounded-lg bg-white/10 backdrop-blur-sm p-5 border border-white/10 transition-transform duration-300 hover:-translate-y-1">
-        <div class="font-display text-4xl font-bold text-white md:text-5xl">6</div>
-        <div class="mt-1 text-sm font-medium text-text-on-primary/70">Cifre de activare</div>
-        <p class="mt-2 text-xs text-text-on-primary/50 hidden md:block">Cod scurt, activ instant.</p>
+      <div class="animate-on-scroll animate-delay-300 rounded-md border-2 border-neutral-200 bg-white p-4 transition-transform duration-200 hover:-translate-y-1 hover:rotate-[1deg]">
+        <div class="text-[24px] font-bold text-neutral-900 md:text-[32px]">6</div>
+        <div class="mt-1 text-[12px] font-bold text-text-muted">cifre_de_activare</div>
+        <p class="mt-2 text-[11px] text-text-muted hidden md:block">Cod scurt, activ instant.</p>
       </div>
     </div>
   </div>

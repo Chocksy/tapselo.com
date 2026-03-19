@@ -13,43 +13,43 @@ const included = [
 ];
 ---
 
-<section id="pricing" class="bg-surface py-24">
-  <div class="mx-auto max-w-6xl px-6">
+<section id="pricing" class="bg-white py-24">
+  <div class="mx-auto max-w-5xl px-6">
     <div class="grid items-center gap-16 lg:grid-cols-2">
       <!-- Left -->
       <div>
-        <h2 class="animate-on-scroll font-display text-4xl font-bold uppercase tracking-wide text-primary sm:text-5xl">
+        <h2 class="animate-on-scroll text-[24px] font-bold text-neutral-900 sm:text-[32px]">
           Simplu.<br />
           Transparent.<br />
-          <span class="text-accent">Fara surprize.</span>
+          <span class="text-pink">Fara surprize.</span>
         </h2>
-        <p class="animate-on-scroll animate-delay-100 mt-5 text-lg leading-relaxed text-text-secondary">
+        <p class="animate-on-scroll animate-delay-100 mt-4 text-[14px] leading-relaxed text-text-secondary">
           Contacteaza-ne pentru o oferta personalizata. Fiecare magazin e diferit — pretul depinde de numarul de terminale si ce ai nevoie.
         </p>
-        <div class="animate-on-scroll animate-delay-200 mt-8 rounded-xl bg-accent-light border border-accent/20 p-6 transition-shadow duration-300 hover:shadow-lg">
-          <p class="font-display text-3xl font-bold text-primary">~600 lei economie</p>
-          <p class="mt-1 text-sm text-text-secondary">per terminal, fara licenta Windows</p>
+        <div class="animate-on-scroll animate-delay-200 mt-6 rounded-md border-2 border-pink bg-pink-light p-4">
+          <p class="text-[24px] font-bold text-pink">~600 lei economie</p>
+          <p class="mt-1 text-[12px] text-text-secondary">per terminal, fara licenta Windows</p>
         </div>
       </div>
 
       <!-- Right: Included -->
-      <div class="animate-on-scroll animate-from-right rounded-xl bg-surface-white border border-border p-8 md:p-10 transition-shadow duration-300 hover:shadow-xl">
-        <h3 class="text-lg font-bold text-primary">Include:</h3>
-        <ul class="mt-6 space-y-4">
+      <div class="animate-on-scroll animate-from-right rounded-md border-2 border-neutral-900 p-6 md:p-8">
+        <h3 class="text-[16px] font-bold text-neutral-900">// include:</h3>
+        <ul class="mt-4 space-y-3">
           {included.map((item) => (
             <li class="flex items-start gap-3">
-              <Check class="mt-0.5 h-5 w-5 shrink-0 text-success" />
-              <span class="text-sm font-medium text-text">{item}</span>
+              <Check class="mt-0.5 h-4 w-4 shrink-0 text-pink" />
+              <span class="text-[13px] font-medium text-neutral-900">{item}</span>
             </li>
           ))}
         </ul>
 
         <a
           href="#contact"
-          class="group mt-8 flex w-full items-center justify-center gap-2 rounded-md bg-primary py-4 text-base font-bold text-white transition-all hover:bg-primary-light hover:shadow-lg active:scale-[0.98]"
+          class="group mt-6 flex w-full items-center justify-center gap-2 rounded-md bg-neutral-900 py-3 text-[14px] font-bold text-white transition-all hover:bg-pink active:scale-[0.97]"
         >
           Solicita oferta
-          <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-1" />
         </a>
       </div>
     </div>
