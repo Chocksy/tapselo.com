@@ -7,9 +7,13 @@ interface Props {
 }
 
 const {
-  title = "Tapselo POS — Sistem de vanzare offline pentru magazine",
-  description = "POS complet offline cu bon fiscal, cantar Dibal, dashboard AI si instalare de pe USB. Fara Windows, fara licente scumpe.",
+  title = "Tapselo POS — Casa de marcat pentru magazine alimentare",
+  description = "Casa de marcat care merge si fara internet. Cu bon fiscal, cantar integrat si rapoarte inteligente. Gata in 20 de minute, pe orice calculator.",
 } = Astro.props;
+
+const siteUrl = "https://tapselo.com";
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+const ogImageUrl = `${siteUrl}/og-image.jpg`;
 ---
 
 <!doctype html>
@@ -17,17 +21,65 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- SEO -->
+    <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
     <meta name="theme-color" content="#0f172a" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="/logo.png" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="ro_RO" />
+    <meta property="og:site_name" content="Tapselo POS" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Tapselo POS",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Linux",
+      "description": description,
+      "url": siteUrl,
+      "image": ogImageUrl,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "RON",
+        "description": "Demo gratuit"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "Tapselo",
+        "url": siteUrl,
+        "logo": `${siteUrl}/logo.png`,
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "contact@tapselo.com",
+          "contactType": "sales"
+        }
+      }
+    })} />
+
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   </head>
   <body class="font-sans antialiased">
