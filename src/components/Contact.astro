@@ -2,45 +2,45 @@
 import { Mail, Phone, Clock } from "@lucide/astro";
 ---
 
-<section id="contact" class="bg-neutral-50 py-24 border-t-2 border-neutral-200">
-  <div class="mx-auto max-w-5xl px-6">
+<section id="contact" class="bg-surface-white py-24 border-t border-border">
+  <div class="mx-auto max-w-6xl px-6">
     <div class="grid gap-16 lg:grid-cols-2">
       <!-- Left -->
       <div>
-        <h2 class="animate-on-scroll text-[24px] font-bold text-neutral-900 sm:text-[32px]">
-          Solicita o<br />demonstratie
+        <h2 class="animate-on-scroll font-display text-4xl font-bold uppercase tracking-wide text-primary sm:text-5xl">
+          Solicita o demonstratie
         </h2>
-        <p class="animate-on-scroll animate-delay-100 mt-4 text-[14px] leading-relaxed text-text-secondary">
+        <p class="animate-on-scroll animate-delay-100 mt-4 text-lg leading-relaxed text-text-secondary">
           Spune-ne despre magazinul tau si iti pregatim o demonstratie
           personalizata. Gratuit, fara obligatii.
         </p>
 
-        <div class="mt-8 space-y-5">
-          <div class="animate-on-scroll flex items-start gap-3">
-            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-pink-light text-pink">
-              <Clock class="h-4 w-4" />
+        <div class="mt-10 space-y-6">
+          <div class="animate-on-scroll flex items-start gap-4">
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-subtle text-primary transition-transform duration-300 hover:scale-110">
+              <Clock class="h-5 w-5" />
             </div>
             <div>
-              <h4 class="text-[13px] font-bold text-neutral-900">Raspuns rapid</h4>
-              <p class="text-[12px] text-text-secondary">Raspundem in 24 de ore</p>
+              <h4 class="font-bold text-primary">Raspuns rapid</h4>
+              <p class="text-sm text-text-secondary">Raspundem in 24 de ore</p>
             </div>
           </div>
-          <div class="animate-on-scroll animate-delay-100 flex items-start gap-3">
-            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-blue-light text-blue">
-              <Mail class="h-4 w-4" />
+          <div class="animate-on-scroll animate-delay-100 flex items-start gap-4">
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-subtle text-primary transition-transform duration-300 hover:scale-110">
+              <Mail class="h-5 w-5" />
             </div>
             <div>
-              <h4 class="text-[13px] font-bold text-neutral-900">Email</h4>
-              <p class="text-[12px] text-text-secondary">contact@tapselo.com</p>
+              <h4 class="font-bold text-primary">Email</h4>
+              <p class="text-sm text-text-secondary">contact@tapselo.com</p>
             </div>
           </div>
-          <div class="animate-on-scroll animate-delay-200 flex items-start gap-3">
-            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-neutral-100 text-neutral-900">
-              <Phone class="h-4 w-4" />
+          <div class="animate-on-scroll animate-delay-200 flex items-start gap-4">
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-subtle text-primary transition-transform duration-300 hover:scale-110">
+              <Phone class="h-5 w-5" />
             </div>
             <div>
-              <h4 class="text-[13px] font-bold text-neutral-900">Telefon</h4>
-              <p class="text-[12px] text-text-secondary">Disponibil dupa programare</p>
+              <h4 class="font-bold text-primary">Telefon</h4>
+              <p class="text-sm text-text-secondary">Disponibil dupa programare</p>
             </div>
           </div>
         </div>
@@ -49,62 +49,62 @@ import { Mail, Phone, Clock } from "@lucide/astro";
       <!-- Right: form -->
       <div class="animate-on-scroll animate-from-right">
         <form
-          class="space-y-4 rounded-md border-2 border-neutral-900 bg-white p-6 md:p-8"
+          class="space-y-5 rounded-xl border border-border bg-surface p-6 md:p-8"
           action="#"
           method="POST"
         >
           <div>
-            <label for="name" class="mb-1 block text-[12px] font-bold text-neutral-900">// nume_complet</label>
+            <label for="name" class="mb-1.5 block text-sm font-bold text-primary">Nume complet</label>
             <input
               type="text"
               id="name"
               name="name"
               required
               autocomplete="name"
-              class="w-full rounded-md border-2 border-neutral-200 bg-white px-3 py-2.5 text-[13px] text-neutral-900 transition-colors placeholder:text-text-muted focus:border-pink focus:outline-none"
+              class="w-full rounded-md border border-border bg-surface-white px-4 py-3 text-sm text-text transition-all placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none"
               placeholder="Ion Popescu"
             />
           </div>
           <div>
-            <label for="email" class="mb-1 block text-[12px] font-bold text-neutral-900">// email</label>
+            <label for="email" class="mb-1.5 block text-sm font-bold text-primary">Email</label>
             <input
               type="email"
               id="email"
               name="email"
               required
               autocomplete="email"
-              class="w-full rounded-md border-2 border-neutral-200 bg-white px-3 py-2.5 text-[13px] text-neutral-900 transition-colors placeholder:text-text-muted focus:border-pink focus:outline-none"
+              class="w-full rounded-md border border-border bg-surface-white px-4 py-3 text-sm text-text transition-all placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none"
               placeholder="ion@magazin.ro"
             />
           </div>
           <div>
-            <label for="phone" class="mb-1 block text-[12px] font-bold text-neutral-900">// telefon</label>
+            <label for="phone" class="mb-1.5 block text-sm font-bold text-primary">Telefon</label>
             <input
               type="tel"
               id="phone"
               name="phone"
               autocomplete="tel"
-              class="w-full rounded-md border-2 border-neutral-200 bg-white px-3 py-2.5 text-[13px] text-neutral-900 transition-colors placeholder:text-text-muted focus:border-pink focus:outline-none"
+              class="w-full rounded-md border border-border bg-surface-white px-4 py-3 text-sm text-text transition-all placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none"
               placeholder="07XX XXX XXX"
             />
           </div>
           <div>
-            <label for="message" class="mb-1 block text-[12px] font-bold text-neutral-900">// mesaj</label>
+            <label for="message" class="mb-1.5 block text-sm font-bold text-primary">Mesaj</label>
             <textarea
               id="message"
               name="message"
               rows="4"
-              class="w-full resize-none rounded-md border-2 border-neutral-200 bg-white px-3 py-2.5 text-[13px] text-neutral-900 transition-colors placeholder:text-text-muted focus:border-pink focus:outline-none"
+              class="w-full resize-none rounded-md border border-border bg-surface-white px-4 py-3 text-sm text-text transition-all placeholder:text-text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none"
               placeholder="Cate terminale ai nevoie, ce imprimanta fiscala folosesti, etc."
             ></textarea>
           </div>
           <button
             type="submit"
-            class="w-full rounded-md bg-pink py-3 text-[14px] font-bold text-white transition-all hover:bg-pink-hover active:scale-[0.97]"
+            class="w-full rounded-md bg-accent py-3.5 text-base font-bold text-white transition-all hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/25 active:scale-[0.98]"
           >
-            Trimite mesajul →
+            Trimite mesajul
           </button>
-          <p class="text-center text-[11px] text-text-muted">
+          <p class="text-center text-xs text-text-muted">
             Nu facem spam. Datele tale sunt in siguranta.
           </p>
         </form>
