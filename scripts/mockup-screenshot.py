@@ -14,13 +14,14 @@ from pathlib import Path
 import fal_client
 
 PROMPT = (
-    "Take this app screenshot and present it as a polished marketing image. "
-    "Trim the excess whitespace on the sides. "
-    "Place the screenshot on a clean, slightly angled modern laptop or monitor screen mockup "
-    "with a subtle 3D perspective. Add a soft shadow below. "
-    "Use a clean light gradient background. "
-    "IMPORTANT: Keep the screenshot content exactly as-is, sharp and readable. "
-    "Only change the surrounding presentation and framing."
+    "Take this app screenshot and create a modern, clean marketing presentation. "
+    "Crop away any excess whitespace on the sides to tightly frame the content. "
+    "Present the screenshot as a floating UI element with rounded corners (12px radius), "
+    "a subtle soft shadow underneath, and a very slight 3D perspective tilt. "
+    "DO NOT add any device frame, monitor, laptop, or physical hardware around it. "
+    "Just the floating interface hovering over a clean, minimal white/light gray gradient background. "
+    "Modern SaaS marketing style — like how Linear, Vercel, or Stripe present their product screenshots. "
+    "CRITICAL: The app interface content must remain EXACTLY as-is, perfectly sharp and fully readable."
 )
 
 SCREENSHOTS_DIR = Path(__file__).parent.parent / "public" / "screenshots"
