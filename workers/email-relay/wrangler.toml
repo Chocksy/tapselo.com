@@ -4,4 +4,4 @@ compatibility_date = "2024-09-23"
 
 [[send_email]]
 name = "SEND_EMAIL"
-destination_address = "contact@tapselo.com"
+destination_address = "ciocanel.razvan@gmail.com"

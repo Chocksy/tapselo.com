@@ -8,10 +8,10 @@ import {
   Monitor,
   KeyRound,
   RefreshCw,
-  Database,
-  ScanText,
-  TrendingUp,
-  Terminal,
+  Camera,
+  BarChart3,
+  Laptop,
+  ShieldCheck,
 } from "@lucide/astro";
 ---
 
@@ -26,19 +26,19 @@ import {
 
     <!-- Bento grid -->
     <div class="mt-14 grid gap-4 md:grid-cols-3">
-      <!-- Large: Offline — with POS screenshot -->
+      <!-- Large: Offline -->
       <div class="animate-on-scroll md:col-span-2 rounded-xl bg-primary p-0 text-white relative overflow-hidden group transition-shadow duration-300 hover:shadow-xl hover:shadow-primary/20">
         <div class="grid md:grid-cols-2">
           <div class="p-8 md:p-10">
             <WifiOff class="h-7 w-7 text-accent mb-5 transition-transform duration-300 group-hover:scale-110" />
-            <h3 class="text-2xl font-bold text-white">Offline-first</h3>
+            <h3 class="text-2xl font-bold text-white">Vinzi si fara internet</h3>
             <p class="mt-3 text-base leading-relaxed text-text-on-primary">
-              Vinde fara internet. Datele se sincronizeaza automat cand revine conexiunea.
-              Zero downtime, zero vanzari pierdute.
+              Pica netul? Nu conteaza. Vinzi in continuare, iar datele se trimit singure
+              cand revine conexiunea. Fara pierderi, fara opriri.
             </p>
           </div>
           <div class="relative overflow-hidden rounded-br-xl h-64 md:h-auto min-h-[200px]">
-            <img src="/screenshots/mockup/pos-cart-v2.jpg" alt="POS — cos cu produse" class="w-full h-full object-cover opacity-90 transition-all duration-500 group-hover:opacity-100 group-hover:scale-[1.03]" loading="lazy" />
+            <img src="/screenshots/mockup/pos-cart-v2.jpg" alt="Ecranul casei de marcat cu produse in cos" class="w-full h-full object-cover opacity-90 transition-all duration-500 group-hover:opacity-100 group-hover:scale-[1.03]" loading="lazy" />
           </div>
         </div>
       </div>
@@ -46,50 +46,50 @@ import {
       <!-- Fiscal -->
       <div class="animate-on-scroll animate-delay-100 rounded-xl bg-surface-white p-8 border border-border group transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
         <Printer class="h-6 w-6 text-primary mb-4 transition-transform duration-300 group-hover:scale-110" />
-        <h3 class="text-lg font-bold text-primary">Bon fiscal Datecs</h3>
+        <h3 class="text-lg font-bold text-primary">Bon fiscal automat</h3>
         <p class="mt-2 text-sm leading-relaxed text-text-secondary">
-          Suport nativ. Conform legislatiei. Plug & play pe USB serial.
+          Conectezi imprimanta fiscala si gata. Bonul se tipareste la fiecare vanzare, conform legii.
         </p>
       </div>
 
       <!-- Cantar -->
       <div class="animate-on-scroll rounded-xl bg-cash-light border border-cash/20 p-8 group transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
         <Scale class="h-6 w-6 text-cash mb-4 transition-transform duration-300 group-hover:scale-110" />
-        <h3 class="text-lg font-bold text-primary">Cantar Dibal</h3>
+        <h3 class="text-lg font-bold text-primary">Cantar integrat</h3>
         <p class="mt-2 text-sm leading-relaxed text-text-secondary">
-          Cod bare EAN-13, greutate, pret/kg. Totul automat, fara configurari.
+          Pui produsul pe cantar, pretul apare automat. Fara configurari complicate.
         </p>
       </div>
 
-      <!-- Large: Dashboard AI — with OCR screenshot -->
+      <!-- Large: Rapoarte inteligente -->
       <div class="animate-on-scroll animate-delay-100 md:col-span-2 rounded-xl bg-accent p-0 text-white relative overflow-hidden group transition-shadow duration-300 hover:shadow-xl hover:shadow-accent/20">
         <div class="grid md:grid-cols-2">
           <div class="p-8 md:p-10">
             <BrainCircuit class="h-7 w-7 text-white/80 mb-5 transition-transform duration-300 group-hover:scale-110" />
-            <h3 class="text-2xl font-bold text-white">Dashboard AI</h3>
+            <h3 class="text-2xl font-bold text-white">Stii exact ce se vinde</h3>
             <p class="mt-3 text-base leading-relaxed text-white/80">
-              Marje, forecast, analiza ABC, matrice profit. Motorul AI genereaza
-              recomandari concrete: ce sa promovezi, ce sa scoti, unde pierzi bani.
+              Rapoarte clare, fara cifre complicate. Vezi ce produse iti aduc profit,
+              ce sa promovezi si unde pierzi bani. Cu recomandari automate.
             </p>
           </div>
           <div class="relative overflow-hidden rounded-br-xl h-64 md:h-auto min-h-[200px]">
-            <img src="/screenshots/mockup/admin-sales-v2.jpg" alt="Dashboard — KPI cards cu venituri si marja" class="w-full h-full object-cover opacity-90 transition-all duration-500 group-hover:opacity-100 group-hover:scale-[1.03]" loading="lazy" />
+            <img src="/screenshots/mockup/admin-sales-v2.jpg" alt="Rapoarte de vanzari cu cifre clare" class="w-full h-full object-cover opacity-90 transition-all duration-500 group-hover:opacity-100 group-hover:scale-[1.03]" loading="lazy" />
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Feature pills -->
+    <!-- Feature pills — store-owner language -->
     <div class="animate-on-scroll mt-8 flex flex-wrap gap-2.5">
       {[
-        { name: "Multi-magazin", icon: Store },
-        { name: "Ecran client", icon: Monitor },
-        { name: "Activare in 6 cifre", icon: KeyRound },
-        { name: "Update OTA", icon: RefreshCw },
-        { name: "Import MicroERP", icon: Database },
-        { name: "Receptie OCR", icon: ScanText },
-        { name: "P&L complet", icon: TrendingUp },
-        { name: "Terminal Linux", icon: Terminal },
+        { name: "Mai multe magazine", icon: Store },
+        { name: "Ecran pentru clienti", icon: Monitor },
+        { name: "Activare in 2 minute", icon: KeyRound },
+        { name: "Se actualizeaza singur", icon: RefreshCw },
+        { name: "Import din alt program", icon: Laptop },
+        { name: "Scanezi factura cu telefonul", icon: Camera },
+        { name: "Rapoarte de profit", icon: BarChart3 },
+        { name: "Fara licente scumpe", icon: ShieldCheck },
       ].map(({ name, icon: Icon }) => (
         <div class="inline-flex items-center gap-2 rounded-md border border-border bg-surface-white px-4 py-2.5 text-sm font-medium text-primary transition-all duration-200 hover:border-accent hover:text-accent hover:-translate-y-0.5">
           <Icon class="h-4 w-4" />
