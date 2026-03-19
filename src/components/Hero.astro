@@ -3,21 +3,20 @@ import { ArrowRight } from "@lucide/astro";
 ---
 
 <section class="relative overflow-hidden bg-white pt-24 pb-16 md:pt-32 md:pb-24">
-  <!-- Subtle corner accent -->
-  <div class="pointer-events-none absolute -top-32 -right-32 h-96 w-96 rounded-full bg-brand-100 opacity-50 blur-3xl" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-primary-50 opacity-60 blur-3xl" aria-hidden="true"></div>
 
-  <div class="relative mx-auto max-w-6xl px-6">
-    <div class="max-w-3xl">
-      <p class="mb-5 inline-block rounded-full bg-brand-50 px-4 py-1.5 text-sm font-semibold text-brand-600 border border-brand-200">
+  <div class="relative mx-auto max-w-5xl px-6">
+    <div class="max-w-2xl">
+      <p class="mb-4 inline-flex items-center rounded-full bg-primary-50 px-3.5 py-1 text-[13px] font-medium text-primary-600 ring-1 ring-primary-200/60">
         Pentru magazine alimentare din Romania
       </p>
 
-      <h1 class="text-4xl font-black leading-[1.05] tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-7xl">
+      <h1 class="text-[40px] font-semibold leading-[1.08] tracking-tight text-neutral-900 sm:text-[48px] md:text-[56px]">
         POS-ul care vinde<br />
-        <span class="text-brand-600">fara internet</span>
+        <span class="text-primary-600">fara internet</span>
       </h1>
 
-      <p class="mt-5 max-w-lg text-lg leading-relaxed text-gray-400 md:text-xl">
+      <p class="mt-4 max-w-md text-[18px] leading-relaxed text-neutral-400">
         Bon fiscal Datecs. Cantar Dibal. Dashboard AI.
         Pe orice PC, fara Windows.
       </p>
@@ -25,41 +24,41 @@ import { ArrowRight } from "@lucide/astro";
       <div class="mt-8 flex flex-col gap-3 sm:flex-row">
         <a
           href="#contact"
-          class="group inline-flex items-center justify-center gap-2 rounded-2xl bg-gray-900 px-7 py-4 text-base font-bold text-white transition-all duration-200 hover:bg-gray-800 active:scale-[0.98]"
+          class="group inline-flex items-center justify-center gap-2 rounded-xl bg-neutral-900 px-6 py-3.5 text-[14px] font-semibold text-white transition-all duration-150 hover:bg-neutral-800 active:scale-[0.98]"
         >
           Solicita Demo
-          <ArrowRight class="h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5" />
+          <ArrowRight class="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5" />
         </a>
         <a
           href="#features"
-          class="inline-flex items-center justify-center rounded-2xl border-2 border-gray-200 px-7 py-4 text-base font-bold text-gray-600 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50"
+          class="inline-flex items-center justify-center rounded-xl border border-neutral-200 px-6 py-3.5 text-[14px] font-semibold text-neutral-600 transition-all duration-150 hover:border-neutral-300 hover:bg-neutral-50"
         >
           Vezi functionalitati
         </a>
       </div>
     </div>
 
-    <!-- Stat blocks — offset grid -->
-    <div class="mt-14 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-      <div class="rounded-2xl bg-gray-900 p-5 md:p-7 md:translate-y-3">
-        <div class="text-3xl font-black text-white md:text-4xl">100%</div>
-        <div class="mt-1.5 text-sm font-medium text-gray-500">Offline functional</div>
-        <p class="mt-2 text-xs leading-relaxed text-gray-600 hidden md:block">Vinde non-stop, cu sau fara net.</p>
+    <!-- Stat cards — clean grid with subtle elevation -->
+    <div class="mt-12 grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div class="rounded-xl bg-neutral-900 p-5 md:p-6">
+        <div class="text-[32px] font-semibold leading-none text-white">100%</div>
+        <div class="mt-2 text-[13px] font-medium text-neutral-500">Offline functional</div>
+        <p class="mt-2 text-[12px] leading-relaxed text-neutral-600 hidden md:block">Vinde non-stop, cu sau fara net.</p>
       </div>
-      <div class="rounded-2xl bg-brand-600 p-5 md:p-7">
-        <div class="text-3xl font-black text-white md:text-4xl">15<span class="text-xl md:text-2xl">min</span></div>
-        <div class="mt-1.5 text-sm font-medium text-brand-200">Instalare USB</div>
-        <p class="mt-2 text-xs leading-relaxed text-brand-300 hidden md:block">Stick bootabil, pornesti, gata.</p>
+      <div class="rounded-xl bg-primary-600 p-5 md:p-6">
+        <div class="text-[32px] font-semibold leading-none text-white">15<span class="text-[18px]">min</span></div>
+        <div class="mt-2 text-[13px] font-medium text-primary-200">Instalare USB</div>
+        <p class="mt-2 text-[12px] leading-relaxed text-primary-200/60 hidden md:block">Stick bootabil, pornesti, gata.</p>
       </div>
-      <div class="rounded-2xl bg-warm-50 border-2 border-warm-100 p-5 md:p-7 md:translate-y-3">
-        <div class="text-3xl font-black text-gray-900 md:text-4xl">0<span class="text-xl md:text-2xl">lei</span></div>
-        <div class="mt-1.5 text-sm font-medium text-warm-500">Licenta Windows</div>
-        <p class="mt-2 text-xs leading-relaxed text-gray-400 hidden md:block">Economie ~600 lei / terminal.</p>
+      <div class="rounded-xl bg-warm-50 ring-1 ring-warm-100 p-5 md:p-6">
+        <div class="text-[32px] font-semibold leading-none text-neutral-900">0<span class="text-[18px]">lei</span></div>
+        <div class="mt-2 text-[13px] font-medium text-warm-500">Licenta Windows</div>
+        <p class="mt-2 text-[12px] leading-relaxed text-neutral-400 hidden md:block">Economie ~600 lei / terminal.</p>
       </div>
-      <div class="rounded-2xl border-2 border-gray-200 p-5 md:p-7">
-        <div class="text-3xl font-black text-gray-900 md:text-4xl">6</div>
-        <div class="mt-1.5 text-sm font-medium text-gray-400">Cifre de activare</div>
-        <p class="mt-2 text-xs leading-relaxed text-gray-400 hidden md:block">Cod scurt, activ instant.</p>
+      <div class="rounded-xl ring-1 ring-neutral-200 p-5 md:p-6">
+        <div class="text-[32px] font-semibold leading-none text-neutral-900">6</div>
+        <div class="mt-2 text-[13px] font-medium text-neutral-400">Cifre de activare</div>
+        <p class="mt-2 text-[12px] leading-relaxed text-neutral-400 hidden md:block">Cod scurt, activ instant.</p>
       </div>
     </div>
   </div>

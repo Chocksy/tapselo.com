@@ -3,44 +3,44 @@ import { Mail, Phone, Clock } from "@lucide/astro";
 ---
 
 <section id="contact" class="bg-white py-24">
-  <div class="mx-auto max-w-6xl px-6">
+  <div class="mx-auto max-w-5xl px-6">
     <div class="grid gap-16 lg:grid-cols-2">
       <!-- Left: copy -->
       <div>
-        <h2 class="text-3xl font-black tracking-tight text-gray-900 sm:text-4xl">
+        <h2 class="text-[32px] font-semibold tracking-tight text-neutral-900 sm:text-[40px]">
           Solicita o demonstratie
         </h2>
-        <p class="mt-4 text-lg leading-relaxed text-gray-500">
+        <p class="mt-4 text-[16px] leading-relaxed text-neutral-500">
           Spune-ne despre magazinul tau si iti pregatim o demonstratie
           personalizata. Gratuit, fara obligatii.
         </p>
 
-        <div class="mt-10 space-y-6">
-          <div class="flex items-start gap-4">
-            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
-              <Clock class="h-5 w-5" />
+        <div class="mt-8 space-y-5">
+          <div class="flex items-start gap-3">
+            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-600">
+              <Clock class="h-4 w-4" />
             </div>
             <div>
-              <h4 class="font-bold text-gray-900">Raspuns rapid</h4>
-              <p class="text-sm text-gray-500">Raspundem in 24 de ore</p>
+              <h4 class="text-[14px] font-semibold text-neutral-900">Raspuns rapid</h4>
+              <p class="text-[13px] text-neutral-500">Raspundem in 24 de ore</p>
             </div>
           </div>
-          <div class="flex items-start gap-4">
-            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
-              <Mail class="h-5 w-5" />
+          <div class="flex items-start gap-3">
+            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-600">
+              <Mail class="h-4 w-4" />
             </div>
             <div>
-              <h4 class="font-bold text-gray-900">Email</h4>
-              <p class="text-sm text-gray-500">contact@tapselo.com</p>
+              <h4 class="text-[14px] font-semibold text-neutral-900">Email</h4>
+              <p class="text-[13px] text-neutral-500">contact@tapselo.com</p>
             </div>
           </div>
-          <div class="flex items-start gap-4">
-            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
-              <Phone class="h-5 w-5" />
+          <div class="flex items-start gap-3">
+            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-600">
+              <Phone class="h-4 w-4" />
             </div>
             <div>
-              <h4 class="font-bold text-gray-900">Telefon</h4>
-              <p class="text-sm text-gray-500">Disponibil dupa programare</p>
+              <h4 class="text-[14px] font-semibold text-neutral-900">Telefon</h4>
+              <p class="text-[13px] text-neutral-500">Disponibil dupa programare</p>
             </div>
           </div>
         </div>
@@ -49,62 +49,62 @@ import { Mail, Phone, Clock } from "@lucide/astro";
       <!-- Right: form -->
       <div>
         <form
-          class="space-y-5 rounded-2xl border border-gray-100 bg-gray-50 p-6 md:p-8"
+          class="space-y-4 rounded-2xl ring-1 ring-neutral-100 bg-neutral-50 p-6 md:p-8"
           action="#"
           method="POST"
         >
           <div>
-            <label for="name" class="mb-1.5 block text-sm font-semibold text-gray-700">Nume complet</label>
+            <label for="name" class="mb-1.5 block text-[13px] font-medium text-neutral-600">Nume complet</label>
             <input
               type="text"
               id="name"
               name="name"
               required
               autocomplete="name"
-              class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 transition-colors duration-150 placeholder:text-gray-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+              class="w-full rounded-lg border border-neutral-200 bg-white px-3.5 py-2.5 text-[14px] text-neutral-900 transition-colors placeholder:text-neutral-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
               placeholder="Ion Popescu"
             />
           </div>
           <div>
-            <label for="email" class="mb-1.5 block text-sm font-semibold text-gray-700">Email</label>
+            <label for="email" class="mb-1.5 block text-[13px] font-medium text-neutral-600">Email</label>
             <input
               type="email"
               id="email"
               name="email"
               required
               autocomplete="email"
-              class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 transition-colors duration-150 placeholder:text-gray-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+              class="w-full rounded-lg border border-neutral-200 bg-white px-3.5 py-2.5 text-[14px] text-neutral-900 transition-colors placeholder:text-neutral-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
               placeholder="ion@magazin.ro"
             />
           </div>
           <div>
-            <label for="phone" class="mb-1.5 block text-sm font-semibold text-gray-700">Telefon</label>
+            <label for="phone" class="mb-1.5 block text-[13px] font-medium text-neutral-600">Telefon</label>
             <input
               type="tel"
               id="phone"
               name="phone"
               autocomplete="tel"
-              class="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 transition-colors duration-150 placeholder:text-gray-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+              class="w-full rounded-lg border border-neutral-200 bg-white px-3.5 py-2.5 text-[14px] text-neutral-900 transition-colors placeholder:text-neutral-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
               placeholder="07XX XXX XXX"
             />
           </div>
           <div>
-            <label for="message" class="mb-1.5 block text-sm font-semibold text-gray-700">Mesaj</label>
+            <label for="message" class="mb-1.5 block text-[13px] font-medium text-neutral-600">Mesaj</label>
             <textarea
               id="message"
               name="message"
               rows="4"
-              class="w-full resize-none rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 transition-colors duration-150 placeholder:text-gray-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
+              class="w-full resize-none rounded-lg border border-neutral-200 bg-white px-3.5 py-2.5 text-[14px] text-neutral-900 transition-colors placeholder:text-neutral-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
               placeholder="Cate terminale ai nevoie, ce imprimanta fiscala folosesti, etc."
             ></textarea>
           </div>
           <button
             type="submit"
-            class="w-full rounded-xl bg-gray-900 py-3.5 text-base font-bold text-white transition-colors duration-200 hover:bg-gray-800 active:scale-[0.99]"
+            class="w-full rounded-lg bg-primary-600 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-primary-700 active:scale-[0.98]"
           >
             Trimite mesajul
           </button>
-          <p class="text-center text-xs text-gray-400">
+          <p class="text-center text-[12px] text-neutral-400">
             Nu facem spam. Datele tale sunt in siguranta.
           </p>
         </form>

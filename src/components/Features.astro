@@ -16,55 +16,55 @@ import {
 ---
 
 <section id="features" class="bg-white py-24">
-  <div class="mx-auto max-w-6xl px-6">
-    <h2 class="text-4xl font-black tracking-tight text-gray-900 sm:text-5xl">
+  <div class="mx-auto max-w-5xl px-6">
+    <h2 class="text-[32px] font-semibold tracking-tight text-neutral-900 sm:text-[40px]">
       Tot ce ai nevoie.<br />
-      <span class="text-gray-300">Nimic in plus.</span>
+      <span class="text-neutral-300">Nimic in plus.</span>
     </h2>
 
-    <!-- Bento grid — mixed sizes -->
-    <div class="mt-16 grid gap-4 md:grid-cols-3">
+    <!-- Bento grid -->
+    <div class="mt-12 grid gap-3 md:grid-cols-3">
       <!-- Large: Offline -->
-      <div class="md:col-span-2 rounded-3xl bg-gray-900 p-8 md:p-10 text-white">
-        <WifiOff class="h-8 w-8 text-brand-400 mb-6" />
-        <h3 class="text-2xl font-black">Offline-first</h3>
-        <p class="mt-3 max-w-md text-base leading-relaxed text-gray-400">
+      <div class="md:col-span-2 rounded-2xl bg-neutral-900 p-8 text-white">
+        <WifiOff class="h-6 w-6 text-primary-400 mb-4" />
+        <h3 class="text-[24px] font-semibold">Offline-first</h3>
+        <p class="mt-3 max-w-md text-[14px] leading-relaxed text-neutral-400">
           Vinde fara internet. Datele se sincronizeaza automat cand revine conexiunea.
           Zero downtime, zero vanzari pierdute. PGLite local, Electric sync in cloud.
         </p>
       </div>
 
       <!-- Fiscal -->
-      <div class="rounded-3xl border-2 border-gray-100 p-8">
-        <Printer class="h-7 w-7 text-gray-900 mb-4" />
-        <h3 class="text-lg font-black text-gray-900">Bon fiscal Datecs</h3>
-        <p class="mt-2 text-sm leading-relaxed text-gray-500">
+      <div class="rounded-2xl ring-1 ring-neutral-100 p-8">
+        <Printer class="h-6 w-6 text-neutral-900 mb-4" />
+        <h3 class="text-[16px] font-semibold text-neutral-900">Bon fiscal Datecs</h3>
+        <p class="mt-2 text-[13px] leading-relaxed text-neutral-500">
           Suport nativ. Conform legislatiei. Plug & play pe USB serial.
         </p>
       </div>
 
       <!-- Cantar -->
-      <div class="rounded-3xl bg-brand-50 border-2 border-brand-100 p-8">
-        <Scale class="h-7 w-7 text-brand-700 mb-4" />
-        <h3 class="text-lg font-black text-gray-900">Cantar Dibal</h3>
-        <p class="mt-2 text-sm leading-relaxed text-gray-500">
+      <div class="rounded-2xl bg-primary-50 ring-1 ring-primary-100 p-8">
+        <Scale class="h-6 w-6 text-primary-700 mb-4" />
+        <h3 class="text-[16px] font-semibold text-neutral-900">Cantar Dibal</h3>
+        <p class="mt-2 text-[13px] leading-relaxed text-neutral-500">
           Cod bare EAN-13, greutate, pret/kg. Totul automat, fara configurari.
         </p>
       </div>
 
       <!-- Large: Dashboard AI -->
-      <div class="md:col-span-2 rounded-3xl bg-brand-600 p-8 md:p-10 text-white">
-        <BrainCircuit class="h-8 w-8 text-brand-200 mb-6" />
-        <h3 class="text-2xl font-black">Dashboard AI</h3>
-        <p class="mt-3 max-w-md text-base leading-relaxed text-brand-100/80">
+      <div class="md:col-span-2 rounded-2xl bg-primary-600 p-8 text-white">
+        <BrainCircuit class="h-6 w-6 text-primary-200 mb-4" />
+        <h3 class="text-[24px] font-semibold">Dashboard AI</h3>
+        <p class="mt-3 max-w-md text-[14px] leading-relaxed text-primary-100/70">
           Marje, forecast, analiza ABC, matrice profit. Motorul AI genereaza
           recomandari concrete: ce sa promovezi, ce sa scoti, unde pierzi bani.
         </p>
       </div>
     </div>
 
-    <!-- Rest as pills -->
-    <div class="mt-8 flex flex-wrap gap-3">
+    <!-- Feature pills -->
+    <div class="mt-6 flex flex-wrap gap-2">
       {[
         { name: "Multi-magazin", icon: Store },
         { name: "Ecran client", icon: Monitor },
@@ -75,8 +75,8 @@ import {
         { name: "P&L complet", icon: TrendingUp },
         { name: "Terminal Linux", icon: Terminal },
       ].map(({ name, icon: Icon }) => (
-        <div class="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm font-semibold text-gray-700 transition-colors hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700">
-          <Icon class="h-4 w-4 text-gray-400" />
+        <div class="inline-flex items-center gap-2 rounded-lg ring-1 ring-neutral-200 bg-neutral-50 px-3.5 py-2 text-[13px] font-medium text-neutral-600 transition-colors hover:ring-primary-200 hover:bg-primary-50 hover:text-primary-700">
+          <Icon class="h-3.5 w-3.5 text-neutral-400" />
           {name}
         </div>
       ))}

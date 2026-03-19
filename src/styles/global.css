@@ -1,18 +1,48 @@
 @import "tailwindcss";
-@import "@fontsource-variable/geist";
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@100;200;300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:wght@400;700&display=swap');
 
 @theme {
-  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
-  --color-brand-50: #f0fdf4;
-  --color-brand-100: #dcfce7;
-  --color-brand-200: #bbf7d0;
-  --color-brand-300: #86efac;
-  --color-brand-400: #4ade80;
-  --color-brand-500: #16a34a;
-  --color-brand-600: #15803d;
-  --color-brand-700: #166534;
-  --color-brand-800: #14532d;
-  --color-brand-900: #052e16;
+  --font-sans: "Google Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Anonymous Pro", ui-monospace, monospace;
+
+  /* Elegant Design System Tokens — adapted with green primary for Tapselo brand */
+  --color-primary-50: #f0fdf4;
+  --color-primary-100: #dcfce7;
+  --color-primary-200: #bbf7d0;
+  --color-primary-300: #86efac;
+  --color-primary-400: #4ade80;
+  --color-primary-500: #16a34a;
+  --color-primary-600: #15803d;
+  --color-primary-700: #166534;
+  --color-primary-800: #14532d;
+  --color-primary-900: #052e16;
+
+  --color-secondary-50: #f5f3ff;
+  --color-secondary-100: #ede9fe;
+  --color-secondary-400: #a78bfa;
+  --color-secondary-500: #8B5CF6;
+  --color-secondary-600: #7c3aed;
+
+  --color-surface: #FFFFFF;
+  --color-text: #111827;
+
+  --color-success-500: #16A34A;
+  --color-warning-400: #facc15;
+  --color-warning-500: #D97706;
+  --color-danger-500: #DC2626;
+
+  --color-neutral-50: #f9fafb;
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-300: #d1d5db;
+  --color-neutral-400: #9ca3af;
+  --color-neutral-500: #6b7280;
+  --color-neutral-600: #4b5563;
+  --color-neutral-700: #374151;
+  --color-neutral-800: #1f2937;
+  --color-neutral-900: #111827;
+
   --color-warm-50: #fefce8;
   --color-warm-100: #fef9c3;
   --color-warm-400: #facc15;
@@ -22,6 +52,27 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    color: var(--color-text);
+    background: var(--color-surface);
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+  }
+
+  /* Elegant type scale: 14/16/18/24/32/40 */
+  h1 { font-size: 40px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 600; }
+  h2 { font-size: 32px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 600; }
+  h3 { font-size: 24px; line-height: 1.25; letter-spacing: -0.015em; font-weight: 500; }
+
+  @media (min-width: 768px) {
+    h1 { font-size: 56px; }
+    h2 { font-size: 40px; }
+    h3 { font-size: 24px; }
   }
 
   /* Accessibility: respect motion preferences */
@@ -38,7 +89,7 @@
 
   /* Focus styles: visible keyboard focus ring */
   :focus-visible {
-    outline: 2px solid var(--color-brand-500);
+    outline: 2px solid var(--color-primary-500);
     outline-offset: 2px;
     border-radius: 4px;
   }
