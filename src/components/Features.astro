@@ -15,56 +15,72 @@ import {
 } from "@lucide/astro";
 ---
 
-<section id="features" class="bg-white py-24">
-  <div class="mx-auto max-w-5xl px-6">
-    <h2 class="text-[32px] font-semibold tracking-tight text-neutral-900 sm:text-[40px]">
-      Tot ce ai nevoie.<br />
-      <span class="text-neutral-300">Nimic in plus.</span>
+<section id="features" class="bg-surface py-24">
+  <div class="mx-auto max-w-6xl px-6">
+    <h2 class="animate-on-scroll font-display text-4xl font-bold uppercase tracking-wide text-primary sm:text-5xl">
+      Tot ce ai nevoie.
     </h2>
+    <p class="animate-on-scroll animate-delay-100 font-display text-4xl font-bold uppercase tracking-wide text-primary/20 sm:text-5xl">
+      Nimic in plus.
+    </p>
 
     <!-- Bento grid -->
-    <div class="mt-12 grid gap-3 md:grid-cols-3">
-      <!-- Large: Offline -->
-      <div class="md:col-span-2 rounded-2xl bg-neutral-900 p-8 text-white">
-        <WifiOff class="h-6 w-6 text-primary-400 mb-4" />
-        <h3 class="text-[24px] font-semibold">Offline-first</h3>
-        <p class="mt-3 max-w-md text-[14px] leading-relaxed text-neutral-400">
-          Vinde fara internet. Datele se sincronizeaza automat cand revine conexiunea.
-          Zero downtime, zero vanzari pierdute. PGLite local, Electric sync in cloud.
-        </p>
+    <div class="mt-14 grid gap-4 md:grid-cols-3">
+      <!-- Large: Offline — with POS screenshot -->
+      <div class="animate-on-scroll md:col-span-2 rounded-xl bg-primary p-0 text-white relative overflow-hidden group transition-shadow duration-300 hover:shadow-xl hover:shadow-primary/20">
+        <div class="grid md:grid-cols-2">
+          <div class="p-8 md:p-10">
+            <WifiOff class="h-7 w-7 text-accent mb-5 transition-transform duration-300 group-hover:scale-110" />
+            <h3 class="text-2xl font-bold text-white">Offline-first</h3>
+            <p class="mt-3 text-base leading-relaxed text-text-on-primary">
+              Vinde fara internet. Datele se sincronizeaza automat cand revine conexiunea.
+              Zero downtime, zero vanzari pierdute.
+            </p>
+          </div>
+          <div class="relative overflow-hidden rounded-br-xl">
+            <img src="/screenshots/pos-cart.png" alt="POS — cos cu produse" class="w-full h-full object-cover object-left-top opacity-80 transition-opacity duration-300 group-hover:opacity-100" loading="lazy" />
+          </div>
+        </div>
       </div>
 
       <!-- Fiscal -->
-      <div class="rounded-2xl ring-1 ring-neutral-100 p-8">
-        <Printer class="h-6 w-6 text-neutral-900 mb-4" />
-        <h3 class="text-[16px] font-semibold text-neutral-900">Bon fiscal Datecs</h3>
-        <p class="mt-2 text-[13px] leading-relaxed text-neutral-500">
+      <div class="animate-on-scroll animate-delay-100 rounded-xl bg-surface-white p-8 border border-border group transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+        <Printer class="h-6 w-6 text-primary mb-4 transition-transform duration-300 group-hover:scale-110" />
+        <h3 class="text-lg font-bold text-primary">Bon fiscal Datecs</h3>
+        <p class="mt-2 text-sm leading-relaxed text-text-secondary">
           Suport nativ. Conform legislatiei. Plug & play pe USB serial.
         </p>
       </div>
 
       <!-- Cantar -->
-      <div class="rounded-2xl bg-primary-50 ring-1 ring-primary-100 p-8">
-        <Scale class="h-6 w-6 text-primary-700 mb-4" />
-        <h3 class="text-[16px] font-semibold text-neutral-900">Cantar Dibal</h3>
-        <p class="mt-2 text-[13px] leading-relaxed text-neutral-500">
+      <div class="animate-on-scroll rounded-xl bg-accent-light border border-accent/20 p-8 group transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+        <Scale class="h-6 w-6 text-accent mb-4 transition-transform duration-300 group-hover:scale-110" />
+        <h3 class="text-lg font-bold text-primary">Cantar Dibal</h3>
+        <p class="mt-2 text-sm leading-relaxed text-text-secondary">
           Cod bare EAN-13, greutate, pret/kg. Totul automat, fara configurari.
         </p>
       </div>
 
-      <!-- Large: Dashboard AI -->
-      <div class="md:col-span-2 rounded-2xl bg-primary-600 p-8 text-white">
-        <BrainCircuit class="h-6 w-6 text-primary-200 mb-4" />
-        <h3 class="text-[24px] font-semibold">Dashboard AI</h3>
-        <p class="mt-3 max-w-md text-[14px] leading-relaxed text-primary-100/70">
-          Marje, forecast, analiza ABC, matrice profit. Motorul AI genereaza
-          recomandari concrete: ce sa promovezi, ce sa scoti, unde pierzi bani.
-        </p>
+      <!-- Large: Dashboard AI — with OCR screenshot -->
+      <div class="animate-on-scroll animate-delay-100 md:col-span-2 rounded-xl bg-accent p-0 text-white relative overflow-hidden group transition-shadow duration-300 hover:shadow-xl hover:shadow-accent/20">
+        <div class="grid md:grid-cols-2">
+          <div class="p-8 md:p-10">
+            <BrainCircuit class="h-7 w-7 text-white/80 mb-5 transition-transform duration-300 group-hover:scale-110" />
+            <h3 class="text-2xl font-bold text-white">Dashboard AI</h3>
+            <p class="mt-3 text-base leading-relaxed text-white/80">
+              Marje, forecast, analiza ABC, matrice profit. Motorul AI genereaza
+              recomandari concrete: ce sa promovezi, ce sa scoti, unde pierzi bani.
+            </p>
+          </div>
+          <div class="relative overflow-hidden rounded-br-xl">
+            <img src="/screenshots/admin-sales-dashboard.png" alt="Dashboard — raport vanzari cu AI insights" class="w-full h-full object-cover object-left-top opacity-80 transition-opacity duration-300 group-hover:opacity-100" loading="lazy" />
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Feature pills -->
-    <div class="mt-6 flex flex-wrap gap-2">
+    <div class="animate-on-scroll mt-8 flex flex-wrap gap-2.5">
       {[
         { name: "Multi-magazin", icon: Store },
         { name: "Ecran client", icon: Monitor },
@@ -75,8 +91,8 @@ import {
         { name: "P&L complet", icon: TrendingUp },
         { name: "Terminal Linux", icon: Terminal },
       ].map(({ name, icon: Icon }) => (
-        <div class="inline-flex items-center gap-2 rounded-lg ring-1 ring-neutral-200 bg-neutral-50 px-3.5 py-2 text-[13px] font-medium text-neutral-600 transition-colors hover:ring-primary-200 hover:bg-primary-50 hover:text-primary-700">
-          <Icon class="h-3.5 w-3.5 text-neutral-400" />
+        <div class="inline-flex items-center gap-2 rounded-md border border-border bg-surface-white px-4 py-2.5 text-sm font-medium text-primary transition-all duration-200 hover:border-accent hover:text-accent hover:-translate-y-0.5">
+          <Icon class="h-4 w-4" />
           {name}
         </div>
       ))}

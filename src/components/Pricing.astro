@@ -13,40 +13,40 @@ const included = [
 ];
 ---
 
-<section id="pricing" class="bg-white py-24">
-  <div class="mx-auto max-w-5xl px-6">
+<section id="pricing" class="bg-surface py-24">
+  <div class="mx-auto max-w-6xl px-6">
     <div class="grid items-center gap-16 lg:grid-cols-2">
       <!-- Left -->
       <div>
-        <h2 class="text-[32px] font-semibold tracking-tight text-neutral-900 sm:text-[40px]">
+        <h2 class="animate-on-scroll font-display text-4xl font-bold uppercase tracking-wide text-primary sm:text-5xl">
           Simplu.<br />
           Transparent.<br />
-          <span class="text-primary-600">Fara surprize.</span>
+          <span class="text-accent">Fara surprize.</span>
         </h2>
-        <p class="mt-4 text-[16px] leading-relaxed text-neutral-500">
+        <p class="animate-on-scroll animate-delay-100 mt-5 text-lg leading-relaxed text-text-secondary">
           Contacteaza-ne pentru o oferta personalizata. Fiecare magazin e diferit — pretul depinde de numarul de terminale si ce ai nevoie.
         </p>
-        <div class="mt-6 rounded-xl bg-warm-50 ring-1 ring-warm-100 p-5">
-          <p class="text-[24px] font-semibold text-neutral-900">~600 lei economie</p>
-          <p class="mt-1 text-[13px] text-neutral-500">per terminal, fara licenta Windows</p>
+        <div class="animate-on-scroll animate-delay-200 mt-8 rounded-xl bg-accent-light border border-accent/20 p-6 transition-shadow duration-300 hover:shadow-lg">
+          <p class="font-display text-3xl font-bold text-primary">~600 lei economie</p>
+          <p class="mt-1 text-sm text-text-secondary">per terminal, fara licenta Windows</p>
         </div>
       </div>
 
-      <!-- Right: Included list -->
-      <div class="rounded-2xl ring-1 ring-neutral-100 p-8">
-        <h3 class="text-[16px] font-semibold text-neutral-900">Include:</h3>
-        <ul class="mt-5 space-y-3.5">
+      <!-- Right: Included -->
+      <div class="animate-on-scroll animate-from-right rounded-xl bg-surface-white border border-border p-8 md:p-10 transition-shadow duration-300 hover:shadow-xl">
+        <h3 class="text-lg font-bold text-primary">Include:</h3>
+        <ul class="mt-6 space-y-4">
           {included.map((item) => (
             <li class="flex items-start gap-3">
-              <Check class="mt-0.5 h-4 w-4 shrink-0 text-primary-600" />
-              <span class="text-[14px] font-medium text-neutral-700">{item}</span>
+              <Check class="mt-0.5 h-5 w-5 shrink-0 text-success" />
+              <span class="text-sm font-medium text-text">{item}</span>
             </li>
           ))}
         </ul>
 
         <a
           href="#contact"
-          class="group mt-8 flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 py-3.5 text-[14px] font-semibold text-white transition-all hover:bg-neutral-800 active:scale-[0.98]"
+          class="group mt-8 flex w-full items-center justify-center gap-2 rounded-md bg-primary py-4 text-base font-bold text-white transition-all hover:bg-primary-light hover:shadow-lg active:scale-[0.98]"
         >
           Solicita oferta
           <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
