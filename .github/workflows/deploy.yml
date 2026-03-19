@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: 22
 
-      - run: npm install
+      - run: npm install --legacy-peer-deps
       - run: npm run build
 
       - uses: cloudflare/wrangler-action@v3
