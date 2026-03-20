@@ -17,10 +17,10 @@ import {
 
 <section id="features" class="bg-surface py-24">
   <div class="mx-auto max-w-6xl px-6">
-    <h2 class="animate-on-scroll font-display text-4xl font-bold uppercase tracking-wide text-primary sm:text-5xl">
+    <h2 class="animate-on-scroll font-display text-4xl italic text-primary sm:text-5xl">
       Tot ce ai nevoie.
     </h2>
-    <p class="animate-on-scroll animate-delay-100 font-display text-4xl font-bold uppercase tracking-wide text-primary/20 sm:text-5xl">
+    <p class="animate-on-scroll animate-delay-100 font-display text-4xl italic text-primary/20 sm:text-5xl">
       Nimic in plus.
     </p>
 
@@ -76,6 +76,27 @@ import {
             <img src="/screenshots/mockup/admin-sales-v2.jpg" alt="Rapoarte de vanzari cu cifre clare" class="w-full h-full object-cover opacity-90 transition-all duration-500 group-hover:opacity-100 group-hover:scale-[1.03]" loading="lazy" />
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Skewed video showcase below features -->
+    <div class="animate-on-scroll mt-12" style="perspective: 1200px;">
+      <div
+        class="mx-auto max-w-4xl overflow-hidden rounded-2xl shadow-2xl shadow-primary/20 border border-border"
+        style="transform: rotateX(4deg) rotateY(-2deg); transform-style: preserve-3d;"
+      >
+        <div class="pointer-events-none absolute inset-0 z-10 bg-gradient-to-br from-white/[0.06] via-transparent to-transparent rounded-2xl"></div>
+        <video
+          class="w-full"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster="/screenshots/mockup/admin-dashboard-v2.jpg"
+        >
+          <source src="/videos/video-features-pos.mp4" type="video/mp4" />
+        </video>
       </div>
     </div>
 

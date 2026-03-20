@@ -3,60 +3,88 @@ import { ArrowRight } from "@lucide/astro";
 ---
 
 <section class="relative overflow-hidden bg-primary pt-20 pb-0 md:pt-24">
-  <div class="pointer-events-none absolute inset-0 opacity-5" style="background-image: radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px); background-size: 32px 32px;" aria-hidden="true"></div>
+  <!-- Dot grid pattern (matching Remotion video style) -->
+  <div class="pointer-events-none absolute inset-0 opacity-[0.04]" style="background-image: radial-gradient(circle, rgba(255,255,255,1) 1px, transparent 1px); background-size: 32px 32px;" aria-hidden="true"></div>
 
   <div class="relative mx-auto max-w-6xl px-6 pt-8 md:pt-12">
-    <div class="max-w-3xl">
-      <p class="animate-on-scroll mb-5 inline-flex items-center rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-accent ring-1 ring-accent/30">
-        Pentru magazine alimentare din Romania
-      </p>
+    <!-- Side-by-side: text left, video right -->
+    <div class="grid items-center gap-8 lg:grid-cols-2">
+      <!-- Left: Copy -->
+      <div>
+        <p class="animate-on-scroll mb-5 inline-flex items-center rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-accent ring-1 ring-accent/30">
+          Pentru magazine alimentare din Romania
+        </p>
 
-      <h1 class="animate-on-scroll animate-delay-100 font-display text-[44px] font-bold uppercase leading-[1.02] tracking-wide text-white sm:text-[56px] md:text-[68px]">
-        Vinzi non-stop,<br />
-        <span class="text-accent">cu sau fara net</span>
-      </h1>
+        <h1 class="animate-on-scroll animate-delay-100 font-display text-[clamp(2.75rem,5vw+1rem,4.5rem)] italic leading-[1.05] tracking-tight text-white">
+          Vinzi non-stop,<br />
+          <span class="text-accent">cu sau fara net</span>
+        </h1>
 
-      <p class="animate-on-scroll animate-delay-200 mt-5 max-w-lg text-lg leading-relaxed text-text-on-primary">
-        Casa de marcat care nu se opreste niciodata.
-        Cu bon fiscal, cantar si rapoarte inteligente — gata in 20 de minute.
-      </p>
+        <p class="animate-on-scroll animate-delay-200 mt-6 max-w-lg text-lg leading-relaxed text-text-on-primary">
+          Casa de marcat care nu se opreste niciodata.
+          Cu bon fiscal, cantar si rapoarte inteligente — gata in 20 de minute.
+        </p>
 
-      <div class="animate-on-scroll animate-delay-300 mt-8 flex flex-col gap-3 sm:flex-row">
-        <a
-          href="#contact"
-          class="group inline-flex items-center justify-center gap-2 rounded-md bg-accent px-7 py-4 text-base font-bold text-white transition-all duration-150 hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/25 active:scale-[0.98]"
+        <div class="animate-on-scroll animate-delay-300 mt-8 flex flex-col gap-3 sm:flex-row">
+          <a
+            href="#contact"
+            class="group inline-flex items-center justify-center gap-2 rounded-md bg-accent px-7 py-4 text-base font-bold text-white transition-all duration-150 hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/25 active:scale-[0.98]"
+          >
+            Vreau o demonstratie
+            <ArrowRight class="h-5 w-5 transition-transform duration-150 group-hover:translate-x-0.5" />
+          </a>
+          <a
+            href="#features"
+            class="inline-flex items-center justify-center rounded-md border border-white/20 px-7 py-4 text-base font-bold text-white transition-all duration-150 hover:border-white/40 hover:bg-white/5"
+          >
+            Ce include
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Product demo video — 3D perspective tilt -->
+      <div class="animate-on-scroll animate-delay-300 animate-from-right" style="perspective: 1200px;">
+        <div
+          class="relative overflow-hidden rounded-2xl border border-white/15 shadow-2xl shadow-black/50"
+          style="transform: rotateY(-6deg) rotateX(2deg); transform-style: preserve-3d;"
         >
-          Vreau o demonstratie
-          <ArrowRight class="h-5 w-5 transition-transform duration-150 group-hover:translate-x-0.5" />
-        </a>
-        <a
-          href="#features"
-          class="inline-flex items-center justify-center rounded-md border border-white/20 px-7 py-4 text-base font-bold text-white transition-all duration-150 hover:border-white/40 hover:bg-white/5"
-        >
-          Ce include
-        </a>
+          <!-- Gloss reflection overlay -->
+          <div class="pointer-events-none absolute inset-0 z-10 bg-gradient-to-br from-white/[0.08] via-transparent to-transparent rounded-2xl"></div>
+          <video
+            id="hero-video"
+            class="w-full"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            poster="/screenshots/mockup/admin-dashboard-v2.jpg"
+          >
+            <source src="/videos/product-demo.mp4" type="video/mp4" />
+          </video>
+        </div>
       </div>
     </div>
 
     <!-- Stat cards -->
     <div class="mt-12 grid grid-cols-2 gap-3 md:grid-cols-4 pb-12">
       <div class="animate-on-scroll rounded-lg bg-white/10 backdrop-blur-sm p-5 border border-white/10 transition-transform duration-300 hover:-translate-y-1">
-        <div class="font-display text-4xl font-bold text-white md:text-5xl">100%</div>
+        <div class="font-display text-4xl italic text-white md:text-5xl">100%</div>
         <div class="mt-1 text-sm font-medium text-accent">Fara opriri</div>
         <p class="mt-2 text-xs text-text-on-primary/60 hidden md:block">Vinzi chiar si cand pica netul.</p>
       </div>
       <div class="animate-on-scroll animate-delay-100 rounded-lg bg-cash p-5 transition-transform duration-300 hover:-translate-y-1">
-        <div class="font-display text-4xl font-bold text-white md:text-5xl">20<span class="text-2xl">min</span></div>
+        <div class="font-display text-4xl italic text-white md:text-5xl">20<span class="text-2xl">min</span></div>
         <div class="mt-1 text-sm font-medium text-white/80">Gata de vanzare</div>
         <p class="mt-2 text-xs text-white/50 hidden md:block">Pornesti de pe stick, esti gata.</p>
       </div>
       <div class="animate-on-scroll animate-delay-200 rounded-lg bg-cash-light p-5 border border-cash/20 transition-transform duration-300 hover:-translate-y-1">
-        <div class="font-display text-4xl font-bold text-primary md:text-5xl">0<span class="text-2xl">lei</span></div>
+        <div class="font-display text-4xl italic text-primary md:text-5xl">0<span class="text-2xl">lei</span></div>
         <div class="mt-1 text-sm font-medium text-cash">Licente software</div>
         <p class="mt-2 text-xs text-text-secondary hidden md:block">Economisesti ~600 lei pe fiecare casa.</p>
       </div>
       <div class="animate-on-scroll animate-delay-300 rounded-lg bg-white/10 backdrop-blur-sm p-5 border border-white/10 transition-transform duration-300 hover:-translate-y-1">
-        <div class="font-display text-4xl font-bold text-white md:text-5xl">6</div>
+        <div class="font-display text-4xl italic text-white md:text-5xl">6</div>
         <div class="mt-1 text-sm font-medium text-text-on-primary/70">Cifre de activare</div>
         <p class="mt-2 text-xs text-text-on-primary/50 hidden md:block">Un cod scurt si esti activ.</p>
       </div>

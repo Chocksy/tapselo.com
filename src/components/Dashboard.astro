@@ -6,7 +6,7 @@
     <div class="grid items-start gap-16 lg:grid-cols-5">
       <!-- Left: Copy -->
       <div class="lg:col-span-2">
-        <h2 class="animate-on-scroll font-display text-4xl font-bold uppercase tracking-wide text-white sm:text-5xl">
+        <h2 class="animate-on-scroll font-display text-4xl italic text-white sm:text-5xl">
           Controlezi<br />totul
         </h2>
         <p class="animate-on-scroll animate-delay-100 mt-4 text-lg leading-relaxed text-text-on-primary">
@@ -45,13 +45,24 @@
         </div>
       </div>
 
-      <!-- Right: Mockup screenshots -->
-      <div class="animate-on-scroll animate-from-right lg:col-span-3 space-y-6">
-        <div class="group transition-transform duration-500 hover:-translate-y-1">
-          <img src="/screenshots/mockup/admin-sales-v2.jpg" alt="Rapoarte de vanzari cu cifre clare" class="w-full rounded-lg" loading="lazy" />
-        </div>
-        <div class="group transition-transform duration-500 hover:-translate-y-1">
-          <img src="/screenshots/mockup/admin-devices-v2.jpg" alt="Monitorizare case de marcat conectate" class="w-full rounded-lg" loading="lazy" />
+      <!-- Right: Product demo video — perspective tilt -->
+      <div class="animate-on-scroll animate-from-right lg:col-span-3" style="perspective: 1000px;">
+        <div
+          class="overflow-hidden rounded-2xl border border-white/10 shadow-2xl shadow-black/40"
+          style="transform: rotateY(-4deg) rotateX(1deg); transform-style: preserve-3d;"
+        >
+          <div class="pointer-events-none absolute inset-0 z-10 bg-gradient-to-br from-white/[0.06] via-transparent to-transparent rounded-2xl"></div>
+          <video
+            class="w-full"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            poster="/screenshots/mockup/admin-sales-v2.jpg"
+          >
+            <source src="/videos/video-dashboard-admin.mp4" type="video/mp4" />
+          </video>
         </div>
       </div>
     </div>
