@@ -1,0 +1,159 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+  title="Politica de confidentialitate — Tapselo POS"
+  description="Cum colecteaza si foloseste Tapselo POS datele clientilor si ale magazinelor, inclusiv mesajele primite prin integrarea Facebook Messenger."
+>
+  <Navbar />
+
+  <header class="bg-primary pt-28 pb-16 md:pt-32">
+    <div class="mx-auto max-w-3xl px-6">
+      <h1 class="font-display text-4xl italic text-white sm:text-5xl">
+        Politica de confidentialitate
+      </h1>
+      <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">
+        Ce date colectam, de ce le colectam si ce poti face cu ele.
+      </p>
+      <p class="mt-6 text-sm text-text-on-primary/50">
+        Ultima actualizare: 17 august 2026
+      </p>
+    </div>
+  </header>
+
+  <main class="bg-surface-white py-16">
+    <div class="mx-auto max-w-3xl space-y-12 px-6">
+      <section>
+        <h2 class="font-display text-3xl italic text-primary">Cine suntem</h2>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Tapselo POS este operat de <strong class="font-bold text-primary">Ciocanel Razvan Tudor PFA</strong>,
+          Romania. Pentru orice intrebare despre datele tale, scrie-ne la
+          <a href="mailto:contact@tapselo.com" class="font-bold text-accent hover:text-accent-hover">contact@tapselo.com</a>.
+          Raspundem in 24 de ore.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-3xl italic text-primary">Ce face produsul</h2>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Tapselo este o casa de marcat si un sistem de gestiune a comenzilor pentru magazine
+          alimentare mici si brutarii. Ruleaza pe terminalul din magazin, tine catalogul de
+          produse, emite bonuri fiscale si ajuta la urmarirea comenzilor clientilor.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-3xl italic text-primary">Ce date procesam pentru conturile din aplicatie</h2>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Pentru fiecare magazin care foloseste Tapselo procesam:
+        </p>
+        <ul class="mt-4 space-y-2 pl-5 text-text-secondary">
+          <li class="list-disc leading-relaxed">Numele si adresa de email ale utilizatorilor care se conecteaza.</li>
+          <li class="list-disc leading-relaxed">Datele magazinului: produse, preturi, vanzari, documente de receptie marfa.</li>
+          <li class="list-disc leading-relaxed">Identificatori de dispozitiv pentru terminalele POS, ca sa autorizam doar terminalele cunoscute.</li>
+        </ul>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Nu procesam date de card. Plata cu cardul se face pe terminalul bancar, in afara aplicatiei.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-3xl italic text-primary">Integrarea Facebook Messenger</h2>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Un magazin poate conecta pagina sa de Facebook la Tapselo. Cand pagina este conectata,
+          primim prin Messenger Platform mesajele trimise de clienti catre acea pagina. Concret,
+          primim:
+        </p>
+        <ul class="mt-4 space-y-2 pl-5 text-text-secondary">
+          <li class="list-disc leading-relaxed">textul mesajului;</li>
+          <li class="list-disc leading-relaxed">imaginile atasate mesajului;</li>
+          <li class="list-disc leading-relaxed">identificatorul expeditorului la nivel de pagina (page-scoped sender ID, PSID).</li>
+        </ul>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Folosim aceste date <strong class="font-bold text-primary">numai</strong> ca sa propunem
+          magazinului o comanda. Un serviciu AI citeste mesajul si extrage detaliile comenzii:
+          produsul, cantitatea, data de ridicare. Propunerea apare in aplicatie, iar personalul
+          magazinului o confirma sau o respinge.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Ce nu facem: nu trimitem mesaje de marketing, nu vindem si nu partajam aceste date cu
+          terti, nu le folosim pentru publicitate si nu construim profiluri de utilizatori.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Datele sunt stocate pe Supabase (infrastructura gazduita in Uniunea Europeana) si sunt
+          trimise catre furnizorul nostru de AI exclusiv pentru extragerea detaliilor comenzii.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-3xl italic text-primary">Cat timp pastram datele</h2>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Mesajele si comenzile derivate din ele sunt pastrate doar cat este nevoie ca magazinul
+          sa gestioneze comanda si evidenta ei. Un magazin poate deconecta integrarea oricand din
+          panoul de administrare. Deconectarea opreste imediat orice colectare de mesaje noi.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Poti cere stergerea datelor tale oricand. Vezi pagina
+          <a href="/data-deletion" class="font-bold text-accent hover:text-accent-hover">Stergerea datelor</a>.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-3xl italic text-primary">Baza legala si drepturile tale</h2>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Prelucrarea se face conform GDPR (Regulamentul UE 2016/679), pe baza executarii
+          contractului cu magazinul si a interesului legitim de a livra serviciul cerut de client.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Ai dreptul de acces la datele tale, de rectificare si de stergere. Ai si dreptul sa te
+          opui prelucrarii si sa ceri portarea datelor. Scrie la
+          <a href="mailto:contact@tapselo.com" class="font-bold text-accent hover:text-accent-hover">contact@tapselo.com</a>
+          si raspundem in cel mult 30 de zile.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-3xl italic text-primary">Cookie-uri</h2>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Acest site de prezentare nu foloseste cookie-uri de urmarire si nu are pixeli de
+          publicitate. Formularul de contact este protejat de Cloudflare Turnstile, care verifica
+          doar daca cererea vine de la un om.
+        </p>
+      </section>
+
+      <section class="rounded-xl border border-border bg-surface p-6 md:p-8">
+        <h2 class="font-display text-3xl italic text-primary">English summary</h2>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Tapselo POS is a point-of-sale and order management app for small food shops and
+          bakeries, operated by Ciocanel Razvan Tudor PFA (Romania). Contact:
+          <a href="mailto:contact@tapselo.com" class="font-bold text-accent hover:text-accent-hover">contact@tapselo.com</a>.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          For app accounts we process user names and emails, store data (products, prices, sales,
+          receiving documents) and device identifiers for POS terminals.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          When a store connects its Facebook Page, we receive the messages customers send to that
+          Page through the Messenger Platform: message text, images and the page-scoped sender ID
+          (PSID). We use them only to suggest order records to the store, where an AI service
+          extracts order details such as product, quantity and due date. We do not send marketing
+          messages, we do not sell or share this data with third parties, and we do not use it for
+          advertising. Data is stored on Supabase (EU-hosted infrastructure) and processed by our
+          AI provider solely for that extraction.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Message data is kept only as long as needed to manage orders. A store can disconnect the
+          integration at any time, which stops all collection. Processing is based on GDPR
+          (contract performance and legitimate interest). Users have the right to access, correct
+          and delete their data; email the address above. The marketing site sets no tracking
+          cookies. Last updated: 17 August 2026.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
