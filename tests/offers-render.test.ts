@@ -37,20 +37,28 @@ test("full page: title, og tags, promos, announcements, links", () => {
   assert.match(out, /<meta property="og:description" content="Oferte la Panviro Hala: Cascaval Dalia &lt;b&gt;afumat&lt;\/b&gt; 39,99 lei, Paine alba feliata 4,99 lei, Rosii romanesti 9,90 lei\." \/>/);
   assert.match(out, /<link rel="canonical" href="https:\/\/tapselo.com\/o\/hala" \/>/);
   // promo card
-  assert.match(out, /<s class="old"[^>]*>45,99 lei<\/s>/);
+  assert.match(out, /<p class="old"><s[^>]*>45,99 lei<\/s><\/p>/);
   // The struck price is the 30-day low (45,99), not the list price (49,99).
-  assert.match(out, /<span class="new">39,99<\/span> <span class="unit">lei \/ kg<\/span>/);
+  assert.match(out, /<p class="tag"><span class="new">39,99<\/span><span class="unit">lei \/ kg<\/span><\/p>/);
   assert.match(out, /Cel mai mic pret in ultimele 30 de zile: 45,99 lei/);
   assert.match(out, /Cel mai mic pret in ultimele 10 zile: 6,50 lei/);
-  assert.match(out, /Valabil pana pe 05\.10\.2026/);
+  assert.match(out, /<p class="valid">Pana pe 05\.10\.2026<\/p>/);
   // prior line hidden when prior_lowest_cents is null; default emoji
   assert.doesNotMatch(out, /Cel mai mic pret in ultimele 10 zile: 12,00/);
   assert.match(out, /🏷️/);
   // announcement with line break
   assert.match(out, /Intre 10:00 si 13:00, la raionul de lactate\.<br \/>Va asteptam!/);
-  assert.match(out, /Pana pe 04\.10\.2026/);
+  assert.match(out, /<span class="until">Pana pe 04\.10\.2026<\/span>/);
+  assert.match(out, /📣/);
+  assert.match(out, /<p class="kicker">Ofertele de azi<\/p>/);
+  assert.match(out, /<h1>Oferte<\/h1>/);
+  assert.match(out, /Preturi mici la produsele de mai jos, doar in magazin\./);
+  assert.match(out, /<meta name="theme-color" content="#14532d" \/>/);
+  assert.match(out, /family=Geist:wght@400\.\.900/);
   // signup + privacy
-  assert.match(out, /Vrei oferte pe email sau WhatsApp\?/);
+  assert.match(out, /Vrei ofertele pe email sau WhatsApp\?/);
+  assert.match(out, /Te anuntam cand apar preturi noi\./);
+  assert.match(out, /<a class="btn" href="\/c\/hala">Inscrie-te<\/a>/);
   assert.match(out, /href="\/c\/hala"/);
   assert.match(out, /href="\/p\/hala"/);
   // footer company data
@@ -81,7 +89,7 @@ test("signup link hidden when signup is off", () => {
   const p = clone();
   p.signup_enabled = false;
   const out = renderOffersPage(p, "hala");
-  assert.doesNotMatch(out, /Vrei oferte pe email sau WhatsApp/);
+  assert.doesNotMatch(out, /Vrei ofertele pe email sau WhatsApp/);
   assert.doesNotMatch(out, /href="\/c\//);
   assert.match(out, /href="\/p\/hala"/);
 });
@@ -107,10 +115,26 @@ test("no struck price when the promo is not lower", () => {
   p.promos = [{ ...p.promos![0], price_cents: 3999, promo_price_cents: 3999, prior_lowest_cents: 3999 }];
   const out = renderOffersPage(p, "hala");
   assert.doesNotMatch(out, /class="old"/);
+  assert.doesNotMatch(out, /class="badge"/);
+});
+
+test("percent badge uses the prior lowest price, only with an old price", () => {
+  const out = renderOffersPage(MOCK_OFFERS, "hala");
+  // Cascaval: ref = prior_lowest 4599 (not price 4999), promo 3999 -> floor(13.04) = 13.
+  assert.match(out, /🧀<span class="badge">-13%<\/span>/);
+  assert.doesNotMatch(out, /-20%/);
+
+  const p = clone();
+  p.promos = [{ ...p.promos![1], price_cents: null, prior_lowest_cents: null }];
+  const none = renderOffersPage(p, "hala");
+  assert.doesNotMatch(none, /class="old"/);
+  assert.doesNotMatch(none, /class="badge"/);
 });
 
 test("not found page", () => {
   const out = renderNotFoundPage();
   assert.match(out, /<title>Pagina nu a fost gasita - Tapselo<\/title>/);
-  assert.match(out, /Nu am gasit ofertele/);
+  assert.match(out, /<header class="hero">/);
+  assert.match(out, /<h1 class="h1-sm">Nu am gasit ofertele<\/h1>/);
+  assert.match(out, /Magazinul nu are o pagina de oferte activa/);
 });
