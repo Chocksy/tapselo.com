@@ -9,6 +9,10 @@ import {
   offersDescription,
   renderOffersPage,
   renderNotFoundPage,
+  safeImageUrl,
+  themeOf,
+  IMAGE_URL_PREFIX,
+  IMAGE_NOTE,
   type OffersPayload,
 } from "../src/lib/offers-render.ts";
 import { MOCK_OFFERS } from "../src/lib/offers-mock.ts";
@@ -78,6 +82,9 @@ test("escapes hostile store and product text everywhere", () => {
   p.promos![0].unit = evil;
   p.announcements![0].title = evil;
   p.announcements![0].body = evil;
+  p.promos![0].image_url = evil;
+  p.announcements![1].image_url = evil;
+  p.store.theme = evil;
   const out = renderOffersPage(p, "hala");
   assert.doesNotMatch(out, /<script>/);
   assert.doesNotMatch(out, /<img /);
@@ -121,7 +128,7 @@ test("no struck price when the promo is not lower", () => {
 test("percent badge uses the prior lowest price, only with an old price", () => {
   const out = renderOffersPage(MOCK_OFFERS, "hala");
   // Cascaval: ref = prior_lowest 4599 (not price 4999), promo 3999 -> floor(13.04) = 13.
-  assert.match(out, /🧀<span class="badge">-13%<\/span>/);
+  assert.match(out, /<img [^>]*\/><span class="badge">-13%<\/span>/);
   assert.doesNotMatch(out, /-20%/);
 
   const p = clone();
@@ -137,4 +144,72 @@ test("not found page", () => {
   assert.match(out, /<header class="hero">/);
   assert.match(out, /<h1 class="h1-sm">Nu am gasit ofertele<\/h1>/);
   assert.match(out, /Magazinul nu are o pagina de oferte activa/);
+});
+
+test("theme: body data-theme, theme-color, fallback to piata", () => {
+  const p = clone();
+  assert.match(renderOffersPage(p, "hala"), /<body data-theme="piata">/);
+  p.store.theme = "promo";
+  let out = renderOffersPage(p, "hala");
+  assert.match(out, /<body data-theme="promo">/);
+  assert.match(out, /<meta name="theme-color" content="#dc2626" \/>/);
+  p.store.theme = "minimal";
+  out = renderOffersPage(p, "hala");
+  assert.match(out, /<body data-theme="minimal">/);
+  assert.match(out, /<meta name="theme-color" content="#faf7f0" \/>/);
+  for (const bad of [null, undefined, "", "neon", "PROMO", `"><script>`]) {
+    p.store.theme = bad as string | null;
+    assert.equal(themeOf(p), "piata");
+    assert.match(renderOffersPage(p, "hala"), /<body data-theme="piata">/);
+  }
+  assert.equal(themeOf(null), "piata");
+  assert.match(renderNotFoundPage(), /<body data-theme="piata">/);
+});
+
+test("images: only our bucket, escaped, emoji fallback, footer note", () => {
+  const good = `${IMAGE_URL_PREFIX}548c7199-fe0a-4844-bb4a-6fb47206992b/cfbe2390-1fec-45d7-910b-d9903816d27c/1790610409278.jpg`;
+  assert.equal(safeImageUrl(good), good);
+  for (const bad of [
+    null,
+    123,
+    "",
+    "https://evil.example/x.jpg",
+    "http://rhatutvdltsbhidghfhh.supabase.co/storage/v1/object/public/product-images/a.jpg",
+    "https://rhatutvdltsbhidghfhh.supabase.co/storage/v1/object/public/order-photos/a.jpg",
+    `${IMAGE_URL_PREFIX}a.jpg" onerror="alert(1)`,
+    `${IMAGE_URL_PREFIX}../order-photos/a.jpg`,
+    `${IMAGE_URL_PREFIX}a/b.jpg?x=<y>`,
+    `${IMAGE_URL_PREFIX}`,
+    `javascript:alert(1)//${IMAGE_URL_PREFIX}`,
+  ]) {
+    assert.equal(safeImageUrl(bad), null, String(bad));
+  }
+
+  const out = renderOffersPage(MOCK_OFFERS, "hala");
+  assert.match(out, new RegExp(`<div class="art has-img" aria-hidden="true"><img src="${good.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&")}" alt="" loading="lazy"`));
+  assert.equal((out.match(/<img /g) ?? []).length, 2);
+  // announcement picture: its own card layout, megaphone only on the plain one
+  const annUrl = MOCK_OFFERS.announcements![1].image_url!;
+  assert.match(out, new RegExp(`<article class="ann has-img">\n<div class="ann-img" aria-hidden="true"><img src="${annUrl.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&")}" alt=""`));
+  assert.equal((out.match(/📣/g) ?? []).length, 1);
+  assert.match(out, /🍞/);
+  assert.match(out, new RegExp(`<p class="img-note">${IMAGE_NOTE.replace(/\./g, "\\.")}</p>`));
+  assert.equal(IMAGE_NOTE, "Imaginile produselor sunt cu titlu de prezentare.");
+
+  const p = clone();
+  p.promos![0].image_url = `${IMAGE_URL_PREFIX}x.jpg" onerror="alert(1)`;
+  p.announcements![1].image_url = "https://evil.example/x.jpg";
+  const bad = renderOffersPage(p, "hala");
+  assert.doesNotMatch(bad, /<img /);
+  assert.doesNotMatch(bad, /onerror/);
+  assert.match(bad, /🧀<span class="badge">-13%<\/span>/);
+  assert.doesNotMatch(bad, /class="img-note"/);
+  assert.doesNotMatch(bad, /evil\.example/);
+  assert.doesNotMatch(bad, /class="ann has-img"/);
+  assert.equal((bad.match(/📣/g) ?? []).length, 2);
+
+  // an announcement picture alone still shows the footer note
+  const q = clone();
+  q.promos!.forEach((x) => (x.image_url = null));
+  assert.match(renderOffersPage(q, "hala"), /class="img-note"/);
 });

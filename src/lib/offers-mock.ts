@@ -9,6 +9,7 @@ export const MOCK_OFFERS: OffersPayload = {
     company_name: "Panviro & Fiii SRL",
     address: "Str. Garii 12, Brasov",
     phone: "0722 123 456",
+    theme: "piata",
   },
   promos: [
     {
@@ -21,6 +22,8 @@ export const MOCK_OFFERS: OffersPayload = {
       prior_lowest_cents: 4599,
       prior_days: 30,
       promo_to: "2026-10-05",
+      image_url:
+        "https://rhatutvdltsbhidghfhh.supabase.co/storage/v1/object/public/product-images/548c7199-fe0a-4844-bb4a-6fb47206992b/cfbe2390-1fec-45d7-910b-d9903816d27c/1790610409278.jpg",
     },
     {
       product_id: "00000000-0000-0000-0000-000000000002",
@@ -50,6 +53,13 @@ export const MOCK_OFFERS: OffersPayload = {
       title: "Sambata: degustare de branzeturi",
       body: "Intre 10:00 si 13:00, la raionul de lactate.\nVa asteptam!",
       ends_on: "2026-10-04",
+    },
+    {
+      title: "Struguri de Dragasani",
+      body: "Au sosit strugurii rosii de Dragasani, direct de la producator.",
+      ends_on: "2026-10-11",
+      image_url:
+        "https://rhatutvdltsbhidghfhh.supabase.co/storage/v1/object/public/product-images/548c7199-fe0a-4844-bb4a-6fb47206992b/announcements/da60277d-def6-4833-a0b0-5b034ab40d7a/1790612192213.jpg",
     },
   ],
   signup_enabled: true,

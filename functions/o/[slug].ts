@@ -7,11 +7,12 @@
  *
  * public_offers returns null for an unknown slug or when the store has the page off.
  * Any failure (null, function missing, network) renders the friendly not-found page.
- * Local check without the RPC: http://localhost:8788/o/hala?mock=1 (ignored on other hosts).
+ * Local check without the RPC: http://localhost:8788/o/hala?mock=1 (ignored on other hosts);
+ * add &theme=promo|minimal to see the other looks.
  */
 
 import { rpc, SLUG_RE } from "../../src/lib/supabase-public.ts";
-import { renderOffersPage, renderNotFoundPage, type OffersPayload } from "../../src/lib/offers-render.ts";
+import { renderOffersPage, renderNotFoundPage, IMAGE_URL_PREFIX, type OffersPayload } from "../../src/lib/offers-render.ts";
 import { MOCK_OFFERS } from "../../src/lib/offers-mock.ts";
 
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]"]);
@@ -20,7 +21,7 @@ const CSP = [
   "default-src 'none'",
   "style-src 'unsafe-inline' https://fonts.googleapis.com",
   "font-src https://fonts.gstatic.com",
-  "img-src 'self'",
+  `img-src 'self' ${new URL(IMAGE_URL_PREFIX).origin}`,
   "base-uri 'none'",
   "form-action 'none'",
   "frame-ancestors 'none'",
@@ -59,7 +60,9 @@ export async function onRequest(context: { request: Request; params: Record<stri
 
   const url = new URL(request.url);
   if (url.searchParams.get("mock") === "1" && LOCAL_HOSTS.has(url.hostname)) {
-    return html(renderOffersPage(MOCK_OFFERS, slug), 200, 0, method);
+    const theme = url.searchParams.get("theme");
+    const mock = theme ? { ...MOCK_OFFERS, store: { ...MOCK_OFFERS.store, theme } } : MOCK_OFFERS;
+    return html(renderOffersPage(mock, slug), 200, 0, method);
   }
 
   const res = await rpc<OffersPayload | null>("public_offers", { p_slug: slug });
