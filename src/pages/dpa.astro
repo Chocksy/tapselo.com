@@ -1,0 +1,213 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+
+// Version string stored on the business when the owner accepts (admin: accept_dpa).
+const DPA_VERSION = "dpa-2026-09-28";
+
+const h2 = "font-display text-3xl italic text-primary";
+const p = "mt-4 leading-relaxed text-text-secondary";
+const ul = "mt-4 space-y-2 pl-5 text-text-secondary";
+const li = "list-disc leading-relaxed";
+const a = "font-bold text-accent hover:text-accent-hover";
+---
+
+<Layout
+  title="Acord de prelucrare a datelor — Tapselo POS"
+  description="Acordul de prelucrare a datelor (art. 28 GDPR) dintre magazin, ca operator, si Tapselo, ca persoana imputernicita, pentru datele clientilor magazinului."
+>
+  <Navbar />
+
+  <header class="bg-primary pt-28 pb-16 md:pt-32">
+    <div class="mx-auto max-w-3xl px-6">
+      <h1 class="font-display text-4xl italic text-white sm:text-5xl">
+        Acord de prelucrare a datelor
+      </h1>
+      <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">
+        Cum prelucreaza Tapselo datele clientilor tai, in numele magazinului tau (art. 28 GDPR).
+      </p>
+      <p class="mt-6 text-sm text-text-on-primary/50">
+        Versiunea {DPA_VERSION} · 28 septembrie 2026
+      </p>
+    </div>
+  </header>
+
+  <main class="bg-surface-white py-16">
+    <div class="mx-auto max-w-3xl space-y-12 px-6">
+      <section>
+        <h2 class={h2}>1. Partile</h2>
+        <p class={p}>
+          <strong class="font-bold text-primary">Operatorul</strong> este firma care foloseste Tapselo
+          pentru magazinul sau si accepta acest acord in aplicatie (numita mai jos "magazinul").
+        </p>
+        <p class={p}>
+          <strong class="font-bold text-primary">Persoana imputernicita</strong> este Tapselo, operat de
+          Ciocanel Razvan Tudor PFA, Romania, contact
+          <a href="mailto:contact@tapselo.com" class={a}>contact@tapselo.com</a> (numit mai jos "Tapselo").
+        </p>
+        <p class={p}>
+          Acordul completeaza <a href="/terms" class={a}>Termenii si conditiile</a>. Pentru datele
+          personale ale clientilor magazinului, acest acord are prioritate.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={h2}>2. Obiectul acordului</h2>
+        <p class={p}>
+          Tapselo prelucreaza date personale ale clientilor magazinului, in numele magazinului, cand
+          magazinul foloseste modulele Clienti, Campanii si Pagina de oferte.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={h2}>3. Durata</h2>
+        <p class={p}>
+          Acordul se aplica cat timp magazinul foloseste aceste module si pana la stergerea sau
+          returnarea datelor, conform punctului 11.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={h2}>4. Natura si scopul prelucrarii</h2>
+        <p class={p}>
+          Tapselo stocheaza, organizeaza, cauta si sterge date si trimite mesaje la cererea
+          magazinului. Scopurile sunt stabilite de magazin:
+        </p>
+        <ul class={ul}>
+          <li class={li}>recunoasterea clientilor la casa si aplicarea reducerilor de client;</li>
+          <li class={li}>evidenta acordurilor date de clienti si a retragerii lor;</li>
+          <li class={li}>trimiterea ofertelor pe email si WhatsApp, numai catre clientii care au acceptat;</li>
+          <li class={li}>alegerea ofertelor dupa cumparaturi, numai pentru clientii care au acceptat acest lucru.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class={h2}>5. Persoanele si datele</h2>
+        <p class={p}>Persoanele vizate sunt clientii magazinului. Categoriile de date sunt:</p>
+        <ul class={ul}>
+          <li class={li}>identitate si contact: nume, numar de telefon, adresa de email;</li>
+          <li class={li}>evidenta acordurilor: ce a ales clientul, cand, unde si ce text a vazut;</li>
+          <li class={li}>istoricul cumparaturilor legate de client: produse, sume, data si magazinul.</li>
+        </ul>
+        <p class={p}>
+          Nu prelucram categorii speciale de date (art. 9 GDPR) si nici date de card.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={h2}>6. Obligatiile Tapselo</h2>
+        <ul class={ul}>
+          <li class={li}>
+            Prelucram datele numai pe baza instructiunilor documentate ale magazinului. Instructiunile
+            sunt acest acord, setarile si actiunile facute de magazin in aplicatie. Daca o instructiune
+            ni se pare contrara legii, anuntam magazinul.
+          </li>
+          <li class={li}>
+            Nu folosim datele clientilor in scopuri proprii. Nu le vindem si nu le dam altor firme
+            pentru reclame.
+          </li>
+          <li class={li}>
+            Persoanele care au acces la date sunt obligate sa pastreze confidentialitatea.
+          </li>
+          <li class={li}>
+            Aplicam masuri de securitate potrivite (art. 32 GDPR): conexiuni criptate, acces pe roluri
+            separat pe magazin, copii de siguranta si acces limitat pentru personalul nostru.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class={h2}>7. Sub-imputerniciti</h2>
+        <p class={p}>
+          Magazinul ne permite sa folosim urmatorii furnizori pentru a presta serviciul:
+        </p>
+        <ul class={ul}>
+          <li class={li}>Supabase: baza de date si functiile serverului, gazduite in Uniunea Europeana;</li>
+          <li class={li}>Resend: trimiterea mesajelor pe email;</li>
+          <li class={li}>Meta Platforms (WhatsApp): trimiterea mesajelor pe WhatsApp, numai cand magazinul foloseste WhatsApp;</li>
+          <li class={li}>Cloudflare: gazduirea site-ului si a paginilor publice ale magazinului.</li>
+        </ul>
+        <p class={p}>
+          Anuntam pe email orice furnizor nou sau schimbat cu cel putin 30 de zile inainte.
+          Magazinul poate obiecta in acest termen. Daca nu gasim o solutie, magazinul poate opri
+          modulele afectate. Impunem fiecarui furnizor, prin contract, aceleasi obligatii de protectie
+          a datelor si raspundem pentru ei fata de magazin.
+        </p>
+        <p class={p}>
+          Cand un furnizor transfera date in afara Spatiului Economic European, transferul se face
+          numai cu garantiile cerute de GDPR, de exemplu clauzele contractuale standard ale Comisiei
+          Europene.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={h2}>8. Drepturile clientilor</h2>
+        <p class={p}>
+          Aplicatia ajuta magazinul sa raspunda la cererile clientilor: vede datele, le corecteaza,
+          le sterge si inregistreaza retragerea acordurilor. Fiecare mesaj cu oferte are link de
+          dezabonare.
+        </p>
+        <p class={p}>
+          Daca un client ne scrie direct noua, trimitem cererea magazinului in cel mult 5 zile
+          lucratoare si nu raspundem in locul magazinului fara instructiuni.
+        </p>
+        <p class={p}>
+          La cerere, ajutam magazinul si cu evaluarile de impact si cu consultarea autoritatii
+          (art. 35 si 36 GDPR), pe baza informatiilor pe care le avem.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={h2}>9. Incidente de securitate</h2>
+        <p class={p}>
+          Anuntam magazinul fara intarziere nejustificata si cel tarziu in 48 de ore de la
+          constatarea unei incalcari a securitatii datelor clientilor. Trimitem ce stim: natura
+          incidentului, datele si persoanele afectate, consecintele probabile si masurile luate.
+          Completam informatiile pe masura ce le aflam.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={h2}>10. Obligatiile magazinului</h2>
+        <ul class={ul}>
+          <li class={li}>are temei legal pentru datele pe care le introduce si pentru mesajele pe care le trimite;</li>
+          <li class={li}>informeaza clientii (pagina de date a magazinului din Tapselo poate fi folosita pentru asta);</li>
+          <li class={li}>da instructiuni conforme cu legea.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class={h2}>11. La final</h2>
+        <p class={p}>
+          Cand magazinul opreste serviciul, poate exporta datele clientilor timp de 30 de zile. Dupa
+          aceea stergem datele. Copiile de siguranta se sterg in cel mult 90 de zile. Pastram numai
+          ce cere legea, de exemplu evidenta fiscala a vanzarilor, fara datele de contact ale
+          clientilor.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={h2}>12. Audit</h2>
+        <p class={p}>
+          Punem la dispozitia magazinului informatiile necesare pentru a arata ca respectam acest
+          acord. Magazinul poate face un audit, direct sau printr-un auditor legat de
+          confidentialitate, o data pe an, cu preaviz de 30 de zile si pe cheltuiala sa. De regula,
+          raspunsul scris la un chestionar este suficient.
+        </p>
+      </section>
+
+      <section>
+        <h2 class={h2}>13. Acceptare</h2>
+        <p class={p}>
+          Proprietarul magazinului accepta acordul in aplicatie. Inregistram data, versiunea
+          ({DPA_VERSION}) si utilizatorul care a acceptat. Cand schimbam acordul, publicam o versiune
+          noua pe aceasta pagina si cerem o noua acceptare.
+        </p>
+        <p class={p}>Se aplica legea romana.</p>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
