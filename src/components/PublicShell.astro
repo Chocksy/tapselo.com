@@ -1,0 +1,123 @@
+---
+// Shell for the shopper pages (/c, /p, /confirmare, /dezabonare).
+// No marketing navbar: the visitor is a store's customer, not a Tapselo lead.
+import Layout from "../layouts/Layout.astro";
+
+interface Props {
+  title: string;
+  wide?: boolean;
+}
+
+const { title, wide = false } = Astro.props;
+const width = wide ? "max-w-3xl" : "max-w-xl";
+---
+
+<Layout title={title} description={title} noindex>
+  <header class="bg-primary">
+    <div class={`mx-auto ${width} px-5 py-4`}>
+      <p id="shell-store" class="text-lg font-bold text-white">&nbsp;</p>
+    </div>
+  </header>
+
+  <main class="min-h-[70vh] bg-surface py-6 sm:py-10">
+    <div class={`mx-auto ${width} px-4`}>
+      <slot />
+    </div>
+  </main>
+
+  <footer class="bg-surface py-8">
+    <p class={`mx-auto ${width} px-5 text-center text-sm text-text-secondary`}>
+      Pagina realizata cu
+      <a href="/" class="font-bold text-accent hover:text-accent-hover">Tapselo</a>,
+      programul de casa al magazinului.
+    </p>
+  </footer>
+</Layout>
+
+<style is:global>
+  /* Big, calm controls for shoppers on a phone. 18px+ text also stops iOS zoom on focus. */
+  .pub-card {
+    background: var(--color-surface-white);
+    border: 1px solid var(--color-border-light);
+    border-radius: 1rem;
+    padding: 1.5rem 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .pub-card { padding: 2rem; }
+  }
+  .pub-title {
+    font-size: 2.25rem;
+    line-height: 1.15;
+    color: var(--color-primary);
+  }
+  .pub-text { font-size: 1.125rem; line-height: 1.6; color: var(--color-text-secondary); }
+  .pub-label { display: block; font-size: 1.25rem; font-weight: 600; color: var(--color-text); }
+  .pub-hint { display: block; font-size: 1rem; color: var(--color-text-secondary); }
+  .pub-input {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    min-height: 3.5rem;
+    padding: 0.75rem 1rem;
+    font-size: 1.25rem;
+    color: var(--color-text);
+    background: var(--color-surface-white);
+    border: 2px solid var(--color-border);
+    border-radius: 0.75rem;
+  }
+  .pub-input:focus { border-color: var(--color-accent); outline: none; box-shadow: 0 0 0 3px var(--color-accent-light); }
+  .pub-input[aria-invalid="true"] { border-color: var(--color-danger); }
+  .pub-tick {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    border: 2px solid var(--color-border-light);
+    border-radius: 0.75rem;
+    cursor: pointer;
+  }
+  .pub-tick:has(input:checked) { border-color: var(--color-accent); background: var(--color-accent-light); }
+  .pub-tick input {
+    flex: none;
+    width: 2rem;
+    height: 2rem;
+    margin-top: 0.1rem;
+    accent-color: var(--color-accent);
+    cursor: pointer;
+  }
+  .pub-btn {
+    display: block;
+    width: 100%;
+    min-height: 4rem;
+    padding: 1rem;
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--color-accent);
+    border-radius: 0.75rem;
+    cursor: pointer;
+  }
+  .pub-btn:hover { background: var(--color-accent-hover); }
+  .pub-btn:disabled { opacity: 0.6; cursor: wait; }
+  .pub-error {
+    padding: 1rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #b91c1c;
+    background: #fef2f2;
+    border: 2px solid #fecaca;
+    border-radius: 0.75rem;
+  }
+  .pub-ok {
+    padding: 1.25rem;
+    font-size: 1.25rem;
+    color: #065f46;
+    background: var(--color-cash-light);
+    border: 2px solid var(--color-cash);
+    border-radius: 0.75rem;
+  }
+  .pub-notice h3 { margin-top: 1.25rem; font-size: 1.125rem; font-weight: 700; color: var(--color-text); }
+  .pub-notice p, .pub-notice li { margin-top: 0.5rem; font-size: 1.0625rem; line-height: 1.6; color: var(--color-text-secondary); }
+  .pub-notice ul { padding-left: 1.25rem; list-style: disc; }
+  .pub-notice a, .pub-link { font-weight: 700; color: var(--color-accent); text-decoration: underline; }
+</style>

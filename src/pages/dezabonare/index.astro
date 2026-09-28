@@ -1,0 +1,69 @@
+---
+// /dezabonare/?t={token}&c=email|whatsapp: unsubscribe link from offer messages.
+// Nothing happens on page load: mail scanners open links, so only the button press unsubscribes.
+import PublicShell from "../../components/PublicShell.astro";
+---
+
+<PublicShell title="Dezabonare">
+  <div class="pub-card space-y-6">
+    <h1 class="pub-title">Dezabonare</h1>
+
+    <div id="ask" class="hidden space-y-6">
+      <p class="pub-text">
+        Nu mai vrei oferte pe <strong class="text-primary" data-channel></strong>?
+        Apasa butonul si nu iti mai trimitem.
+      </p>
+      <p id="error" class="pub-error hidden" role="alert"></p>
+      <button type="button" id="go" class="pub-btn">Dezaboneaza-ma</button>
+    </div>
+
+    <div id="ok" class="hidden space-y-4" role="status">
+      <p class="pub-ok">Gata. Nu mai primesti oferte pe <strong data-channel></strong>.</p>
+      <p class="pub-text">Daca esti client inscris, reducerea de la casa ramane.</p>
+    </div>
+
+    <p id="bad" class="pub-error hidden" role="alert">
+      Linkul nu este valid. Deschide din nou linkul din mesaj sau cere ajutor la casa magazinului.
+    </p>
+  </div>
+</PublicShell>
+
+<script>
+  import { rpc, UUID_RE } from "../../lib/supabase-public";
+
+  const CHANNELS: Record<string, string> = { email: "email", whatsapp: "WhatsApp" };
+  const $ = (id: string) => document.getElementById(id) as HTMLElement;
+  const q = new URLSearchParams(location.search);
+  const token = (q.get("t") ?? "").trim();
+  const channel = q.get("c") ?? "";
+
+  function show(id: "ask" | "ok" | "bad") {
+    for (const s of ["ask", "ok", "bad"]) $(s).classList.toggle("hidden", s !== id);
+  }
+
+  if (!UUID_RE.test(token) || !(channel in CHANNELS)) {
+    show("bad");
+  } else {
+    document.querySelectorAll("[data-channel]").forEach((el) => (el.textContent = CHANNELS[channel]));
+    show("ask");
+    const btn = $("go") as HTMLButtonElement;
+    btn.addEventListener("click", async () => {
+      btn.disabled = true;
+      btn.textContent = "Se trimite...";
+      $("error").classList.add("hidden");
+
+      const res = await rpc<boolean>("public_unsubscribe", { p_token: token, p_channel: channel });
+
+      btn.disabled = false;
+      btn.textContent = "Dezaboneaza-ma";
+      if (res.ok && res.data === true) return show("ok");
+      if (res.ok) {
+        $("bad").textContent = "Nu am gasit aceasta inscriere. Poate ai fost deja dezabonat sau datele au fost sterse. Daca primesti in continuare oferte, spune la casa magazinului.";
+        return show("bad");
+      }
+      if (res.kind === "rejected") return show("bad");
+      $("error").textContent = res.message;
+      $("error").classList.remove("hidden");
+    });
+  }
+</script>

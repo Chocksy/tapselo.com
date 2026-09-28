@@ -1,0 +1,6 @@
+# Shopper pages: one static page per prefix, the slug is read from location.pathname.
+# Rewrite to "/c/" (not "/c/index.html"): Pages strips index.html, which would loop.
+/c/:slug   /c/  200
+/c/:slug/  /c/  200
+/p/:slug   /p/  200
+/p/:slug/  /p/  200

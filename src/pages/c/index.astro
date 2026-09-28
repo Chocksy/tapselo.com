@@ -1,0 +1,240 @@
+---
+// /c/{slug}: shopper self sign-up from the counter QR.
+// Static page; public/_redirects rewrites /c/* here and the script reads the slug from the URL.
+import PublicShell from "../../components/PublicShell.astro";
+---
+
+<PublicShell title="Inscriere client">
+  <p id="loading" class="pub-card pub-text">Se incarca...</p>
+
+  <div id="inactive" class="pub-card hidden">
+    <p class="pub-text text-xl font-semibold text-primary" id="inactive-msg">
+      Inscrierea nu este activa pentru acest magazin.
+    </p>
+  </div>
+
+  <form id="signup" class="pub-card hidden space-y-6" novalidate>
+    <div>
+      <h1 class="pub-title">Inscrie-te la <span data-f="store_name"></span></h1>
+      <p class="pub-text mt-3" id="discount-line" hidden>
+        Clientii inscrisi primesc <strong class="text-primary"><span data-f="discount"></span>% reducere</strong> la fiecare cumparare.
+      </p>
+    </div>
+
+    <div>
+      <label for="name" class="pub-label">Nume</label>
+      <input id="name" name="name" type="text" class="pub-input" autocomplete="name" autocapitalize="words" maxlength="100" required />
+    </div>
+
+    <div>
+      <label for="phone" class="pub-label">Telefon</label>
+      <input id="phone" name="phone" type="tel" class="pub-input" autocomplete="tel" inputmode="tel" placeholder="07xx xxx xxx" maxlength="25" />
+    </div>
+
+    <div>
+      <label for="email" class="pub-label">Email</label>
+      <input id="email" name="email" type="email" class="pub-input" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" maxlength="200" />
+      <span class="pub-hint mt-2">Scrie telefonul sau emailul. Poti scrie si amandoua.</span>
+    </div>
+
+    <fieldset class="space-y-3">
+      <legend class="pub-label mb-3">Ce vrei sa primesti?</legend>
+
+      <label class="pub-tick">
+        <input type="checkbox" id="t-member" />
+        <span>
+          <span class="pub-label">Client inscris <span id="member-pct" hidden>(-<span data-f="discount"></span>% la fiecare cumparare)</span></span>
+          <span class="pub-hint">Magazinul te recunoaste la casa.</span>
+        </span>
+      </label>
+
+      <label class="pub-tick">
+        <input type="checkbox" id="t-email" />
+        <span>
+          <span class="pub-label">Oferte pe email</span>
+          <span class="pub-hint">Primesti un mesaj de confirmare.</span>
+        </span>
+      </label>
+
+      <label class="pub-tick">
+        <input type="checkbox" id="t-whatsapp" />
+        <span>
+          <span class="pub-label">Oferte pe WhatsApp</span>
+          <span class="pub-hint">Pe numarul de telefon de mai sus.</span>
+        </span>
+      </label>
+
+      <label class="pub-tick">
+        <input type="checkbox" id="t-personalized" />
+        <span>
+          <span class="pub-label">Oferte pe baza cumparaturilor</span>
+          <span class="pub-hint">Magazinul alege ofertele dupa ce cumperi de obicei.</span>
+        </span>
+      </label>
+
+      <p class="pub-text">Reducerea nu depinde de acordul pentru oferte.</p>
+    </fieldset>
+
+    <div class="pub-notice rounded-xl bg-surface p-4">
+      <h3 style="margin-top:0">Cum folosim datele tale</h3>
+      <p>
+        Datele tale sunt administrate de <strong><span data-f="company_name"></span></strong>
+        (CUI <span data-f="cui"></span>, <span data-f="address"></span>).
+      </p>
+      <p>
+        Le folosim ca sa te recunoastem la casa si, numai daca bifezi, ca sa iti trimitem oferte
+        pe email sau WhatsApp si oferte alese dupa cumparaturile tale.
+      </p>
+      <p>Pastram datele 24 de luni de la ultima cumparare, apoi le stergem.</p>
+      <p>
+        Poti cere oricand sa vezi sau sa stergi datele si poti retrage orice acord.
+        <span id="contact-email-line">Scrie la <a data-f="privacy_email" id="contact-email" class="pub-link" href="#"></a>.</span>
+        <span id="contact-store-line" hidden>Spune la casa magazinului.</span>
+      </p>
+      <p><a id="privacy-link" class="pub-link" href="#">Citeste tot despre datele tale</a></p>
+    </div>
+
+    <p id="form-error" class="pub-error hidden" role="alert"></p>
+
+    <button type="submit" id="submit" class="pub-btn">Inscrie-ma</button>
+  </form>
+
+  <div id="done" class="pub-card hidden space-y-5" role="status">
+    <div class="pub-ok">
+      <p class="text-3xl font-bold" id="done-title"></p>
+      <p class="mt-2 text-xl" data-f="store_name"></p>
+    </div>
+    <p class="pub-text">Daca ai bifat ofertele pe email, confirma din mesajul primit.</p>
+  </div>
+</PublicShell>
+
+<script>
+  import {
+    rpc,
+    firstRow,
+    slugFromPath,
+    normalizePhone,
+    isEmail,
+    fillFields,
+    infoFields,
+    type SignupInfo,
+  } from "../../lib/supabase-public";
+
+  const NOTICE_VERSION = "web-2026-09-28";
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+
+  function show(id: "loading" | "inactive" | "signup" | "done") {
+    for (const s of ["loading", "inactive", "signup", "done"]) $(s).classList.toggle("hidden", s !== id);
+  }
+
+  function inactive(msg?: string) {
+    if (msg) $("inactive-msg").textContent = msg;
+    show("inactive");
+  }
+
+  async function init() {
+    const slug = slugFromPath("c");
+    if (!slug) return inactive();
+
+    const res = await rpc<unknown>("public_signup_info", { p_slug: slug });
+    if (!res.ok) return inactive(res.kind === "rejected" ? undefined : res.message);
+
+    const info = firstRow<SignupInfo>(res.data);
+    if (!info || !info.store_name || !info.enabled) return inactive();
+
+    const f = infoFields(info);
+    fillFields(document, f);
+    $("shell-store").textContent = f.store_name;
+    document.title = `Inscriere client - ${f.store_name}`;
+    $("discount-line").hidden = !f.discount;
+    $("member-pct").hidden = !f.discount;
+    $<HTMLAnchorElement>("privacy-link").href = `/p/${slug}`;
+    if (f.privacy_email) {
+      $<HTMLAnchorElement>("contact-email").href = `mailto:${f.privacy_email}`;
+    } else {
+      $("contact-email-line").hidden = true;
+      $("contact-store-line").hidden = false;
+    }
+
+    const form = $<HTMLFormElement>("signup");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      void submit(slug);
+    });
+    show("signup");
+  }
+
+  function fail(msg: string, field?: HTMLInputElement) {
+    const box = $("form-error");
+    box.textContent = msg;
+    box.classList.remove("hidden");
+    if (field) {
+      field.setAttribute("aria-invalid", "true");
+      field.focus();
+    } else {
+      box.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
+
+  async function submit(slug: string) {
+    const nameEl = $<HTMLInputElement>("name");
+    const phoneEl = $<HTMLInputElement>("phone");
+    const emailEl = $<HTMLInputElement>("email");
+    const tick = (id: string) => $<HTMLInputElement>(id).checked;
+
+    for (const el of [nameEl, phoneEl, emailEl]) el.removeAttribute("aria-invalid");
+    $("form-error").classList.add("hidden");
+
+    const name = nameEl.value.trim().replace(/\s+/g, " ");
+    const phoneRaw = phoneEl.value.trim();
+    const email = emailEl.value.trim().toLowerCase();
+    const member = tick("t-member");
+    const mEmail = tick("t-email");
+    const mWhatsapp = tick("t-whatsapp");
+    const personalized = tick("t-personalized");
+
+    if (!name) return fail("Scrie numele tau.", nameEl);
+    if (!phoneRaw && !email) return fail("Scrie numarul de telefon sau adresa de email.", phoneEl);
+    const phone = phoneRaw ? normalizePhone(phoneRaw) : null;
+    if (phoneRaw && !phone) return fail("Numarul de telefon nu pare corect. Exemplu: 0722 123 456.", phoneEl);
+    if (email && !isEmail(email)) return fail("Adresa de email nu pare corecta. Exemplu: nume@gmail.com.", emailEl);
+    if (mEmail && !email) return fail("Pentru oferte pe email, scrie adresa de email.", emailEl);
+    if (mWhatsapp && !phone) return fail("Pentru oferte pe WhatsApp, scrie numarul de telefon.", phoneEl);
+    if (!member && !mEmail && !mWhatsapp && !personalized) {
+      return fail("Bifeaza cel putin o optiune de mai sus.");
+    }
+
+    const btn = $<HTMLButtonElement>("submit");
+    btn.disabled = true;
+    btn.textContent = "Se trimite...";
+
+    const res = await rpc<unknown>("public_signup", {
+      p_slug: slug,
+      p_name: name,
+      p_phone: phone,
+      p_email: email || null,
+      p_member: member,
+      p_marketing_email: mEmail,
+      p_marketing_whatsapp: mWhatsapp,
+      p_personalized: personalized,
+      p_notice_version: NOTICE_VERSION,
+    });
+
+    btn.disabled = false;
+    btn.textContent = "Inscrie-ma";
+
+    if (!res.ok) {
+      return fail(
+        res.kind === "rejected"
+          ? "Nu am putut face inscrierea. Verifica datele si incearca din nou. Daca nu merge, spune la casa."
+          : res.message,
+      );
+    }
+
+    $("done-title").textContent = `Gata, ${name}! Arata acest ecran la casa.`;
+    show("done");
+    window.scrollTo({ top: 0 });
+  }
+
+  void init();
+</script>

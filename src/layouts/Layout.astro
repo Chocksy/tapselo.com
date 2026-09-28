@@ -4,11 +4,13 @@ import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
+  noindex?: boolean;
 }
 
 const {
   title = "Tapselo POS — Casa de marcat pentru magazine alimentare",
   description = "Casa de marcat care merge si fara internet. Cu bon fiscal, cantar integrat si rapoarte inteligente. Gata in 20 de minute, pe orice calculator.",
+  noindex = false,
 } = Astro.props;
 
 const siteUrl = "https://tapselo.com";
@@ -30,6 +32,7 @@ const ogImageUrl = `${siteUrl}/og-image.jpg`;
     <!-- SEO -->
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonicalUrl} />
     <meta name="theme-color" content="#0f172a" />
 

@@ -7,7 +7,12 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://tapselo.com',
   output: 'static',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // Shopper pages (store sign-up, store privacy, confirm, unsubscribe) are noindex.
+      filter: (page) => !/^\/(c|p|confirmare|dezabonare)\//.test(new URL(page).pathname),
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()]
   }

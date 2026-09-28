@@ -1,0 +1,64 @@
+---
+// /confirmare/?t={token}&c=email: the link from the confirmation email.
+// Nothing happens on page load: mail scanners open links, so only the button press confirms.
+import PublicShell from "../../components/PublicShell.astro";
+---
+
+<PublicShell title="Confirmare email">
+  <div class="pub-card space-y-6">
+    <h1 class="pub-title">Confirma adresa de email</h1>
+
+    <div id="ask" class="hidden space-y-6">
+      <p class="pub-text">Apasa butonul ca sa confirmi ca vrei sa primesti oferte pe email de la magazin.</p>
+      <p id="error" class="pub-error hidden" role="alert"></p>
+      <button type="button" id="go" class="pub-btn">Confirm</button>
+    </div>
+
+    <p id="ok" class="pub-ok hidden" role="status">
+      Gata! Adresa ta de email este confirmata. Vei primi ofertele magazinului pe email.
+      Te poti dezabona oricand, din orice mesaj.
+    </p>
+
+    <p id="bad" class="pub-error hidden" role="alert">
+      Linkul nu este valid. Deschide din nou linkul din email sau cere ajutor la casa magazinului.
+    </p>
+  </div>
+</PublicShell>
+
+<script>
+  import { rpc, UUID_RE } from "../../lib/supabase-public";
+
+  const $ = (id: string) => document.getElementById(id) as HTMLElement;
+  const q = new URLSearchParams(location.search);
+  const token = (q.get("t") ?? "").trim();
+  const channel = q.get("c") ?? "email";
+
+  function show(id: "ask" | "ok" | "bad") {
+    for (const s of ["ask", "ok", "bad"]) $(s).classList.toggle("hidden", s !== id);
+  }
+
+  if (!UUID_RE.test(token) || channel !== "email") {
+    show("bad");
+  } else {
+    show("ask");
+    const btn = $("go") as HTMLButtonElement;
+    btn.addEventListener("click", async () => {
+      btn.disabled = true;
+      btn.textContent = "Se trimite...";
+      $("error").classList.add("hidden");
+
+      const res = await rpc<boolean>("public_confirm", { p_token: token, p_channel: channel });
+
+      btn.disabled = false;
+      btn.textContent = "Confirm";
+      if (res.ok && res.data === true) return show("ok");
+      if (res.ok) {
+        $("bad").textContent = "Nu am putut confirma. Poate adresa este deja confirmata sau inscrierea a fost stearsa. Daca ai nevoie de ajutor, intreaba la casa magazinului.";
+        return show("bad");
+      }
+      if (res.kind === "rejected") return show("bad");
+      $("error").textContent = res.message;
+      $("error").classList.remove("hidden");
+    });
+  }
+</script>
