@@ -1,41 +1,72 @@
 ---
 import { Check, ArrowRight } from "@lucide/astro";
 
+const plans = [
+  { name: "Start", price: 79, tills: "1 casă de marcat", note: "Pentru cafenele și magazine mici" },
+  { name: "Magazin", price: 129, tills: "2 case de marcat", note: "Pentru magazine alimentare", featured: true },
+];
+
 const included = [
-  "Casa de marcat care merge si fara internet",
-  "Rapoarte de vanzari cu recomandari automate",
-  "Bon fiscal — conectezi imprimanta si gata",
-  "Cantar integrat — pretul apare automat",
-  "Mai multe magazine dintr-un singur cont",
-  "Se actualizeaza singur, fara opriri",
+  "Casa de marcat care merge și fără internet",
+  "Bon fiscal: conectezi imprimanta și gata",
+  "Cântar integrat, prețul apare automat",
+  "Rapoarte de vânzări cu recomandări automate",
+  "Inventar cu telefonul, rețete și producție",
+  "Clienți, cupoane și pagina de oferte",
   "Import produse din programul vechi",
-  "Suport tehnic prin email",
+  "Se actualizează singur, fără opriri",
+];
+
+const extras = [
+  ["Casă de marcat în plus", "+39 lei"],
+  ["Magazin în plus", "+99 lei"],
+  ["Plătești 10 luni, primești 12", "anual"],
 ];
 ---
 
 <section id="pricing" class="bg-surface py-24">
   <div class="mx-auto max-w-6xl px-6">
-    <div class="grid items-center gap-16 lg:grid-cols-2">
-      <!-- Left -->
-      <div>
-        <h2 class="animate-on-scroll font-display text-4xl italic text-primary sm:text-5xl">
-          Simplu.<br />
-          Transparent.<br />
-          <span class="text-accent">Fara surprize.</span>
-        </h2>
-        <p class="animate-on-scroll animate-delay-100 mt-5 text-lg leading-relaxed text-text-secondary">
-          Fiecare magazin e diferit. Spune-ne cate case de marcat ai nevoie si iti facem o oferta pe masura.
-        </p>
-        <div class="animate-on-scroll animate-delay-200 mt-8 rounded-xl bg-cash-light border border-cash/20 p-6 transition-shadow duration-300 hover:shadow-lg">
-          <p class="font-display text-3xl italic text-cash">~600 lei economie</p>
-          <p class="mt-1 text-sm text-text-secondary">la fiecare casa de marcat, fara licente scumpe</p>
-        </div>
-      </div>
+    <div class="max-w-2xl">
+      <h2 class="animate-on-scroll font-display text-4xl italic text-primary sm:text-5xl">
+        Prețuri simple. <span class="text-accent">Totul inclus.</span>
+      </h2>
+      <p class="animate-on-scroll animate-delay-100 mt-5 text-lg leading-relaxed text-text-secondary">
+        Toate funcțiile sunt în ambele planuri. Prima lună e gratuită, fără card.
+      </p>
+    </div>
 
-      <!-- Right: Included -->
-      <div class="animate-on-scroll animate-from-right rounded-xl bg-surface-white border border-border p-8 md:p-10 transition-shadow duration-300 hover:shadow-xl">
-        <h3 class="text-lg font-bold text-primary">Include:</h3>
-        <ul class="mt-6 space-y-4">
+    <div class="mt-12 grid gap-6 lg:grid-cols-3">
+      {plans.map((plan) => (
+        <div class:list={[
+          "animate-on-scroll flex flex-col rounded-xl border bg-surface-white p-8 transition-shadow duration-300 hover:shadow-xl",
+          plan.featured ? "border-accent ring-1 ring-accent" : "border-border",
+        ]}>
+          <h3 class="text-lg font-bold text-primary">Tapselo {plan.name}</h3>
+          <p class="mt-1 text-sm text-text-secondary">{plan.note}</p>
+          <p class="mt-6">
+            <span class="font-display text-5xl italic text-primary">{plan.price}</span>
+            <span class="text-sm font-medium text-text-secondary"> lei / lună + TVA</span>
+          </p>
+          <p class="mt-2 text-sm font-bold text-text">{plan.tills}</p>
+          <a
+            href="https://app.tapselo.com"
+            class:list={[
+              "group mt-8 flex w-full items-center justify-center gap-2 rounded-md py-3.5 text-base font-bold transition-all active:scale-[0.98]",
+              plan.featured ? "bg-accent text-white hover:bg-accent-hover hover:shadow-lg" : "bg-primary text-white hover:bg-primary-light hover:shadow-lg",
+            ]}
+          >
+            Începe gratuit 30 de zile
+            <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </a>
+          <a href="https://app.tapselo.com/?demo=1" class="mt-3 text-center text-sm font-medium text-text-secondary underline-offset-4 hover:text-primary hover:underline">
+            sau încearcă demo-ul
+          </a>
+        </div>
+      ))}
+
+      <div class="animate-on-scroll animate-from-right rounded-xl border border-border bg-surface-white p-8">
+        <h3 class="text-lg font-bold text-primary">Ambele planuri includ:</h3>
+        <ul class="mt-5 space-y-3">
           {included.map((item) => (
             <li class="flex items-start gap-3">
               <Check class="mt-0.5 h-5 w-5 shrink-0 text-success" />
@@ -43,14 +74,14 @@ const included = [
             </li>
           ))}
         </ul>
-
-        <a
-          href="#contact"
-          class="group mt-8 flex w-full items-center justify-center gap-2 rounded-md bg-primary py-4 text-base font-bold text-white transition-all hover:bg-primary-light hover:shadow-lg active:scale-[0.98]"
-        >
-          Solicita oferta
-          <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-        </a>
+        <dl class="mt-6 space-y-2 border-t border-border pt-5">
+          {extras.map(([label, value]) => (
+            <div class="flex justify-between gap-4 text-sm">
+              <dt class="text-text-secondary">{label}</dt>
+              <dd class="font-bold text-text">{value}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </div>
   </div>
