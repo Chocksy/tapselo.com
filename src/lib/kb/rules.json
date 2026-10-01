@@ -18,7 +18,15 @@
       "reprogramare casa",
       "zahar adaugat",
       "legea 141/2025",
-      "taxa pe valoare adaugata"
+      "taxa pe valoare adaugata",
+      "vat",
+      "vat rate",
+      "vat group",
+      "cash register",
+      "fiscal printer",
+      "bread",
+      "food",
+      "reduced rate"
     ],
     "sources": [
       {
@@ -53,7 +61,13 @@
       "art 310",
       "og 22/2025",
       "cifra de afaceri",
-      "regim special de scutire"
+      "regim special de scutire",
+      "vat threshold",
+      "vat exemption",
+      "vat registration",
+      "vat payer",
+      "turnover",
+      "revenue"
     ],
     "sources": [
       {
@@ -84,7 +98,12 @@
       "impozit pe profit",
       "oug 89/2025",
       "salariat",
-      "intreprinderi legate"
+      "intreprinderi legate",
+      "micro company",
+      "micro enterprise",
+      "small company tax",
+      "income tax",
+      "turnover tax"
     ],
     "sources": [
       {
@@ -121,7 +140,12 @@
       "plati cash",
       "incasari cash",
       "legea 239/2025",
-      "fragmentare plati"
+      "fragmentare plati",
+      "cash limit",
+      "cash payments",
+      "cash ceiling",
+      "cash balance",
+      "bank deposit"
     ],
     "sources": [
       {
@@ -151,7 +175,13 @@
       "returnare ambalaje",
       "hg 1074/2021",
       "bon fiscal",
-      "sistem garantie returnare"
+      "sistem garantie returnare",
+      "deposit",
+      "deposit return",
+      "bottle deposit",
+      "bottles",
+      "cans",
+      "receipt"
     ],
     "sources": [
       {
@@ -190,7 +220,14 @@
       "datecs",
       "imprimanta fiscala",
       "casa de marcat",
-      "raport zilnic"
+      "raport zilnic",
+      "z report",
+      "daily report",
+      "end of day",
+      "fiscal memory",
+      "electronic journal",
+      "fiscal printer",
+      "cash register"
     ],
     "sources": [
       {
@@ -230,7 +267,12 @@
       "5 zile lucratoare",
       "ro e-factura",
       "transmitere factura",
-      "amenda e-factura"
+      "amenda e-factura",
+      "einvoice",
+      "e-invoice",
+      "electronic invoice",
+      "invoice",
+      "invoicing"
     ],
     "sources": [
       {
@@ -261,7 +303,11 @@
       "opanaf 1783/2021",
       "raportare contabila",
       "stocuri",
-      "active"
+      "active",
+      "standard audit file",
+      "audit file",
+      "small companies",
+      "accounting report"
     ],
     "sources": [
       {
@@ -292,7 +338,13 @@
       "vrac",
       "preambalat",
       "anpc",
-      "lei/kg"
+      "lei/kg",
+      "unit price",
+      "price per kg",
+      "price per litre",
+      "price per liter",
+      "shelf label",
+      "price label"
     ],
     "sources": [
       {
@@ -321,7 +373,13 @@
       "art 4^1",
       "anpc",
       "discount",
-      "produse perisabile"
+      "produse perisabile",
+      "sale price",
+      "reduced price",
+      "promotion",
+      "previous price",
+      "lowest price",
+      "30 days"
     ],
     "sources": [
       {
@@ -349,7 +407,13 @@
       "factura furnizor",
       "aviz",
       "adaos comercial",
-      "diferente receptie"
+      "diferente receptie",
+      "goods received note",
+      "goods receipt",
+      "receiving goods",
+      "supplier invoice",
+      "markup",
+      "delivery"
     ],
     "sources": [
       {
@@ -380,7 +444,13 @@
       "raport z",
       "incasari",
       "plati",
-      "depunere banca"
+      "depunere banca",
+      "cash book",
+      "cash register book",
+      "petty cash",
+      "cash journal",
+      "receipts",
+      "payments"
     ],
     "sources": [
       {
@@ -413,7 +483,14 @@
       "eticheta",
       "meniu",
       "ingrediente",
-      "anpc 201/2022"
+      "anpc 201/2022",
+      "allergens",
+      "allergen",
+      "allergy",
+      "lactose",
+      "ingredients",
+      "label",
+      "menu"
     ],
     "sources": [
       {
@@ -448,7 +525,12 @@
       "legume",
       "fructe",
       "bauturi",
-      "spv"
+      "spv",
+      "transport",
+      "goods transport",
+      "shipping",
+      "uit code",
+      "high fiscal risk goods"
     ],
     "sources": [
       {
