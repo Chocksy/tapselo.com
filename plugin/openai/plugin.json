@@ -100,7 +100,8 @@
           ]
         },
         "commerce": false,
-        "commerce_description": "This plugin does not sell products or process payments."
+        "commerce_description": "This plugin does not sell products or process payments.",
+        "demo_recording_url": "https://www.youtube.com/watch?v=66aYHbSxVE4"
       },
       "publication": {
         "countries": [
