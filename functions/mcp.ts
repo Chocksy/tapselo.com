@@ -10,6 +10,7 @@ import { rpc } from "../src/lib/supabase-public.ts";
 import { handleMcp, rpcError } from "../src/lib/mcp/server.ts";
 import { allTools } from "../src/lib/mcp/tools.ts";
 import type { ToolEnv } from "../src/lib/mcp/types.ts";
+import { mcpEvents, sendEvents } from "../src/lib/mcp/analytics.ts";
 
 const MAX_BODY = 256 * 1024;
 
@@ -42,7 +43,7 @@ const env: ToolEnv = {
   fetch: (input, init) => fetch(input, init),
 };
 
-export async function onRequest(context: { request: Request }) {
+export async function onRequest(context: { request: Request; waitUntil: (p: Promise<unknown>) => void }) {
   const { request } = context;
   const method = request.method;
 
@@ -64,6 +65,7 @@ export async function onRequest(context: { request: Request }) {
   }
 
   const reply = await handleMcp(body, allTools, env);
+  context.waitUntil(sendEvents(mcpEvents(body, reply.json, request.headers.get("user-agent"))));
   if (reply.json === undefined) return new Response(null, { status: reply.status, headers: BASE_HEADERS });
   return json(reply.json, reply.status);
 }

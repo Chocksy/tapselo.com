@@ -39,7 +39,7 @@ test("initialize echoes a supported protocol version, else 2025-06-18", async ()
   assert.equal(res.result.protocolVersion, "2025-03-26");
   assert.deepEqual(res.result.capabilities, { tools: {} });
   assert.equal(res.result.serverInfo.name, "tapselo");
-  assert.equal(res.result.serverInfo.title, "Tapselo pentru magazine");
+  assert.equal(res.result.serverInfo.title, "Tapselo");
   assert.equal(typeof res.result.serverInfo.version, "string");
   assert.equal(res.result.instructions, INSTRUCTIONS);
 

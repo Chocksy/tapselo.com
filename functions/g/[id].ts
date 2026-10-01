@@ -17,6 +17,7 @@ import { renderGeneratedNotFound, PRINT_SCRIPT_HASH } from "../../src/lib/genera
 import { MOCK_DRAFTS } from "../../src/lib/generators/mock.ts";
 import { isDraftKind } from "../../src/lib/generators/validate.ts";
 import type { DraftRecord } from "../../src/lib/generators/types.ts";
+import { sendEvents } from "../../src/lib/mcp/analytics.ts";
 
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]"]);
 
@@ -45,7 +46,11 @@ function html(body: string, status: number, maxAge: number, method: string): Res
   });
 }
 
-export async function onRequest(context: { request: Request; params: Record<string, string | string[]> }) {
+export async function onRequest(context: {
+  request: Request;
+  params: Record<string, string | string[]>;
+  waitUntil: (p: Promise<unknown>) => void;
+}) {
   const { request, params } = context;
   const method = request.method;
   if (method !== "GET" && method !== "HEAD") {
@@ -68,5 +73,7 @@ export async function onRequest(context: { request: Request; params: Record<stri
   if (!res.ok || !res.data || typeof res.data !== "object") return notFound();
 
   const r = renderDraft(res.data, id);
+  // ponytail: counts edge hits only; repeat opens within max-age come from the browser cache.
+  if (method === "GET") context.waitUntil(sendEvents([{ event: "mcp_doc_view", properties: { kind: res.data.kind ?? null, status: r.status } }]));
   return html(r.html, r.status, r.maxAge, method);
 }
