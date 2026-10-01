@@ -1,0 +1,74 @@
+---
+// /ghid: index of the guide pages built from src/lib/kb.
+import GuideShell from "../../components/GuideShell.astro";
+import rules from "../../lib/kb/rules.json";
+import checklists from "../../lib/kb/shop-checklists.json";
+import dibal from "../../lib/kb/dibal.json";
+import datecsJson from "../../lib/kb/datecs-errors.json";
+
+const hintTitles = [...new Set(Object.values(datecsJson.hints as Record<string, { title: string }>).map((h) => h.title))];
+const card = "block rounded-xl border border-border-light p-5 transition-colors hover:border-accent";
+---
+
+<GuideShell
+  title="Ghid pentru magazine: TVA, casa de marcat, autorizatii | Tapselo"
+  description="Reguli verificate pentru magazinele mici din Romania: cote TVA, plafoane, raport Z, e-Factura, SGR, NIR, autorizatii pentru un magazin nou, erori Datecs si cantare Dibal. Cu surse oficiale."
+  heading="Ghid pentru magazine"
+  lead="Reguli si pasi practici pentru magazinele mici din Romania, cu surse oficiale si data verificarii."
+  campaign="ghid"
+  breadcrumb={false}
+>
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Reguli pentru magazin</h2>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2">
+      {rules.map((r) => (
+        <a href={r.page} class={card}>
+          <h3 class="text-primary">{r.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-text-secondary">{r.summary}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Deschide un magazin</h2>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2">
+      {checklists.map((c) => (
+        <a href={c.page} class={card}>
+          <h3 class="text-primary">{c.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-text-secondary">{c.summary}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Casa de marcat Datecs</h2>
+    <a href="/ghid/erori-datecs" class={`mt-6 ${card}`}>
+      <h3 class="text-primary">Erori casa de marcat Datecs</h3>
+      <p class="mt-2 text-sm leading-relaxed text-text-secondary">
+        {datecsJson.count} coduri de eroare in romana si engleza. Pasi de rezolvare pentru: {hintTitles.join(", ").toLowerCase()}.
+      </p>
+    </a>
+  </section>
+
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Cantar Dibal</h2>
+    <a href="/ghid/cantar-dibal" class={`mt-6 ${card}`}>
+      <h3 class="text-primary">Cantar Dibal si casa de marcat</h3>
+      <ul class="mt-2 space-y-1 pl-5 text-sm text-text-secondary">
+        {dibal.map((e) => <li class="list-disc">{e.title}</li>)}
+      </ul>
+    </a>
+  </section>
+
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Comparatie</h2>
+    <a href="/comparatie" class={`mt-6 ${card}`}>
+      <h3 class="text-primary">Programe de casa de marcat si POS din Romania</h3>
+      <p class="mt-2 text-sm leading-relaxed text-text-secondary">
+        Ce stie fiecare program: offline, casa de marcat, cantare, retete, stocuri, comenzi. Date de pe site-urile producatorilor.
+      </p>
+    </a>
+  </section>
+</GuideShell>

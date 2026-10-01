@@ -1,0 +1,91 @@
+[
+  {
+    "id": "format-cod-bare-greutate",
+    "title": "Formatul codului de bare cu greutate: 28CCCCCWWWWWX",
+    "summary": "Eticheta de cantar are un EAN-13 care incepe cu 28, apoi 5 cifre PLU, 5 cifre greutate in grame si cifra de control.",
+    "body": "Exemplu: **2800123012345**\n\n- `28` prefixul pentru produse cantarite (codurile care incep cu 20-29 sunt pentru uz intern in magazin, nu sunt coduri de producator)\n- `00123` PLU, adica codul produsului in cantar (aici 123)\n- `01234` greutatea in grame (aici 1,234 kg)\n- `5` cifra de control EAN-13, calculata din primele 12 cifre\n\nLa scanare, POS-ul Tapselo citeste PLU-ul, cauta produsul cu acelasi cod cantar si pune in bon greutatea ca si cantitate, inmultita cu pretul pe kg. Pretul vine din POS, nu de pe eticheta, deci eticheta si casa trebuie sa aiba acelasi pret pe kg.\n\nPoti verifica orice cod cu unealta de decodare a codului de bare de cantar.",
+    "keywords": ["cod de bare cantar", "format cod bare", "28", "ean-13", "eticheta cantar", "greutate", "plu", "cifra de control", "barcode", "scale barcode"],
+    "sources": [
+      { "title": "Dibal D-900, manual de utilizare (formatul EAN-13, cap. 3.4.5 si 3.8.2.8.16)", "url": "https://dibalitalia.it/wp-content/uploads/2022/02/MANUALE-D900.pdf" },
+      { "title": "GS1, calculul cifrei de control", "url": "https://www.gs1.org/services/how-calculate-check-digit-manually" }
+    ],
+    "verified_on": "2026-10-01",
+    "page": "/ghid/cantar-dibal#format-cod-bare-greutate"
+  },
+  {
+    "id": "plu-cod-cantar",
+    "title": "PLU (cod cantar): intervalul 1-999",
+    "summary": "Fiecare produs vandut la cantar are un PLU unic intre 1 si 999, acelasi in cantar si in POS.",
+    "body": "PLU-ul este numarul produsului in cantar si apare in codul de bare (cifrele 3-7). In POS-ul Tapselo PLU-ul se completeaza in campul **cod cantar** al produsului si trebuie sa fie intre 1 si 999.\n\n- Doua produse nu pot avea acelasi PLU.\n- Daca schimbi PLU-ul unui produs, sincronizeaza din nou cantarul; etichetele vechi vor indica produsul vechi.\n- Cantarele din gama 500 accepta mai multe PLU-uri (2.000-5.000, dupa model), dar POS-ul citeste doar 1-999.\n- Pe cantar numele produsului are maxim 20-24 de caractere si fara diacritice; POS-ul le scurteaza si le transforma automat la sincronizare.",
+    "keywords": ["plu", "cod cantar", "scale code", "1-999", "numar produs cantar", "nume produs cantar", "diacritice cantar"],
+    "sources": [
+      { "title": "Dibal Gama 500, manual de utilizare (numar de articole pe model)", "url": "https://www.manualslib.es/manual/354191/Dibal-Gama-500-Wind-Serie.html" },
+      { "title": "Dibal, SDK de integrare (campurile articolului: cod, nume, pret, tip)", "url": "https://www.dibal.com/en/sdk-integration-software" }
+    ],
+    "verified_on": "2026-10-01",
+    "page": "/ghid/cantar-dibal#plu-cod-cantar"
+  },
+  {
+    "id": "cod-bare-pret-vs-greutate",
+    "title": "Cod de bare cu pret sau cu greutate",
+    "summary": "Cantarul poate pune in codul de bare greutatea sau valoarea de plata. POS-ul trebuie sa stie care dintre ele.",
+    "body": "Formatul codului de bare se alege in cantar (formatul EAN-13 al etichetei: predefinit, pe articol sau pe sectiune). Literele din format arata ce contine fiecare pozitie: de exemplu codul articolului, greutatea sau importul (valoarea).\n\n- **Cu greutate** (recomandat cu POS-ul Tapselo): `28` + PLU + grame + cifra de control. Pretul se ia din POS.\n- **Cu pret**: ultimele cifre sunt valoarea in bani. Daca POS-ul citeste un astfel de cod ca greutate, cantitatea din bon iese gresita.\n\nDaca bonul arata cantitati ciudate (de exemplu 2,350 kg pentru o bucata de 23,50 lei), cantarul tipareste cod cu pret. Schimba formatul EAN-13 al etichetei pe cel cu greutate si prefix 28.",
+    "keywords": ["cod de bare cu pret", "cod de bare cu greutate", "pret pe eticheta", "format ean cantar", "cantitate gresita bon", "import", "valoare"],
+    "sources": [
+      { "title": "Dibal D-900, manual de utilizare (tabelul 3-1 al formatului EAN-13 si formatul EAN-13 al etichetei)", "url": "https://dibalitalia.it/wp-content/uploads/2022/02/MANUALE-D900.pdf" }
+    ],
+    "verified_on": "2026-10-01",
+    "page": "/ghid/cantar-dibal#cod-bare-pret-vs-greutate"
+  },
+  {
+    "id": "setare-eticheta",
+    "title": "Setarea etichetei pe cantar",
+    "summary": "Formatul etichetei si formatul codului de bare se aleg din meniul cantarului, global sau pe articol.",
+    "body": "Pe cantarele Dibal parametrul **Format EAN 13 eticheta** decide ce cod de bare se tipareste:\n\n- **Predefinit**: formatul generat automat de cantar.\n- **Articol**: formatul din campul EAN 13 al articolului.\n- **Sectiune**: formatul din campul EAN 13 al sectiunii.\n\nDaca un articol sau o sectiune nu are format programat, se tipareste formatul global. Daca nici formatul global nu este programat, nu se tipareste niciun cod.\n\nVerifica pe o eticheta de proba ca primele doua cifre sunt 28 si ca greutatea din cod este cea de pe afisaj. Pe eticheta trebuie sa apara si pretul pe kg, langa valoarea de plata.",
+    "keywords": ["eticheta", "format eticheta", "setare eticheta cantar", "format ean 13", "nu tipareste cod de bare", "label", "etichete cantar"],
+    "sources": [
+      { "title": "Dibal D-900, manual de utilizare (cap. 3.4.5 Coduri de bare, 3.8.2.8.16 Format EAN 13 eticheta)", "url": "https://dibalitalia.it/wp-content/uploads/2022/02/MANUALE-D900.pdf" }
+    ],
+    "verified_on": "2026-10-01",
+    "page": "/ghid/cantar-dibal#setare-eticheta"
+  },
+  {
+    "id": "cod-bare-nu-se-scaneaza",
+    "title": "De ce nu se scaneaza codul de bare de pe eticheta",
+    "summary": "Cele mai dese cauze: alt prefix decat 28, PLU lipsa in POS, cod cu pret in loc de greutate, eticheta slab tiparita.",
+    "body": "Verifica in ordinea asta:\n\n1. **Scannerul nu citeste deloc**: eticheta este pala sau patata. Curata capul de tiparire al cantarului si verifica rola de etichete. Verifica sa fie activat EAN-13 in scanner.\n2. **Scannerul citeste, dar POS-ul spune ca nu gaseste produsul**: produsul din POS nu are completat codul cantar (PLU) sau are alt PLU decat in cantar. Sincronizeaza din nou cantarul din POS.\n3. **Codul nu incepe cu 28**: cantarul foloseste alt format. POS-ul Tapselo citeste codurile cu greutate care incep cu 28.\n4. **Cantitatea din bon e gresita**: cantarul tipareste cod cu pret, nu cu greutate.\n5. **PLU peste 999**: POS-ul nu accepta coduri cantar peste 999.\n6. **Cifra de control gresita**: codul a fost tastat manual gresit. Decodeaza codul ca sa vezi cifra corecta.",
+    "keywords": ["nu se scaneaza", "nu citeste", "scanner", "cod de bare nu merge", "produs negasit", "nu gaseste produsul", "eticheta cantar nu merge"],
+    "sources": [
+      { "title": "Dibal D-900, manual de utilizare (coduri de bare si scanner)", "url": "https://dibalitalia.it/wp-content/uploads/2022/02/MANUALE-D900.pdf" },
+      { "title": "GS1, calculul cifrei de control", "url": "https://www.gs1.org/services/how-calculate-check-digit-manually" }
+    ],
+    "verified_on": "2026-10-01",
+    "page": "/ghid/cantar-dibal#cod-bare-nu-se-scaneaza"
+  },
+  {
+    "id": "retea-ip-pc",
+    "title": "Conectarea cantarului in retea (IP cantar si IP PC)",
+    "summary": "Cantarul primeste produse doar de la calculatorul cu IP-ul setat in meniul 5 1 2 (IP PC), pe portul TCP 3000.",
+    "body": "Meniul de retea al cantarelor Dibal din gama 500:\n\n- `[5 1 1]` IP-ul cantarului\n- `[5 1 2]` IP PC: adresa calculatorului cu POS-ul. **Trebuie sa fie exact IP-ul calculatorului**, altfel cantarul refuza conexiunea fara mesaj.\n- `[5 1 5]` portul de primire (RX), implicit 3000\n- masca de retea si gateway\n\nRecomandari:\n\n- Da calculatorului POS un IP fix (rezervare in router), ca sa nu se schimbe dupa o repornire.\n- Cantarul si calculatorul trebuie sa fie in aceeasi retea locala (de exemplu 192.168.1.x).\n- Dupa o conexiune, cantarul poate refuza o noua conexiune timp de 2-3 secunde. Asteapta putin intre doua incercari.",
+    "keywords": ["retea", "ip", "ip pc", "5 1 2", "5 1 1", "port 3000", "conexiune cantar", "cantarul nu se conecteaza", "lan", "network"],
+    "sources": [
+      { "title": "Dibal Gama 500, manual de utilizare (parametri Ethernet, pag. 86-87)", "url": "https://www.manualslib.es/manual/354191/Dibal-Gama-500-Wind-Serie.html" },
+      { "title": "Dibal, SDK de integrare (porturile RX/TX ale cantarului)", "url": "https://www.dibal.com/en/sdk-integration-software" }
+    ],
+    "verified_on": "2026-10-01",
+    "page": "/ghid/cantar-dibal#retea-ip-pc"
+  },
+  {
+    "id": "sincronizare-din-pos",
+    "title": "Trimiterea produselor din POS in cantar",
+    "summary": "Produsele cu cod cantar se trimit din POS-ul din magazin, pentru ca doar el este in aceeasi retea cu cantarul.",
+    "body": "Fluxul in Tapselo:\n\n1. Adaugi sau modifici produsul in admin (nume, pret pe kg, cod cantar).\n2. POS-ul din magazin primeste automat modificarea.\n3. In POS: **Setari -> Cantar -> Sincronizeaza**. POS-ul trimite catre fiecare cantar configurat produsele care au cod cantar.\n\nDe ce nu din admin: admin-ul ruleaza in cloud si nu vede reteaua locala a magazinului. Doar calculatorul POS, aflat in aceeasi retea cu cantarul, poate trimite produsele.\n\nDaca sincronizarea da eroare: verifica IP-ul cantarului, setarea IP PC din meniul 5 1 2 si ca cantarul este pornit. Dupa schimbarea preturilor, sincronizeaza din nou, altfel cantarul tipareste pretul vechi.",
+    "keywords": ["sincronizare", "sincronizeaza", "trimite produse", "incarcare produse cantar", "pret vechi cantar", "actualizare preturi cantar", "sync", "upload plu"],
+    "sources": [
+      { "title": "Dibal, SDK de integrare (trimiterea articolelor catre cantar)", "url": "https://www.dibal.com/en/sdk-integration-software" },
+      { "title": "Dibal Gama 500, manual de utilizare (operatii cu PC)", "url": "https://www.manualslib.es/manual/354191/Dibal-Gama-500-Wind-Serie.html" }
+    ],
+    "verified_on": "2026-10-01",
+    "page": "/ghid/cantar-dibal#sincronizare-din-pos"
+  }
+]

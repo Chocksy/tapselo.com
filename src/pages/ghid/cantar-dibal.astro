@@ -1,0 +1,50 @@
+---
+// /ghid/cantar-dibal: Dibal scale topics from src/lib/kb/dibal.json, one section per entry.
+// Section ids match the entry `page` anchors used by dibal_scale_help.
+import GuideShell from "../../components/GuideShell.astro";
+import { markdownToHtml } from "../../lib/markdown.ts";
+import { formatDateRo } from "../../lib/mcp/text.ts";
+import dibal from "../../lib/kb/dibal.json";
+
+const anchor = (page: string, id: string) => page.split("#")[1] || id;
+const seen = new Set<string>();
+const sources = dibal.flatMap((e) => e.sources).filter((s) => !seen.has(s.url) && !!seen.add(s.url));
+const verified = dibal.map((e) => e.verified_on).sort().at(-1) ?? null;
+---
+
+<GuideShell
+  title="Cantar Dibal: cod de bare cu greutate, PLU, etichete | Ghid Tapselo"
+  description="Cum citeste casa de marcat codul de bare de la cantarul Dibal (28CCCCCWWWWWX), PLU 1-999, cod cu pret sau cu greutate, eticheta, retea si sincronizare din POS."
+  heading="Cantar Dibal"
+  lead="Codul de bare de pe eticheta, PLU, setarea etichetei si legatura cu casa de marcat."
+  sources={sources}
+  verifiedOn={verified}
+  campaign="cantar-dibal"
+>
+  <nav class="rounded-xl border border-border-light p-5">
+    <p class="text-sm font-bold text-primary">Pe pagina</p>
+    <ul class="mt-2 space-y-1 pl-5 text-sm">
+      {dibal.map((e) => (
+        <li class="list-disc"><a href={`#${anchor(e.page, e.id)}`} class="text-accent hover:text-accent-hover">{e.title}</a></li>
+      ))}
+    </ul>
+  </nav>
+
+  {dibal.map((e) => (
+    <section id={anchor(e.page, e.id)}>
+      <h2 class="font-display text-3xl italic text-primary">{e.title}</h2>
+      <p class="mt-3 font-medium text-primary">{e.summary}</p>
+      <div class="kb-prose mt-4" set:html={markdownToHtml(e.body)} />
+      <p class="mt-4 text-sm text-text-muted">
+        Surse:{" "}
+        {e.sources.map((s, j) => (
+          <>
+            {j > 0 && ", "}
+            <a href={s.url} rel="noopener" target="_blank" class="text-accent hover:text-accent-hover">{s.title}</a>
+          </>
+        ))}
+        . Verificat la {formatDateRo(e.verified_on)}.
+      </p>
+    </section>
+  ))}
+</GuideShell>

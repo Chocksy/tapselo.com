@@ -1,0 +1,3825 @@
+{
+  "generated_by": "scripts/build-datecs-kb.mjs",
+  "source_files": [
+    "pos/docs/dude-docs/ErrorCodes/fiscalDevice_ErrorCodes_2017-Table 1.csv",
+    "pos/docs/dude-docs/ErrorCodes/COMServer_ErrorCodes_2017-Table 1.csv"
+  ],
+  "source_title": "Datecs, lista codurilor de eroare (2017): aparate fiscale si COM Server",
+  "count": 550,
+  "codes": {
+    "0": {
+      "en": "Operation successful.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-100001": {
+      "en": "General error in fiscal device: In - out error(cannot read or write)",
+      "ro": "Eroare generala AMEF: eroare in - out (nu poate citi sau scrie)",
+      "group": "(100000 - 100100) GENERIC ERRORS - FISCAL DEVICES",
+      "source": "fiscal_device"
+    },
+    "-100002": {
+      "en": "General error in fiscal device: Wrong checksum",
+      "ro": "Eroare generala AMEF: Suma de control gresita",
+      "group": "(100000 - 100100) GENERIC ERRORS - FISCAL DEVICES",
+      "source": "fiscal_device"
+    },
+    "-100003": {
+      "en": "General error in fiscal device: No more data",
+      "ro": "Eroare generala AMEF: Lipsa informatii",
+      "group": "(100000 - 100100) GENERIC ERRORS - FISCAL DEVICES",
+      "source": "fiscal_device"
+    },
+    "-100004": {
+      "en": "General error in fiscal device: The element is not found",
+      "ro": "Eroare generala AMEF: Element inexistent",
+      "group": "(100000 - 100100) GENERIC ERRORS - FISCAL DEVICES",
+      "source": "fiscal_device"
+    },
+    "-100005": {
+      "en": "General error in fiscal device: There are no records found",
+      "ro": "Eroare generala AMEF: Nu sunt inregistrari",
+      "group": "(100000 - 100100) GENERIC ERRORS - FISCAL DEVICES",
+      "source": "fiscal_device"
+    },
+    "-100006": {
+      "en": "General error in fiscal device: The operation is aborted",
+      "ro": "Eroare generala AMEF: Operatie abandonata",
+      "group": "(100000 - 100100) GENERIC ERRORS - FISCAL DEVICES",
+      "source": "fiscal_device"
+    },
+    "-100007": {
+      "en": "Wrong mode(standart training...) is selected.",
+      "ro": "Selectare Mod Gresit (standard training)",
+      "group": "(100000 - 100100) GENERIC ERRORS - FISCAL DEVICES",
+      "source": "fiscal_device"
+    },
+    "-100100": {
+      "en": "Fiscal memory error: Fiscal memory is busy",
+      "ro": "Eroare memorie fiscala: Memorie fiscala ocupata",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100101": {
+      "en": "Fiscal memory error: Fiscal memory failure. Could not read or write",
+      "ro": "Eroare memorie fiscala: Esuare Memorie Fiscala. nu poate citi sau scrie",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100102": {
+      "en": "Fiscal memory error: Forbidden write in fiscal memory",
+      "ro": "Eroare memorie fiscala: Scriere interzisa in MF",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100103": {
+      "en": "Fiscal memory error: Wrong address in fiscal memory",
+      "ro": "Eroare memorie fiscala: Adresa gresita in MF",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100104": {
+      "en": "Fiscal memory error: Wrong size in fiscal memory",
+      "ro": "Eroare memorie fiscala: Marime gresita in MF",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100105": {
+      "en": "Fiscal memory error: Fiscal memory is not connected",
+      "ro": "Eroare memorie fiscala: MF nu e conectata",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100106": {
+      "en": "Fiscal memory error: Wrong checksum in fiscal memory(invalid data)",
+      "ro": "Eroare memorie fiscala: Suma de control gresita in MF(invalid data)",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100107": {
+      "en": "Fiscal memory error: Empty block in fiscal memory",
+      "ro": "Eroare memorie fiscala: Bloc de memorie gol in MF",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100108": {
+      "en": "Fiscal memory error: Maximum number of block in fiscal memory",
+      "ro": "Eroare memorie fiscala: Numar maxim de blocuri in MF",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100109": {
+      "en": "Fiscal memory error: Wrong range in fiscal memory",
+      "ro": "Eroare memorie fiscala: Zona de memorie gresita in MF",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100110": {
+      "en": "Fiscal memory error: Empty range in fiscal memory",
+      "ro": "Eroare memorie fiscala:zona de memorie goala in MF",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100111": {
+      "en": "Fiscal memory error: New module in fiscal memory",
+      "ro": "Eroare memorie fiscala: Modul nou MF",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100112": {
+      "en": "Fiscal memory error: Fiscal memory is not empty",
+      "ro": "Eroare memorie fiscala: MF nu e goala",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100113": {
+      "en": "Fiscal memory error: Fiscal memory is not equal",
+      "ro": "Eroare memorie fiscala: MF nu e egala",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100114": {
+      "en": "Fiscal memory error: Fiscal memory is full",
+      "ro": "Eroare memorie fiscala: MF plina",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100115": {
+      "en": "Fiscal memory error: Fiscal memory needs update",
+      "ro": "Eroare memorie fiscala: MF necesita update",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100116": {
+      "en": "Fiscal memory error: Fiscal memory is blocked",
+      "ro": "Eroare memorie fiscala: MF blocata",
+      "group": "(100100 - 100255) FISCAL MEMORIES",
+      "source": "fiscal_device"
+    },
+    "-100400": {
+      "en": "Line thermal printer mechanism error: Power supply error (3V)",
+      "ro": "Eroare imprimanta termica: Eroare alimentare (3V)",
+      "group": "(100400 - 100499) PRINTER DRIVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100401": {
+      "en": "Line thermal printer mechanism error: Power supply error (24V or 8V)",
+      "ro": "Eroare imprimanta termica: Eroare alimentare (24V sau 8V)",
+      "group": "(100400 - 100499) PRINTER DRIVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100402": {
+      "en": "Line thermal printer mechanism error: Head overheating",
+      "ro": "Eroare imprimanta termica: Cap imprimare supraincalzit",
+      "group": "(100400 - 100499) PRINTER DRIVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100403": {
+      "en": "Line thermal printer mechanism error: Paper end",
+      "ro": "Eroare imprimanta termica: Lipsa hartie",
+      "group": "(100400 - 100499) PRINTER DRIVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100404": {
+      "en": "Line thermal printer mechanism error: Cover is open",
+      "ro": "Eroare imprimanta termica: Capac deschis",
+      "group": "(100400 - 100499) PRINTER DRIVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100405": {
+      "en": "Line thermal printer mechanism error: Near paper end",
+      "ro": "Eroare imprimanta termica: Atentie! Se termina hartia",
+      "group": "(100400 - 100499) PRINTER DRIVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100406": {
+      "en": "Line thermal printer mechanism error: Mark sensor - not used",
+      "ro": "Eroare imprimanta termica: Mark sensor - not used",
+      "group": "(100400 - 100499) PRINTER DRIVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100407": {
+      "en": "Line thermal printer mechanism error: Cutter error",
+      "ro": "Eroare imprimanta termica: Eroare Cutter",
+      "group": "(100400 - 100499) PRINTER DRIVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100408": {
+      "en": "Line thermal printer mechanism error: Not used",
+      "ro": "Eroare imprimanta termica: Not used",
+      "group": "(100400 - 100499) PRINTER DRIVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100409": {
+      "en": "Line thermal printer mechanism error: Not used",
+      "ro": "Eroare imprimanta termica: Not used",
+      "group": "(100400 - 100499) PRINTER DRIVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100410": {
+      "en": "Line thermal printer mechanism error: Not used",
+      "ro": "Eroare imprimanta termica: Not used",
+      "group": "(100400 - 100499) PRINTER DRIVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100411": {
+      "en": "Line thermal printer mechanism error: Not used",
+      "ro": "Eroare imprimanta termica: Not used",
+      "group": "(100400 - 100499) PRINTER DRIVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100412": {
+      "en": "Line thermal printer mechanism error: Not used",
+      "ro": "Eroare imprimanta termica: Not used",
+      "group": "(100400 - 100499) PRINTER DRIVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100413": {
+      "en": "Line thermal printer mechanism error: Not used",
+      "ro": "Eroare imprimanta termica: Not used",
+      "group": "(100400 - 100499) PRINTER DRIVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100414": {
+      "en": "Printer on time is overrun.",
+      "ro": "Tiparire desincronizata.",
+      "group": "(100400 - 100499) PRINTER DRIVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100500": {
+      "en": "System error: Memory structure error",
+      "ro": "Eroare sistem: Eroare structura memorie",
+      "group": "(100500 - 101000) SYSTEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100501": {
+      "en": "System error: Error in RAM",
+      "ro": "Eroare sistem: Eroare RAM",
+      "group": "(100500 - 101000) SYSTEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100502": {
+      "en": "System error: Flash memory error",
+      "ro": "Eroare sistem: Eroare memorie flash",
+      "group": "(100500 - 101000) SYSTEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100503": {
+      "en": "System error: SD card error",
+      "ro": "Eroare sistem: Eroare card SD",
+      "group": "(100500 - 101000) SYSTEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100504": {
+      "en": "System error: Invalid message file",
+      "ro": "Eroare sistem: Fisier mesaje invalid",
+      "group": "(100500 - 101000) SYSTEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100505": {
+      "en": "System error: Fiscal memory error(could not write or read)",
+      "ro": "Eroare sistem: Eroare memorie fiscala(nu poate scrie sau citi)",
+      "group": "(100500 - 101000) SYSTEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100506": {
+      "en": "System error: No RAM battery",
+      "ro": "Eroare sistem: Lipsa baterie RAM",
+      "group": "(100500 - 101000) SYSTEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100507": {
+      "en": "System error: SAM module error",
+      "ro": "Eroare sistem: eroare modul SAM",
+      "group": "(100500 - 101000) SYSTEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100508": {
+      "en": "System error: Real time clock error",
+      "ro": "Eroare sistem: eroare ceas timp real",
+      "group": "(100500 - 101000) SYSTEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-100509": {
+      "en": "System error: Memory error",
+      "ro": "Eroare sistem: eroare de memorie",
+      "group": "(100500 - 101000) SYSTEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-101000": {
+      "en": "Common logical error: No heap memory(cannot allocate memory for operation)",
+      "ro": "Eroare logica: memorie insuficienta",
+      "group": "(101000 - 101500) COMMON LOGICAL ERRORS",
+      "source": "fiscal_device"
+    },
+    "-101001": {
+      "en": "Common logical error: File manipulate error",
+      "ro": "Eroare logica: fisier eronat",
+      "group": "(101000 - 101500) COMMON LOGICAL ERRORS",
+      "source": "fiscal_device"
+    },
+    "-101003": {
+      "en": "Common logical error: Operation is rejected",
+      "ro": "Eroare logica: operatie respinsa",
+      "group": "(101000 - 101500) COMMON LOGICAL ERRORS",
+      "source": "fiscal_device"
+    },
+    "-101004": {
+      "en": "Common logical error: Bad input. Some of the data or parameters are incorrect",
+      "ro": "Eroare logica:Introducere gresita. Parametri incorecti",
+      "group": "(101000 - 101500) COMMON LOGICAL ERRORS",
+      "source": "fiscal_device"
+    },
+    "-101005": {
+      "en": "Common logical error: In Application Programming error",
+      "ro": "Eroare logica: programare aplicatie gresita",
+      "group": "(101000 - 101500) COMMON LOGICAL ERRORS",
+      "source": "fiscal_device"
+    },
+    "-101006": {
+      "en": "Common logical error: The execution of the operation is not possible",
+      "ro": "Eroare logica: operatiunea nu poate fi executata",
+      "group": "(101000 - 101500) COMMON LOGICAL ERRORS",
+      "source": "fiscal_device"
+    },
+    "-101007": {
+      "en": "Common logical error: Timeout. The time for waiting execution is out",
+      "ro": "Eroare logica: Timp de executie depasit",
+      "group": "(101000 - 101500) COMMON LOGICAL ERRORS",
+      "source": "fiscal_device"
+    },
+    "-101008": {
+      "en": "Common logical error: Invalid time",
+      "ro": "Eroare logica: data invalida",
+      "group": "(101000 - 101500) COMMON LOGICAL ERRORS",
+      "source": "fiscal_device"
+    },
+    "-101009": {
+      "en": "Common logical error: The operation is cancelled",
+      "ro": "Eroare logica: Operatiune abandonata",
+      "group": "(101000 - 101500) COMMON LOGICAL ERRORS",
+      "source": "fiscal_device"
+    },
+    "-101010": {
+      "en": "Common logical error: Invalid format",
+      "ro": "Eroare logica: format invalid",
+      "group": "(101000 - 101500) COMMON LOGICAL ERRORS",
+      "source": "fiscal_device"
+    },
+    "-101011": {
+      "en": "Common logical error: Invalid data",
+      "ro": "Eroare logica: informatie invalida",
+      "group": "(101000 - 101500) COMMON LOGICAL ERRORS",
+      "source": "fiscal_device"
+    },
+    "-101012": {
+      "en": "Common logical error: Data parsing error",
+      "ro": "Eroare logica: eroare analiza informatie",
+      "group": "(101000 - 101500) COMMON LOGICAL ERRORS",
+      "source": "fiscal_device"
+    },
+    "-101013": {
+      "en": "Common logical error: Hardware configuration error",
+      "ro": "Eroare logica: eroare configurare hw",
+      "group": "(101000 - 101500) COMMON LOGICAL ERRORS",
+      "source": "fiscal_device"
+    },
+    "-101014": {
+      "en": "ERR_ACCESS_DENIED",
+      "ro": "ERR_ACCESS_DENIED",
+      "group": "(101000 - 101500) COMMON LOGICAL ERRORS",
+      "source": "fiscal_device"
+    },
+    "-101500": {
+      "en": "Update error: No update. The device is up to date",
+      "ro": "eroare actualizare: Nu necesita actualizare. Aparatul este actualizat deja.",
+      "group": "(101500 - 102000) UPDATE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-102000": {
+      "en": "Battery error: Low battery",
+      "ro": "eroare acumulator: Nivel scazut acumulator",
+      "group": "(102000 - 103000) BATTERY GROUP",
+      "source": "fiscal_device"
+    },
+    "-102001": {
+      "en": "Battery error: Low battery warning",
+      "ro": "eroare acumulator: Atentie, nivel scazut acumulator",
+      "group": "(102000 - 103000) BATTERY GROUP",
+      "source": "fiscal_device"
+    },
+    "-102002": {
+      "en": "Operator error: Wrong operator password",
+      "ro": "eroare operator: parola operator gresita",
+      "group": "(102000 - 103000) BATTERY GROUP",
+      "source": "fiscal_device"
+    },
+    "-102003": {
+      "en": "ECR error: ID number is empty",
+      "ro": "Eroare AMEF: Numar ID necompletat",
+      "group": "(102000 - 103000) BATTERY GROUP",
+      "source": "fiscal_device"
+    },
+    "-102004": {
+      "en": "Bluetooth error: Bluetooth is not found",
+      "ro": "Eroare Bluetooth: Nu exista Bluetooth",
+      "group": "(102000 - 103000) BATTERY GROUP",
+      "source": "fiscal_device"
+    },
+    "-102005": {
+      "en": "Display error: Display is not connected",
+      "ro": "Eroare ecran: Afisaj client deconectat",
+      "group": "(102000 - 103000) BATTERY GROUP",
+      "source": "fiscal_device"
+    },
+    "-102006": {
+      "en": "Printer error: Printer is not connected",
+      "ro": "Eroare printer: Printer deconectat",
+      "group": "(102000 - 103000) BATTERY GROUP",
+      "source": "fiscal_device"
+    },
+    "-102007": {
+      "en": "SD card error: SD card not present",
+      "ro": "Eroare card SD: Nu exista card SD",
+      "group": "(102000 - 103000) BATTERY GROUP",
+      "source": "fiscal_device"
+    },
+    "-102008": {
+      "en": "SD card error: SD2 card not present",
+      "ro": "Eroare card SD: Nu exista card SD2",
+      "group": "(102000 - 103000) BATTERY GROUP",
+      "source": "fiscal_device"
+    },
+    "-102009": {
+      "en": "ECR error: VAT rates is not set.",
+      "ro": "Eroare AMEF: Cota TVA ne-setata.",
+      "group": "(102000 - 103000) BATTERY GROUP",
+      "source": "fiscal_device"
+    },
+    "-102010": {
+      "en": "ECR error: Header lines are empty.",
+      "ro": "Eroare AMEF: Linii antet goale",
+      "group": "(102000 - 103000) BATTERY GROUP",
+      "source": "fiscal_device"
+    },
+    "-103000": {
+      "en": "PLU database error: PLU database is not found",
+      "ro": "Eroare baza PLU: Baza de date PLU inexistenta",
+      "group": "(103000 - 104000) PLU DATABASE",
+      "source": "fiscal_device"
+    },
+    "-103001": {
+      "en": "PLU database error: PLU code already exists",
+      "ro": "Eroare baza PLU: codul PLU existent",
+      "group": "(103000 - 104000) PLU DATABASE",
+      "source": "fiscal_device"
+    },
+    "-103002": {
+      "en": "PLU database error: Barcode already exists",
+      "ro": "Eroare baza PLU: Cod bare existent",
+      "group": "(103000 - 104000) PLU DATABASE",
+      "source": "fiscal_device"
+    },
+    "-103003": {
+      "en": "PLU database error: PLU database is full",
+      "ro": "Eroare baza PLU: Baza date PLU plina",
+      "group": "(103000 - 104000) PLU DATABASE",
+      "source": "fiscal_device"
+    },
+    "-103004": {
+      "en": "PLU database error: PLU has turnover",
+      "ro": "Eroare baza PLU: PLU are rulaj",
+      "group": "(103000 - 104000) PLU DATABASE",
+      "source": "fiscal_device"
+    },
+    "-103005": {
+      "en": "PLU database error: In the PLU base has an article with same name.",
+      "ro": "Eroare baza PLU: Nume PLU existent.",
+      "group": "(103000 - 104000) PLU DATABASE",
+      "source": "fiscal_device"
+    },
+    "-103006": {
+      "en": "PLU database error: PLU name is not unique.",
+      "ro": "Eroare baza PLU: Nume PLU duplicat",
+      "group": "(103000 - 104000) PLU DATABASE",
+      "source": "fiscal_device"
+    },
+    "-103007": {
+      "en": "PLU database error: Database format is not compatible.",
+      "ro": "Eroare baza PLU: Formatul bazei de date nu e compatibil.",
+      "group": "(103000 - 104000) PLU DATABASE",
+      "source": "fiscal_device"
+    },
+    "-103008": {
+      "en": "Can't open the PLU database file",
+      "ro": "Baza date PLU nu poate fi deschisa",
+      "group": "(103000 - 104000) PLU DATABASE",
+      "source": "fiscal_device"
+    },
+    "-104000": {
+      "en": "Service operation error: Z report is needed for this operation",
+      "ro": "Eroare operare service: Rulati Raport Z inaintea acestei operatiuni",
+      "group": "(104000 - 105000) SERVICE OPERATIONS",
+      "source": "fiscal_device"
+    },
+    "-104001": {
+      "en": "Service operation error: Service jumper is needed for this operation",
+      "ro": "Eroare operare service: Service jumper este necesar pentru aceasta operatiune",
+      "group": "(104000 - 105000) SERVICE OPERATIONS",
+      "source": "fiscal_device"
+    },
+    "-104002": {
+      "en": "Service operation error: Service password is needed for this operation",
+      "ro": "Eroare operare service: Parola Service este necesara pentru aceasta operatiune",
+      "group": "(104000 - 105000) SERVICE OPERATIONS",
+      "source": "fiscal_device"
+    },
+    "-104003": {
+      "en": "Service operation error: The operation is forbidden",
+      "ro": "Eroare operare service: Operatiune interzisa",
+      "group": "(104000 - 105000) SERVICE OPERATIONS",
+      "source": "fiscal_device"
+    },
+    "-104004": {
+      "en": "Service operation error: Service intervention is needed",
+      "ro": "Eroare operare service: Interventie Service",
+      "group": "(104000 - 105000) SERVICE OPERATIONS",
+      "source": "fiscal_device"
+    },
+    "-104005": {
+      "en": "Service operation error: All clearing report is needed.",
+      "ro": "Eroare operare service: Rulati toate rapoartele de golire inaintea acestei operatiuni",
+      "group": "(104000 - 105000) SERVICE OPERATIONS",
+      "source": "fiscal_device"
+    },
+    "-104006": {
+      "en": "Service operation error: Z report closed.",
+      "ro": "Eroare operare service: Raport inchis",
+      "group": "(104000 - 105000) SERVICE OPERATIONS",
+      "source": "fiscal_device"
+    },
+    "-104007": {
+      "en": "Service operation error: Montly report needed.",
+      "ro": "Eroare operare service: Introduceti luna de raportare.",
+      "group": "(104000 - 105000) SERVICE OPERATIONS",
+      "source": "fiscal_device"
+    },
+    "-104008": {
+      "en": "Service operation error: Year report needed.",
+      "ro": "Eroare operare service:Introduceti anul de raportare",
+      "group": "(104000 - 105000) SERVICE OPERATIONS",
+      "source": "fiscal_device"
+    },
+    "-104009": {
+      "en": "Service operation error: Backup needed.",
+      "ro": "Eroare operare service: Efectuati Backup.",
+      "group": "(104000 - 105000) SERVICE OPERATIONS",
+      "source": "fiscal_device"
+    },
+    "-104010": {
+      "en": "ERR_NEED_ALL_PAIDOUT",
+      "ro": "ERR_NEED_ALL_PAIDOUT",
+      "group": "(104000 - 105000) SERVICE OPERATIONS",
+      "source": "fiscal_device"
+    },
+    "-105000": {
+      "en": "EJ error: No records in EJ",
+      "ro": "Eroare JE: Nu sunt inregistrari in JE",
+      "group": "(105000 - 106000) EJ - ERRORS",
+      "source": "fiscal_device"
+    },
+    "-105001": {
+      "en": "EJ error: Cannot add to EJ",
+      "ro": "Eroare JE: Nu se poate adauga in JE",
+      "group": "(105000 - 106000) EJ - ERRORS",
+      "source": "fiscal_device"
+    },
+    "-105002": {
+      "en": "EJ error: SAM module signature error",
+      "ro": "Eroare JE: Eroare semnatura SAM in JE",
+      "group": "(105000 - 106000) EJ - ERRORS",
+      "source": "fiscal_device"
+    },
+    "-105003": {
+      "en": "EJ error: Signature key version is changed -> impossible check",
+      "ro": "Eroare JE: Versiune cheie semnatura schimbata ->Verificare imposibila",
+      "group": "(105000 - 106000) EJ - ERRORS",
+      "source": "fiscal_device"
+    },
+    "-105004": {
+      "en": "EJ error: Bad record in EJ",
+      "ro": "Eroare JE: Inregistrare gresita in JE",
+      "group": "(105000 - 106000) EJ - ERRORS",
+      "source": "fiscal_device"
+    },
+    "-105005": {
+      "en": "EJ error: Generate signature error(cannoct generate signature)",
+      "ro": "Eroare JE: eroare generare semnatura",
+      "group": "(105000 - 106000) EJ - ERRORS",
+      "source": "fiscal_device"
+    },
+    "-105006": {
+      "en": "EJ error: Wrong type of document to sign",
+      "ro": "Eroare JE: Tip document gresit pt semnare",
+      "group": "(105000 - 106000) EJ - ERRORS",
+      "source": "fiscal_device"
+    },
+    "-105007": {
+      "en": "EJ error: Document is already signed",
+      "ro": "Eroare JE: Document deja semnat",
+      "group": "(105000 - 106000) EJ - ERRORS",
+      "source": "fiscal_device"
+    },
+    "-105008": {
+      "en": "EJ error: EJ is not from this device",
+      "ro": "Eroare JE: JE nu apartine AMEF",
+      "group": "(105000 - 106000) EJ - ERRORS",
+      "source": "fiscal_device"
+    },
+    "-105009": {
+      "en": "EJ error: EJ is almost full",
+      "ro": "Eroare JE: JE la limita",
+      "group": "(105000 - 106000) EJ - ERRORS",
+      "source": "fiscal_device"
+    },
+    "-105010": {
+      "en": "EJ error: EJ is full",
+      "ro": "Eroare JE: JE plin",
+      "group": "(105000 - 106000) EJ - ERRORS",
+      "source": "fiscal_device"
+    },
+    "-105011": {
+      "en": "EJ error: Wrong format of EJ",
+      "ro": "Eroare JE: Format gresit JE",
+      "group": "(105000 - 106000) EJ - ERRORS",
+      "source": "fiscal_device"
+    },
+    "-105012": {
+      "en": "The electronic journal is not ready.",
+      "ro": "JE nu e pregatit.",
+      "group": "(105000 - 106000) EJ - ERRORS",
+      "source": "fiscal_device"
+    },
+    "-106000": {
+      "en": "Client database error: Firm does not exist",
+      "ro": "Eroare baza de date client: Firma inexistenta",
+      "group": "(106000 - 107000) CLIENTS DATABASE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-106001": {
+      "en": "Client database error: Firmcode already exists",
+      "ro": "Eroare baza de date client: Cod firma existent",
+      "group": "(106000 - 107000) CLIENTS DATABASE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-106002": {
+      "en": "Client database error: EIK already exists",
+      "ro": "Eroare baza de date client: CUI existent",
+      "group": "(106000 - 107000) CLIENTS DATABASE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-106003": {
+      "en": "Client database error: Firm database is full",
+      "ro": "Eroare baza de date client: Baza date firme plina",
+      "group": "(106000 - 107000) CLIENTS DATABASE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-106004": {
+      "en": "Client database error: Firm database is not found",
+      "ro": "Eroare baza de date client: Baza date firme inexistenta",
+      "group": "(106000 - 107000) CLIENTS DATABASE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-107001": {
+      "en": "Invalid certificate.",
+      "ro": "Certificat invalid.",
+      "group": "(107001 - 108000) CERTIFICATES STORE",
+      "source": "fiscal_device"
+    },
+    "-107002": {
+      "en": "Certificate exist.",
+      "ro": "Certificat existent.",
+      "group": "(107001 - 108000) CERTIFICATES STORE",
+      "source": "fiscal_device"
+    },
+    "-107003": {
+      "en": "Certificate unpack failed.",
+      "ro": "Dezarhivare certificat esuata.",
+      "group": "(107001 - 108000) CERTIFICATES STORE",
+      "source": "fiscal_device"
+    },
+    "-107004": {
+      "en": "Wrong certificate password.",
+      "ro": "Parola certificat gresita.",
+      "group": "(107001 - 108000) CERTIFICATES STORE",
+      "source": "fiscal_device"
+    },
+    "-107005": {
+      "en": "File write error.",
+      "ro": "Eroare scriere fisier.",
+      "group": "(107001 - 108000) CERTIFICATES STORE",
+      "source": "fiscal_device"
+    },
+    "-107006": {
+      "en": "File read error.",
+      "ro": "Eroare citire fisier.",
+      "group": "(107001 - 108000) CERTIFICATES STORE",
+      "source": "fiscal_device"
+    },
+    "-107007": {
+      "en": "Certificate not found.",
+      "ro": "Certificatul nu a fost gasit.",
+      "group": "(107001 - 108000) CERTIFICATES STORE",
+      "source": "fiscal_device"
+    },
+    "-109981": {
+      "en": "Smartcard error: No card in the holder.",
+      "ro": "Eroare smartcard: Lipsa card.",
+      "group": "(109000 - 110000) SMARTCARD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-109982": {
+      "en": "Smartcard error: Configuration failed",
+      "ro": "Eroare smartcard: Configurare esuata",
+      "group": "(109000 - 110000) SMARTCARD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-109983": {
+      "en": "Smartcard error: SmartCard communication error.",
+      "ro": "Eroare smartcard: Eroare comunicare SmartCard.",
+      "group": "(109000 - 110000) SMARTCARD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-109984": {
+      "en": "Smartcard error: Supply voltage drop a VCC over-current detection or overheating.",
+      "ro": "Eroare smartcard: Soc tensiune de alimentare sau supraincalzire.",
+      "group": "(109000 - 110000) SMARTCARD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-109985": {
+      "en": "Smartcard error: Unexpected response from the applet.",
+      "ro": "Eroare smartcard: Raspuns necunoscut.",
+      "group": "(109000 - 110000) SMARTCARD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110000": {
+      "en": "SAM module error: SAM init error",
+      "ro": "Eroare modul SAM: Eroare initializare SAM",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110001": {
+      "en": "SAM module error: Error while trying to open SAM module with programmed serial number",
+      "ro": "Eroare modul SAM: Eroare la dechiderea modulului SAM cu ID programat.",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110002": {
+      "en": "SAM module error: Opening SAM with empty ID",
+      "ro": "Eroare modul SAM: Deschidere SAM cu ID nul",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110003": {
+      "en": "SAM module error: SAM select file error",
+      "ro": "Eroare modul SAM: Eroare fisier selectare SAM",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110004": {
+      "en": "SAM module error: SAM init telegram error",
+      "ro": "Eroare modul SAM: SAM init telegram error",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110005": {
+      "en": "SAM module error: SAM is already open",
+      "ro": "Eroare modul SAM: SAM deschis",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110006": {
+      "en": "SAM module error: SAM communication error",
+      "ro": "Eroare modul SAM: Eroare comunicare SAM",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110010": {
+      "en": "SAM module error: Operation execution in SAM module is unsuccessful",
+      "ro": "Eroare modul SAM: Executare operatiune esuata in SAM",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110011": {
+      "en": "SAM module error: Cannot get last transaction from SAM",
+      "ro": "Eroare modul SAM: Nu se poate obtine ultima tranzactie de la SAM",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110012": {
+      "en": "SAM module error: Cannot register current transaction in SAM",
+      "ro": "Eroare modul SAM: Nu se poate inregistra operatiunea in SAM",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110013": {
+      "en": "SAM module error: Cannot get Z-report from SAM",
+      "ro": "Eroare modul SAM: Nu se poate obtine rap.Z din SAM",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110014": {
+      "en": "SAM module error: Cannot register Z-report in SAM",
+      "ro": "Eroare modul SAM: Nu se poate inregistra rap.Z in SAM",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110021": {
+      "en": "SAM module error: Transaction is closed in SAM -> 'closing needed'",
+      "ro": "Eroare modul SAM: Tranzactia e inchisa in SAM -> Inchideti'",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110022": {
+      "en": "SAM module error: Z-report already closed in SAM -> 'Z needed'",
+      "ro": "Eroare modul SAM: Rap.Z deja inchis in SAM -> 'Rulati Z'",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110023": {
+      "en": "SAM module error: Unsent Z-reports -> 'communication needed'",
+      "ro": "Eroare modul SAM: Rap. Z netrimis-> 'Porniti comunicatia'",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110024": {
+      "en": "SAM module error: Overflow in reg -> 'Z needed'",
+      "ro": "Eroare modul SAM: Registri plini -> 'Rulati Z'",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110025": {
+      "en": "SAM module error: Not opened(empty) Z - report -> 'Z impossible'",
+      "ro": "Eroare modul SAM: Nu exista rap. Z deschis-> 'Rulare Z imposibila'",
+      "group": "(110000 - 110100) SAM MODULE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110100": {
+      "en": "Device error: Communication error",
+      "ro": "Eroare aparat: Eroare comunicatie",
+      "group": "(110100 - 110200) EXT FISCAL DEVICE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110101": {
+      "en": "Device error: Wrong struct format",
+      "ro": "Eroare aparat: Format structura eronat",
+      "group": "(110100 - 110200) EXT FISCAL DEVICE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110102": {
+      "en": "Device error: ST flag is active",
+      "ro": "Eroare aparat: Indicator ST activ",
+      "group": "(110100 - 110200) EXT FISCAL DEVICE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110103": {
+      "en": "Device error: Invalid data",
+      "ro": "Eroare aparat: Informatie invalida",
+      "group": "(110100 - 110200) EXT FISCAL DEVICE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110104": {
+      "en": "Device error: Device is not fiscalized",
+      "ro": "Eroare aparat: Aparatul nu e fiscalizat",
+      "group": "(110100 - 110200) EXT FISCAL DEVICE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110105": {
+      "en": "Device error: Device is already fiscalized",
+      "ro": "Eroare aparat: Aparat deja fiscalizat",
+      "group": "(110100 - 110200) EXT FISCAL DEVICE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110106": {
+      "en": "Device error: Device is in service mode",
+      "ro": "Eroare aparat: Aparat in mod service",
+      "group": "(110100 - 110200) EXT FISCAL DEVICE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110107": {
+      "en": "Device error: Service date is passed",
+      "ro": "Eroare aparat:Data Service depasita",
+      "group": "(110100 - 110200) EXT FISCAL DEVICE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110108": {
+      "en": "Device error: Day(shift) is open",
+      "ro": "Eroare aparat: Tura este deschisa",
+      "group": "(110100 - 110200) EXT FISCAL DEVICE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110109": {
+      "en": "Device error: Day(shift) is closed",
+      "ro": "Eroare aparat: Tura este inchisa",
+      "group": "(110100 - 110200) EXT FISCAL DEVICE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110110": {
+      "en": "Device error: Z-report number and shift number are not equal",
+      "ro": "Eroare aparat: Numar rap. Z si numarul turei nu sunt egale",
+      "group": "(110100 - 110200) EXT FISCAL DEVICE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110111": {
+      "en": "Device error: Only admin has permition",
+      "ro": "Eroare aparat: Permis doar pt. admin",
+      "group": "(110100 - 110200) EXT FISCAL DEVICE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110200": {
+      "en": "NAP server error: Error open session",
+      "ro": "Eroare server retea: Eroare deschidere sesiune",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110201": {
+      "en": "NAP server error: Error preparing data for server",
+      "ro": "Eroare server retea: Eroare pregatire date pt. server",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110202": {
+      "en": "NAP server error: There is unsent data",
+      "ro": "Eroare server retea: Exista date netrimise",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110203": {
+      "en": "NAP server error: Receiving data error",
+      "ro": "Eroare server retea: Eroare primire date",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110204": {
+      "en": "NAP server error: Empty data",
+      "ro": "Eroare server retea: Lipsa date",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110205": {
+      "en": "NAP server error: Server negative answer",
+      "ro": "Eroare server retea: Raspuns negativ de la server",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110206": {
+      "en": "NAP server error: Wrong answer format",
+      "ro": "Eroare server retea:Raspuns cu format eronat",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110207": {
+      "en": "NAP server error: Server HOSTDI is zerro",
+      "ro": "Eroare server retea: Identificator server este zero",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110208": {
+      "en": "NAP server error: Server exception",
+      "ro": "Eroare server retea: Exceptie server",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110209": {
+      "en": "NAP server error: Not registered on server",
+      "ro": "Eroare server retea: Neinregistrat la server",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110210": {
+      "en": "NAP server error: Communication with NAP server is blocked",
+      "ro": "Eroare server retea: Comunicarea cu serverul blocata",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110211": {
+      "en": "NAP server error: Modem error",
+      "ro": "Eroare server retea: Eroare modem",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110212": {
+      "en": "NAP server error: NAP is busy",
+      "ro": "Eroare server retea: Retea ocupata",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110213": {
+      "en": "NAP server error: Already registered",
+      "ro": "Eroare server retea: Deja inregistrat",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110214": {
+      "en": "NAP server error: Wrong PS type",
+      "ro": "Eroare server retea: Tip PS eronat",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110215": {
+      "en": "NAP server error: Deregistered in NAP",
+      "ro": "Eroare server retea: Delogare de la retea",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110216": {
+      "en": "NAP server error: Wrong IMSI number",
+      "ro": "Eroare server retea: Numar IMSI eronat",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110217": {
+      "en": "NAP server error: Device is blocked(maximum Z-reports)",
+      "ro": "Eroare server retea: Aparatul e blocat(numar maxim rap. Z)",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110218": {
+      "en": "NAP server error: Wrong FD(Fiscal device) type",
+      "ro": "Eroare server retea: Tip eronat de aparat fiscal",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110219": {
+      "en": "NAP server error: The ECR is blocked by server",
+      "ro": "Eroare server retea: Aparat fiscal blocat de server",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110220": {
+      "en": "NAP server error: The ECR is blocked - server error",
+      "ro": "Eroare server retea: Aparatul fiscal e blocat - Eroare server",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110221": {
+      "en": "NAP server error: No server address",
+      "ro": "Eroare server retea: Adresa server lipsa",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110222": {
+      "en": "NAP server error: Max. registrations reached.",
+      "ro": "Eroare server retea: S-a atins numarul maxim de inregistrari.",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110223": {
+      "en": "Invalid INN of the cashier",
+      "ro": "Invalid INN (id retea) pentru casier",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110224": {
+      "en": "Invalid INN of the server",
+      "ro": "Invalid INN (id retea) pentru server",
+      "group": "(110200 - 110300) NAP SERVER ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110300": {
+      "en": "Working error: Invalid file",
+      "ro": "Eroare operare: Fisier invalid",
+      "group": "(110300 - 110400) WORK_INVALID",
+      "source": "fiscal_device"
+    },
+    "-110301": {
+      "en": "Working error: Invalid parameters",
+      "ro": "Eroare operare: Parametru invalid",
+      "group": "(110300 - 110400) WORK_INVALID",
+      "source": "fiscal_device"
+    },
+    "-110400": {
+      "en": "Connection error: Connection init error",
+      "ro": "Eroare conectare: Eroare la initiere conectare",
+      "group": "(110400 - 110500) NRA CONNECTION ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110401": {
+      "en": "NRA connection error: Wrong parameteres",
+      "ro": "NRA Eroare conectare: Parametri invalizi",
+      "group": "(110400 - 110500) NRA CONNECTION ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110402": {
+      "en": "NRA connection error: No GPRS",
+      "ro": "NRA Eroare conectare:Lipsa GPRS",
+      "group": "(110400 - 110500) NRA CONNECTION ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110500": {
+      "en": "Modem error: error in communication between device and modem",
+      "ro": "Eroare modem: Eroare comunicare intre modem si AMEF",
+      "group": "(110500 - 110600) MODEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110501": {
+      "en": "Modem error: No SIM card",
+      "ro": "Eroare modem: Lipsa SIM card",
+      "group": "(110500 - 110600) MODEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110502": {
+      "en": "Modem error: Wrong PIN of SIM",
+      "ro": "Eroare modem: PIN invalid pt. SIM",
+      "group": "(110500 - 110600) MODEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110503": {
+      "en": "Modem error: Cannot register to mobile network",
+      "ro": "Eroare modem: Nu se poate conecta la reteaua mobila",
+      "group": "(110500 - 110600) MODEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110504": {
+      "en": "Modem error: No PPP connection(cannot connect)",
+      "ro": "Eroare modem: lipsa conexiune PPP (nu se poate conecta)",
+      "group": "(110500 - 110600) MODEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110505": {
+      "en": "Modem error: Wrong modem configuration(for example - no programmed apn)",
+      "ro": "Eroare modem: Configurare eronata modem(ex.APN ne-programat)",
+      "group": "(110500 - 110600) MODEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110506": {
+      "en": "Modem error: Modem initializing",
+      "ro": "Eroare modem: Modemul se initializeaza",
+      "group": "(110500 - 110600) MODEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110507": {
+      "en": "Modem error: Modem is not ready",
+      "ro": "Eroare modem: Modemul nu e pregatit",
+      "group": "(110500 - 110600) MODEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110508": {
+      "en": "Modem error: Remove SIM card",
+      "ro": "Eroare modem: Scoateti cardul SIM",
+      "group": "(110500 - 110600) MODEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110509": {
+      "en": "Modem error: Modem found a cell",
+      "ro": "Eroare modem: Modemul a localizat o celula",
+      "group": "(110500 - 110600) MODEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110510": {
+      "en": "Modem error: Modem does not find a cell",
+      "ro": "Eroare modem: Modemul nu a localizat o celula",
+      "group": "(110500 - 110600) MODEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110511": {
+      "en": "Modem error: Failed lot days",
+      "ro": "Eroare modem: Failed lot days",
+      "group": "(110500 - 110600) MODEM ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110601": {
+      "en": "Modem error: Device is not connected to AP(access point)",
+      "ro": "Eroare modem: Aparat neconectat la AP(access point)",
+      "group": "(110600 - 110700) MODEM ERRORS - 2",
+      "source": "fiscal_device"
+    },
+    "-110700": {
+      "en": "Network error: Cannot resolve address",
+      "ro": "Eroare retea: Adresa nu a putut fi identificata",
+      "group": "(110700 - 110800) NETWORK ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110701": {
+      "en": "Network error: Cannot open socket for communication with server",
+      "ro": "Eroare retea: Nu se poate deschide conexiune (socket) cu serverul",
+      "group": "(110700 - 110800) NETWORK ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110702": {
+      "en": "Network error: Connection error(cannot connect to a server)",
+      "ro": "Eroare retea: Eroare conexiune (nu se poate conecta la server)",
+      "group": "(110700 - 110800) NETWORK ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110703": {
+      "en": "Network error: Config error(for example: no server address)",
+      "ro": "Eroare retea: Eroare configurare (ex.: lipsa adresa server)",
+      "group": "(110700 - 110800) NETWORK ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110704": {
+      "en": "Network error: Connection socket is already opened",
+      "ro": "Eroare retea: Conexiune (socket) deja deschisa",
+      "group": "(110700 - 110800) NETWORK ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110705": {
+      "en": "Network error: SSL communication error(something went wrong in cryptographic protocol)",
+      "ro": "Eroare retea: Eroare comunicare SSL(eroare in protocolul criptografic)",
+      "group": "(110700 - 110800) NETWORK ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110706": {
+      "en": "Network error: HTTP communication error(something went wrong in http protocol)",
+      "ro": "Eroare retea: Eroare comunicare HTTP (eroare in protocolul http)",
+      "group": "(110700 - 110800) NETWORK ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110800": {
+      "en": "Tax terminal error: No error",
+      "ro": "Eroare conexiune ANAF: Fara erori",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110801": {
+      "en": "Tax terminal error: Unknown ID",
+      "ro": "Eroare conexiune ANAF: ID necunoscut",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110802": {
+      "en": "Tax terminal error: Invalid token(key from the server)",
+      "ro": "Eroare conexiune ANAF: Token invalid (cheia serverului)",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110803": {
+      "en": "Tax terminal error: Protocol error",
+      "ro": "Eroare conexiune ANAF: Eroare protocol",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110804": {
+      "en": "Tax terminal error: The command is unknown",
+      "ro": "Eroare conexiune ANAF: Comanda necunoscuta",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110805": {
+      "en": "Tax terminal error: The command is not supported",
+      "ro": "Eroare conexiune ANAF: Comanda nu e suportata",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110806": {
+      "en": "Tax terminal error: Invalid configuration",
+      "ro": "Eroare conexiune ANAF: Configuratie invalida",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110807": {
+      "en": "Tax terminal error: SSL is not allowed",
+      "ro": "Eroare conexiune ANAF: SSL nu e permis",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110808": {
+      "en": "Tax terminal error: Invalid request number",
+      "ro": "Eroare conexiune ANAF: Numar cerere invalid",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110809": {
+      "en": "Tax terminal error: Invalid retry request",
+      "ro": "Eroare conexiune ANAF: Repetare cerere invalida",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110810": {
+      "en": "Tax terminal error: Cannot cancel ticket",
+      "ro": "Eroare conexiune ANAF: Tichetul nu poate fi anulat",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110811": {
+      "en": "Tax terminal error: More than 24 hours from shift opening",
+      "ro": "Eroare conexiune ANAF: S-au depasit 24 ore de la deschiderea turei",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110812": {
+      "en": "Tax terminal error: Invalid login name or password",
+      "ro": "Eroare conexiune ANAF: Nume sau parola de conectare, invalide",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110813": {
+      "en": "Tax terminal error: Incorrect request data",
+      "ro": "Eroare conexiune ANAF: Continutul cererii e incorect",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110814": {
+      "en": "Tax terminal error: Not enough cash",
+      "ro": "Eroare conexiune ANAF: Numerar insuficient",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110815": {
+      "en": "Tax terminal error: Blocked from server",
+      "ro": "Eroare conexiune ANAF: Blocat de server",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110854": {
+      "en": "Tax terminal error: Service temporarily unavailable",
+      "ro": "Eroare conexiune ANAF: Serviciu temporar indisponibil",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-110855": {
+      "en": "Tax terminal error: Unknown error",
+      "ro": "Eroare conexiune ANAF: Eroare necunoscuta",
+      "group": "(110800 - 110899) TAX_TERMINAL_ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111000": {
+      "en": "Registration mode error: Common error followed by deliting all data for the command",
+      "ro": "Eroare in mod Inregistrare: Eroare - stergeti toate datele comenzii",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111001": {
+      "en": "Registration mode error: Common error followed by partly deliting data for the command",
+      "ro": "Eroare in mod Inregistrare: Eroare - stergeti componentele gresite din comanda",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111002": {
+      "en": "Registration mode error: Syntax error. Check the parameters of the command",
+      "ro": "Eroare in mod Inregistrare: Eroare sintaxa. Verificati parametrii comenzii",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111003": {
+      "en": "Registration mode error: Cannot do operation",
+      "ro": "Eroare in mod Inregistrare: Operatiunea nu poate fi executata",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111004": {
+      "en": "Registration mode error: PLU code was not found",
+      "ro": "Eroare in mod Inregistrare: Codul PLU nu a fost gasit",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111005": {
+      "en": "Registration mode error: Forbidden VAT",
+      "ro": "Eroare in mod Inregistrare: TVA interzis",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111006": {
+      "en": "Registration mode error: Overflow in multiplication of quantity and price",
+      "ro": "Eroare in mod Inregistrare: Depasire in produsul dintre cantitate si pret",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111007": {
+      "en": "Registration mode error: PLU has no price",
+      "ro": "Eroare in mod Inregistrare: PLU nu are pret",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111008": {
+      "en": "Registration mode error: Group is not in range",
+      "ro": "Eroare in mod Inregistrare: Grup in afara domeniului",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111009": {
+      "en": "Registration mode error: Department is not in range",
+      "ro": "Eroare in mod Inregistrare: Departament in afara domeniului",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111010": {
+      "en": "Registration mode error: BAR code does not exist",
+      "ro": "Eroare in mod Inregistrare: Codul de bare nu exista",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111011": {
+      "en": "Registration mode error: Overflow of the PLU turnover",
+      "ro": "Eroare in mod Inregistrare: Depasire rulaj PLU",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111012": {
+      "en": "Registration mode error: Overflow of the PLU quantity",
+      "ro": "Eroare in mod Inregistrare: Depasire cantitate PLU",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111013": {
+      "en": "Registration mode error: ECR daily registers overflow",
+      "ro": "Eroare in mod Inregistrare: Depasire registri zilnici AMEF",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111014": {
+      "en": "Registration mode error: Bill total register overflow",
+      "ro": "Eroare in mod Inregistrare: Depasire registrii total",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111015": {
+      "en": "Registration mode error: Receipt is opened",
+      "ro": "Eroare in mod Inregistrare: Bon dechis",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111016": {
+      "en": "Registration mode error: Receipt is closed",
+      "ro": "Eroare in mod Inregistrare: Bon inchis",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111017": {
+      "en": "Registration mode error: No cash in ECR",
+      "ro": "Eroare in mod Inregistrare: AMEF fara numerar",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111018": {
+      "en": "Registration mode error: Payment is initiated",
+      "ro": "Eroare in mod Inregistrare: Plata e initiata",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111019": {
+      "en": "Registration mode error: Maximum number of sales in receipt",
+      "ro": "Eroare in mod Inregistrare: Numar maxim de vanzari in bon",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111020": {
+      "en": "Registration mode error: No transactions",
+      "ro": "Eroare in mod Inregistrare: Fara tranzactii",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111021": {
+      "en": "Registration mode error: Possible negative turnover",
+      "ro": "Eroare in mod Inregistrare: Posibil rulaj negativ",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111022": {
+      "en": "Registration mode error: Foreign payment has change",
+      "ro": "Eroare in mod Inregistrare: Rest pentru plata in valuta",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111023": {
+      "en": "Registration mode error: Transaction is not found in the receipt",
+      "ro": "Eroare in mod Inregistrare: Tranzactia nu este inregistrata in bon",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111024": {
+      "en": "Registration mode error: End of 24 hour blocking",
+      "ro": "Eroare in mod Inregistrare: Au trecut 24 ore fara Raport Z!",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111025": {
+      "en": "Registration mode error: Invalid invoice range",
+      "ro": "Eroare in mod Inregistrare: Nr factura in afara domeniului",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111026": {
+      "en": "Registration mode error: Operation is cancelled by operator",
+      "ro": "Eroare in mod Inregistrare: Operatiune anulata de operator",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111027": {
+      "en": "Registration mode error: Operation approved by POS",
+      "ro": "Eroare in mod Inregistrare: Operatiune aprobata la POS",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111028": {
+      "en": "Registration mode error: Operation is not approved by POS",
+      "ro": "Eroare in mod Inregistrare: Operatiune respinsa la POS",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111029": {
+      "en": "Registration mode error: POS terminal communication error",
+      "ro": "Eroare in mod Inregistrare: Eroare comunicatie POS",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111030": {
+      "en": "Registration mode error: Multiplication of quantity and price is 0",
+      "ro": "Eroare in mod Inregistrare: Produsul cantitate x pret este 0",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111031": {
+      "en": "Registration mode error: Value is too big",
+      "ro": "Eroare in mod Inregistrare: Valoare prea mare",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111032": {
+      "en": "Registration mode error: Value is bad",
+      "ro": "Eroare in mod Inregistrare: Valoare gresita",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111033": {
+      "en": "Registration mode error: Price is too big",
+      "ro": "Eroare in mod Inregistrare: Pret prea mare",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111034": {
+      "en": "Registration mode error: Price is bad",
+      "ro": "Eroare in mod Inregistrare: Pret gresit",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111035": {
+      "en": "Registration mode error: Operation all void is selected to be executed",
+      "ro": "Eroare in mod Inregistrare: Operatiunea de stergere totala a fost selectata pentru executie",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111036": {
+      "en": "Registration mode error: Only all void operation is permitted",
+      "ro": "Eroare in mod Inregistrare: Doar stergerea totala e permisa",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111040": {
+      "en": "Registration mode error: Restaurant: There is no free space for other purchases",
+      "ro": "Eroare in mod Inregistrare: Restaurant: Nu mai este spatiu pentru alte vanzari",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111041": {
+      "en": "Registration mode error: Restaurant: There is no free space for new acount",
+      "ro": "Eroare in mod Inregistrare: Restaurant: Nu mai este spatiu pentru nota noua",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111042": {
+      "en": "Registration mode error: Restaurant: Account is already opened",
+      "ro": "Eroare in mod Inregistrare: Restaurant: Nota deja deschisa",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111043": {
+      "en": "Registration mode error: Restaurant: Wrong index",
+      "ro": "Eroare in mod Inregistrare: Restaurant: Index gresit",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111044": {
+      "en": "Registration mode error: Restaurant: Account is not found",
+      "ro": "Eroare in mod Inregistrare: Restaurant: Nota nu e gasita",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111045": {
+      "en": "Registration mode error: Restaurant: Not permitted(only for admins)",
+      "ro": "Eroare in mod Inregistrare: Restaurant: Nu e permis (doar pt. admin)",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111046": {
+      "en": "Registration mode error: non-fiscal receipt is opened",
+      "ro": "Eroare in mod Inregistrare: Bon nefiscal deschis",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111047": {
+      "en": "Registration mode error: fiscal receipt is opened",
+      "ro": "Eroare in mod Inregistrare: Bon fiscal deschis",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111048": {
+      "en": "Registration mode error: Buyers TIN is already entered",
+      "ro": "Eroare in mod Inregistrare: CIF cumparator deja introdus",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111049": {
+      "en": "Registration mode error: Buyers TIN is not entered",
+      "ro": "Eroare in mod Inregistrare: CIF cumparator nu a fost introdus",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111050": {
+      "en": "Registration mode error: Payment is not initiated",
+      "ro": "Eroare in mod Inregistrare: Plata nu a fost initiata",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111051": {
+      "en": "Registration mode error: Reeipt type mismatch",
+      "ro": "Eroare in mod Inregistrare: Tip bon gresit",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111052": {
+      "en": "Registration mode error: Receipt total limit is reached",
+      "ro": "Eroare in mod Inregistrare: Limita total bon atinsa",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111053": {
+      "en": "Registration mode error: Sum cannot be divided by the minimum coin",
+      "ro": "Eroare in mod Inregistrare: Suma nu poate fi data in monede",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111054": {
+      "en": "Registration mode error: Sum must be <= payment amount",
+      "ro": "Eroare in mod Inregistrare: Suma trebuie sa fie <= decat valoarea platii",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111055": {
+      "en": "Registration mode error: Sum of voucher must be entered when paying with voucher",
+      "ro": "Eroare in mod Inregistrare: Suma pe vouchere se introduce doar la plata cu voucher",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111056": {
+      "en": "Registration mode error: Value surcharge of the difference between voucher sum and total must be done when paying with voucher and sum > total",
+      "ro": "Eroare in mod Inregistrare: Valoarea majorarii este diferenta dintre suma voucherelor si total atunci cand: se plateste cu vouchere si suma lor e mai mare decat totalul",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111057": {
+      "en": "Registration mode error: Payment with foreign currency is disabled",
+      "ro": "Eroare in mod Inregistrare: Plata cu valuta este dezactivata",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111058": {
+      "en": "Registration mode error: Payment with foreign currency is impossible",
+      "ro": "Eroare in mod Inregistrare: Plata cu valuta nu este posibila",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111059": {
+      "en": "Registration mode error: Sum must be bigger or equal to payment amount",
+      "ro": "Eroare in mod Inregistrare: Suma in valuta trebuie sa fie mai mare sau egala decat valoarea de plata",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111060": {
+      "en": "Registration mode error: Safe opening is disabled",
+      "ro": "Eroare in mod Inregistrare: Deschidere sertar dezactivata",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111061": {
+      "en": "Registration mode error: Forbidden payment",
+      "ro": "Eroare in mod Inregistrare: Plata interzisa",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111062": {
+      "en": "Registration mode error: Forbidden key for surcharge/discount",
+      "ro": "Eroare in mod Inregistrare: Tasta majorare/reducere interzisa",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111063": {
+      "en": "Registration mode error: Entered sum is bigger than receipt sum",
+      "ro": "Eroare in mod Inregistrare: Suma introdusa este mai mare decat suma bonului",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111064": {
+      "en": "Registration mode error: Entered sum is smaller than receipt sum",
+      "ro": "Eroare in mod Inregistrare: Suma introdusa este mai mica decat suma bonului",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111065": {
+      "en": "Registration mode error: Fiscal printer: Sum of receipt is 0. Operation 'void' is needed",
+      "ro": "Eroare in mod Inregistrare: Fiscal printer: Suma bonului este 0. Executati operatiunea de anulare 'void'",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111066": {
+      "en": "Registration mode error: Fiscal printer: Operation 'void' is executed. Close receipt is needed",
+      "ro": "Eroare in mod Inregistrare: Fiscal printer: Operatiunea 'void' este executata. Inchideti bonul",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111067": {
+      "en": "Registration mode error: Storno receipt is opened",
+      "ro": "Eroare in mod Inregistrare: Bon Storno este deschis",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111068": {
+      "en": "Registration mode error: Sum is not entered",
+      "ro": "Eroare in mod Inregistrare: Suma nu a fost introdusa",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111069": {
+      "en": "Registration mode error: Price type is invalid",
+      "ro": "Eroare in mod Inregistrare: Tip pret invalid",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111070": {
+      "en": "Registration mode error: Linked surcharge is forbidden",
+      "ro": "Eroare in mod Inregistrare: Majorarea asociata este interzisa",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111071": {
+      "en": "Registration mode error: Negative price is forbidden",
+      "ro": "Eroare in mod Inregistrare: Pretul negativ este interzis",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111072": {
+      "en": "Registration mode error: More than 1 VAT in one receipt is not allowed",
+      "ro": "Eroare in mod Inregistrare: Este permisa o singura cota TVA pe bon",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111073": {
+      "en": "Registration mode error: Pinpad error",
+      "ro": "Eroare in mod Inregistrare: Eroare Pinpad",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111074": {
+      "en": "Registration mode error: Buyer data is wrong",
+      "ro": "Eroare in mod Inregistrare: Datele cumparatorului sunt gresite",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111075": {
+      "en": "Registration mode error: Vat system disable.",
+      "ro": "Eroare in mod Inregistrare: Sistem TVA deconectat.",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111076": {
+      "en": "Operator not logged in.",
+      "ro": "Eroare in mod Inregistrare: Operatorul nu s-a logat",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111080": {
+      "en": "Registration mode error: Registration mode error: Out of stock",
+      "ro": "Eroare in mod Inregistrare: Depasire stoc",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111081": {
+      "en": "Registration mode error: Must pushing of the STL before TL.",
+      "ro": "Eroare in mod Inregistrare: Apasati STL inaintea TL.",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111082": {
+      "en": "Package does not exist",
+      "ro": "Arhiva nu exista",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111083": {
+      "en": "Measuring unit not found",
+      "ro": "Unitatea de masura nu e gasita",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111084": {
+      "en": "Category not found in the data base",
+      "ro": "Categoria nu e gasita in baza de date",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111085": {
+      "en": "Invalid department name",
+      "ro": "Nume departament incorect",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111086": {
+      "en": "Bank terminal not configured",
+      "ro": "Terminal bancar neconfigurat",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111089": {
+      "en": "Entered price is bigger than the programmed",
+      "ro": "Pretul introdus e mai mare decat cel programat",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111090": {
+      "en": "Fix PLU's price",
+      "ro": "Pret PLU fix",
+      "group": "(111000 - 111499) REGMODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111500": {
+      "en": "Pinpad error: No error from pinpad",
+      "ro": "Eroare PinPad: Fara eroare pinpad",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111501": {
+      "en": "Pinpad error: General unicreditbulbank icon error",
+      "ro": "Eroare PinPad: Eroare generala",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111502": {
+      "en": "Pinpad error: Not valid command or sub command code",
+      "ro": "Eroare PinPad: comanda sau cod comanda invalide",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111503": {
+      "en": "Pinpad error: Invalid parameter",
+      "ro": "Eroare PinPad: parametru invalid",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111504": {
+      "en": "Pinpad error: The address is outside limits",
+      "ro": "Eroare PinPad: Adresare in afara domeniului",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111505": {
+      "en": "Pinpad error: The value is outside limits",
+      "ro": "Eroare PinPad: Valoare peste limite",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111506": {
+      "en": "Pinpad error: The length is outside limits",
+      "ro": "Eroare PinPad: Lungime depasita",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111507": {
+      "en": "Pinpad error: The action is not permited in current state",
+      "ro": "Eroare PinPad: Actiune nepermisa",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111508": {
+      "en": "Pinpad error: There is no data to be returned",
+      "ro": "Eroare PinPad: Nu sunt date de transmis",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111509": {
+      "en": "Pinpad error: Timeout occurs",
+      "ro": "Eroare PinPad: Timeout",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111510": {
+      "en": "Pinpad error: Invalid key number",
+      "ro": "Eroare PinPad: Numar cheie invalid",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111511": {
+      "en": "Pinpad error: Invalid key attributes(usage)",
+      "ro": "Eroare PinPad: Atribut cheie invalid (usage)",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111512": {
+      "en": "Pinpad error: Calling of non-existing device",
+      "ro": "Eroare PinPad: Apel la aparat inexistent",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111513": {
+      "en": "Pinpad error: (Not used in this FW version)",
+      "ro": "Eroare PinPad: (Not used in this FW version)",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111514": {
+      "en": "Pinpad error: Pin entering limit exceed",
+      "ro": "Eroare PinPad: Depasire numar incercari PIN",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111515": {
+      "en": "Pinpad error: General error in flash commands",
+      "ro": "Eroare PinPad: Eroare generala - flash command",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111516": {
+      "en": "Pinpad error: General hardware unicreditbulbank error",
+      "ro": "Eroare PinPad: Eroare hardware generala",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111517": {
+      "en": "Pinpad error: Invalid code check (Not used in this FW version)",
+      "ro": "Eroare PinPad: Cod cautare invalid (Not used in this FW version)",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111518": {
+      "en": "Pinpad error: The button 'CANCEL' is pressed",
+      "ro": "Eroare PinPad: Tasta 'CANCEL' este apasata",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111519": {
+      "en": "Pinpad error: Invalid signature",
+      "ro": "Eroare PinPad: Semnatura invalida",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111520": {
+      "en": "Pinpad error: Invalid data in header",
+      "ro": "Eroare PinPad: Informatie eronata in antet",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111521": {
+      "en": "Pinpad error: Incorrect password",
+      "ro": "Eroare PinPad: Parola incorecta",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111522": {
+      "en": "Pinpad error: Invalid key format",
+      "ro": "Eroare PinPad: Format cheie invalid",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111523": {
+      "en": "Pinpad error: General unicreditbulbank error in smart card reader",
+      "ro": "Eroare PinPad: Eroare generala cititor cip",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111524": {
+      "en": "Pinpad error: Error code returned from HAL functions",
+      "ro": "Eroare PinPad: Cod eroare returnat de functii HAL",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111525": {
+      "en": "Pinpad error: Invalid key (may not be present)",
+      "ro": "Eroare PinPad: Cheie invalida",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111526": {
+      "en": "Pinpad error: The PIN length is less than 4 or bigger than 12",
+      "ro": "Eroare PinPad: Lungimea PIN este mai mica de 4 sau mai mare de 12",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111527": {
+      "en": "Pinpad error: Issuer or ICC key invalid remainder length",
+      "ro": "Eroare PinPad: Cheia emitent sau ICC are o lungime invalida",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111528": {
+      "en": "Pinpad error: Not initialized (Not used in this FW version)",
+      "ro": "Eroare PinPad: Ne-initializat (Not used in this FW version)",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111529": {
+      "en": "Pinpad error: Limit is reached (Not used in this FW version)",
+      "ro": "Eroare PinPad: Limita atinsa (Not used in this FW version)",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111530": {
+      "en": "Pinpad error: Invalid sequence (Not used in this FW version)",
+      "ro": "Eroare PinPad: Secventa invalida (Not used in this FW version)",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111531": {
+      "en": "Pinpad error: The action is not permitted",
+      "ro": "Eroare PinPad: Actiunea nu e permisa",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111532": {
+      "en": "Pinpad error: TMK is not loaded. The action cannot be executed",
+      "ro": "Eroare PinPad: Cheia TMK nu e incarcata. Actiunea nu poate fi executata",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111533": {
+      "en": "Pinpad error: Wrong key format",
+      "ro": "Eroare PinPad: Format cheie invalid",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111534": {
+      "en": "Pinpad error: Duplicated key",
+      "ro": "Eroare PinPad: Cheie duplicata",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111535": {
+      "en": "Pinpad error: General keyboard error",
+      "ro": "Eroare PinPad: Eroare generala tastatura",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111536": {
+      "en": "Pinpad error: The keyboard is no calibrated.",
+      "ro": "Eroare PinPad: Tastatura nu e calibrata.",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111537": {
+      "en": "Pinpad error: Keyboard bug detected.",
+      "ro": "Eroare PinPad: Eroare tastatura detectata.",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111538": {
+      "en": "Pinpad error: The device is busy try again",
+      "ro": "Eroare PinPad: Aparatul este ocupat",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111539": {
+      "en": "Pinpad error: Device is tampered",
+      "ro": "Eroare PinPad: Aparatul este corupt",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111540": {
+      "en": "Pinpad error: Error in encrypted head",
+      "ro": "Eroare PinPad: Eroare in antetul incriptat",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111541": {
+      "en": "Pinpad error: The button 'OK' is pressed",
+      "ro": "Eroare PinPad: Tasta 'OK' este apasata",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111542": {
+      "en": "Pinpad error: Wrong PAN",
+      "ro": "Eroare PinPad: Numar card incorect",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111543": {
+      "en": "Pinpad error: Out of memory",
+      "ro": "Eroare PinPad: Depasire memorie",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111544": {
+      "en": "Pinpad error: EMV error",
+      "ro": "Eroare PinPad: Eroare EMV",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111545": {
+      "en": "Pinpad error: Cryptographic error",
+      "ro": "Eroare PinPad: Eroare criptografica",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111546": {
+      "en": "Pinpad error: Communication error",
+      "ro": "Eroare PinPad: Eroare de comunicatie",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111547": {
+      "en": "Pinpad error: Invalid firmware version",
+      "ro": "Eroare PinPad: Versiune firmware invalida",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111548": {
+      "en": "Pinpad error: Printer is out of paper",
+      "ro": "Eroare PinPad: Lipsa hartie la imprimanta",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111549": {
+      "en": "Pinpad error: Printer is overheated",
+      "ro": "Eroare PinPad: Imprimanta supraincalzita",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111550": {
+      "en": "Pinpad error: Device is not connected",
+      "ro": "Eroare PinPad: Aparatul nu e conectat",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111551": {
+      "en": "Pinpad error: Use the chip reader",
+      "ro": "Eroare PinPad: Folositi cititorul cip",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111552": {
+      "en": "Pinpad error: End the day first",
+      "ro": "Eroare PinPad: Intai, inchideti ziua",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111554": {
+      "en": "Pinpad error: Error from Borica",
+      "ro": "Eroare PinPad: Eroare de la host",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111555": {
+      "en": "Pinpad error: No connection with pinpad",
+      "ro": "Eroare PinPad: Nu exista conexiune cu PinPad",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111556": {
+      "en": "Pinpad error: Success in pinpad unsuccess in ECR",
+      "ro": "Eroare PinPad: Conectare cu succes la PinPad - esuata la AMEF",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111557": {
+      "en": "Pinpad error: Not configured connection between fiscal device and PinPad",
+      "ro": "Eroare PinPad: Conectare neconfigurata intre AMEF si PinPad",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111558": {
+      "en": "Pinpad error: The last transactions are equals or connection is interrupted - try again.",
+      "ro": "Eroare PinPad:Ultimele tranzactii sunt egale sau conexiunea e intrerupta- Incercati inca odata.",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111559": {
+      "en": "Pinpad error: Payment type: debit/credit card via PinPad. In the fiscal receipt is allowed only one payment with such type.",
+      "ro": "Eroare PinPad: Tip de plata: card debit/credit via PinPad. In AMEF e permisa doar o tranzactie de acest tip.",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111560": {
+      "en": "Pinpad error: Unknown result of the transaction between fiscal device and PinPad",
+      "ro": "Eroare PinPad: Nu s-a receptionat raspuns la tranzactie",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111561": {
+      "en": "Pinpad error: Pinpad type not configured",
+      "ro": "Eroare PinPad: Tipul PinPad nu e configurat",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111700": {
+      "en": "Pinpad error: Invalid ammount.",
+      "ro": "Eroare PinPad: Suma incorecta.",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111701": {
+      "en": "Pinpad error: Transaction not found.",
+      "ro": "Eroare PinPad: Tranzactia nu exista.",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111702": {
+      "en": "Pinpad error: The file is empty.",
+      "ro": "Eroare PinPad: Fisier gol.",
+      "group": "(111500 - 112000) PINPAD ERRORS",
+      "source": "fiscal_device"
+    },
+    "-111800": {
+      "en": "ERR_SCALE_NOT_RESPOND",
+      "ro": "ERR_CANTARUL_NU_RASPUNDE",
+      "group": "(111800 - 111899) SCALE REMOTE CONTROL",
+      "source": "fiscal_device"
+    },
+    "-111801": {
+      "en": "ERR_SCALE_NOT_CALCULATED",
+      "ro": "ERR_CANTARUL_NU_CALCULEAZA",
+      "group": "(111800 - 111899) SCALE REMOTE CONTROL",
+      "source": "fiscal_device"
+    },
+    "-111802": {
+      "en": "ERR_SCALE_WRONG_RESPONSE",
+      "ro": "ERR_CANTAR_RASPUNS_INCORECT",
+      "group": "(111800 - 111899) SCALE REMOTE CONTROL",
+      "source": "fiscal_device"
+    },
+    "-111803": {
+      "en": "ERR_SCALE_ZERO_WEIGHT",
+      "ro": "ERR_CANTAR_ZERO_GREUTATE",
+      "group": "(111800 - 111899) SCALE REMOTE CONTROL",
+      "source": "fiscal_device"
+    },
+    "-111804": {
+      "en": "ERR_SCALE_NEGATIVE_WEIGHT",
+      "ro": "ERR_CANTAR_GREUTATE_NEGATIVA",
+      "group": "(111800 - 111899) SCALE REMOTE CONTROL",
+      "source": "fiscal_device"
+    },
+    "-111805": {
+      "en": "ERR_SCALE_T_WRONG_INTF",
+      "ro": "ERR_CANTAR_INTERFATA_INCORECTA",
+      "group": "(111800 - 111899) SCALE REMOTE CONTROL",
+      "source": "fiscal_device"
+    },
+    "-111806": {
+      "en": "ERR_SCALE_T_CONNECT",
+      "ro": "ERR_CANTAR_T_CONEXIUNE",
+      "group": "(111800 - 111899) SCALE REMOTE CONTROL",
+      "source": "fiscal_device"
+    },
+    "-111807": {
+      "en": "ERR_SCALE_SEND",
+      "ro": "ERR_CANTAR_CERERE",
+      "group": "(111800 - 111899) SCALE REMOTE CONTROL",
+      "source": "fiscal_device"
+    },
+    "-111808": {
+      "en": "ERR_SCALE_RECEIVE",
+      "ro": "ERR_CANTAR_RASPUNS",
+      "group": "(111800 - 111899) SCALE REMOTE CONTROL",
+      "source": "fiscal_device"
+    },
+    "-111809": {
+      "en": "ERR_SCALE_FILE_GENERATE",
+      "ro": "ERR_CANTAR_GENERARE_FISIER",
+      "group": "(111800 - 111899) SCALE REMOTE CONTROL",
+      "source": "fiscal_device"
+    },
+    "-111810": {
+      "en": "ERR_SCALE_NOT_CONFIG",
+      "ro": "ERR_CANTAR_NU_E_CONFIG",
+      "group": "(111800 - 111899) SCALE REMOTE CONTROL",
+      "source": "fiscal_device"
+    },
+    "-112000": {
+      "en": "Fiscal printer error: Fiscal printer invalid command",
+      "ro": "Eroare imprimanta fiscala: Comanda gresita imprimanta fiscala",
+      "group": "(112000 - 112899) FP_MODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-112001": {
+      "en": "Fiscal printer error: Fiscal printer command invalid syntax",
+      "ro": "Eroare imprimanta fiscala: Sintaxa gresita in comanda imprimanta fiscala",
+      "group": "(112000 - 112899) FP_MODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-112002": {
+      "en": "Fiscal printer error: Command is not permitted",
+      "ro": "Eroare imprimanta fiscala: Comanda nu e permisa",
+      "group": "(112000 - 112899) FP_MODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-112003": {
+      "en": "Fiscal printer error: Register overflow",
+      "ro": "Eroare imprimanta fiscala: Depasire registri",
+      "group": "(112000 - 112899) FP_MODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-112004": {
+      "en": "Fiscal printer error: Wrong date/time",
+      "ro": "Eroare imprimanta fiscala: Data/ora gresita",
+      "group": "(112000 - 112899) FP_MODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-112005": {
+      "en": "Fiscal printer error: PC mode is needed",
+      "ro": "Eroare imprimanta fiscala: Treceti in mod PC",
+      "group": "(112000 - 112899) FP_MODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-112006": {
+      "en": "Fiscal printer error: No paper",
+      "ro": "Eroare imprimanta fiscala: Lipsa hartie",
+      "group": "(112000 - 112899) FP_MODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-112007": {
+      "en": "Fiscal printer error: Cover is open",
+      "ro": "Eroare imprimanta fiscala: Capac deschis",
+      "group": "(112000 - 112899) FP_MODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-112008": {
+      "en": "Fiscal printer error: Printing mechanism error",
+      "ro": "Eroare imprimanta fiscala: Eroare mecanism imprimare",
+      "group": "(112000 - 112899) FP_MODE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-112101": {
+      "en": "Invalid syntax of parameter 1.",
+      "ro": "Sintaxa gresita a parametrului 1.",
+      "group": "(112100 - 112199) FP_MODE ERRORS BY SYNTAX",
+      "source": "fiscal_device"
+    },
+    "-112102": {
+      "en": "Invalid syntax of parameter 2.",
+      "ro": "Sintaxa gresita a parametrului 2.",
+      "group": "(112100 - 112199) FP_MODE ERRORS BY SYNTAX",
+      "source": "fiscal_device"
+    },
+    "-112103": {
+      "en": "Invalid syntax of parameter 3.",
+      "ro": "Sintaxa gresita a parametrului 3.",
+      "group": "(112100 - 112199) FP_MODE ERRORS BY SYNTAX",
+      "source": "fiscal_device"
+    },
+    "-112104": {
+      "en": "Invalid syntax of parameter 4.",
+      "ro": "Sintaxa gresita a parametrului 4.",
+      "group": "(112100 - 112199) FP_MODE ERRORS BY SYNTAX",
+      "source": "fiscal_device"
+    },
+    "-112105": {
+      "en": "Invalid syntax of parameter 5.",
+      "ro": "Sintaxa gresita a parametrului 5.",
+      "group": "(112100 - 112199) FP_MODE ERRORS BY SYNTAX",
+      "source": "fiscal_device"
+    },
+    "-112106": {
+      "en": "Invalid syntax of parameter 6.",
+      "ro": "Sintaxa gresita a parametrului 6.",
+      "group": "(112100 - 112199) FP_MODE ERRORS BY SYNTAX",
+      "source": "fiscal_device"
+    },
+    "-112107": {
+      "en": "Invalid syntax of parameter 7.",
+      "ro": "Sintaxa gresita a parametrului 7.",
+      "group": "(112100 - 112199) FP_MODE ERRORS BY SYNTAX",
+      "source": "fiscal_device"
+    },
+    "-112108": {
+      "en": "Invalid syntax of parameter 8.",
+      "ro": "Sintaxa gresita a parametrului 8.",
+      "group": "(112100 - 112199) FP_MODE ERRORS BY SYNTAX",
+      "source": "fiscal_device"
+    },
+    "-112109": {
+      "en": "Invalid syntax of parameter 9.",
+      "ro": "Sintaxa gresita a parametrului 9.",
+      "group": "(112100 - 112199) FP_MODE ERRORS BY SYNTAX",
+      "source": "fiscal_device"
+    },
+    "-112110": {
+      "en": "Invalid syntax of parameter 10.",
+      "ro": "Sintaxa gresita a parametrului 10.",
+      "group": "(112100 - 112199) FP_MODE ERRORS BY SYNTAX",
+      "source": "fiscal_device"
+    },
+    "-112111": {
+      "en": "Invalid syntax of parameter 11.",
+      "ro": "Sintaxa gresita a parametrului 11.",
+      "group": "(112100 - 112199) FP_MODE ERRORS BY SYNTAX",
+      "source": "fiscal_device"
+    },
+    "-112112": {
+      "en": "Invalid syntax of parameter 12.",
+      "ro": "Sintaxa gresita a parametrului 12.",
+      "group": "(112100 - 112199) FP_MODE ERRORS BY SYNTAX",
+      "source": "fiscal_device"
+    },
+    "-112113": {
+      "en": "Invalid syntax of parameter 13.",
+      "ro": "Sintaxa gresita a parametrului 13.",
+      "group": "(112100 - 112199) FP_MODE ERRORS BY SYNTAX",
+      "source": "fiscal_device"
+    },
+    "-112114": {
+      "en": "Invalid syntax of parameter 14.",
+      "ro": "Sintaxa gresita a parametrului 14.",
+      "group": "(112100 - 112199) FP_MODE ERRORS BY SYNTAX",
+      "source": "fiscal_device"
+    },
+    "-112115": {
+      "en": "Invalid syntax of parameter 15.",
+      "ro": "Sintaxa gresita a parametrului 15.",
+      "group": "(112100 - 112199) FP_MODE ERRORS BY SYNTAX",
+      "source": "fiscal_device"
+    },
+    "-112116": {
+      "en": "Invalid syntax of parameter 16.",
+      "ro": "Sintaxa gresita a parametrului 16.",
+      "group": "(112100 - 112199) FP_MODE ERRORS BY SYNTAX",
+      "source": "fiscal_device"
+    },
+    "-112202": {
+      "en": "Bad value of parameter 2.",
+      "ro": "Valoare incorecta a parametrului 2.",
+      "group": "(112200 - 112299) FP_MODE ERRORS BY VALUE",
+      "source": "fiscal_device"
+    },
+    "-112203": {
+      "en": "Bad value of parameter 3.",
+      "ro": "Valoare incorecta a parametrului 3.",
+      "group": "(112200 - 112299) FP_MODE ERRORS BY VALUE",
+      "source": "fiscal_device"
+    },
+    "-112204": {
+      "en": "Bad value of parameter 4.",
+      "ro": "Valoare incorecta a parametrului 4.",
+      "group": "(112200 - 112299) FP_MODE ERRORS BY VALUE",
+      "source": "fiscal_device"
+    },
+    "-112205": {
+      "en": "Bad value of parameter 5.",
+      "ro": "Valoare incorecta a parametrului 5.",
+      "group": "(112200 - 112299) FP_MODE ERRORS BY VALUE",
+      "source": "fiscal_device"
+    },
+    "-112206": {
+      "en": "Bad value of parameter 6.",
+      "ro": "Valoare incorecta a parametrului 6.",
+      "group": "(112200 - 112299) FP_MODE ERRORS BY VALUE",
+      "source": "fiscal_device"
+    },
+    "-112207": {
+      "en": "Bad value of parameter 7.",
+      "ro": "Valoare incorecta a parametrului 7.",
+      "group": "(112200 - 112299) FP_MODE ERRORS BY VALUE",
+      "source": "fiscal_device"
+    },
+    "-112208": {
+      "en": "Bad value of parameter 8.",
+      "ro": "Valoare incorecta a parametrului 8.",
+      "group": "(112200 - 112299) FP_MODE ERRORS BY VALUE",
+      "source": "fiscal_device"
+    },
+    "-112209": {
+      "en": "Bad value of parameter 9.",
+      "ro": "Valoare incorecta a parametrului 9.",
+      "group": "(112200 - 112299) FP_MODE ERRORS BY VALUE",
+      "source": "fiscal_device"
+    },
+    "-112210": {
+      "en": "Bad value of parameter 10.",
+      "ro": "Valoare incorecta a parametrului 10.",
+      "group": "(112200 - 112299) FP_MODE ERRORS BY VALUE",
+      "source": "fiscal_device"
+    },
+    "-112211": {
+      "en": "Bad value of parameter 11.",
+      "ro": "Valoare incorecta a parametrului 11.",
+      "group": "(112200 - 112299) FP_MODE ERRORS BY VALUE",
+      "source": "fiscal_device"
+    },
+    "-112212": {
+      "en": "Bad value of parameter 12.",
+      "ro": "Valoare incorecta a parametrului 12.",
+      "group": "(112200 - 112299) FP_MODE ERRORS BY VALUE",
+      "source": "fiscal_device"
+    },
+    "-112213": {
+      "en": "Bad value of parameter 13.",
+      "ro": "Valoare incorecta a parametrului 13.",
+      "group": "(112200 - 112299) FP_MODE ERRORS BY VALUE",
+      "source": "fiscal_device"
+    },
+    "-112214": {
+      "en": "Bad value of parameter 14.",
+      "ro": "Valoare incorecta a parametrului 14.",
+      "group": "(112200 - 112299) FP_MODE ERRORS BY VALUE",
+      "source": "fiscal_device"
+    },
+    "-112215": {
+      "en": "Bad value of parameter 15.",
+      "ro": "Valoare incorecta a parametrului 15.",
+      "group": "(112200 - 112299) FP_MODE ERRORS BY VALUE",
+      "source": "fiscal_device"
+    },
+    "-112216": {
+      "en": "Bad value of parameter 16.",
+      "ro": "Valoare incorecta a parametrului 16.",
+      "group": "(112200 - 112299) FP_MODE ERRORS BY VALUE",
+      "source": "fiscal_device"
+    },
+    "-113000": {
+      "en": "Flash memory error: Reading ID error",
+      "ro": "Eroare memorie flash: Eroare citire ID",
+      "group": "(113000 - 114000) FLASH_MEMORY ERRORS",
+      "source": "fiscal_device"
+    },
+    "-113001": {
+      "en": "Flash memory error: Sector size error",
+      "ro": "Eroare memorie flash: Eroare marime sector",
+      "group": "(113000 - 114000) FLASH_MEMORY ERRORS",
+      "source": "fiscal_device"
+    },
+    "-114000": {
+      "en": "POS- terminal error: Communication channel is closed",
+      "ro": "Eroare terminal POS: Canal de comunicatie inchis",
+      "group": "(114000 - 114998) POS TERMINAL ERRORS",
+      "source": "fiscal_device"
+    },
+    "-114998": {
+      "en": "Crypto module error: Wrong ID numbers",
+      "ro": "Eroare modul criptografic: Numar ID gresit",
+      "group": "(114998 - 117999) CRYPTO MODULE",
+      "source": "fiscal_device"
+    },
+    "-114999": {
+      "en": "Crypto module error: Unexpected response",
+      "ro": "Eroare modul criptografic: Raspuns neconform",
+      "group": "(114998 - 117999) CRYPTO MODULE",
+      "source": "fiscal_device"
+    },
+    "-115000": {
+      "en": "Crypto module error: CM is disconnected",
+      "ro": "Eroare modul criptografic: Modul Cripto deconectat",
+      "group": "(114998 - 117999) CRYPTO MODULE",
+      "source": "fiscal_device"
+    },
+    "-115001": {
+      "en": "Crypto module error: Communication error",
+      "ro": "Eroare modul criptografic: Eroare comunicatie",
+      "group": "(114998 - 117999) CRYPTO MODULE",
+      "source": "fiscal_device"
+    },
+    "-115002": {
+      "en": "Crypto module error: Timeout",
+      "ro": "Eroare modul criptografic: Timeout",
+      "group": "(114998 - 117999) CRYPTO MODULE",
+      "source": "fiscal_device"
+    },
+    "-116000": {
+      "en": "Crypto module error: Crypto module errors range begin.",
+      "ro": "Eroare modul criptografic: Eroare inceput domeniu Modul Cripto.",
+      "group": "(114998 - 117999) CRYPTO MODULE",
+      "source": "fiscal_device"
+    },
+    "-117999": {
+      "en": "Crypto module error: Crypto module errors range end.",
+      "ro": "Eroare modul criptografic: Eroare sfarsit domeniu Modul Cripto.",
+      "group": "(114998 - 117999) CRYPTO MODULE",
+      "source": "fiscal_device"
+    },
+    "-118000": {
+      "en": "ECR server error: The connection socket is not open",
+      "ro": "Eroare server AMEF: Conexiunea nu e deschisa",
+      "group": "(118000 - 119000) ONLINE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-118001": {
+      "en": "ECR server error: The set for this command is not opened",
+      "ro": "Eroare server AMEF: Setul pentru aceasta comanda nu este deschis",
+      "group": "(118000 - 119000) ONLINE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-118002": {
+      "en": "ECR server error: Wrong parameter",
+      "ro": "Eroare server AMEF: Parametru incorect",
+      "group": "(118000 - 119000) ONLINE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-118003": {
+      "en": "ECR server error: Socket send error. Could not send data to server",
+      "ro": "Eroare server AMEF: Eroare transmitere date. Nu se pot trimite date la server",
+      "group": "(118000 - 119000) ONLINE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-118004": {
+      "en": "ECR server error: Receiving timeout. No data is receivec on time",
+      "ro": "Eroare server AMEF: Receptie date intarziata. Nu se primesc date de la server",
+      "group": "(118000 - 119000) ONLINE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-118005": {
+      "en": "ECR server error: Socket is closed",
+      "ro": "Eroare server AMEF: Conexiune inchisa",
+      "group": "(118000 - 119000) ONLINE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-118006": {
+      "en": "ECR server error: Unknown state",
+      "ro": "Eroare server AMEF: Status necunoscut",
+      "group": "(118000 - 119000) ONLINE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-118007": {
+      "en": "ECR server error: Forbidden operation",
+      "ro": "Eroare server AMEF: Operatiune interzisa",
+      "group": "(118000 - 119000) ONLINE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-170000": {
+      "en": "USB error: Host init error",
+      "ro": "Eroare USB: Eroare initializare Host",
+      "group": "(170000 - 171000) PENDRIVE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-170001": {
+      "en": "USB error: No device",
+      "ro": "Eroare USB: Lipsa aparat",
+      "group": "(170000 - 171000) PENDRIVE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-170002": {
+      "en": "USB error: No filesystem",
+      "ro": "Eroare USB: Lipsa fisier sistem",
+      "group": "(170000 - 171000) PENDRIVE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-170003": {
+      "en": "USB error: File open error",
+      "ro": "Eroare USB: Eroare la deschidere fisier",
+      "group": "(170000 - 171000) PENDRIVE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-170004": {
+      "en": "USB error: File copy error",
+      "ro": "Eroare USB: Eroare la copiere fisier",
+      "group": "(170000 - 171000) PENDRIVE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-170005": {
+      "en": "USB error: File unpack error",
+      "ro": "Eroare USB: Eroare la dezarhivare fisier",
+      "group": "(170000 - 171000) PENDRIVE ERRORS",
+      "source": "fiscal_device"
+    },
+    "-1": {
+      "en": "General error / Unknown error.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-2": {
+      "en": "Create error.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-3": {
+      "en": "Open error",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-4": {
+      "en": "Close error",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-5": {
+      "en": "Device or resource busy.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-6": {
+      "en": "Timeout expired.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-7": {
+      "en": "The operation is not supported.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-8": {
+      "en": "Memory allocation error.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-9": {
+      "en": "Invalid parameter.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10": {
+      "en": "Input/Output error",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-11": {
+      "en": "CRC error.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-12": {
+      "en": "Flash memory error.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-13": {
+      "en": "EEPROM error",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-14": {
+      "en": "Device error.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-15": {
+      "en": "The operation is not implemented.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-16": {
+      "en": "The device or resource does not exists.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-17": {
+      "en": "Invalid command.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-18": {
+      "en": "Not exist object.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-19": {
+      "en": "No more items or operations",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-20": {
+      "en": "Command failed",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-21": {
+      "en": "Invalid command",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-22": {
+      "en": "No registered",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-23": {
+      "en": "Error which was obtained in GetStatus method. Some bits in the status bytes of the fiscal device was raised.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10500": {
+      "en": "Missing input parameter. [INPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10502": {
+      "en": "Check for exceeding the upper limit of the parameter (length). [INPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10503": {
+      "en": "Check for exceeding the lower limit of the parameter (length). [INPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10504": {
+      "en": "Check for availability in the enumerated list of values. [INPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10505": {
+      "en": "Check whether the parameter is real number. [INPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10506": {
+      "en": "Check for exceeding the upper limit of the parameter (Currency value). [INPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10507": {
+      "en": "Check for exceeding the lower limit of the parameter (Currency value). [INPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10508": {
+      "en": "Check for exceeding the upper limit of the parameter (QTY value). [INPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10509": {
+      "en": "Check for exceeding the lower limit of the parameter (QTY value). [INPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10510": {
+      "en": "Check whether the parameter is an integer value. [INPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10511": {
+      "en": "Check for exceeding the upper limit of the parameter (INT value). [INPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10512": {
+      "en": "Check for exceeding the lower limit of the parameter (INT value). [INPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10513": {
+      "en": "Check for exceeding the upper limit of the parameter (length). [OUTPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10514": {
+      "en": "Check for exceeding the lower limit of the parameter (length). [OUTPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10515": {
+      "en": "Check for availability in the enumerated list of values. [OUTPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10516": {
+      "en": "Check whether the parameter is real number. [OUTPTUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10517": {
+      "en": "Check for exceeding the upper limit of the parameter (Currency value). [OUTPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10518": {
+      "en": "Check for exceeding the lower limit of the parameter (Currency value). [OUTPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10519": {
+      "en": "Check for exceeding the upper limit of the parameter (QTY value). [OUTPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10520": {
+      "en": "Check for exceeding the lower limit of the parameter (QTY value). [OUTPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10521": {
+      "en": "Check whether the parameter is an integer value. [OUTPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10522": {
+      "en": "Check for exceeding the upper limit of the parameter (INT value). [OUTPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10523": {
+      "en": "Check for exceeding the lower limit of the parameter (INT value). [OUTPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10524": {
+      "en": "Missing output parameter. [OUTPUT]",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10525": {
+      "en": "Timeout error.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10526": {
+      "en": "Command not found.(By name)",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10527": {
+      "en": "Command not found.(By values)",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10528": {
+      "en": "Successfully canceled PinPad transaction (automatically - from settings)",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10529": {
+      "en": "The CSV file is not in format (\";\";\";)",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-10530": {
+      "en": "This is a header row.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-23000": {
+      "en": "No internet connection.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-23001": {
+      "en": "Client can not connect to the server.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-23002": {
+      "en": "Client can not register calback.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-23003": {
+      "en": "Client can not disconnect properly from the server.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-23004": {
+      "en": "Client can not get user table from the server.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-23005": {
+      "en": "Client can not clear old transactions from the server.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-23006": {
+      "en": "Client can not broadcast the message.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-23007": {
+      "en": "Client can not execute update method (2).",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33000": {
+      "en": "Load from to failed.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33001": {
+      "en": "Save to file failed",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33002": {
+      "en": "Wrong protocol - readByte method:(missing SOH byte)",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33003": {
+      "en": "Wrong protocol - readByte method:(missing SEQ byte).",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33004": {
+      "en": "Wrong protocol - readByte method:(missing EOT byte)",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33005": {
+      "en": "Wrong protocol - readByte method:(missing ENQ byte)",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33006": {
+      "en": "Wrong protocol - readByte method:(missing BCC byte)",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33007": {
+      "en": "Wrong protocol - readByte method:(missing ETX byte)",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33008": {
+      "en": "Error due parsing. Something is wrong in the script line.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33009": {
+      "en": "The script is empty.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33010": {
+      "en": "The script execution was interrupted by user.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33011": {
+      "en": "Duplicate label",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33012": {
+      "en": "Invalid parameter value",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33013": {
+      "en": "FiscalDevice component is not assigned to scrypt engine.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33014": {
+      "en": "Misc component is not assigned to scrypt engine.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33015": {
+      "en": "The index is out of range. The value is greater than numbers of the fields in the answer.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33016": {
+      "en": "Misc component not assigned.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33017": {
+      "en": "Error container component not assigned.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33018": {
+      "en": "Description container component not assigned.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33019": {
+      "en": "Connector component not assigned.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33020": {
+      "en": "Device depended method is not prepared.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33021": {
+      "en": "Fiscal device component not assigned",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33022": {
+      "en": "Device not connected",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33023": {
+      "en": "Device is connected - you can not change these values until the device is still connected.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33024": {
+      "en": "Invalid file name.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33025": {
+      "en": "Unknown device model",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33026": {
+      "en": "Transport protocol not supported.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33027": {
+      "en": "Not supported script engine",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33028": {
+      "en": "Device answer is not by its protocol.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33029": {
+      "en": "No files for download",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33030": {
+      "en": "Delete file - access denied.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33031": {
+      "en": "The download is canceled by user.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33032": {
+      "en": "Incorrect checksum",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33033": {
+      "en": "Empty stamp name.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33034": {
+      "en": "The stamp name length must be <= 12 symbols.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33035": {
+      "en": "Invalid command name.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33036": {
+      "en": "Invalid param index.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33037": {
+      "en": "Invalid param name.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33038": {
+      "en": "Command not found.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33039": {
+      "en": "Invalid enumerate list index.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33040": {
+      "en": "No input params for this command.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33041": {
+      "en": "Param not found.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33042": {
+      "en": "No output params - general error.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    },
+    "-33043": {
+      "en": "The COM Server not assigned.",
+      "ro": null,
+      "group": "COM Server (driver PC)",
+      "source": "com_server"
+    }
+  },
+  "hints": {
+    "-100403": {
+      "key": "paper",
+      "title": "Lipsa hartie",
+      "status_bit": "2.0 (End of paper)",
+      "steps": [
+        "Deschide capacul imprimantei si scoate miezul rolei goale.",
+        "Pune o rola termica noua cu partea lucioasa (cea care se inegreste la zgariat) spre capul de printare.",
+        "Lasa 2-3 cm de hartie afara si inchide capacul pana se aude clic.",
+        "Verifica in programul POS daca bonul s-a inchis. Daca bonul a ramas deschis, finalizeaza-l sau anuleaza-l inainte de unul nou; nu emite din nou un bon care s-a tiparit deja."
+      ]
+    },
+    "-112006": {
+      "key": "paper",
+      "title": "Lipsa hartie",
+      "status_bit": "2.0 (End of paper)",
+      "steps": [
+        "Deschide capacul imprimantei si scoate miezul rolei goale.",
+        "Pune o rola termica noua cu partea lucioasa (cea care se inegreste la zgariat) spre capul de printare.",
+        "Lasa 2-3 cm de hartie afara si inchide capacul pana se aude clic.",
+        "Verifica in programul POS daca bonul s-a inchis. Daca bonul a ramas deschis, finalizeaza-l sau anuleaza-l inainte de unul nou; nu emite din nou un bon care s-a tiparit deja."
+      ]
+    },
+    "-111548": {
+      "key": "paper",
+      "title": "Lipsa hartie",
+      "status_bit": "2.0 (End of paper)",
+      "steps": [
+        "Deschide capacul imprimantei si scoate miezul rolei goale.",
+        "Pune o rola termica noua cu partea lucioasa (cea care se inegreste la zgariat) spre capul de printare.",
+        "Lasa 2-3 cm de hartie afara si inchide capacul pana se aude clic.",
+        "Verifica in programul POS daca bonul s-a inchis. Daca bonul a ramas deschis, finalizeaza-l sau anuleaza-l inainte de unul nou; nu emite din nou un bon care s-a tiparit deja."
+      ]
+    },
+    "-100405": {
+      "key": "nearPaper",
+      "title": "Se termina hartia",
+      "status_bit": "2.1 (Near paper end)",
+      "steps": [
+        "Este doar un avertisment, poti vinde in continuare.",
+        "Pregateste o rola noua si schimb-o la prima pauza, inainte sa se termine in mijlocul unui bon."
+      ]
+    },
+    "-100404": {
+      "key": "cover",
+      "title": "Capac deschis",
+      "status_bit": "0.6 (Cover is open)",
+      "steps": [
+        "Apasa capacul imprimantei pana se inchide cu clic pe ambele parti.",
+        "Verifica sa nu fie hartie prinsa in margine; hartia trebuie sa iasa drept prin fanta.",
+        "Daca eroarea ramane cu capacul inchis, senzorul de capac poate fi defect: cheama service-ul autorizat."
+      ]
+    },
+    "-112007": {
+      "key": "cover",
+      "title": "Capac deschis",
+      "status_bit": "0.6 (Cover is open)",
+      "steps": [
+        "Apasa capacul imprimantei pana se inchide cu clic pe ambele parti.",
+        "Verifica sa nu fie hartie prinsa in margine; hartia trebuie sa iasa drept prin fanta.",
+        "Daca eroarea ramane cu capacul inchis, senzorul de capac poate fi defect: cheama service-ul autorizat."
+      ]
+    },
+    "-100402": {
+      "key": "overheat",
+      "title": "Cap de printare supraincalzit",
+      "steps": [
+        "Opreste tiparirea cateva minute (de exemplu dupa rapoarte lungi).",
+        "Asigura ventilatie in jurul casei, fara obiecte peste ea.",
+        "Daca apare des la bonuri scurte, cheama service-ul autorizat."
+      ]
+    },
+    "-100407": {
+      "key": "cutter",
+      "title": "Eroare cutter sau mecanism de printare",
+      "status_bit": "0.4 (Failure in printing mechanism)",
+      "steps": [
+        "Opreste casa, deschide capacul si scoate hartia blocata sau bucatile rupte din zona cutterului.",
+        "Repune rola corect si porneste casa.",
+        "Daca eroarea revine, nu forta cutterul: cheama service-ul autorizat."
+      ]
+    },
+    "-112008": {
+      "key": "cutter",
+      "title": "Eroare cutter sau mecanism de printare",
+      "status_bit": "0.4 (Failure in printing mechanism)",
+      "steps": [
+        "Opreste casa, deschide capacul si scoate hartia blocata sau bucatile rupte din zona cutterului.",
+        "Repune rola corect si porneste casa.",
+        "Daca eroarea revine, nu forta cutterul: cheama service-ul autorizat."
+      ]
+    },
+    "-111024": {
+      "key": "z24",
+      "title": "Au trecut 24 de ore fara raport Z",
+      "status_bit": "1.2 (More than 24 hours after day opening)",
+      "steps": [
+        "Casa blocheaza vanzarile daca ziua fiscala este deschisa de peste 24 de ore.",
+        "Inchide bonul deschis, daca exista, apoi tipareste raportul Z (inchidere de zi) din programul POS sau din meniul casei.",
+        "Dupa raportul Z poti vinde din nou.",
+        "Fa raportul Z in fiecare zi la inchidere ca sa nu se repete."
+      ]
+    },
+    "-110811": {
+      "key": "z24",
+      "title": "Au trecut 24 de ore fara raport Z",
+      "status_bit": "1.2 (More than 24 hours after day opening)",
+      "steps": [
+        "Casa blocheaza vanzarile daca ziua fiscala este deschisa de peste 24 de ore.",
+        "Inchide bonul deschis, daca exista, apoi tipareste raportul Z (inchidere de zi) din programul POS sau din meniul casei.",
+        "Dupa raportul Z poti vinde din nou.",
+        "Fa raportul Z in fiecare zi la inchidere ca sa nu se repete."
+      ]
+    },
+    "-104000": {
+      "key": "zNeeded",
+      "title": "Este nevoie de raport Z inainte de operatie",
+      "steps": [
+        "Operatia ceruta (de exemplu schimbarea cotelor TVA sau a datei) se poate face doar cu ziua fiscala inchisa.",
+        "Tipareste raportul Z, apoi repeta operatia."
+      ]
+    },
+    "-112004": {
+      "key": "dateTime",
+      "title": "Data sau ora gresita",
+      "status_bit": "0.2 (The real time clock is not synchronized)",
+      "steps": [
+        "Verifica data si ora afisate de casa.",
+        "Seteaza data si ora corecte din meniul casei sau din programul POS (comanda 61, format DD-MM-YY hh:mm:ss).",
+        "Casa nu accepta o data mai veche decat ultima inregistrare fiscala; daca ceasul a sarit inainte, cheama service-ul autorizat.",
+        "Daca ceasul se reseteaza dupa oprire, bateria interna poate fi descarcata: service autorizat."
+      ]
+    },
+    "-101008": {
+      "key": "dateTime",
+      "title": "Data sau ora gresita",
+      "status_bit": "0.2 (The real time clock is not synchronized)",
+      "steps": [
+        "Verifica data si ora afisate de casa.",
+        "Seteaza data si ora corecte din meniul casei sau din programul POS (comanda 61, format DD-MM-YY hh:mm:ss).",
+        "Casa nu accepta o data mai veche decat ultima inregistrare fiscala; daca ceasul a sarit inainte, cheama service-ul autorizat.",
+        "Daca ceasul se reseteaza dupa oprire, bateria interna poate fi descarcata: service autorizat."
+      ]
+    },
+    "-100508": {
+      "key": "dateTime",
+      "title": "Data sau ora gresita",
+      "status_bit": "0.2 (The real time clock is not synchronized)",
+      "steps": [
+        "Verifica data si ora afisate de casa.",
+        "Seteaza data si ora corecte din meniul casei sau din programul POS (comanda 61, format DD-MM-YY hh:mm:ss).",
+        "Casa nu accepta o data mai veche decat ultima inregistrare fiscala; daca ceasul a sarit inainte, cheama service-ul autorizat.",
+        "Daca ceasul se reseteaza dupa oprire, bateria interna poate fi descarcata: service autorizat."
+      ]
+    },
+    "-111008": {
+      "key": "vatGroup",
+      "title": "Grupa de TVA nu este in domeniu sau nu este permisa",
+      "steps": [
+        "Produsul este trimis pe o grupa de TVA (A, B, C, D, E...) care nu este programata in casa.",
+        "Tipareste sau citeste cotele TVA programate (comanda 50 / raport de cote) si noteaza ce litera are 21%, ce litera are 11% si ce litera e scutita.",
+        "In programul POS, pune fiecare produs pe litera care are cota lui (de exemplu paine si alimente pe litera cu 11%).",
+        "Firmele neplatitoare de TVA pot vinde doar pe grupa E (scutit); verifica setarea in program.",
+        "Daca lipseste o cota (de exemplu dupa schimbarea cotelor din 2025), cotele se programeaza de service, dupa un raport Z."
+      ]
+    },
+    "-111005": {
+      "key": "vatGroup",
+      "title": "Grupa de TVA nu este in domeniu sau nu este permisa",
+      "steps": [
+        "Produsul este trimis pe o grupa de TVA (A, B, C, D, E...) care nu este programata in casa.",
+        "Tipareste sau citeste cotele TVA programate (comanda 50 / raport de cote) si noteaza ce litera are 21%, ce litera are 11% si ce litera e scutita.",
+        "In programul POS, pune fiecare produs pe litera care are cota lui (de exemplu paine si alimente pe litera cu 11%).",
+        "Firmele neplatitoare de TVA pot vinde doar pe grupa E (scutit); verifica setarea in program.",
+        "Daca lipseste o cota (de exemplu dupa schimbarea cotelor din 2025), cotele se programeaza de service, dupa un raport Z."
+      ]
+    },
+    "-102009": {
+      "key": "vatNotSet",
+      "title": "Cotele TVA nu sunt setate",
+      "steps": [
+        "Casa nu are cote TVA programate si nu poate emite bonuri fiscale.",
+        "Programarea cotelor se face dupa raportul Z, de regula de service-ul autorizat (comanda 83)."
+      ]
+    },
+    "-111002": {
+      "key": "syntax",
+      "title": "Eroare de sintaxa in comanda trimisa de programul POS",
+      "status_bit": "0.0 (Syntax error)",
+      "steps": [
+        "Eroarea vine din programul care trimite comanda, nu de la casierie.",
+        "Verifica sa nu existe caractere speciale sau texte prea lungi in numele produsului.",
+        "Actualizeaza programul POS; protocolul Datecs cere toate separatoarele (TAB) chiar si pentru campurile goale.",
+        "Daca apare la un singur produs, verifica pretul, cantitatea si grupa TVA ale lui.",
+        "Daca apare la orice bon, anunta furnizorul programului POS si spune-i codul exact."
+      ]
+    },
+    "-112001": {
+      "key": "syntax",
+      "title": "Eroare de sintaxa in comanda trimisa de programul POS",
+      "status_bit": "0.0 (Syntax error)",
+      "steps": [
+        "Eroarea vine din programul care trimite comanda, nu de la casierie.",
+        "Verifica sa nu existe caractere speciale sau texte prea lungi in numele produsului.",
+        "Actualizeaza programul POS; protocolul Datecs cere toate separatoarele (TAB) chiar si pentru campurile goale.",
+        "Daca apare la un singur produs, verifica pretul, cantitatea si grupa TVA ale lui.",
+        "Daca apare la orice bon, anunta furnizorul programului POS si spune-i codul exact."
+      ]
+    },
+    "-112101": {
+      "key": "syntax",
+      "title": "Eroare de sintaxa in comanda trimisa de programul POS",
+      "status_bit": "0.0 (Syntax error)",
+      "steps": [
+        "Eroarea vine din programul care trimite comanda, nu de la casierie.",
+        "Verifica sa nu existe caractere speciale sau texte prea lungi in numele produsului.",
+        "Actualizeaza programul POS; protocolul Datecs cere toate separatoarele (TAB) chiar si pentru campurile goale.",
+        "Daca apare la un singur produs, verifica pretul, cantitatea si grupa TVA ale lui.",
+        "Daca apare la orice bon, anunta furnizorul programului POS si spune-i codul exact."
+      ]
+    },
+    "-112102": {
+      "key": "syntax",
+      "title": "Eroare de sintaxa in comanda trimisa de programul POS",
+      "status_bit": "0.0 (Syntax error)",
+      "steps": [
+        "Eroarea vine din programul care trimite comanda, nu de la casierie.",
+        "Verifica sa nu existe caractere speciale sau texte prea lungi in numele produsului.",
+        "Actualizeaza programul POS; protocolul Datecs cere toate separatoarele (TAB) chiar si pentru campurile goale.",
+        "Daca apare la un singur produs, verifica pretul, cantitatea si grupa TVA ale lui.",
+        "Daca apare la orice bon, anunta furnizorul programului POS si spune-i codul exact."
+      ]
+    },
+    "-112103": {
+      "key": "syntax",
+      "title": "Eroare de sintaxa in comanda trimisa de programul POS",
+      "status_bit": "0.0 (Syntax error)",
+      "steps": [
+        "Eroarea vine din programul care trimite comanda, nu de la casierie.",
+        "Verifica sa nu existe caractere speciale sau texte prea lungi in numele produsului.",
+        "Actualizeaza programul POS; protocolul Datecs cere toate separatoarele (TAB) chiar si pentru campurile goale.",
+        "Daca apare la un singur produs, verifica pretul, cantitatea si grupa TVA ale lui.",
+        "Daca apare la orice bon, anunta furnizorul programului POS si spune-i codul exact."
+      ]
+    },
+    "-112104": {
+      "key": "syntax",
+      "title": "Eroare de sintaxa in comanda trimisa de programul POS",
+      "status_bit": "0.0 (Syntax error)",
+      "steps": [
+        "Eroarea vine din programul care trimite comanda, nu de la casierie.",
+        "Verifica sa nu existe caractere speciale sau texte prea lungi in numele produsului.",
+        "Actualizeaza programul POS; protocolul Datecs cere toate separatoarele (TAB) chiar si pentru campurile goale.",
+        "Daca apare la un singur produs, verifica pretul, cantitatea si grupa TVA ale lui.",
+        "Daca apare la orice bon, anunta furnizorul programului POS si spune-i codul exact."
+      ]
+    },
+    "-112105": {
+      "key": "syntax",
+      "title": "Eroare de sintaxa in comanda trimisa de programul POS",
+      "status_bit": "0.0 (Syntax error)",
+      "steps": [
+        "Eroarea vine din programul care trimite comanda, nu de la casierie.",
+        "Verifica sa nu existe caractere speciale sau texte prea lungi in numele produsului.",
+        "Actualizeaza programul POS; protocolul Datecs cere toate separatoarele (TAB) chiar si pentru campurile goale.",
+        "Daca apare la un singur produs, verifica pretul, cantitatea si grupa TVA ale lui.",
+        "Daca apare la orice bon, anunta furnizorul programului POS si spune-i codul exact."
+      ]
+    },
+    "-101004": {
+      "key": "syntax",
+      "title": "Eroare de sintaxa in comanda trimisa de programul POS",
+      "status_bit": "0.0 (Syntax error)",
+      "steps": [
+        "Eroarea vine din programul care trimite comanda, nu de la casierie.",
+        "Verifica sa nu existe caractere speciale sau texte prea lungi in numele produsului.",
+        "Actualizeaza programul POS; protocolul Datecs cere toate separatoarele (TAB) chiar si pentru campurile goale.",
+        "Daca apare la un singur produs, verifica pretul, cantitatea si grupa TVA ale lui.",
+        "Daca apare la orice bon, anunta furnizorul programului POS si spune-i codul exact."
+      ]
+    },
+    "-112000": {
+      "key": "invalidCmd",
+      "title": "Comanda invalida sau nepermisa acum",
+      "status_bit": "0.1 (Command code is invalid) / 1.1 (Command is not permitted)",
+      "steps": [
+        "Comanda nu este suportata de modelul sau firmware-ul casei, sau nu este permisa in starea curenta (de exemplu un bon este deja deschis).",
+        "Verifica daca exista un bon fiscal sau nefiscal deschis si inchide-l sau anuleaza-l.",
+        "Daca eroarea ramane, spune furnizorului POS modelul casei si versiunea de firmware."
+      ]
+    },
+    "-112002": {
+      "key": "invalidCmd",
+      "title": "Comanda invalida sau nepermisa acum",
+      "status_bit": "0.1 (Command code is invalid) / 1.1 (Command is not permitted)",
+      "steps": [
+        "Comanda nu este suportata de modelul sau firmware-ul casei, sau nu este permisa in starea curenta (de exemplu un bon este deja deschis).",
+        "Verifica daca exista un bon fiscal sau nefiscal deschis si inchide-l sau anuleaza-l.",
+        "Daca eroarea ramane, spune furnizorului POS modelul casei si versiunea de firmware."
+      ]
+    },
+    "-111003": {
+      "key": "invalidCmd",
+      "title": "Comanda invalida sau nepermisa acum",
+      "status_bit": "0.1 (Command code is invalid) / 1.1 (Command is not permitted)",
+      "steps": [
+        "Comanda nu este suportata de modelul sau firmware-ul casei, sau nu este permisa in starea curenta (de exemplu un bon este deja deschis).",
+        "Verifica daca exista un bon fiscal sau nefiscal deschis si inchide-l sau anuleaza-l.",
+        "Daca eroarea ramane, spune furnizorului POS modelul casei si versiunea de firmware."
+      ]
+    },
+    "-111015": {
+      "key": "receiptOpen",
+      "title": "Bon deja deschis",
+      "status_bit": "2.3 (Fiscal receipt is open) / 2.5 (Nonfiscal receipt is open)",
+      "steps": [
+        "A ramas un bon deschis, de obicei dupa o eroare sau o oprire a programului in timpul vanzarii.",
+        "Inchide bonul (plata) sau anuleaza-l din programul POS sau din meniul casei.",
+        "Inainte sa repeti vanzarea, verifica daca bonul nu a fost deja tiparit, ca sa nu emiti doua bonuri pentru aceeasi vanzare."
+      ]
+    },
+    "-111047": {
+      "key": "receiptOpen",
+      "title": "Bon deja deschis",
+      "status_bit": "2.3 (Fiscal receipt is open) / 2.5 (Nonfiscal receipt is open)",
+      "steps": [
+        "A ramas un bon deschis, de obicei dupa o eroare sau o oprire a programului in timpul vanzarii.",
+        "Inchide bonul (plata) sau anuleaza-l din programul POS sau din meniul casei.",
+        "Inainte sa repeti vanzarea, verifica daca bonul nu a fost deja tiparit, ca sa nu emiti doua bonuri pentru aceeasi vanzare."
+      ]
+    },
+    "-111046": {
+      "key": "receiptOpen",
+      "title": "Bon deja deschis",
+      "status_bit": "2.3 (Fiscal receipt is open) / 2.5 (Nonfiscal receipt is open)",
+      "steps": [
+        "A ramas un bon deschis, de obicei dupa o eroare sau o oprire a programului in timpul vanzarii.",
+        "Inchide bonul (plata) sau anuleaza-l din programul POS sau din meniul casei.",
+        "Inainte sa repeti vanzarea, verifica daca bonul nu a fost deja tiparit, ca sa nu emiti doua bonuri pentru aceeasi vanzare."
+      ]
+    },
+    "-111067": {
+      "key": "receiptOpen",
+      "title": "Bon deja deschis",
+      "status_bit": "2.3 (Fiscal receipt is open) / 2.5 (Nonfiscal receipt is open)",
+      "steps": [
+        "A ramas un bon deschis, de obicei dupa o eroare sau o oprire a programului in timpul vanzarii.",
+        "Inchide bonul (plata) sau anuleaza-l din programul POS sau din meniul casei.",
+        "Inainte sa repeti vanzarea, verifica daca bonul nu a fost deja tiparit, ca sa nu emiti doua bonuri pentru aceeasi vanzare."
+      ]
+    },
+    "-111016": {
+      "key": "receiptClosed",
+      "title": "Bonul este inchis",
+      "steps": [
+        "Programul a trimis un produs sau o plata fara un bon deschis.",
+        "Reia vanzarea de la inceput (deschide bon nou).",
+        "Daca se repeta, anunta furnizorul programului POS."
+      ]
+    },
+    "-100114": {
+      "key": "fmFull",
+      "title": "Memoria fiscala este plina",
+      "status_bit": "4.4 (Fiscal memory is full) / 4.3 (sub 60 de rapoarte ramase)",
+      "steps": [
+        "Casa nu mai poate salva rapoarte Z, deci nu mai poate vinde fiscal.",
+        "Cheama service-ul autorizat: memoria fiscala se inlocuieste sau se trece la alt aparat, cu procedura ANAF.",
+        "Pastreaza rapoartele si jurnalul electronic, sunt documente fiscale.",
+        "Avertismentul de sub 60 de rapoarte apare inainte; programeaza service-ul atunci."
+      ]
+    },
+    "-100101": {
+      "key": "fmError",
+      "title": "Eroare la memoria fiscala",
+      "steps": [
+        "Opreste si porneste casa o data.",
+        "Daca eroarea ramane, nu mai incerca operatii fiscale: cheama service-ul autorizat."
+      ]
+    },
+    "-100105": {
+      "key": "fmError",
+      "title": "Eroare la memoria fiscala",
+      "steps": [
+        "Opreste si porneste casa o data.",
+        "Daca eroarea ramane, nu mai incerca operatii fiscale: cheama service-ul autorizat."
+      ]
+    },
+    "-100116": {
+      "key": "fmError",
+      "title": "Eroare la memoria fiscala",
+      "steps": [
+        "Opreste si porneste casa o data.",
+        "Daca eroarea ramane, nu mai incerca operatii fiscale: cheama service-ul autorizat."
+      ]
+    },
+    "-100505": {
+      "key": "fmError",
+      "title": "Eroare la memoria fiscala",
+      "steps": [
+        "Opreste si porneste casa o data.",
+        "Daca eroarea ramane, nu mai incerca operatii fiscale: cheama service-ul autorizat."
+      ]
+    },
+    "-105010": {
+      "key": "ejFull",
+      "title": "Jurnalul electronic este plin sau aproape plin",
+      "status_bit": "2.2 (EJ is full) / 2.4 (EJ nearly full)",
+      "steps": [
+        "La avertismentul de jurnal aproape plin, programeaza service-ul pentru schimbarea jurnalului electronic.",
+        "Cand jurnalul este plin, casa nu mai emite bonuri fiscale pana la interventia service-ului.",
+        "Exporta datele (fisierele .p7b / rapoartele Z) inainte, daca programul tau permite."
+      ]
+    },
+    "-105009": {
+      "key": "ejFull",
+      "title": "Jurnalul electronic este plin sau aproape plin",
+      "status_bit": "2.2 (EJ is full) / 2.4 (EJ nearly full)",
+      "steps": [
+        "La avertismentul de jurnal aproape plin, programeaza service-ul pentru schimbarea jurnalului electronic.",
+        "Cand jurnalul este plin, casa nu mai emite bonuri fiscale pana la interventia service-ului.",
+        "Exporta datele (fisierele .p7b / rapoartele Z) inainte, daca programul tau permite."
+      ]
+    },
+    "-6": {
+      "key": "notConnected",
+      "title": "Casa nu raspunde (conexiune)",
+      "steps": [
+        "Verifica daca casa este pornita si nu arata o eroare pe ecran.",
+        "Verifica cablul USB sau serial (sau reteaua, la conexiune LAN) intre calculator si casa.",
+        "In programul POS verifica portul (COM) si viteza de comunicatie.",
+        "Reporneste casa, apoi programul POS."
+      ]
+    },
+    "-33022": {
+      "key": "notConnected",
+      "title": "Casa nu raspunde (conexiune)",
+      "steps": [
+        "Verifica daca casa este pornita si nu arata o eroare pe ecran.",
+        "Verifica cablul USB sau serial (sau reteaua, la conexiune LAN) intre calculator si casa.",
+        "In programul POS verifica portul (COM) si viteza de comunicatie.",
+        "Reporneste casa, apoi programul POS."
+      ]
+    },
+    "-102006": {
+      "key": "notConnected",
+      "title": "Casa nu raspunde (conexiune)",
+      "steps": [
+        "Verifica daca casa este pornita si nu arata o eroare pe ecran.",
+        "Verifica cablul USB sau serial (sau reteaua, la conexiune LAN) intre calculator si casa.",
+        "In programul POS verifica portul (COM) si viteza de comunicatie.",
+        "Reporneste casa, apoi programul POS."
+      ]
+    },
+    "-110100": {
+      "key": "notConnected",
+      "title": "Casa nu raspunde (conexiune)",
+      "steps": [
+        "Verifica daca casa este pornita si nu arata o eroare pe ecran.",
+        "Verifica cablul USB sau serial (sau reteaua, la conexiune LAN) intre calculator si casa.",
+        "In programul POS verifica portul (COM) si viteza de comunicatie.",
+        "Reporneste casa, apoi programul POS."
+      ]
+    },
+    "-10525": {
+      "key": "notConnected",
+      "title": "Casa nu raspunde (conexiune)",
+      "steps": [
+        "Verifica daca casa este pornita si nu arata o eroare pe ecran.",
+        "Verifica cablul USB sau serial (sau reteaua, la conexiune LAN) intre calculator si casa.",
+        "In programul POS verifica portul (COM) si viteza de comunicatie.",
+        "Reporneste casa, apoi programul POS."
+      ]
+    },
+    "-104004": {
+      "key": "service",
+      "title": "Este nevoie de service autorizat",
+      "steps": [
+        "Eroarea nu se poate rezolva din meniul casei sau din programul POS.",
+        "Noteaza codul exact si cheama service-ul autorizat care a fiscalizat casa."
+      ]
+    },
+    "-110104": {
+      "key": "service",
+      "title": "Este nevoie de service autorizat",
+      "steps": [
+        "Eroarea nu se poate rezolva din meniul casei sau din programul POS.",
+        "Noteaza codul exact si cheama service-ul autorizat care a fiscalizat casa."
+      ]
+    },
+    "-110107": {
+      "key": "service",
+      "title": "Este nevoie de service autorizat",
+      "steps": [
+        "Eroarea nu se poate rezolva din meniul casei sau din programul POS.",
+        "Noteaza codul exact si cheama service-ul autorizat care a fiscalizat casa."
+      ]
+    },
+    "-112005": {
+      "key": "wrongMode",
+      "title": "Casa nu este in modul potrivit",
+      "steps": [
+        "Pentru lucrul cu programul POS casa trebuie sa fie in mod PC / imprimanta fiscala.",
+        "Schimba modul din meniul casei, apoi reporneste programul POS."
+      ]
+    },
+    "-111017": {
+      "key": "noCash",
+      "title": "Nu este destul numerar in casa",
+      "steps": [
+        "Suma scoasa sau restul depaseste numerarul inregistrat in casa.",
+        "Verifica suma; daca ai pus bani in sertar fara document, inregistreaza un aport (intrare numerar) inainte."
+      ]
+    }
+  }
+}

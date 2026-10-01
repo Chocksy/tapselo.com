@@ -30,6 +30,8 @@ export interface OfferPromo {
   promo_to: string | null;
   /** Public Storage URL of the AI picture, or null (then the emoji shows). */
   image_url?: string | null;
+  /** Optional text before the struck price, e.g. "Pret anterior" (generated flyers). */
+  old_label?: string | null;
 }
 
 export interface OfferAnnouncement {
@@ -147,6 +149,27 @@ interface Frame {
   body: string;
   footer: string;
   theme: Theme;
+  // Trusted HTML from the caller (generated flyers on /g/{id}); all optional.
+  headExtra?: string;
+  bodyStart?: string;
+  bodyEnd?: string;
+  /** Replaces the "Pagina realizata cu Tapselo" line. */
+  made?: string;
+}
+
+/** Options for reusing the offers look outside /o/{slug} (the /g/{id} flyer). Defaults = /o page. */
+export interface OffersRenderOptions {
+  canonical?: string;
+  hideSignup?: boolean;
+  hidePrivacyLink?: boolean;
+  /** Trusted HTML appended to <head> (e.g. print CSS). */
+  headExtra?: string;
+  /** Trusted HTML right after <body> (e.g. a banner). */
+  bodyStart?: string;
+  /** Trusted HTML right before </body> (e.g. a hashed inline script). */
+  bodyEnd?: string;
+  /** Trusted HTML replacing the "Pagina realizata cu Tapselo" footer line. */
+  made?: string;
 }
 
 function page(f: Frame): string {
@@ -182,10 +205,10 @@ function page(f: Frame): string {
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..900&family=Instrument+Serif:ital@1&display=swap" />
-<style>${CSS}</style>
+<style>${CSS}</style>${f.headExtra ?? ""}
 </head>
 <body data-theme="${escapeHtml(f.theme)}">
-<header class="hero"><div class="wrap">
+${f.bodyStart ? `${f.bodyStart}\n` : ""}<header class="hero"><div class="wrap">
 <p class="store">${escapeHtml(f.storeLabel)}</p>
 ${f.kicker ? `<p class="kicker">${f.kicker}</p>` : ""}
 <h1${f.headingClass ? ` class="${f.headingClass}"` : ""}>${f.heading}</h1>
@@ -196,9 +219,9 @@ ${f.body}
 </div></main>
 <footer class="ftr"><div class="wrap">
 ${f.footer}
-<p class="made">Pagina realizata cu <a href="/">Tapselo</a>, programul de casa al magazinului.</p>
+${f.made ?? `<p class="made">Pagina realizata cu <a href="/">Tapselo</a>, programul de casa al magazinului.</p>`}
 </div></footer>
-</body>
+${f.bodyEnd ? `${f.bodyEnd}\n` : ""}</body>
 </html>
 `;
 }
@@ -326,7 +349,7 @@ function renderPromo(x: OfferPromo): string {
 <div class="art${img ? " has-img" : ""}" aria-hidden="true">${img ? `<img src="${escapeHtml(img)}" alt="" loading="lazy" decoding="async" width="1024" height="1024" />` : escapeHtml(emoji)}${percent >= 1 ? `<span class="badge">-${percent}%</span>` : ""}</div>
 <div class="promo-body">
 <h3>${escapeHtml(name)}</h3>
-${showOld ? `<p class="old"><s aria-label="Pret vechi ${escapeHtml(regular)}">${escapeHtml(regular)}</s></p>` : ""}
+${showOld ? `<p class="old">${(x.old_label ?? "").trim() ? `${escapeHtml((x.old_label ?? "").trim())}: ` : ""}<s aria-label="Pret vechi ${escapeHtml(regular)}">${escapeHtml(regular)}</s></p>` : ""}
 ${promoNumber ? `<p class="tag"><span class="new">${escapeHtml(promoNumber)}</span><span class="unit">${escapeHtml(unitLabel(x.unit))}</span></p>` : ""}
 ${prior && Number.isFinite(days) && days > 0 ? `<p class="prior">Cel mai mic pret in ultimele ${escapeHtml(daysLabel(days))}: ${escapeHtml(prior)}</p>` : ""}
 ${until ? `<p class="valid">Pana pe ${escapeHtml(until)}</p>` : ""}
@@ -335,7 +358,7 @@ ${until ? `<p class="valid">Pana pe ${escapeHtml(until)}</p>` : ""}
 }
 
 // `slug` must already be validated (lowercase a-z0-9 and dashes); it is still escaped.
-export function renderOffersPage(p: OffersPayload, slug: string): string {
+export function renderOffersPage(p: OffersPayload, slug: string, opts: OffersRenderOptions = {}): string {
   const name = storeName(p);
   const promos = (p.promos ?? []).filter(Boolean);
   const anns = (p.announcements ?? []).filter((a) => a && (a.title ?? "").trim());
@@ -360,7 +383,7 @@ ${promos.map(renderPromo).join("\n")}
     parts.push(`<div class="card empty"><p>Acum nu sunt oferte. Revino in curand.</p></div>`);
   }
 
-  if (p.signup_enabled) {
+  if (p.signup_enabled && !opts.hideSignup) {
     parts.push(`<section class="cta">
 <p>Vrei ofertele pe email sau WhatsApp?</p>
 <small>Te anuntam cand apar preturi noi.</small>
@@ -377,7 +400,7 @@ ${promos.map(renderPromo).join("\n")}
     `<p><strong>${escapeHtml(company || name)}</strong></p>`,
     address ? `<p>${escapeHtml(address)}</p>` : "",
     phone ? `<p>Telefon: ${tel ? `<a href="tel:${escapeHtml(tel)}">${escapeHtml(phone)}</a>` : escapeHtml(phone)}</p>` : "",
-    `<p class="links"><a href="/p/${escapeHtml(s)}">Cum folosim datele clientilor</a></p>`,
+    opts.hidePrivacyLink ? "" : `<p class="links"><a href="/p/${escapeHtml(s)}">Cum folosim datele clientilor</a></p>`,
     anyImage ? `<p class="img-note">${IMAGE_NOTE}</p>` : "",
   ]
     .filter(Boolean)
@@ -386,7 +409,7 @@ ${promos.map(renderPromo).join("\n")}
   return page({
     title: `Oferte ${name}`,
     description: offersDescription(p),
-    canonical: `${SITE}/o/${s}`,
+    canonical: opts.canonical ?? `${SITE}/o/${s}`,
     storeLabel: name,
     kicker: "Ofertele de azi",
     heading: "Oferte",
@@ -394,6 +417,10 @@ ${promos.map(renderPromo).join("\n")}
     body: parts.join("\n"),
     footer,
     theme,
+    headExtra: opts.headExtra,
+    bodyStart: opts.bodyStart,
+    bodyEnd: opts.bodyEnd,
+    made: opts.made,
   });
 }
 

@@ -1,0 +1,1310 @@
+[
+  {
+    "id": "deschide-macelarie",
+    "business_type": "macelarie",
+    "title": "Cum deschizi o măcelărie",
+    "summary": "Pașii pentru o măcelărie de vânzare cu amănuntul în 2026: firmă cu CAEN Rev.3 4722, înregistrare sanitar-veterinară la DSVSA (unitate cu număr VA), acord de la primărie și casă de marcat conectată la ANAF.",
+    "caen": [
+      {
+        "code": "4722",
+        "label": "Comerț cu amănuntul al cărnii și al produselor din carne (CAEN Rev.3; același cod în Rev.2)"
+      },
+      {
+        "code": "1011",
+        "label": "Prelucrarea și conservarea cărnii (doar dacă procesați carne peste limitele de vânzare cu amănuntul; același cod în Rev.2)"
+      },
+      {
+        "code": "1013",
+        "label": "Fabricarea produselor din carne, inclusiv din carne de pasăre (doar pentru producție de preparate; același cod în Rev.2)"
+      }
+    ],
+    "steps": [
+      {
+        "title": "Înregistrează firma la Registrul Comerțului cu coduri CAEN Rev.3",
+        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru o măcelărie treceți codul 4722 (comerț cu amănuntul al cărnii). Adăugați 1011 sau 1013 doar dacă produceți preparate din carne; discutați întâi cu DSVSA, pentru că producția mare cere autorizare, nu doar înregistrare. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau punctul de lucru și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
+        "authority": "ONRC",
+        "sources": [
+          {
+            "title": "ONRC – Înființări firme: documente, declarația-tip privind condițiile de funcționare, CAEN Rev.3",
+            "url": "https://onrc.ro/index.php/ro/14-infiintari-firme"
+          },
+          {
+            "title": "ONRC – Informare privind intrarea în vigoare a CAEN Rev.3 (Ordin INS 377/2024)",
+            "url": "https://www.onrc.ro/documente/anunturi/2024/INFORMARE%20CAEN%20.pdf"
+          },
+          {
+            "title": "INS – Structura completă CAEN Rev.3",
+            "url": "https://insse.ro/cms/files/CAEN/CAEN-Rev.3_structura-completa.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Alege tipul de unitate: măcelărie sau carmangerie",
+        "body": "Ordinul ANSVSA 111/2008 definește măcelăria ca unitatea care recepționează carne proaspătă din unități autorizate sanitar-veterinar, o depozitează, o dezosează, o porționează sau o toacă la cererea clientului și o vinde consumatorului final. Carmangeria poate face și carne tocată, carne preparată sau produse din carne, în maximum 5 sortimente. Dacă livrați altor magazine peste 8.000 kg pe lună, aveți nevoie de autorizare sanitar-veterinară după Ordinul ANSVSA 57/2010. Stabiliți tipul înainte de amenajare.",
+        "authority": "DSVSA judeteana (ANSVSA)",
+        "sources": [
+          {
+            "title": "Ordin ANSVSA 111/2008, formă actualizată (text integral cu anexe)",
+            "url": "https://edirect.e-guvernare.ro/Uploads/Legi/8270/ORDIN%20nr.%20111%202008%20actualizat%2030.09.2019.pdf"
+          },
+          {
+            "title": "ANSVSA – Autorizare / înregistrare unități (Ordin 111/2008, Ordin 57/2010)",
+            "url": "https://www.ansvsa.ro/industrie-si-afaceri/autorizare-inregistrare-unitati-animal-non-animal/"
+          }
+        ]
+      },
+      {
+        "title": "Obține înregistrarea sanitar-veterinară la DSVSA",
+        "body": "Măcelăria este unitate de vânzare cu amănuntul și se înregistrează (nu se autorizează) la DSVSA județeană, conform Ordinului ANSVSA 111/2008. Dosarul conține cererea (denumire și adresă, activitate, tipuri și cantități de produse, număr de lucrători), schița spațiului, certificatul ONRC, actul de identitate al reprezentantului și dovada plății tarifului. Inspectorii verifică unitatea pe loc. DSVSA emite documentul în cel mult 30 de zile de la dosarul complet și dă un număr precedat de „VA”. Din 2024 dosarul se poate depune și online, prin PCUe.",
+        "authority": "DSVSA judeteana (ANSVSA)",
+        "sources": [
+          {
+            "title": "Ordin ANSVSA 111/2008 – Portal Legislativ",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/101005"
+          },
+          {
+            "title": "Ordin ANSVSA 111/2008, formă actualizată (text integral cu anexe)",
+            "url": "https://edirect.e-guvernare.ro/Uploads/Legi/8270/ORDIN%20nr.%20111%202008%20actualizat%2030.09.2019.pdf"
+          },
+          {
+            "title": "Ordin ANSVSA 6/2024 de modificare a Ordinului 111/2008 (depunere online prin PCUe)",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/278265"
+          },
+          {
+            "title": "ANSVSA – Înregistrarea și autorizarea unităților (modele de cereri)",
+            "url": "https://www.ansvsa.ro/industrie-si-afaceri/inregistrare-si-autorizare/"
+          }
+        ]
+      },
+      {
+        "title": "Respectă etichetarea și trasabilitatea cărnii",
+        "body": "Cumpărați carne doar din unități autorizate sanitar-veterinar și păstrați documentele de însoțire pentru trasabilitate. Produsele de origine animală obținute în unitate și destinate vânzării poartă pe etichetă un dreptunghi cu textul „PRODUS ÎN UNITATEA DE TIP …”, urmat de „VA”, indicativul județului și numărul de înregistrare DSVSA (Ordin ANSVSA 111/2008). Operatorul răspunde de etichetare, trasabilitate și calitatea materiilor prime.",
+        "authority": "DSVSA judeteana (ANSVSA)",
+        "sources": [
+          {
+            "title": "Ordin ANSVSA 111/2008, formă actualizată (text integral cu anexe)",
+            "url": "https://edirect.e-guvernare.ro/Uploads/Legi/8270/ORDIN%20nr.%20111%202008%20actualizat%2030.09.2019.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Aplică proceduri de siguranța alimentelor bazate pe HACCP",
+        "body": "Orice operator din sectorul alimentar trebuie să elaboreze și să aplice permanent una sau mai multe proceduri bazate pe principiile HACCP (art. 5 din Regulamentul (CE) 852/2004). ANSVSA arată că cerințele sunt flexibile pentru unitățile mici: uneori este suficientă aplicarea corectă a cerințelor preliminare de igienă, fără un plan HACCP complex. Inspectorul DSVSA verifică aceste proceduri la control. Păstrați în unitate evidențele de temperatură, curățenie și recepție a mărfii.",
+        "authority": "DSVSA judeteana (ANSVSA)",
+        "sources": [
+          {
+            "title": "ANSVSA – Evaluarea aplicării art. 5 din Reg. (CE) 852/2004 (principiile HACCP)",
+            "url": "https://www.ansvsa.ro/download/proceduri_-_toate/ps_nonanimal/Evaluarea-modului-in-care-operatorii-aplica-art.5-al-Reg.CE-852_2004-privind-igiena-alimentelor-principiile-HACCP.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Pregătește personalul: curs de igienă și control medical",
+        "body": "Personalul care vinde alimente trebuie să aibă un curs de specialitate pentru comercializarea produselor alimentare, sau cel puțin 2 ani de experiență plus un curs de igienă (OG 99/2000, art. 5). La angajare, angajatorul trimite fiecare lucrător la medicina muncii; medicul completează fișa de aptitudine, iar angajatorul o păstrează (HG 355/2007). Pentru sectorul alimentar, medicul de medicina muncii poate cere examinări suplimentare. Verificați la furnizorul de medicina muncii ce analize cere pentru postul respectiv.",
+        "authority": "Angajator / medicina muncii",
+        "sources": [
+          {
+            "title": "OG 99/2000 privind comercializarea produselor și serviciilor de piață",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/24110"
+          },
+          {
+            "title": "HG 355/2007 privind supravegherea sănătății lucrătorilor",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/82130"
+          }
+        ]
+      },
+      {
+        "title": "Obține acordul de funcționare de la primărie",
+        "body": "Comerțul în zone publice este supus acordului autorității publice locale (OG 99/2000, art. 6). Din decembrie 2024 acordul se emite pe perioadă nedeterminată, cât timp condițiile inițiale nu se schimbă; la orice modificare aveți 30 de zile să obțineți un acord nou, altfel acesta se suspendă. Taxa se stabilește prin hotărâre de consiliu local. Ca exemplu, Primăria Sectorului 3 cere certificatul ONRC, actul spațiului, documentul DSVSA, contract de salubrizare și depunere cu 30 de zile înainte de deschidere. Lista exactă de acte diferă; verificați la primăria localității.",
+        "authority": "Primaria",
+        "sources": [
+          {
+            "title": "OG 99/2000 privind comercializarea produselor și serviciilor de piață",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/24110"
+          },
+          {
+            "title": "Primăria Sector 3 (exemplu) – Acord de funcționare comerț alimentar/nealimentar",
+            "url": "https://www.primarie3.ro/index.php/informatii_publice/detaliu_act/emiterea-acordului-de-functionare-pentru-activitate-comerciala-comert-produse-alimentare-nealimentare-servicii-de-piata/"
+          }
+        ]
+      },
+      {
+        "title": "Verifică dacă ai nevoie de autorizație de securitate la incendiu (ISU)",
+        "body": "Conform HG 571/2016, spațiile de comerț au nevoie de aviz și autorizație de securitate la incendiu dacă aria desfășurată este de cel puțin 600 mp, sau de cel puțin 200 mp dacă spațiul este într-un bloc de locuințe colective. Pragul se aplică ariei desfășurate, nu suprafeței de vânzare. Sub aceste praguri nu se emite autorizație, dar regulile generale de apărare împotriva incendiilor rămân obligatorii. Primăria poate cere autorizația „după caz”; verificați la ISU județean încadrarea exactă a spațiului.",
+        "authority": "ISU",
+        "sources": [
+          {
+            "title": "HG 571/2016 – categoriile de construcții supuse avizării/autorizării de securitate la incendiu",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/180921"
+          },
+          {
+            "title": "HG 571/2016, formă actualizată 2022 (PDF AFIR)",
+            "url": "https://www.afir.ro/media/rr5hzffu/hotarare-nr-571-2016-aprob-categ-constructii-si-amenajari-supuse-avizarii-autorizarii-priv-securitatea-la-incendiu.pdf"
+          },
+          {
+            "title": "IGSU – Avizare/autorizare securitate la incendiu (legislație)",
+            "url": "https://igsu.ro/prevenire-reglementari-in-domeniul-situatiilor-de-urgenta/avizareautorizare-securitate-la-incendiuprotectie-civila-1972"
+          }
+        ]
+      },
+      {
+        "title": "Verifică dacă activitatea are nevoie de autorizație de mediu",
+        "body": "Anexa 1 la OM 1798/2007 cere autorizație de mediu pentru producția și conservarea cărnii și pentru prepararea produselor din carne de la 1 tonă pe zi materie primă (coduri CAEN Rev.1). Vânzarea cu amănuntul a cărnii într-o măcelărie mică nu apare în listă. Dacă procesați cantități mari sau primăria cere la dosar o dovadă privind mediul, verificați la APM județeană.",
+        "authority": "APM (Agentia pentru Protectia Mediului judeteana)",
+        "sources": [
+          {
+            "title": "ANMAP – Descriere autorizație de mediu (OM 1798/2007)",
+            "url": "https://anmap.gov.ro/descriere-autorizatie-de-mediu-2/"
+          },
+          {
+            "title": "OM 1798/2007 – Procedura de emitere a autorizației de mediu (Portal Legislativ)",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/87375"
+          },
+          {
+            "title": "OM 1798/2007, Anexa 1 – lista activităților (Lege5, sursă secundară; anexa nu se încarcă pe Portalul Legislativ)",
+            "url": "https://lege5.ro/gratuit/geytkojrgy/lista-activitatilor-supuse-procedurii-de-emitere-a-autorizatiei-de-mediu-procedura?dp=gm3temzrgq4dq"
+          }
+        ]
+      },
+      {
+        "title": "Cumpără și fiscalizează casa de marcat (AMEF)",
+        "body": "Vânzarea directă către populație cu încasare cash sau card cere aparat de marcat electronic fiscal și emiterea bonului fiscal (OUG 28/1999). Cumpărați aparatul de la un distribuitor autorizat. Ghidul ANAF descrie cererea certificatului cu numărul unic de identificare (formular C801), apoi instalarea și fiscalizarea de către tehnicianul de service, care transmite F4102. Distribuitorul conectează aparatul la sistemul ANAF; după conectare, datele se transmit automat după raportul Z. Verificați cu distribuitorul procedura actuală, deoarece ghidurile ANAF se actualizează.",
+        "authority": "ANAF",
+        "sources": [
+          {
+            "title": "OUG 28/1999 privind obligația de a utiliza aparate de marcat electronice fiscale",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/17431"
+          },
+          {
+            "title": "ANAF – Ghid privind înregistrarea aparatelor de marcat electronice fiscale (C801, F4102, F4105)",
+            "url": "https://static.anaf.ro/static/10/Anaf/Informatii_R/Ghid_case_marcat_05102018.pdf"
+          },
+          {
+            "title": "ANAF – Ghid privind conectarea AMEF la sistemul informatic MF-ANAF",
+            "url": "http://static.anaf.ro/static/10/Anaf/Informatii_R/GHID_CONECTARE_AMEF_31032021.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Înscrie-te în Sistemul Garanție-Returnare (RetuRO)",
+        "body": "Dacă vindeți băuturi în ambalaje SGR (sticlă, PET, doză), înregistrați firma în platforma RetuRO: cont, date despre punctele de vânzare, semnarea formularului și apoi contractul cu RetuRO. Afișați garanția de 0,50 lei separat de preț, la raft și pe bon. Primiți ambalajele returnate fără bon fiscal. Magazinele sub 200 mp pot organiza punctul de returnare prin asociere cu alți comercianți mici sau prin parteneriat cu primăria (UAT/ADI), la cel mult 150 m în oraș sau 500 m la sat.",
+        "authority": "RetuRO",
+        "sources": [
+          {
+            "title": "RetuRO – Manualul SGR pentru comercianți",
+            "url": "https://returosgr.ro/sites/default/files/2025-10/Manualul%20SGR%20pentru%20comercianti_31.05.pdf"
+          }
+        ]
+      }
+    ],
+    "fiscal": [
+      "Emiteți bon fiscal cu aparatul de marcat electronic fiscal pentru fiecare vânzare și înmânați-l clientului (OUG 28/1999).",
+      "Afișați la loc vizibil anunțul de atenționare a clienților privind bonul fiscal (OUG 28/1999).",
+      "Tipăriți zilnic raportul Z și păstrați rapoartele Z și jurnalul electronic 5 ani (OUG 28/1999).",
+      "Dacă aparatul se defectează, notificați imediat service-ul, înregistrați vânzările în registrul special și emiteți chitanțe până la reparare (OUG 28/1999).",
+      "Comunicați la ANAF prin formularul F4105, în cel mult 5 zile lucrătoare, mutarea aparatului între puncte de lucru, furtul, înstrăinarea sau închiderea punctului de lucru.",
+      "Pentru băuturile în ambalaje SGR, garanția de 0,50 lei apare separat de preț pe bonul fiscal și pe factura de achiziție (RetuRO).",
+      "Opțional: Tapselo emite bonul prin imprimante fiscale Datecs, citește etichetele cântarelor Dibal și înregistrează NIR la recepția cărnii."
+    ],
+    "documents": [
+      "Documentul de înregistrare sanitar-veterinară și pentru siguranța alimentelor emis de DSVSA (număr VA)",
+      "Documentele de însoțire și de trasabilitate pentru carnea recepționată din unități autorizate",
+      "Evidențele procedurilor bazate pe HACCP (temperaturi, curățenie, recepție)",
+      "Dovezile cursului de igienă sau ale calificării personalului care vinde alimente",
+      "Certificatul de înregistrare ONRC cu codurile CAEN Rev.3",
+      "Dovada dreptului de folosință a spațiului (contract de închiriere, comodat sau act de proprietate)",
+      "Acordul sau autorizația de funcționare de la primărie",
+      "Certificatul cu numărul unic de identificare al aparatului de marcat",
+      "Cartea de intervenții a aparatului de marcat (OUG 28/1999)",
+      "Rapoartele Z zilnice",
+      "Fișele de aptitudine ale angajaților (medicina muncii)",
+      "Contractul cu RetuRO, dacă vindeți băuturi în ambalaje SGR"
+    ],
+    "keywords": [
+      "macelarie",
+      "deschidere macelarie",
+      "cum deschid o macelarie",
+      "carmangerie",
+      "autorizatie dsv",
+      "inregistrare sanitar veterinara",
+      "dsvsa",
+      "ordin 111/2008",
+      "caen 4722",
+      "caen rev 3",
+      "vanzare carne",
+      "magazin carne",
+      "acord de functionare",
+      "casa de marcat",
+      "sgr returo"
+    ],
+    "verified_on": "2026-10-01",
+    "page": "/ghid/deschide-macelarie"
+  },
+  {
+    "id": "deschide-brutarie-patiserie",
+    "business_type": "brutarie_patiserie",
+    "title": "Cum deschizi o brutărie sau patiserie",
+    "summary": "Pașii pentru o brutărie sau patiserie cu producție proprie și vânzare în magazin: CAEN Rev.3 1071 și 4724, înregistrare pentru siguranța alimentelor la DSVSA, acord de la primărie, casă de marcat și, la volume mari, verificare la mediu.",
+    "caen": [
+      {
+        "code": "1071",
+        "label": "Fabricarea pâinii; fabricarea prăjiturilor și a produselor proaspete de patiserie (CAEN Rev.3; același cod în Rev.2)"
+      },
+      {
+        "code": "4724",
+        "label": "Comerț cu amănuntul al pâinii, produselor de patiserie și produselor zaharoase (CAEN Rev.3; același cod în Rev.2)"
+      },
+      {
+        "code": "1072",
+        "label": "Fabricarea biscuiților și pișcoturilor; fabricarea prăjiturilor și a produselor conservate de patiserie (dacă este cazul)"
+      }
+    ],
+    "steps": [
+      {
+        "title": "Înregistrează firma la Registrul Comerțului cu coduri CAEN Rev.3",
+        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru o brutărie sau patiserie treceți 1071 pentru producție și 4724 pentru vânzarea în magazin; adăugați 1072 doar pentru produse uscate sau conservate. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau punctul de lucru și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
+        "authority": "ONRC",
+        "sources": [
+          {
+            "title": "ONRC – Înființări firme: documente, declarația-tip privind condițiile de funcționare, CAEN Rev.3",
+            "url": "https://onrc.ro/index.php/ro/14-infiintari-firme"
+          },
+          {
+            "title": "ONRC – Informare privind intrarea în vigoare a CAEN Rev.3 (Ordin INS 377/2024)",
+            "url": "https://www.onrc.ro/documente/anunturi/2024/INFORMARE%20CAEN%20.pdf"
+          },
+          {
+            "title": "INS – Structura completă CAEN Rev.3",
+            "url": "https://insse.ro/cms/files/CAEN/CAEN-Rev.3_structura-completa.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Încadrează unitatea la DSVSA după ce produci",
+        "body": "Ordinul ANSVSA 111/2008 are mai multe categorii: unitate de obținere a pâinii și produselor de panificație în cantități mici (până la 120 tone pe an), laborator de cofetărie sau patiserie, cofetărie sau patiserie care doar vinde, și unitate pentru fabricarea pâinii și a produselor proaspete de patiserie. Toate se înregistrează la DSVSA, nu se autorizează. Dacă în aceeași unitate procesați și produse de origine animală supuse autorizării, DSVSA emite un singur document de autorizare după Ordinul 57/2010. Stabiliți încadrarea cu DSVSA înainte de amenajare.",
+        "authority": "DSVSA judeteana (ANSVSA)",
+        "sources": [
+          {
+            "title": "Ordin ANSVSA 111/2008, formă actualizată (text integral cu anexe)",
+            "url": "https://edirect.e-guvernare.ro/Uploads/Legi/8270/ORDIN%20nr.%20111%202008%20actualizat%2030.09.2019.pdf"
+          },
+          {
+            "title": "ANSVSA – Autorizare / înregistrare unități (Ordin 111/2008, Ordin 57/2010)",
+            "url": "https://www.ansvsa.ro/industrie-si-afaceri/autorizare-inregistrare-unitati-animal-non-animal/"
+          }
+        ]
+      },
+      {
+        "title": "Depune dosarul de înregistrare pentru siguranța alimentelor",
+        "body": "Dosarul la DSVSA județeană conține cererea scrisă (denumire și adresă, activitate, tipuri și cantități de produse, număr de lucrători), schița spațiului de producție datată și semnată, certificatul ONRC, actul de identitate al reprezentantului și dovada plății tarifului. Inspectorii verifică pe loc cerințele Regulamentului (CE) 852/2004. Documentul se emite în cel mult 30 de zile de la dosarul complet. Din 2024 dosarul se poate trimite și online, prin PCUe. Verificați tariful la DSVSA.",
+        "authority": "DSVSA judeteana (ANSVSA)",
+        "sources": [
+          {
+            "title": "Ordin ANSVSA 111/2008, formă actualizată (text integral cu anexe)",
+            "url": "https://edirect.e-guvernare.ro/Uploads/Legi/8270/ORDIN%20nr.%20111%202008%20actualizat%2030.09.2019.pdf"
+          },
+          {
+            "title": "Ordin ANSVSA 6/2024 de modificare a Ordinului 111/2008 (depunere online prin PCUe)",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/278265"
+          },
+          {
+            "title": "ANSVSA – Înregistrarea și autorizarea unităților (modele de cereri)",
+            "url": "https://www.ansvsa.ro/industrie-si-afaceri/inregistrare-si-autorizare/"
+          }
+        ]
+      },
+      {
+        "title": "Înregistrează mașina de livrare a pâinii",
+        "body": "Dacă livrați pâine către alte magazine, mijlocul de transport se înregistrează separat la DSVSA (Ordin ANSVSA 111/2008, art. 34 și 34^1). Mașina trebuie să aibă scris pe laterală și în spate, cu litere de minimum 20 cm, „pâine și produse de panificație”. Dosarul cuprinde cererea, certificatul ONRC, certificatul de înmatriculare al mașinii, actul de identitate, documentul de înregistrare al unității și dovada plății tarifului. Documentul se vizează la 2 ani.",
+        "authority": "DSVSA judeteana (ANSVSA)",
+        "sources": [
+          {
+            "title": "Ordin ANSVSA 111/2008, formă actualizată (text integral cu anexe)",
+            "url": "https://edirect.e-guvernare.ro/Uploads/Legi/8270/ORDIN%20nr.%20111%202008%20actualizat%2030.09.2019.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Aplică proceduri de siguranța alimentelor bazate pe HACCP",
+        "body": "Orice operator din sectorul alimentar trebuie să elaboreze și să aplice permanent una sau mai multe proceduri bazate pe principiile HACCP (art. 5 din Regulamentul (CE) 852/2004). ANSVSA arată că cerințele sunt flexibile pentru unitățile mici: uneori este suficientă aplicarea corectă a cerințelor preliminare de igienă, fără un plan HACCP complex. Inspectorul DSVSA verifică aceste proceduri la control. Păstrați în unitate evidențele de temperatură, curățenie și recepție a mărfii.",
+        "authority": "DSVSA judeteana (ANSVSA)",
+        "sources": [
+          {
+            "title": "ANSVSA – Evaluarea aplicării art. 5 din Reg. (CE) 852/2004 (principiile HACCP)",
+            "url": "https://www.ansvsa.ro/download/proceduri_-_toate/ps_nonanimal/Evaluarea-modului-in-care-operatorii-aplica-art.5-al-Reg.CE-852_2004-privind-igiena-alimentelor-principiile-HACCP.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Pregătește personalul: curs de igienă și control medical",
+        "body": "Personalul care vinde alimente trebuie să aibă un curs de specialitate pentru comercializarea produselor alimentare, sau cel puțin 2 ani de experiență plus un curs de igienă (OG 99/2000, art. 5). La angajare, angajatorul trimite fiecare lucrător la medicina muncii; medicul completează fișa de aptitudine, iar angajatorul o păstrează (HG 355/2007). Pentru sectorul alimentar, medicul de medicina muncii poate cere examinări suplimentare. Verificați la furnizorul de medicina muncii ce analize cere pentru postul respectiv.",
+        "authority": "Angajator / medicina muncii",
+        "sources": [
+          {
+            "title": "OG 99/2000 privind comercializarea produselor și serviciilor de piață",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/24110"
+          },
+          {
+            "title": "HG 355/2007 privind supravegherea sănătății lucrătorilor",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/82130"
+          }
+        ]
+      },
+      {
+        "title": "Obține acordul de funcționare de la primărie",
+        "body": "Comerțul în zone publice este supus acordului autorității publice locale (OG 99/2000, art. 6). Din decembrie 2024 acordul se emite pe perioadă nedeterminată, cât timp condițiile inițiale nu se schimbă; la orice modificare aveți 30 de zile să obțineți un acord nou, altfel acesta se suspendă. Taxa se stabilește prin hotărâre de consiliu local. Ca exemplu, Primăria Sectorului 3 cere certificatul ONRC, actul spațiului, documentul DSVSA, contract de salubrizare și depunere cu 30 de zile înainte de deschidere. Lista exactă de acte diferă; verificați la primăria localității.",
+        "authority": "Primaria",
+        "sources": [
+          {
+            "title": "OG 99/2000 privind comercializarea produselor și serviciilor de piață",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/24110"
+          },
+          {
+            "title": "Primăria Sector 3 (exemplu) – Acord de funcționare comerț alimentar/nealimentar",
+            "url": "https://www.primarie3.ro/index.php/informatii_publice/detaliu_act/emiterea-acordului-de-functionare-pentru-activitate-comerciala-comert-produse-alimentare-nealimentare-servicii-de-piata/"
+          }
+        ]
+      },
+      {
+        "title": "Verifică dacă ai nevoie de autorizație de securitate la incendiu (ISU)",
+        "body": "Conform HG 571/2016, spațiile de comerț au nevoie de aviz și autorizație de securitate la incendiu dacă aria desfășurată este de cel puțin 600 mp, sau de cel puțin 200 mp dacă spațiul este într-un bloc de locuințe colective. Pragul se aplică ariei desfășurate, nu suprafeței de vânzare. Pentru spații de producție sau depozitare închise se aplică aceleași praguri: 600 mp, respectiv 200 mp în bloc de locuințe. Sub aceste praguri nu se emite autorizație, dar regulile generale de apărare împotriva incendiilor rămân obligatorii. Primăria poate cere autorizația „după caz”; verificați la ISU județean încadrarea exactă a spațiului.",
+        "authority": "ISU",
+        "sources": [
+          {
+            "title": "HG 571/2016 – categoriile de construcții supuse avizării/autorizării de securitate la incendiu",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/180921"
+          },
+          {
+            "title": "HG 571/2016, formă actualizată 2022 (PDF AFIR)",
+            "url": "https://www.afir.ro/media/rr5hzffu/hotarare-nr-571-2016-aprob-categ-constructii-si-amenajari-supuse-avizarii-autorizarii-priv-securitatea-la-incendiu.pdf"
+          },
+          {
+            "title": "IGSU – Avizare/autorizare securitate la incendiu (legislație)",
+            "url": "https://igsu.ro/prevenire-reglementari-in-domeniul-situatiilor-de-urgenta/avizareautorizare-securitate-la-incendiuprotectie-civila-1972"
+          }
+        ]
+      },
+      {
+        "title": "Verifică dacă activitatea are nevoie de autorizație de mediu",
+        "body": "Anexa 1 la OM 1798/2007 include fabricarea pâinii și a produselor proaspete de patiserie peste 1 tonă pe zi produs finit (cod CAEN Rev.1 1581). Sub acest prag activitatea nu apare în listă. Lista folosește coduri vechi, deci încadrarea pe CAEN Rev.3 nu este directă. Dacă estimați producție apropiată de 1 tonă pe zi, verificați la APM județeană înainte de deschidere.",
+        "authority": "APM (Agentia pentru Protectia Mediului judeteana)",
+        "sources": [
+          {
+            "title": "ANMAP – Descriere autorizație de mediu (OM 1798/2007)",
+            "url": "https://anmap.gov.ro/descriere-autorizatie-de-mediu-2/"
+          },
+          {
+            "title": "OM 1798/2007 – Procedura de emitere a autorizației de mediu (Portal Legislativ)",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/87375"
+          },
+          {
+            "title": "OM 1798/2007, Anexa 1 – lista activităților (Lege5, sursă secundară; anexa nu se încarcă pe Portalul Legislativ)",
+            "url": "https://lege5.ro/gratuit/geytkojrgy/lista-activitatilor-supuse-procedurii-de-emitere-a-autorizatiei-de-mediu-procedura?dp=gm3temzrgq4dq"
+          }
+        ]
+      },
+      {
+        "title": "Cumpără și fiscalizează casa de marcat (AMEF)",
+        "body": "Vânzarea directă către populație cu încasare cash sau card cere aparat de marcat electronic fiscal și emiterea bonului fiscal (OUG 28/1999). Cumpărați aparatul de la un distribuitor autorizat. Ghidul ANAF descrie cererea certificatului cu numărul unic de identificare (formular C801), apoi instalarea și fiscalizarea de către tehnicianul de service, care transmite F4102. Distribuitorul conectează aparatul la sistemul ANAF; după conectare, datele se transmit automat după raportul Z. Verificați cu distribuitorul procedura actuală, deoarece ghidurile ANAF se actualizează.",
+        "authority": "ANAF",
+        "sources": [
+          {
+            "title": "OUG 28/1999 privind obligația de a utiliza aparate de marcat electronice fiscale",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/17431"
+          },
+          {
+            "title": "ANAF – Ghid privind înregistrarea aparatelor de marcat electronice fiscale (C801, F4102, F4105)",
+            "url": "https://static.anaf.ro/static/10/Anaf/Informatii_R/Ghid_case_marcat_05102018.pdf"
+          },
+          {
+            "title": "ANAF – Ghid privind conectarea AMEF la sistemul informatic MF-ANAF",
+            "url": "http://static.anaf.ro/static/10/Anaf/Informatii_R/GHID_CONECTARE_AMEF_31032021.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Înscrie-te în Sistemul Garanție-Returnare (RetuRO)",
+        "body": "Dacă vindeți băuturi în ambalaje SGR (sticlă, PET, doză), înregistrați firma în platforma RetuRO: cont, date despre punctele de vânzare, semnarea formularului și apoi contractul cu RetuRO. Afișați garanția de 0,50 lei separat de preț, la raft și pe bon. Primiți ambalajele returnate fără bon fiscal. Magazinele sub 200 mp pot organiza punctul de returnare prin asociere cu alți comercianți mici sau prin parteneriat cu primăria (UAT/ADI), la cel mult 150 m în oraș sau 500 m la sat.",
+        "authority": "RetuRO",
+        "sources": [
+          {
+            "title": "RetuRO – Manualul SGR pentru comercianți",
+            "url": "https://returosgr.ro/sites/default/files/2025-10/Manualul%20SGR%20pentru%20comercianti_31.05.pdf"
+          }
+        ]
+      }
+    ],
+    "fiscal": [
+      "Emiteți bon fiscal cu aparatul de marcat electronic fiscal pentru fiecare vânzare și înmânați-l clientului (OUG 28/1999).",
+      "Afișați la loc vizibil anunțul de atenționare a clienților privind bonul fiscal (OUG 28/1999).",
+      "Tipăriți zilnic raportul Z și păstrați rapoartele Z și jurnalul electronic 5 ani (OUG 28/1999).",
+      "Dacă aparatul se defectează, notificați imediat service-ul, înregistrați vânzările în registrul special și emiteți chitanțe până la reparare (OUG 28/1999).",
+      "Comunicați la ANAF prin formularul F4105, în cel mult 5 zile lucrătoare, mutarea aparatului între puncte de lucru, furtul, înstrăinarea sau închiderea punctului de lucru.",
+      "Pentru băuturile în ambalaje SGR, garanția de 0,50 lei apare separat de preț pe bonul fiscal și pe factura de achiziție (RetuRO).",
+      "Opțional: Tapselo ține rețetele și producția, emite bonul prin imprimante fiscale Datecs și pune linia SGR pe bon."
+    ],
+    "documents": [
+      "Documentul de înregistrare pentru siguranța alimentelor emis de DSVSA",
+      "Documentul de înregistrare DSVSA pentru mașina de livrare, dacă livrați",
+      "Evidențele procedurilor bazate pe HACCP (temperaturi, curățenie, recepția materiilor prime)",
+      "Dovezile cursului de igienă sau ale calificării personalului care vinde alimente",
+      "Certificatul de înregistrare ONRC cu codurile CAEN Rev.3",
+      "Dovada dreptului de folosință a spațiului (contract de închiriere, comodat sau act de proprietate)",
+      "Acordul sau autorizația de funcționare de la primărie",
+      "Certificatul cu numărul unic de identificare al aparatului de marcat",
+      "Cartea de intervenții a aparatului de marcat (OUG 28/1999)",
+      "Rapoartele Z zilnice",
+      "Fișele de aptitudine ale angajaților (medicina muncii)",
+      "Contractul cu RetuRO, dacă vindeți băuturi în ambalaje SGR"
+    ],
+    "keywords": [
+      "brutarie",
+      "patiserie",
+      "cofetarie",
+      "deschidere brutarie",
+      "cum deschid o brutarie",
+      "laborator patiserie",
+      "panificatie",
+      "inregistrare dsv",
+      "autorizatie dsv brutarie",
+      "caen 1071",
+      "caen 4724",
+      "caen rev 3",
+      "masina paine dsv",
+      "autorizatie mediu brutarie",
+      "casa de marcat"
+    ],
+    "verified_on": "2026-10-01",
+    "page": "/ghid/deschide-brutarie-patiserie"
+  },
+  {
+    "id": "deschide-cafenea-bistro",
+    "business_type": "cafenea_bistro",
+    "title": "Cum deschizi o cafenea sau un bistro",
+    "summary": "Pașii pentru o cafenea sau un bistro în 2026: CAEN Rev.3 5630 și 5611, înregistrare DSVSA ca unitate de alimentație publică, autorizație de alimentație publică de la primărie, casă de marcat și obligațiile SGR pentru HoReCa.",
+    "caen": [
+      {
+        "code": "5630",
+        "label": "Baruri și alte activități de servire a băuturilor (CAEN Rev.3; același cod în Rev.2)"
+      },
+      {
+        "code": "5611",
+        "label": "Restaurante (CAEN Rev.3; preia clasa Rev.2 5610, fără unitățile mobile)"
+      }
+    ],
+    "steps": [
+      {
+        "title": "Înregistrează firma la Registrul Comerțului cu coduri CAEN Rev.3",
+        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru o cafenea sau un bistro treceți 5630 pentru servirea băuturilor și 5611 (Restaurante, fostul 5610) dacă serviți mâncare preparată. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau punctul de lucru și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
+        "authority": "ONRC",
+        "sources": [
+          {
+            "title": "ONRC – Înființări firme: documente, declarația-tip privind condițiile de funcționare, CAEN Rev.3",
+            "url": "https://onrc.ro/index.php/ro/14-infiintari-firme"
+          },
+          {
+            "title": "ONRC – Informare privind intrarea în vigoare a CAEN Rev.3 (Ordin INS 377/2024)",
+            "url": "https://www.onrc.ro/documente/anunturi/2024/INFORMARE%20CAEN%20.pdf"
+          },
+          {
+            "title": "INS – Structura completă CAEN Rev.3",
+            "url": "https://insse.ro/cms/files/CAEN/CAEN-Rev.3_structura-completa.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Înregistrează localul la DSVSA ca unitate de alimentație publică",
+        "body": "Ordinul ANSVSA 111/2008 include în „unitate de alimentație publică” restaurantele, fast-food-urile, barurile și orice unitate în care se prepară și se servesc alimente. Unitatea se înregistrează la DSVSA județeană. Dosarul conține cererea, schița spațiului, certificatul ONRC, actul de identitate al reprezentantului și dovada plății tarifului. Inspectorii verifică localul pe loc, iar documentul se emite în cel mult 30 de zile de la dosarul complet. Din 2024 dosarul se poate trimite și online, prin PCUe.",
+        "authority": "DSVSA judeteana (ANSVSA)",
+        "sources": [
+          {
+            "title": "Ordin ANSVSA 111/2008, formă actualizată (text integral cu anexe)",
+            "url": "https://edirect.e-guvernare.ro/Uploads/Legi/8270/ORDIN%20nr.%20111%202008%20actualizat%2030.09.2019.pdf"
+          },
+          {
+            "title": "Ordin ANSVSA 6/2024 de modificare a Ordinului 111/2008 (depunere online prin PCUe)",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/278265"
+          },
+          {
+            "title": "ANSVSA – Înregistrarea și autorizarea unităților (modele de cereri)",
+            "url": "https://www.ansvsa.ro/industrie-si-afaceri/inregistrare-si-autorizare/"
+          }
+        ]
+      },
+      {
+        "title": "Aplică proceduri de siguranța alimentelor bazate pe HACCP",
+        "body": "Orice operator din sectorul alimentar trebuie să elaboreze și să aplice permanent una sau mai multe proceduri bazate pe principiile HACCP (art. 5 din Regulamentul (CE) 852/2004). ANSVSA arată că cerințele sunt flexibile pentru unitățile mici: uneori este suficientă aplicarea corectă a cerințelor preliminare de igienă, fără un plan HACCP complex. Inspectorul DSVSA verifică aceste proceduri la control. Păstrați în unitate evidențele de temperatură, curățenie și recepție a mărfii.",
+        "authority": "DSVSA judeteana (ANSVSA)",
+        "sources": [
+          {
+            "title": "ANSVSA – Evaluarea aplicării art. 5 din Reg. (CE) 852/2004 (principiile HACCP)",
+            "url": "https://www.ansvsa.ro/download/proceduri_-_toate/ps_nonanimal/Evaluarea-modului-in-care-operatorii-aplica-art.5-al-Reg.CE-852_2004-privind-igiena-alimentelor-principiile-HACCP.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Pregătește personalul: curs de igienă și control medical",
+        "body": "Personalul care vinde alimente trebuie să aibă un curs de specialitate pentru comercializarea produselor alimentare, sau cel puțin 2 ani de experiență plus un curs de igienă (OG 99/2000, art. 5). La angajare, angajatorul trimite fiecare lucrător la medicina muncii; medicul completează fișa de aptitudine, iar angajatorul o păstrează (HG 355/2007). Pentru sectorul alimentar, medicul de medicina muncii poate cere examinări suplimentare. Verificați la furnizorul de medicina muncii ce analize cere pentru postul respectiv.",
+        "authority": "Angajator / medicina muncii",
+        "sources": [
+          {
+            "title": "OG 99/2000 privind comercializarea produselor și serviciilor de piață",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/24110"
+          },
+          {
+            "title": "HG 355/2007 privind supravegherea sănătății lucrătorilor",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/82130"
+          }
+        ]
+      },
+      {
+        "title": "Obține autorizația de alimentație publică de la primărie",
+        "body": "Pentru restaurante și baruri (grupele CAEN 561 și 563) primăria emite o autorizație separată și încasează taxa de alimentație publică stabilită de consiliul local. Ca exemplu, Primăria Sectorului 3 cere certificatul constatator ONRC, actul spațiului, contractul de salubrizare, autorizația de mediu sau declarația că aveți sub 100 de locuri, autorizația ISU după caz, declarația de clasificare a unității (HG 843/1999) și acordul vecinilor dacă funcționați după ora 22:00. Actele și taxa diferă; verificați la primăria localității.",
+        "authority": "Primaria",
+        "sources": [
+          {
+            "title": "Primăria Sector 3 (exemplu) – Autorizație de funcționare alimentație publică (CAEN 5610/5630)",
+            "url": "https://www.primarie3.ro/index.php/informatii_publice/detaliu_act/prelungirea-autorizatiei-de-functionare-comerciala-alimentatie-publica-cod-caen-5630-5610-bar-restaurant/"
+          },
+          {
+            "title": "OG 99/2000 privind comercializarea produselor și serviciilor de piață",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/24110"
+          }
+        ]
+      },
+      {
+        "title": "Cere separat aprobare pentru terasă",
+        "body": "Terasa, mai ales pe domeniul public, are nevoie de aprobare separată de la primărie, cu acte și taxe stabilite local. OG 99/2000 cere acordul autorității locale și la extinderea exercițiului comercial sau la modificarea structurii de vânzare. Nu ocupați trotuarul sau spațiul public până nu aveți aprobarea. Verificați la primăria localității procedura pentru terase.",
+        "authority": "Primaria",
+        "sources": [
+          {
+            "title": "OG 99/2000 privind comercializarea produselor și serviciilor de piață",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/24110"
+          },
+          {
+            "title": "Primăria Sector 3 (exemplu) – Autorizație de funcționare alimentație publică (CAEN 5610/5630)",
+            "url": "https://www.primarie3.ro/index.php/informatii_publice/detaliu_act/prelungirea-autorizatiei-de-functionare-comerciala-alimentatie-publica-cod-caen-5630-5610-bar-restaurant/"
+          }
+        ]
+      },
+      {
+        "title": "Verifică dacă ai nevoie de autorizație de securitate la incendiu (ISU)",
+        "body": "Conform HG 571/2016, spațiile de comerț au nevoie de aviz și autorizație de securitate la incendiu dacă aria desfășurată este de cel puțin 600 mp, sau de cel puțin 200 mp dacă spațiul este într-un bloc de locuințe colective. Pragul se aplică ariei desfășurate, nu suprafeței de vânzare. Verificați și dacă sala poate fi încadrată ca sală aglomerată (punctul VI din anexa 1 la HG 571/2016), caz în care se cere autorizație indiferent de arie. Sub aceste praguri nu se emite autorizație, dar regulile generale de apărare împotriva incendiilor rămân obligatorii. Primăria poate cere autorizația „după caz”; verificați la ISU județean încadrarea exactă a spațiului.",
+        "authority": "ISU",
+        "sources": [
+          {
+            "title": "HG 571/2016 – categoriile de construcții supuse avizării/autorizării de securitate la incendiu",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/180921"
+          },
+          {
+            "title": "HG 571/2016, formă actualizată 2022 (PDF AFIR)",
+            "url": "https://www.afir.ro/media/rr5hzffu/hotarare-nr-571-2016-aprob-categ-constructii-si-amenajari-supuse-avizarii-autorizarii-priv-securitatea-la-incendiu.pdf"
+          },
+          {
+            "title": "IGSU – Avizare/autorizare securitate la incendiu (legislație)",
+            "url": "https://igsu.ro/prevenire-reglementari-in-domeniul-situatiilor-de-urgenta/avizareautorizare-securitate-la-incendiuprotectie-civila-1972"
+          }
+        ]
+      },
+      {
+        "title": "Verifică dacă activitatea are nevoie de autorizație de mediu",
+        "body": "Anexa 1 la OM 1798/2007 include restaurantele cu peste 100 de locuri (cod CAEN Rev.1 5530). Primăria Sectorului 3, de exemplu, cere fie autorizația de mediu, fie o declarație că localul are sub 100 de locuri. Lista folosește coduri vechi, așa că verificați la APM județeană încadrarea unui bistro cu multe locuri.",
+        "authority": "APM (Agentia pentru Protectia Mediului judeteana)",
+        "sources": [
+          {
+            "title": "ANMAP – Descriere autorizație de mediu (OM 1798/2007)",
+            "url": "https://anmap.gov.ro/descriere-autorizatie-de-mediu-2/"
+          },
+          {
+            "title": "OM 1798/2007 – Procedura de emitere a autorizației de mediu (Portal Legislativ)",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/87375"
+          },
+          {
+            "title": "OM 1798/2007, Anexa 1 – lista activităților (Lege5, sursă secundară; anexa nu se încarcă pe Portalul Legislativ)",
+            "url": "https://lege5.ro/gratuit/geytkojrgy/lista-activitatilor-supuse-procedurii-de-emitere-a-autorizatiei-de-mediu-procedura?dp=gm3temzrgq4dq"
+          }
+        ]
+      },
+      {
+        "title": "Cumpără și fiscalizează casa de marcat (AMEF)",
+        "body": "Vânzarea directă către populație cu încasare cash sau card cere aparat de marcat electronic fiscal și emiterea bonului fiscal (OUG 28/1999). Cumpărați aparatul de la un distribuitor autorizat. Ghidul ANAF descrie cererea certificatului cu numărul unic de identificare (formular C801), apoi instalarea și fiscalizarea de către tehnicianul de service, care transmite F4102. Distribuitorul conectează aparatul la sistemul ANAF; după conectare, datele se transmit automat după raportul Z. Verificați cu distribuitorul procedura actuală, deoarece ghidurile ANAF se actualizează.",
+        "authority": "ANAF",
+        "sources": [
+          {
+            "title": "OUG 28/1999 privind obligația de a utiliza aparate de marcat electronice fiscale",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/17431"
+          },
+          {
+            "title": "ANAF – Ghid privind înregistrarea aparatelor de marcat electronice fiscale (C801, F4102, F4105)",
+            "url": "https://static.anaf.ro/static/10/Anaf/Informatii_R/Ghid_case_marcat_05102018.pdf"
+          },
+          {
+            "title": "ANAF – Ghid privind conectarea AMEF la sistemul informatic MF-ANAF",
+            "url": "http://static.anaf.ro/static/10/Anaf/Informatii_R/GHID_CONECTARE_AMEF_31032021.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Înscrie-te în Sistemul Garanție-Returnare (RetuRO)",
+        "body": "Dacă vindeți băuturi în ambalaje SGR (sticlă, PET, doză), înregistrați firma în platforma RetuRO și semnați contractul cu administratorul SGR. Ca unitate HoReCa percepeți garanția de 0,50 lei doar pentru băuturile consumate în afara localului, nu pentru cele servite în local. Nu aveți obligația unui punct de returnare pentru ambalaje aduse din afară, dar colectați ambalajele SGR consumate în local și le predați către RetuRO.",
+        "authority": "RetuRO",
+        "sources": [
+          {
+            "title": "RetuRO – Manualul SGR pentru comercianți",
+            "url": "https://returosgr.ro/sites/default/files/2025-10/Manualul%20SGR%20pentru%20comercianti_31.05.pdf"
+          }
+        ]
+      }
+    ],
+    "fiscal": [
+      "Emiteți bon fiscal cu aparatul de marcat electronic fiscal pentru fiecare vânzare și înmânați-l clientului (OUG 28/1999).",
+      "Afișați la loc vizibil anunțul de atenționare a clienților privind bonul fiscal (OUG 28/1999).",
+      "Tipăriți zilnic raportul Z și păstrați rapoartele Z și jurnalul electronic 5 ani (OUG 28/1999).",
+      "Dacă aparatul se defectează, notificați imediat service-ul, înregistrați vânzările în registrul special și emiteți chitanțe până la reparare (OUG 28/1999).",
+      "Comunicați la ANAF prin formularul F4105, în cel mult 5 zile lucrătoare, mutarea aparatului între puncte de lucru, furtul, înstrăinarea sau închiderea punctului de lucru.",
+      "Pentru băuturile SGR vândute la pachet, garanția de 0,50 lei apare separat pe bon; pentru cele consumate în local nu percepeți garanția (RetuRO).",
+      "Taxa anuală de alimentație publică se plătește la primărie, în cuantumul stabilit de consiliul local.",
+      "Opțional: Tapselo ține rețetele și consumul de materii prime și emite bonul prin imprimante fiscale Datecs."
+    ],
+    "documents": [
+      "Documentul de înregistrare sanitar-veterinară și pentru siguranța alimentelor emis de DSVSA",
+      "Autorizația de alimentație publică de la primărie și dovada plății taxei",
+      "Aprobarea pentru terasă, dacă aveți terasă",
+      "Declarația privind clasificarea unității (HG 843/1999), dacă primăria o cere",
+      "Evidențele procedurilor bazate pe HACCP (temperaturi, curățenie, recepție)",
+      "Dovezile cursului de igienă sau ale calificării personalului",
+      "Certificatul de înregistrare ONRC cu codurile CAEN Rev.3",
+      "Dovada dreptului de folosință a spațiului (contract de închiriere, comodat sau act de proprietate)",
+      "Certificatul cu numărul unic de identificare al aparatului de marcat",
+      "Cartea de intervenții a aparatului de marcat (OUG 28/1999)",
+      "Rapoartele Z zilnice",
+      "Fișele de aptitudine ale angajaților (medicina muncii)",
+      "Contractul cu RetuRO, dacă vindeți băuturi în ambalaje SGR"
+    ],
+    "keywords": [
+      "cafenea",
+      "bistro",
+      "deschidere cafenea",
+      "cum deschid o cafenea",
+      "coffee shop",
+      "bar",
+      "restaurant",
+      "alimentatie publica",
+      "autorizatie alimentatie publica",
+      "inregistrare dsv",
+      "caen 5630",
+      "caen 5611",
+      "caen 5610",
+      "caen rev 3",
+      "terasa",
+      "sgr horeca"
+    ],
+    "verified_on": "2026-10-01",
+    "page": "/ghid/deschide-cafenea-bistro"
+  },
+  {
+    "id": "deschide-minimarket-alimentara",
+    "business_type": "minimarket_alimentara",
+    "title": "Cum deschizi un minimarket sau o alimentară",
+    "summary": "Pașii pentru un magazin alimentar mic în 2026: CAEN Rev.3 4711, înregistrare DSVSA ca magazin alimentar, acord de la primărie, casă de marcat și punct de returnare SGR.",
+    "caen": [
+      {
+        "code": "4711",
+        "label": "Comerț cu amănuntul nespecializat, cu vânzare predominantă de produse alimentare, băuturi și tutun (CAEN Rev.3; același cod în Rev.2)"
+      },
+      {
+        "code": "4727",
+        "label": "Comerț cu amănuntul al altor produse alimentare (CAEN Rev.3; fostul 4729 în Rev.2)"
+      },
+      {
+        "code": "4725",
+        "label": "Comerț cu amănuntul al băuturilor (CAEN Rev.3; același cod în Rev.2)"
+      }
+    ],
+    "steps": [
+      {
+        "title": "Înregistrează firma la Registrul Comerțului cu coduri CAEN Rev.3",
+        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru un minimarket treceți 4711 ca activitate principală; 4727 și 4725 sunt opționale pentru magazine specializate. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau punctul de lucru și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
+        "authority": "ONRC",
+        "sources": [
+          {
+            "title": "ONRC – Înființări firme: documente, declarația-tip privind condițiile de funcționare, CAEN Rev.3",
+            "url": "https://onrc.ro/index.php/ro/14-infiintari-firme"
+          },
+          {
+            "title": "ONRC – Informare privind intrarea în vigoare a CAEN Rev.3 (Ordin INS 377/2024)",
+            "url": "https://www.onrc.ro/documente/anunturi/2024/INFORMARE%20CAEN%20.pdf"
+          },
+          {
+            "title": "INS – Structura completă CAEN Rev.3",
+            "url": "https://insse.ro/cms/files/CAEN/CAEN-Rev.3_structura-completa.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Înregistrează magazinul la DSVSA",
+        "body": "Ordinul ANSVSA 111/2008 definește magazinul alimentar ca unitatea care păstrează, prezintă și vinde separat produse de origine animală și nonanimală din unități autorizate sau înregistrate, ambalate sau preambalate de producător. Magazinul se înregistrează la DSVSA județeană cu cerere, schița spațiului, certificat ONRC, act de identitate și dovada plății tarifului; documentul se emite în cel mult 30 de zile. Dacă tăiați mezeluri sau brânzeturi la raion sau vindeți carne neambalată, spuneți asta în cerere și verificați la DSVSA încadrarea.",
+        "authority": "DSVSA judeteana (ANSVSA)",
+        "sources": [
+          {
+            "title": "Ordin ANSVSA 111/2008, formă actualizată (text integral cu anexe)",
+            "url": "https://edirect.e-guvernare.ro/Uploads/Legi/8270/ORDIN%20nr.%20111%202008%20actualizat%2030.09.2019.pdf"
+          },
+          {
+            "title": "Ordin ANSVSA 6/2024 de modificare a Ordinului 111/2008 (depunere online prin PCUe)",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/278265"
+          },
+          {
+            "title": "ANSVSA – Înregistrarea și autorizarea unităților (modele de cereri)",
+            "url": "https://www.ansvsa.ro/industrie-si-afaceri/inregistrare-si-autorizare/"
+          }
+        ]
+      },
+      {
+        "title": "Aplică proceduri de siguranța alimentelor bazate pe HACCP",
+        "body": "Orice operator din sectorul alimentar trebuie să elaboreze și să aplice permanent una sau mai multe proceduri bazate pe principiile HACCP (art. 5 din Regulamentul (CE) 852/2004). ANSVSA arată că cerințele sunt flexibile pentru unitățile mici: uneori este suficientă aplicarea corectă a cerințelor preliminare de igienă, fără un plan HACCP complex. Inspectorul DSVSA verifică aceste proceduri la control. Păstrați în unitate evidențele de temperatură, curățenie și recepție a mărfii.",
+        "authority": "DSVSA judeteana (ANSVSA)",
+        "sources": [
+          {
+            "title": "ANSVSA – Evaluarea aplicării art. 5 din Reg. (CE) 852/2004 (principiile HACCP)",
+            "url": "https://www.ansvsa.ro/download/proceduri_-_toate/ps_nonanimal/Evaluarea-modului-in-care-operatorii-aplica-art.5-al-Reg.CE-852_2004-privind-igiena-alimentelor-principiile-HACCP.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Pregătește personalul: curs de igienă și control medical",
+        "body": "Personalul care vinde alimente trebuie să aibă un curs de specialitate pentru comercializarea produselor alimentare, sau cel puțin 2 ani de experiență plus un curs de igienă (OG 99/2000, art. 5). La angajare, angajatorul trimite fiecare lucrător la medicina muncii; medicul completează fișa de aptitudine, iar angajatorul o păstrează (HG 355/2007). Pentru sectorul alimentar, medicul de medicina muncii poate cere examinări suplimentare. Verificați la furnizorul de medicina muncii ce analize cere pentru postul respectiv.",
+        "authority": "Angajator / medicina muncii",
+        "sources": [
+          {
+            "title": "OG 99/2000 privind comercializarea produselor și serviciilor de piață",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/24110"
+          },
+          {
+            "title": "HG 355/2007 privind supravegherea sănătății lucrătorilor",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/82130"
+          }
+        ]
+      },
+      {
+        "title": "Obține acordul de funcționare de la primărie",
+        "body": "Comerțul în zone publice este supus acordului autorității publice locale (OG 99/2000, art. 6). Din decembrie 2024 acordul se emite pe perioadă nedeterminată, cât timp condițiile inițiale nu se schimbă; la orice modificare aveți 30 de zile să obțineți un acord nou, altfel acesta se suspendă. Taxa se stabilește prin hotărâre de consiliu local. Ca exemplu, Primăria Sectorului 3 cere certificatul ONRC, actul spațiului, documentul DSVSA, contract de salubrizare și depunere cu 30 de zile înainte de deschidere. Lista exactă de acte diferă; verificați la primăria localității.",
+        "authority": "Primaria",
+        "sources": [
+          {
+            "title": "OG 99/2000 privind comercializarea produselor și serviciilor de piață",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/24110"
+          },
+          {
+            "title": "Primăria Sector 3 (exemplu) – Acord de funcționare comerț alimentar/nealimentar",
+            "url": "https://www.primarie3.ro/index.php/informatii_publice/detaliu_act/emiterea-acordului-de-functionare-pentru-activitate-comerciala-comert-produse-alimentare-nealimentare-servicii-de-piata/"
+          }
+        ]
+      },
+      {
+        "title": "Verifică dacă ai nevoie de autorizație de securitate la incendiu (ISU)",
+        "body": "Conform HG 571/2016, spațiile de comerț au nevoie de aviz și autorizație de securitate la incendiu dacă aria desfășurată este de cel puțin 600 mp, sau de cel puțin 200 mp dacă spațiul este într-un bloc de locuințe colective. Pragul se aplică ariei desfășurate, nu suprafeței de vânzare. Sub aceste praguri nu se emite autorizație, dar regulile generale de apărare împotriva incendiilor rămân obligatorii. Primăria poate cere autorizația „după caz”; verificați la ISU județean încadrarea exactă a spațiului.",
+        "authority": "ISU",
+        "sources": [
+          {
+            "title": "HG 571/2016 – categoriile de construcții supuse avizării/autorizării de securitate la incendiu",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/180921"
+          },
+          {
+            "title": "HG 571/2016, formă actualizată 2022 (PDF AFIR)",
+            "url": "https://www.afir.ro/media/rr5hzffu/hotarare-nr-571-2016-aprob-categ-constructii-si-amenajari-supuse-avizarii-autorizarii-priv-securitatea-la-incendiu.pdf"
+          },
+          {
+            "title": "IGSU – Avizare/autorizare securitate la incendiu (legislație)",
+            "url": "https://igsu.ro/prevenire-reglementari-in-domeniul-situatiilor-de-urgenta/avizareautorizare-securitate-la-incendiuprotectie-civila-1972"
+          }
+        ]
+      },
+      {
+        "title": "Verifică dacă activitatea are nevoie de autorizație de mediu",
+        "body": "Lista activităților care au nevoie de autorizație de mediu este în Anexa 1 la OM 1798/2007 și folosește încă coduri CAEN vechi (Rev.1). În această listă comerțul cu amănuntul alimentar apare doar pentru hipermarketuri, supermarketuri și complexe comerciale; magazinele mici specializate nu apar. Dacă activitatea nu este în listă, nu cereți autorizație, dar unele primării cer la dosar autorizația de mediu sau o dovadă de neîncadrare. Verificați la APM județeană înainte de depunerea dosarului la primărie.",
+        "authority": "APM (Agentia pentru Protectia Mediului judeteana)",
+        "sources": [
+          {
+            "title": "ANMAP – Descriere autorizație de mediu (OM 1798/2007)",
+            "url": "https://anmap.gov.ro/descriere-autorizatie-de-mediu-2/"
+          },
+          {
+            "title": "OM 1798/2007 – Procedura de emitere a autorizației de mediu (Portal Legislativ)",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/87375"
+          },
+          {
+            "title": "OM 1798/2007, Anexa 1 – lista activităților (Lege5, sursă secundară; anexa nu se încarcă pe Portalul Legislativ)",
+            "url": "https://lege5.ro/gratuit/geytkojrgy/lista-activitatilor-supuse-procedurii-de-emitere-a-autorizatiei-de-mediu-procedura?dp=gm3temzrgq4dq"
+          }
+        ]
+      },
+      {
+        "title": "Cumpără și fiscalizează casa de marcat (AMEF)",
+        "body": "Vânzarea directă către populație cu încasare cash sau card cere aparat de marcat electronic fiscal și emiterea bonului fiscal (OUG 28/1999). Cumpărați aparatul de la un distribuitor autorizat. Ghidul ANAF descrie cererea certificatului cu numărul unic de identificare (formular C801), apoi instalarea și fiscalizarea de către tehnicianul de service, care transmite F4102. Distribuitorul conectează aparatul la sistemul ANAF; după conectare, datele se transmit automat după raportul Z. Verificați cu distribuitorul procedura actuală, deoarece ghidurile ANAF se actualizează.",
+        "authority": "ANAF",
+        "sources": [
+          {
+            "title": "OUG 28/1999 privind obligația de a utiliza aparate de marcat electronice fiscale",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/17431"
+          },
+          {
+            "title": "ANAF – Ghid privind înregistrarea aparatelor de marcat electronice fiscale (C801, F4102, F4105)",
+            "url": "https://static.anaf.ro/static/10/Anaf/Informatii_R/Ghid_case_marcat_05102018.pdf"
+          },
+          {
+            "title": "ANAF – Ghid privind conectarea AMEF la sistemul informatic MF-ANAF",
+            "url": "http://static.anaf.ro/static/10/Anaf/Informatii_R/GHID_CONECTARE_AMEF_31032021.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Înscrie-te în Sistemul Garanție-Returnare (RetuRO)",
+        "body": "Dacă vindeți băuturi în ambalaje SGR (sticlă, PET, doză), înregistrați firma în platforma RetuRO: cont, date despre punctele de vânzare, semnarea formularului și apoi contractul cu RetuRO. Afișați garanția de 0,50 lei separat de preț, la raft și pe bon. Primiți ambalajele returnate fără bon fiscal. Magazinele sub 200 mp pot organiza punctul de returnare prin asociere cu alți comercianți mici sau prin parteneriat cu primăria (UAT/ADI), la cel mult 150 m în oraș sau 500 m la sat.",
+        "authority": "RetuRO",
+        "sources": [
+          {
+            "title": "RetuRO – Manualul SGR pentru comercianți",
+            "url": "https://returosgr.ro/sites/default/files/2025-10/Manualul%20SGR%20pentru%20comercianti_31.05.pdf"
+          }
+        ]
+      }
+    ],
+    "fiscal": [
+      "Emiteți bon fiscal cu aparatul de marcat electronic fiscal pentru fiecare vânzare și înmânați-l clientului (OUG 28/1999).",
+      "Afișați la loc vizibil anunțul de atenționare a clienților privind bonul fiscal (OUG 28/1999).",
+      "Tipăriți zilnic raportul Z și păstrați rapoartele Z și jurnalul electronic 5 ani (OUG 28/1999).",
+      "Dacă aparatul se defectează, notificați imediat service-ul, înregistrați vânzările în registrul special și emiteți chitanțe până la reparare (OUG 28/1999).",
+      "Comunicați la ANAF prin formularul F4105, în cel mult 5 zile lucrătoare, mutarea aparatului între puncte de lucru, furtul, înstrăinarea sau închiderea punctului de lucru.",
+      "Pentru băuturile în ambalaje SGR, garanția de 0,50 lei apare separat de preț pe bonul fiscal și pe factura de achiziție (RetuRO).",
+      "Opțional: Tapselo înregistrează NIR la recepția mărfii, emite bonul prin imprimante fiscale Datecs și pune linia SGR pe bon."
+    ],
+    "documents": [
+      "Documentul de înregistrare sanitar-veterinară și pentru siguranța alimentelor emis de DSVSA",
+      "Facturile și documentele de trasabilitate pentru mărfurile alimentare",
+      "Evidențele procedurilor bazate pe HACCP (temperaturi la frigidere, curățenie, recepție)",
+      "Dovezile cursului de igienă sau ale calificării personalului care vinde alimente",
+      "Certificatul de înregistrare ONRC cu codurile CAEN Rev.3",
+      "Dovada dreptului de folosință a spațiului (contract de închiriere, comodat sau act de proprietate)",
+      "Acordul sau autorizația de funcționare de la primărie",
+      "Certificatul cu numărul unic de identificare al aparatului de marcat",
+      "Cartea de intervenții a aparatului de marcat (OUG 28/1999)",
+      "Rapoartele Z zilnice",
+      "Fișele de aptitudine ale angajaților (medicina muncii)",
+      "Contractul cu RetuRO și dovada punctului de returnare SGR (propriu sau prin asociere)"
+    ],
+    "keywords": [
+      "minimarket",
+      "alimentara",
+      "magazin alimentar",
+      "deschidere magazin alimentar",
+      "cum deschid un minimarket",
+      "magazin de cartier",
+      "autorizatie dsv",
+      "inregistrare sanitar veterinara",
+      "caen 4711",
+      "caen rev 3",
+      "acord de functionare",
+      "casa de marcat",
+      "punct de returnare sgr",
+      "returo"
+    ],
+    "verified_on": "2026-10-01",
+    "page": "/ghid/deschide-minimarket-alimentara"
+  },
+  {
+    "id": "deschide-legume-fructe",
+    "business_type": "legume_fructe",
+    "title": "Cum deschizi un magazin de legume și fructe",
+    "summary": "Pașii pentru un magazin de legume și fructe în 2026: CAEN Rev.3 4721, înregistrare pentru siguranța alimentelor la DSVSA, acord de la primărie și casă de marcat.",
+    "caen": [
+      {
+        "code": "4721",
+        "label": "Comerț cu amănuntul al fructelor și legumelor proaspete (CAEN Rev.3; același cod în Rev.2; include și vânzarea prin standuri și piețe, care în Rev.2 era la 4781)"
+      }
+    ],
+    "steps": [
+      {
+        "title": "Înregistrează firma la Registrul Comerțului cu coduri CAEN Rev.3",
+        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru un magazin de legume și fructe treceți codul 4721. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau punctul de lucru și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
+        "authority": "ONRC",
+        "sources": [
+          {
+            "title": "ONRC – Înființări firme: documente, declarația-tip privind condițiile de funcționare, CAEN Rev.3",
+            "url": "https://onrc.ro/index.php/ro/14-infiintari-firme"
+          },
+          {
+            "title": "ONRC – Informare privind intrarea în vigoare a CAEN Rev.3 (Ordin INS 377/2024)",
+            "url": "https://www.onrc.ro/documente/anunturi/2024/INFORMARE%20CAEN%20.pdf"
+          },
+          {
+            "title": "INS – Structura completă CAEN Rev.3",
+            "url": "https://insse.ro/cms/files/CAEN/CAEN-Rev.3_structura-completa.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Înregistrează magazinul la DSVSA",
+        "body": "Ordinul ANSVSA 111/2008 (anexa 9) include „unități de comercializare a produselor alimentare de origine nonanimală”, adică unitățile care recepționează, depozitează, prezintă și vând legume și fructe. Acestea se înregistrează pentru siguranța alimentelor la DSVSA județeană. Dosarul conține cererea, schița spațiului datată și semnată, certificatul ONRC, actul de identitate al reprezentantului și dovada plății tarifului. Documentul se emite în cel mult 30 de zile de la dosarul complet. Din 2024 dosarul se poate trimite și online, prin PCUe.",
+        "authority": "DSVSA judeteana (ANSVSA)",
+        "sources": [
+          {
+            "title": "Ordin ANSVSA 111/2008, formă actualizată (text integral cu anexe)",
+            "url": "https://edirect.e-guvernare.ro/Uploads/Legi/8270/ORDIN%20nr.%20111%202008%20actualizat%2030.09.2019.pdf"
+          },
+          {
+            "title": "Ordin ANSVSA 6/2024 de modificare a Ordinului 111/2008 (depunere online prin PCUe)",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/278265"
+          },
+          {
+            "title": "ANSVSA – Înregistrarea și autorizarea unităților (modele de cereri)",
+            "url": "https://www.ansvsa.ro/industrie-si-afaceri/inregistrare-si-autorizare/"
+          }
+        ]
+      },
+      {
+        "title": "Aplică proceduri de siguranța alimentelor bazate pe HACCP",
+        "body": "Orice operator din sectorul alimentar trebuie să elaboreze și să aplice permanent una sau mai multe proceduri bazate pe principiile HACCP (art. 5 din Regulamentul (CE) 852/2004). ANSVSA arată că cerințele sunt flexibile pentru unitățile mici: uneori este suficientă aplicarea corectă a cerințelor preliminare de igienă, fără un plan HACCP complex. Inspectorul DSVSA verifică aceste proceduri la control. Păstrați în unitate evidențele de temperatură, curățenie și recepție a mărfii.",
+        "authority": "DSVSA judeteana (ANSVSA)",
+        "sources": [
+          {
+            "title": "ANSVSA – Evaluarea aplicării art. 5 din Reg. (CE) 852/2004 (principiile HACCP)",
+            "url": "https://www.ansvsa.ro/download/proceduri_-_toate/ps_nonanimal/Evaluarea-modului-in-care-operatorii-aplica-art.5-al-Reg.CE-852_2004-privind-igiena-alimentelor-principiile-HACCP.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Pregătește personalul: curs de igienă și control medical",
+        "body": "Personalul care vinde alimente trebuie să aibă un curs de specialitate pentru comercializarea produselor alimentare, sau cel puțin 2 ani de experiență plus un curs de igienă (OG 99/2000, art. 5). La angajare, angajatorul trimite fiecare lucrător la medicina muncii; medicul completează fișa de aptitudine, iar angajatorul o păstrează (HG 355/2007). Pentru sectorul alimentar, medicul de medicina muncii poate cere examinări suplimentare. Verificați la furnizorul de medicina muncii ce analize cere pentru postul respectiv.",
+        "authority": "Angajator / medicina muncii",
+        "sources": [
+          {
+            "title": "OG 99/2000 privind comercializarea produselor și serviciilor de piață",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/24110"
+          },
+          {
+            "title": "HG 355/2007 privind supravegherea sănătății lucrătorilor",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/82130"
+          }
+        ]
+      },
+      {
+        "title": "Obține acordul de funcționare de la primărie",
+        "body": "Comerțul în zone publice este supus acordului autorității publice locale (OG 99/2000, art. 6). Din decembrie 2024 acordul se emite pe perioadă nedeterminată, cât timp condițiile inițiale nu se schimbă; la orice modificare aveți 30 de zile să obțineți un acord nou, altfel acesta se suspendă. Taxa se stabilește prin hotărâre de consiliu local. Ca exemplu, Primăria Sectorului 3 cere certificatul ONRC, actul spațiului, documentul DSVSA, contract de salubrizare și depunere cu 30 de zile înainte de deschidere. Lista exactă de acte diferă; verificați la primăria localității.",
+        "authority": "Primaria",
+        "sources": [
+          {
+            "title": "OG 99/2000 privind comercializarea produselor și serviciilor de piață",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/24110"
+          },
+          {
+            "title": "Primăria Sector 3 (exemplu) – Acord de funcționare comerț alimentar/nealimentar",
+            "url": "https://www.primarie3.ro/index.php/informatii_publice/detaliu_act/emiterea-acordului-de-functionare-pentru-activitate-comerciala-comert-produse-alimentare-nealimentare-servicii-de-piata/"
+          }
+        ]
+      },
+      {
+        "title": "Verifică dacă ai nevoie de autorizație de securitate la incendiu (ISU)",
+        "body": "Conform HG 571/2016, spațiile de comerț au nevoie de aviz și autorizație de securitate la incendiu dacă aria desfășurată este de cel puțin 600 mp, sau de cel puțin 200 mp dacă spațiul este într-un bloc de locuințe colective. Pragul se aplică ariei desfășurate, nu suprafeței de vânzare. Sub aceste praguri nu se emite autorizație, dar regulile generale de apărare împotriva incendiilor rămân obligatorii. Primăria poate cere autorizația „după caz”; verificați la ISU județean încadrarea exactă a spațiului.",
+        "authority": "ISU",
+        "sources": [
+          {
+            "title": "HG 571/2016 – categoriile de construcții supuse avizării/autorizării de securitate la incendiu",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/180921"
+          },
+          {
+            "title": "HG 571/2016, formă actualizată 2022 (PDF AFIR)",
+            "url": "https://www.afir.ro/media/rr5hzffu/hotarare-nr-571-2016-aprob-categ-constructii-si-amenajari-supuse-avizarii-autorizarii-priv-securitatea-la-incendiu.pdf"
+          },
+          {
+            "title": "IGSU – Avizare/autorizare securitate la incendiu (legislație)",
+            "url": "https://igsu.ro/prevenire-reglementari-in-domeniul-situatiilor-de-urgenta/avizareautorizare-securitate-la-incendiuprotectie-civila-1972"
+          }
+        ]
+      },
+      {
+        "title": "Verifică dacă activitatea are nevoie de autorizație de mediu",
+        "body": "Lista activităților care au nevoie de autorizație de mediu este în Anexa 1 la OM 1798/2007 și folosește încă coduri CAEN vechi (Rev.1). În această listă comerțul cu amănuntul alimentar apare doar pentru hipermarketuri, supermarketuri și complexe comerciale; magazinele mici specializate nu apar. Dacă activitatea nu este în listă, nu cereți autorizație, dar unele primării cer la dosar autorizația de mediu sau o dovadă de neîncadrare. Verificați la APM județeană înainte de depunerea dosarului la primărie.",
+        "authority": "APM (Agentia pentru Protectia Mediului judeteana)",
+        "sources": [
+          {
+            "title": "ANMAP – Descriere autorizație de mediu (OM 1798/2007)",
+            "url": "https://anmap.gov.ro/descriere-autorizatie-de-mediu-2/"
+          },
+          {
+            "title": "OM 1798/2007 – Procedura de emitere a autorizației de mediu (Portal Legislativ)",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/87375"
+          },
+          {
+            "title": "OM 1798/2007, Anexa 1 – lista activităților (Lege5, sursă secundară; anexa nu se încarcă pe Portalul Legislativ)",
+            "url": "https://lege5.ro/gratuit/geytkojrgy/lista-activitatilor-supuse-procedurii-de-emitere-a-autorizatiei-de-mediu-procedura?dp=gm3temzrgq4dq"
+          }
+        ]
+      },
+      {
+        "title": "Cumpără și fiscalizează casa de marcat (AMEF)",
+        "body": "Vânzarea directă către populație cu încasare cash sau card cere aparat de marcat electronic fiscal și emiterea bonului fiscal (OUG 28/1999). Cumpărați aparatul de la un distribuitor autorizat. Ghidul ANAF descrie cererea certificatului cu numărul unic de identificare (formular C801), apoi instalarea și fiscalizarea de către tehnicianul de service, care transmite F4102. Distribuitorul conectează aparatul la sistemul ANAF; după conectare, datele se transmit automat după raportul Z. Verificați cu distribuitorul procedura actuală, deoarece ghidurile ANAF se actualizează.",
+        "authority": "ANAF",
+        "sources": [
+          {
+            "title": "OUG 28/1999 privind obligația de a utiliza aparate de marcat electronice fiscale",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/17431"
+          },
+          {
+            "title": "ANAF – Ghid privind înregistrarea aparatelor de marcat electronice fiscale (C801, F4102, F4105)",
+            "url": "https://static.anaf.ro/static/10/Anaf/Informatii_R/Ghid_case_marcat_05102018.pdf"
+          },
+          {
+            "title": "ANAF – Ghid privind conectarea AMEF la sistemul informatic MF-ANAF",
+            "url": "http://static.anaf.ro/static/10/Anaf/Informatii_R/GHID_CONECTARE_AMEF_31032021.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Înscrie-te în Sistemul Garanție-Returnare (RetuRO)",
+        "body": "Dacă vindeți băuturi în ambalaje SGR (sticlă, PET, doză), înregistrați firma în platforma RetuRO: cont, date despre punctele de vânzare, semnarea formularului și apoi contractul cu RetuRO. Afișați garanția de 0,50 lei separat de preț, la raft și pe bon. Primiți ambalajele returnate fără bon fiscal. Magazinele sub 200 mp pot organiza punctul de returnare prin asociere cu alți comercianți mici sau prin parteneriat cu primăria (UAT/ADI), la cel mult 150 m în oraș sau 500 m la sat.",
+        "authority": "RetuRO",
+        "sources": [
+          {
+            "title": "RetuRO – Manualul SGR pentru comercianți",
+            "url": "https://returosgr.ro/sites/default/files/2025-10/Manualul%20SGR%20pentru%20comercianti_31.05.pdf"
+          }
+        ]
+      }
+    ],
+    "fiscal": [
+      "Emiteți bon fiscal cu aparatul de marcat electronic fiscal pentru fiecare vânzare și înmânați-l clientului (OUG 28/1999).",
+      "Afișați la loc vizibil anunțul de atenționare a clienților privind bonul fiscal (OUG 28/1999).",
+      "Tipăriți zilnic raportul Z și păstrați rapoartele Z și jurnalul electronic 5 ani (OUG 28/1999).",
+      "Dacă aparatul se defectează, notificați imediat service-ul, înregistrați vânzările în registrul special și emiteți chitanțe până la reparare (OUG 28/1999).",
+      "Comunicați la ANAF prin formularul F4105, în cel mult 5 zile lucrătoare, mutarea aparatului între puncte de lucru, furtul, înstrăinarea sau închiderea punctului de lucru.",
+      "Pentru băuturile în ambalaje SGR, garanția de 0,50 lei apare separat de preț pe bonul fiscal și pe factura de achiziție (RetuRO).",
+      "Opțional: Tapselo lucrează cu cântare Dibal și imprimante fiscale Datecs pentru vânzarea la kilogram."
+    ],
+    "documents": [
+      "Documentul de înregistrare pentru siguranța alimentelor emis de DSVSA",
+      "Facturile sau documentele de proveniență pentru legume și fructe",
+      "Evidențele procedurilor bazate pe HACCP (curățenie, recepție, depozitare)",
+      "Dovezile cursului de igienă sau ale calificării personalului care vinde alimente",
+      "Certificatul de înregistrare ONRC cu codurile CAEN Rev.3",
+      "Dovada dreptului de folosință a spațiului (contract de închiriere, comodat sau act de proprietate)",
+      "Acordul sau autorizația de funcționare de la primărie",
+      "Certificatul cu numărul unic de identificare al aparatului de marcat",
+      "Cartea de intervenții a aparatului de marcat (OUG 28/1999)",
+      "Rapoartele Z zilnice",
+      "Fișele de aptitudine ale angajaților (medicina muncii)",
+      "Contractul cu RetuRO, dacă vindeți băuturi în ambalaje SGR"
+    ],
+    "keywords": [
+      "legume fructe",
+      "magazin legume fructe",
+      "aprozar",
+      "deschidere aprozar",
+      "cum deschid un aprozar",
+      "zarzavaturi",
+      "inregistrare dsv",
+      "siguranta alimentelor",
+      "caen 4721",
+      "caen rev 3",
+      "acord de functionare",
+      "casa de marcat",
+      "cantar"
+    ],
+    "verified_on": "2026-10-01",
+    "page": "/ghid/deschide-legume-fructe"
+  },
+  {
+    "id": "deschide-magazin-nealimentar",
+    "business_type": "magazin_nealimentar",
+    "title": "Cum deschizi un magazin nealimentar",
+    "summary": "Pașii pentru un magazin nealimentar mic în 2026: coduri CAEN Rev.3 potrivite (4712, 4752, 4755, 4778), acord de la primărie, verificare ISU și casă de marcat conectată la ANAF.",
+    "caen": [
+      {
+        "code": "4712",
+        "label": "Comerț cu amănuntul nespecializat, cu vânzare predominantă de produse nealimentare (CAEN Rev.3; fostul 4719 în Rev.2)"
+      },
+      {
+        "code": "4752",
+        "label": "Comerț cu amănuntul al articolelor de fierărie, al materialelor de construcții, al articolelor din sticlă și a celor pentru vopsit (CAEN Rev.3; același cod în Rev.2)"
+      },
+      {
+        "code": "4755",
+        "label": "Comerț cu amănuntul al mobilei, al articolelor de iluminat și al altor articole de uz casnic n.c.a. (CAEN Rev.3; preia în principal fostul 4759 din Rev.2)"
+      },
+      {
+        "code": "4778",
+        "label": "Comerț cu amănuntul al altor bunuri noi (CAEN Rev.3; același cod în Rev.2, cu unele produse mutate în alte clase)"
+      }
+    ],
+    "steps": [
+      {
+        "title": "Înregistrează firma la Registrul Comerțului cu coduri CAEN Rev.3",
+        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru un magazin nealimentar treceți codul care descrie marfa principală: 4712 pentru magazin nespecializat, 4752 pentru fierărie, 4755 pentru articole de uz casnic sau 4778 pentru alte bunuri noi. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau punctul de lucru și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
+        "authority": "ONRC",
+        "sources": [
+          {
+            "title": "ONRC – Înființări firme: documente, declarația-tip privind condițiile de funcționare, CAEN Rev.3",
+            "url": "https://onrc.ro/index.php/ro/14-infiintari-firme"
+          },
+          {
+            "title": "ONRC – Informare privind intrarea în vigoare a CAEN Rev.3 (Ordin INS 377/2024)",
+            "url": "https://www.onrc.ro/documente/anunturi/2024/INFORMARE%20CAEN%20.pdf"
+          },
+          {
+            "title": "INS – Structura completă CAEN Rev.3",
+            "url": "https://insse.ro/cms/files/CAEN/CAEN-Rev.3_structura-completa.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Verifică dacă vinzi produse care cer înregistrare la DSVSA",
+        "body": "Un magazin strict nealimentar nu are nevoie de înregistrare sanitar-veterinară. Dacă vindeți și băuturi, dulciuri sau alte alimente ambalate, acestea intră sub Ordinul ANSVSA 111/2008 și magazinul se înregistrează la DSVSA. Pentru hrană și animale de companie, ANSVSA are o procedură separată de înregistrare a unităților pet shop. Verificați la DSVSA județeană dacă gama voastră de produse cere înregistrare.",
+        "authority": "DSVSA judeteana (ANSVSA)",
+        "sources": [
+          {
+            "title": "Ordin ANSVSA 111/2008, formă actualizată (text integral cu anexe)",
+            "url": "https://edirect.e-guvernare.ro/Uploads/Legi/8270/ORDIN%20nr.%20111%202008%20actualizat%2030.09.2019.pdf"
+          },
+          {
+            "title": "ANSVSA – Înregistrarea și autorizarea unităților (modele de cereri)",
+            "url": "https://www.ansvsa.ro/industrie-si-afaceri/inregistrare-si-autorizare/"
+          }
+        ]
+      },
+      {
+        "title": "Obține acordul de funcționare de la primărie",
+        "body": "Comerțul în zone publice este supus acordului autorității publice locale (OG 99/2000, art. 6). Din decembrie 2024 acordul se emite pe perioadă nedeterminată, cât timp condițiile inițiale nu se schimbă; la orice modificare aveți 30 de zile să obțineți un acord nou, altfel acesta se suspendă. Taxa se stabilește prin hotărâre de consiliu local. Ca exemplu, Primăria Sectorului 3 cere certificatul ONRC, actul spațiului, documentul DSVSA, contract de salubrizare și depunere cu 30 de zile înainte de deschidere. Lista exactă de acte diferă; verificați la primăria localității.",
+        "authority": "Primaria",
+        "sources": [
+          {
+            "title": "OG 99/2000 privind comercializarea produselor și serviciilor de piață",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/24110"
+          },
+          {
+            "title": "Primăria Sector 3 (exemplu) – Acord de funcționare comerț alimentar/nealimentar",
+            "url": "https://www.primarie3.ro/index.php/informatii_publice/detaliu_act/emiterea-acordului-de-functionare-pentru-activitate-comerciala-comert-produse-alimentare-nealimentare-servicii-de-piata/"
+          }
+        ]
+      },
+      {
+        "title": "Verifică dacă ai nevoie de autorizație de securitate la incendiu (ISU)",
+        "body": "Conform HG 571/2016, spațiile de comerț au nevoie de aviz și autorizație de securitate la incendiu dacă aria desfășurată este de cel puțin 600 mp, sau de cel puțin 200 mp dacă spațiul este într-un bloc de locuințe colective. Pragul se aplică ariei desfășurate, nu suprafeței de vânzare. Sub aceste praguri nu se emite autorizație, dar regulile generale de apărare împotriva incendiilor rămân obligatorii. Primăria poate cere autorizația „după caz”; verificați la ISU județean încadrarea exactă a spațiului.",
+        "authority": "ISU",
+        "sources": [
+          {
+            "title": "HG 571/2016 – categoriile de construcții supuse avizării/autorizării de securitate la incendiu",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/180921"
+          },
+          {
+            "title": "HG 571/2016, formă actualizată 2022 (PDF AFIR)",
+            "url": "https://www.afir.ro/media/rr5hzffu/hotarare-nr-571-2016-aprob-categ-constructii-si-amenajari-supuse-avizarii-autorizarii-priv-securitatea-la-incendiu.pdf"
+          },
+          {
+            "title": "IGSU – Avizare/autorizare securitate la incendiu (legislație)",
+            "url": "https://igsu.ro/prevenire-reglementari-in-domeniul-situatiilor-de-urgenta/avizareautorizare-securitate-la-incendiuprotectie-civila-1972"
+          }
+        ]
+      },
+      {
+        "title": "Verifică dacă activitatea are nevoie de autorizație de mediu",
+        "body": "Lista activităților care au nevoie de autorizație de mediu (Anexa 1 la OM 1798/2007) nu conține magazinele mici nealimentare; comerțul cu amănuntul apare doar pentru hipermarketuri, supermarketuri și complexe comerciale. Lista folosește coduri CAEN Rev.1. Unele primării cer totuși la dosar autorizația de mediu sau o dovadă de neîncadrare; verificați la APM județeană.",
+        "authority": "APM (Agentia pentru Protectia Mediului judeteana)",
+        "sources": [
+          {
+            "title": "ANMAP – Descriere autorizație de mediu (OM 1798/2007)",
+            "url": "https://anmap.gov.ro/descriere-autorizatie-de-mediu-2/"
+          },
+          {
+            "title": "OM 1798/2007 – Procedura de emitere a autorizației de mediu (Portal Legislativ)",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/87375"
+          },
+          {
+            "title": "OM 1798/2007, Anexa 1 – lista activităților (Lege5, sursă secundară; anexa nu se încarcă pe Portalul Legislativ)",
+            "url": "https://lege5.ro/gratuit/geytkojrgy/lista-activitatilor-supuse-procedurii-de-emitere-a-autorizatiei-de-mediu-procedura?dp=gm3temzrgq4dq"
+          }
+        ]
+      },
+      {
+        "title": "Organizează controlul medical la angajare",
+        "body": "La angajare, angajatorul solicită examenul medical la medicina muncii pentru fiecare lucrător. Medicul completează fișa de aptitudine în două exemplare, unul pentru angajator și unul pentru lucrător, iar angajatorul păstrează fișele (HG 355/2007). Examenul periodic este obligatoriu pentru toți lucrătorii. Verificați la furnizorul de medicina muncii ce examinări cere postul.",
+        "authority": "Angajator / medicina muncii",
+        "sources": [
+          {
+            "title": "HG 355/2007 privind supravegherea sănătății lucrătorilor",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/82130"
+          }
+        ]
+      },
+      {
+        "title": "Cumpără și fiscalizează casa de marcat (AMEF)",
+        "body": "Vânzarea directă către populație cu încasare cash sau card cere aparat de marcat electronic fiscal și emiterea bonului fiscal (OUG 28/1999). Cumpărați aparatul de la un distribuitor autorizat. Ghidul ANAF descrie cererea certificatului cu numărul unic de identificare (formular C801), apoi instalarea și fiscalizarea de către tehnicianul de service, care transmite F4102. Distribuitorul conectează aparatul la sistemul ANAF; după conectare, datele se transmit automat după raportul Z. Verificați cu distribuitorul procedura actuală, deoarece ghidurile ANAF se actualizează.",
+        "authority": "ANAF",
+        "sources": [
+          {
+            "title": "OUG 28/1999 privind obligația de a utiliza aparate de marcat electronice fiscale",
+            "url": "https://legislatie.just.ro/Public/DetaliiDocument/17431"
+          },
+          {
+            "title": "ANAF – Ghid privind înregistrarea aparatelor de marcat electronice fiscale (C801, F4102, F4105)",
+            "url": "https://static.anaf.ro/static/10/Anaf/Informatii_R/Ghid_case_marcat_05102018.pdf"
+          },
+          {
+            "title": "ANAF – Ghid privind conectarea AMEF la sistemul informatic MF-ANAF",
+            "url": "http://static.anaf.ro/static/10/Anaf/Informatii_R/GHID_CONECTARE_AMEF_31032021.pdf"
+          }
+        ]
+      },
+      {
+        "title": "Înscrie-te în Sistemul Garanție-Returnare (RetuRO)",
+        "body": "Dacă vindeți băuturi în ambalaje SGR (sticlă, PET, doză), înregistrați firma în platforma RetuRO: cont, date despre punctele de vânzare, semnarea formularului și apoi contractul cu RetuRO. Afișați garanția de 0,50 lei separat de preț, la raft și pe bon. Primiți ambalajele returnate fără bon fiscal. Magazinele sub 200 mp pot organiza punctul de returnare prin asociere cu alți comercianți mici sau prin parteneriat cu primăria (UAT/ADI), la cel mult 150 m în oraș sau 500 m la sat.",
+        "authority": "RetuRO",
+        "sources": [
+          {
+            "title": "RetuRO – Manualul SGR pentru comercianți",
+            "url": "https://returosgr.ro/sites/default/files/2025-10/Manualul%20SGR%20pentru%20comercianti_31.05.pdf"
+          }
+        ]
+      }
+    ],
+    "fiscal": [
+      "Emiteți bon fiscal cu aparatul de marcat electronic fiscal pentru fiecare vânzare și înmânați-l clientului (OUG 28/1999).",
+      "Afișați la loc vizibil anunțul de atenționare a clienților privind bonul fiscal (OUG 28/1999).",
+      "Tipăriți zilnic raportul Z și păstrați rapoartele Z și jurnalul electronic 5 ani (OUG 28/1999).",
+      "Dacă aparatul se defectează, notificați imediat service-ul, înregistrați vânzările în registrul special și emiteți chitanțe până la reparare (OUG 28/1999).",
+      "Comunicați la ANAF prin formularul F4105, în cel mult 5 zile lucrătoare, mutarea aparatului între puncte de lucru, furtul, înstrăinarea sau închiderea punctului de lucru.",
+      "Dacă vindeți și băuturi în ambalaje SGR, garanția de 0,50 lei apare separat de preț pe bon și pe factura de achiziție (RetuRO).",
+      "Opțional: Tapselo emite bonul prin imprimante fiscale Datecs și înregistrează NIR la recepția mărfii."
+    ],
+    "documents": [
+      "Certificatul de înregistrare ONRC cu codurile CAEN Rev.3",
+      "Dovada dreptului de folosință a spațiului (contract de închiriere, comodat sau act de proprietate)",
+      "Acordul sau autorizația de funcționare de la primărie",
+      "Certificatul cu numărul unic de identificare al aparatului de marcat",
+      "Cartea de intervenții a aparatului de marcat (OUG 28/1999)",
+      "Rapoartele Z zilnice",
+      "Fișele de aptitudine ale angajaților (medicina muncii)",
+      "Facturile de achiziție pentru marfă",
+      "Documentul de înregistrare DSVSA, doar dacă vindeți și alimente sau hrană pentru animale",
+      "Contractul cu RetuRO, doar dacă vindeți băuturi în ambalaje SGR"
+    ],
+    "keywords": [
+      "magazin nealimentar",
+      "deschidere magazin nealimentar",
+      "cum deschid un magazin",
+      "magazin de haine",
+      "fierarie",
+      "magazin articole casnice",
+      "bazar",
+      "caen 4712",
+      "caen 4719",
+      "caen 4778",
+      "caen 4755",
+      "caen rev 3",
+      "acord de functionare",
+      "autorizatie isu",
+      "casa de marcat"
+    ],
+    "verified_on": "2026-10-01",
+    "page": "/ghid/deschide-magazin-nealimentar"
+  }
+]

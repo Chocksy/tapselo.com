@@ -1,0 +1,24 @@
+---
+// /ghid/{id}: one page per entry of src/lib/kb/rules.json.
+import GuideShell from "../../components/GuideShell.astro";
+import { markdownToHtml } from "../../lib/markdown.ts";
+import rules from "../../lib/kb/rules.json";
+
+export function getStaticPaths() {
+  return rules.map((rule) => ({ params: { id: rule.page.replace(/^\/ghid\//, "") }, props: { rule } }));
+}
+
+const { rule } = Astro.props;
+---
+
+<GuideShell
+  title={`${rule.title} | Ghid Tapselo`}
+  description={rule.summary}
+  heading={rule.title}
+  lead={rule.summary}
+  sources={rule.sources}
+  verifiedOn={rule.verified_on}
+  campaign={rule.id}
+>
+  <article class="kb-prose" set:html={markdownToHtml(rule.body)} />
+</GuideShell>

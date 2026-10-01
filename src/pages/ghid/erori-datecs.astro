@@ -1,0 +1,96 @@
+---
+// /ghid/erori-datecs: Datecs error codes from src/lib/kb/datecs-errors.json.
+// Hint groups first (practical steps), then every code with an anchor per row (datecsAnchor).
+import GuideShell from "../../components/GuideShell.astro";
+import { datecsAnchor, type DatecsKb } from "../../lib/mcp/answers/datecs.ts";
+import datecsJson from "../../lib/kb/datecs-errors.json";
+
+const kb = datecsJson as unknown as DatecsKb & { source_title: string; count: number };
+
+// One block per hint key, with all the codes that share it.
+const hintGroups: { key: string; title: string; steps: string[]; status_bit?: string; codes: string[] }[] = [];
+for (const [code, h] of Object.entries(kb.hints)) {
+  const g = hintGroups.find((x) => x.key === h.key);
+  if (g) g.codes.push(code);
+  else hintGroups.push({ key: h.key, title: h.title, steps: h.steps, status_bit: h.status_bit, codes: [code] });
+}
+
+// Full table, grouped by the range headings of the Datecs list.
+const groups = new Map<string, string[]>();
+for (const code of Object.keys(kb.codes)) {
+  const g = kb.codes[code].group ?? "Altele";
+  groups.set(g, [...(groups.get(g) ?? []), code]);
+}
+const hintAnchor = (key: string) => `pasi-${key.replace(/[^A-Za-z0-9]+/g, "-").toLowerCase()}`;
+---
+
+<GuideShell
+  title="Erori casa de marcat Datecs: coduri si ce faci | Ghid Tapselo"
+  description="Toate codurile de eroare Datecs (aparate fiscale si COM Server), in romana si engleza, cu pasi de rezolvare pentru lipsa hartie, capac deschis, raport Z, grupa TVA si altele."
+  heading="Erori casa de marcat Datecs"
+  lead={`${kb.count} coduri de eroare, in romana si engleza. Mai intai erorile frecvente, cu pasi de rezolvare.`}
+  sources={[{ title: kb.source_title }]}
+  campaign="erori-datecs"
+>
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Erori frecvente si ce faci</h2>
+    <div class="mt-6 space-y-8">
+      {hintGroups.map((g) => (
+        <div id={hintAnchor(g.key)} class="rounded-xl border border-border-light p-5">
+          <h3 class="text-primary">{g.title}</h3>
+          <p class="mt-1 text-sm text-text-muted">
+            Coduri:{" "}
+            {g.codes.map((code, j) => (
+              <>
+                {j > 0 && ", "}
+                <a href={`#${datecsAnchor(code)}`} class="font-mono text-accent hover:text-accent-hover">{code}</a>
+              </>
+            ))}
+          </p>
+          <ol class="kb-prose mt-3">
+            {g.steps.map((s) => <li>{s}</li>)}
+          </ol>
+          {g.status_bit && <p class="mt-3 text-sm text-text-muted">Bit de stare Datecs: {g.status_bit}</p>}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Toate codurile</h2>
+    <p class="mt-3 text-text-secondary">
+      Daca nu ai pasi pentru codul tau, noteaza codul complet si suna service-ul autorizat sau furnizorul programului de vanzare.
+    </p>
+    {[...groups].map(([group, codes]) => (
+      <div class="mt-8 overflow-x-auto">
+        <h3 class="text-primary">{group}</h3>
+        <table class="kb-table mt-3">
+          <thead>
+            <tr><th>Cod</th><th>Romana</th><th>English</th></tr>
+          </thead>
+          <tbody>
+            {codes.map((code) => {
+              const c = kb.codes[code];
+              const h = kb.hints[code];
+              return (
+                <tr id={datecsAnchor(code)}>
+                  <td class="font-mono whitespace-nowrap">{code}</td>
+                  <td>
+                    {c.ro ?? "-"}
+                    {h && (
+                      <>
+                        {" "}
+                        <a href={`#${hintAnchor(h.key)}`} class="whitespace-nowrap text-accent hover:text-accent-hover">Ce faci</a>
+                      </>
+                    )}
+                  </td>
+                  <td>{c.en}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    ))}
+  </section>
+</GuideShell>

@@ -10,7 +10,7 @@ export default defineConfig({
   integrations: [
     sitemap({
       // Shopper pages (store sign-up, store privacy, confirm, unsubscribe) are noindex.
-      filter: (page) => !/^\/(c|p|confirmare|dezabonare)\//.test(new URL(page).pathname),
+      filter: (page) => !/^\/(c|p|g|o|confirmare|dezabonare)\//.test(new URL(page).pathname),
     }),
   ],
   vite: {

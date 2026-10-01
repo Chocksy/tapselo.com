@@ -1,0 +1,354 @@
+[
+  {
+    "id": "tapselo",
+    "name": "Tapselo POS",
+    "url": "https://tapselo.com",
+    "segments": [
+      "retail",
+      "alimentar",
+      "minimarket",
+      "macelarie",
+      "brutarie"
+    ],
+    "offline": true,
+    "fiscal_printers": true,
+    "scales": true,
+    "recipes_production": true,
+    "inventory": true,
+    "ecommerce_or_orders": true,
+    "pricing_public": "Fara preturi publicate; oferta la cerere, dupa numarul de case de marcat",
+    "pricing_from": null,
+    "notes": "POS pentru magazine alimentare mici, cu vanzare offline si sincronizare automata la revenirea internetului. Integreaza imprimante fiscale Datecs si cantare Dibal, plus receptie marfa din poza facturii, retete cu productie si comenzi clienti. Pe site nu sunt preturi fixe, oferta se cere in functie de numarul de case.",
+    "sources": [
+      {
+        "title": "Tapselo - site oficial",
+        "url": "https://tapselo.com"
+      }
+    ],
+    "verified_on": "2026-10-01"
+  },
+  {
+    "id": "smartbill-pos",
+    "name": "SmartBill POS (+ SmartBill Gestiune)",
+    "url": "https://www.smartbill.ro/produse/pos",
+    "segments": [
+      "retail",
+      "minimarket",
+      "restaurant",
+      "bar",
+      "cafenea"
+    ],
+    "offline": true,
+    "fiscal_printers": true,
+    "scales": true,
+    "recipes_production": true,
+    "inventory": true,
+    "ecommerce_or_orders": true,
+    "pricing_public": "Preturi publicate pe site, abonament lunar in euro + TVA",
+    "pricing_from": "10,9 €/luna + TVA",
+    "notes": "Aplicatie POS pentru Android si Windows care functioneaza offline si online, compatibila cu case de marcat, imprimante fiscale, cantare si cititoare de coduri de bare. Stocul se descarca automat prin SmartBill Gestiune, care are un modul de productie cu retete (8,16 €/luna + TVA) si permite conectarea magazinelor online. POS + Gestiune costa 27,22 €/luna + TVA.",
+    "sources": [
+      {
+        "title": "SmartBill POS",
+        "url": "https://www.smartbill.ro/produse/pos"
+      },
+      {
+        "title": "SmartBill - preturi vanzare cu casa de marcat",
+        "url": "https://www.smartbill.ro/preturi/vanzare-cu-casa-marcat"
+      },
+      {
+        "title": "SmartBill - preturi",
+        "url": "https://www.smartbill.ro/preturi"
+      },
+      {
+        "title": "SmartBill Gestiune",
+        "url": "https://www.smartbill.ro/produse/gestiune"
+      }
+    ],
+    "verified_on": "2026-10-01"
+  },
+  {
+    "id": "oblio",
+    "name": "Oblio (Facturare + Stocuri, interfata POS)",
+    "url": "https://www.oblio.eu",
+    "segments": [
+      "retail",
+      "servicii",
+      "productie"
+    ],
+    "offline": null,
+    "fiscal_printers": true,
+    "scales": null,
+    "recipes_production": true,
+    "inventory": true,
+    "ecommerce_or_orders": true,
+    "pricing_public": "Preturi publicate pe site, un singur plan anual",
+    "pricing_from": "€ 29 / an",
+    "notes": "Program cloud de facturare cu modul Stocuri + Productie inclus gratuit, care ofera o interfata POS pentru bonuri fiscale. Se conecteaza la case de marcat Datecs, Tremol si Daisy si are integrari cu WooCommerce, Prestashop, Opencart si eMAG. Produsul principal este facturarea, POS-ul fiind o functie a modulului Stocuri.",
+    "sources": [
+      {
+        "title": "Oblio - Stocuri",
+        "url": "https://www.oblio.eu/stocuri"
+      },
+      {
+        "title": "Oblio - Cat costa",
+        "url": "https://www.oblio.eu/cat-costa"
+      },
+      {
+        "title": "Oblio - integrare Datecs",
+        "url": "https://www.oblio.eu/integrari/datecs"
+      }
+    ],
+    "verified_on": "2026-10-01"
+  },
+  {
+    "id": "ebriza",
+    "name": "Ebriza",
+    "url": "https://www.ebriza.com",
+    "segments": [
+      "restaurant",
+      "fast-food",
+      "patiserie",
+      "cafenea",
+      "bar",
+      "retail",
+      "lanturi"
+    ],
+    "offline": true,
+    "fiscal_printers": true,
+    "scales": null,
+    "recipes_production": null,
+    "inventory": true,
+    "ecommerce_or_orders": true,
+    "pricing_public": "Preturi publicate pe site, abonament lunar per locatie, fara TVA",
+    "pricing_from": "49 €/locație/lună",
+    "notes": "POS cloud pentru HoReCa, cu planurile Pro, Premium (99 €) si Titanium (179 €) per locatie pe luna, fara TVA. Modul offline permite printarea bonurilor fiscale prin reteaua locala, cu case de marcat Datecs si Partner. Integreaza Bolt Food, Glovo, Wolt, Gloria Food si Deliverect; stocurile in timp real apar in planurile Premium si Titanium.",
+    "sources": [
+      {
+        "title": "Ebriza - site oficial",
+        "url": "https://www.ebriza.com"
+      },
+      {
+        "title": "Ebriza - preturi",
+        "url": "https://www.ebriza.com/ro/preturi"
+      },
+      {
+        "title": "Ebriza - gestiune",
+        "url": "https://www.ebriza.com/ro/produse/gestiune"
+      }
+    ],
+    "verified_on": "2026-10-01"
+  },
+  {
+    "id": "freyapos",
+    "name": "FreyaPOS (Freya Restaurant / Freya Retail)",
+    "url": "https://freyapos.ro",
+    "segments": [
+      "restaurant",
+      "bar",
+      "cafenea",
+      "cofetarie",
+      "patiserie",
+      "brutarie",
+      "fast-food",
+      "retail",
+      "supermarket"
+    ],
+    "offline": true,
+    "fiscal_printers": true,
+    "scales": true,
+    "recipes_production": true,
+    "inventory": true,
+    "ecommerce_or_orders": true,
+    "pricing_public": "Fara preturi publicate pe site",
+    "pricing_from": null,
+    "notes": "Soft de vanzare si gestiune pentru HoReCa si retail, cu stocuri pentru marfuri, materii prime si produse finite si retete cu note de productie. Pagina de retail mentioneaza ca 'Funcționează offline până la 7 zile', conectare la cantare si integrare cu casa de marcat. Integrari cu livratori (Glovo, Wolt, Bolt); preturile nu sunt publicate.",
+    "sources": [
+      {
+        "title": "FreyaPOS - soft gestiune restaurant",
+        "url": "https://freyapos.ro/solutii/soft-vanzare-si-gestiune-restaurant/"
+      },
+      {
+        "title": "FreyaPOS - program gestiune magazin",
+        "url": "https://freyapos.ro/solutii/software-pentru-retail/"
+      },
+      {
+        "title": "FreyaPOS - site oficial",
+        "url": "https://freyapos.ro/"
+      }
+    ],
+    "verified_on": "2026-10-01"
+  },
+  {
+    "id": "boogit",
+    "name": "boogiT POS",
+    "url": "https://pos.boogit.ro",
+    "segments": [
+      "restaurant",
+      "fast-food",
+      "cantina",
+      "brutarie",
+      "cafenea",
+      "bar",
+      "retail"
+    ],
+    "offline": true,
+    "fiscal_printers": true,
+    "scales": null,
+    "recipes_production": true,
+    "inventory": true,
+    "ecommerce_or_orders": true,
+    "pricing_public": "Structura de pret descrisa (taxa unica de implementare + abonament lunar), fara sume publicate",
+    "pricing_from": null,
+    "notes": "Platforma cloud pentru HoReCa cu vanzare, gestiune, retete si productie, NIR automat din e-Factura si mod offline. Compatibila cu casele de marcat Datecs si integrata cu Wolt, Bolt Food, Glovo, plus magazin online propriu (boogiT Shop). Pretul are o taxa unica de implementare si un abonament lunar, fara sume pe site.",
+    "sources": [
+      {
+        "title": "boogiT POS - site oficial",
+        "url": "https://pos.boogit.ro/"
+      },
+      {
+        "title": "boogiT - soft cafenea",
+        "url": "https://pos.boogit.ro/products/pos-coffee"
+      }
+    ],
+    "verified_on": "2026-10-01"
+  },
+  {
+    "id": "vilicorest",
+    "name": "VilicoRest",
+    "url": "https://vilicorest.ro",
+    "segments": [
+      "restaurant",
+      "bar",
+      "cafenea",
+      "hotel",
+      "pensiune",
+      "food truck",
+      "fast-food"
+    ],
+    "offline": true,
+    "fiscal_printers": true,
+    "scales": true,
+    "recipes_production": true,
+    "inventory": true,
+    "ecommerce_or_orders": true,
+    "pricing_public": "Preturi publicate pe site, abonament lunar sau licenta unica, fara TVA",
+    "pricing_from": "de la €42/lună (VilicoPOS Mini)",
+    "notes": "Soft HoReCa modular (POS, gestiune, tableta ospatar, bucatarie, webshop) care poate rula in mod offline. Compatibil cu majoritatea caselor de marcat omologate si cu cantare electronice, are retetar cu descarcare automata a ingredientelor si integreaza Glovo si TapTasty. Exista si licenta unica (VilicoPOS de la €286), preturile nu includ TVA.",
+    "sources": [
+      {
+        "title": "VilicoRest - site oficial",
+        "url": "https://vilicorest.ro/"
+      },
+      {
+        "title": "VilicoRest - preturi",
+        "url": "https://vilicorest.ro/preturi/"
+      }
+    ],
+    "verified_on": "2026-10-01"
+  },
+  {
+    "id": "noxta",
+    "name": "Noxta",
+    "url": "https://noxta.ro",
+    "segments": [
+      "restaurant",
+      "cafenea",
+      "bar",
+      "retail",
+      "saloane"
+    ],
+    "offline": true,
+    "fiscal_printers": true,
+    "scales": null,
+    "recipes_production": null,
+    "inventory": true,
+    "ecommerce_or_orders": true,
+    "pricing_public": "Preturi publicate pe site, abonament lunar, inclusiv plan gratuit",
+    "pricing_from": "0RON/lună (FREE); STARTER 149RON/lună",
+    "notes": "POS pentru afaceri mici cu vanzare la tejghea (Riveat Software SRL, Arad), declarat '100% funcțional fără internet' pe toate planurile. Se conecteaza la case de marcat Datecs si Tremol; gestiunea de stoc cu NIR incepe de la planul Professional. Glovo, Wolt si Bolt Food sunt add-on optional, iar comenzile online pe site sunt in planul Business.",
+    "sources": [
+      {
+        "title": "Noxta - site oficial",
+        "url": "https://noxta.ro/"
+      },
+      {
+        "title": "Noxta - sistem POS restaurant",
+        "url": "https://noxta.ro/sistem-pos-restaurant"
+      },
+      {
+        "title": "Noxta - preturi",
+        "url": "https://noxta.ro/pricing"
+      }
+    ],
+    "verified_on": "2026-10-01"
+  },
+  {
+    "id": "pob-soft-retail",
+    "name": "POB Soft Retail",
+    "url": "https://pobsoft.ro",
+    "segments": [
+      "retail",
+      "alimentar",
+      "minimarket",
+      "supermarket",
+      "aprozar",
+      "en-gros"
+    ],
+    "offline": null,
+    "fiscal_printers": true,
+    "scales": true,
+    "recipes_production": null,
+    "inventory": true,
+    "ecommerce_or_orders": null,
+    "pricing_public": "Preturi orientative pe site, fara precizare daca sunt licenta unica sau abonament",
+    "pricing_from": "490lei (Vanzare); De la 1000lei (Vanzare & Gestiune)",
+    "notes": "Program de gestiune si vanzare prin scanare coduri de bare pentru magazine, format din POB Server, POB Backoffice si POB Retail. Tipareste bonurile pe casa de marcat sau imprimanta fiscala, lucreaza cu cantare si genereaza NIR si rapoarte de stoc. Suportul extins are abonament lunar 'începând de la 120 lei/lună'.",
+    "sources": [
+      {
+        "title": "POB Soft - program gestiune magazin",
+        "url": "https://pobsoft.ro/program-gestiune-magazin/"
+      },
+      {
+        "title": "POB Soft - site oficial",
+        "url": "https://pobsoft.ro/"
+      }
+    ],
+    "verified_on": "2026-10-01"
+  },
+  {
+    "id": "selectsoft-retail",
+    "name": "Selectsoft Retail / POS Magazin",
+    "url": "https://selectsoft.ro/solutii-software/soft-pos-magazin/",
+    "segments": [
+      "retail",
+      "alimentar",
+      "brutarie",
+      "patiserie",
+      "aprozar",
+      "materiale constructii",
+      "restaurant",
+      "cafenea"
+    ],
+    "offline": null,
+    "fiscal_printers": true,
+    "scales": true,
+    "recipes_production": true,
+    "inventory": true,
+    "ecommerce_or_orders": true,
+    "pricing_public": "Fara preturi publicate; oferta in functie de modulele necesare",
+    "pricing_from": null,
+    "notes": "Program de gestiune si vanzare pentru comert cu amanuntul si en-gros, cu unul sau mai multe puncte de lucru, integrat e-Factura. Se conecteaza la case de marcat sau imprimante fiscale si la cantare electronice cu etichetare, are retetar cu consumuri si raport de productie si se sincronizeaza cu Gomag, WooCommerce, Shopify si altele. Oferta se stabileste in functie de modulele necesare.",
+    "sources": [
+      {
+        "title": "Selectsoft - soft POS magazin",
+        "url": "https://selectsoft.ro/solutii-software/soft-pos-magazin/"
+      },
+      {
+        "title": "Selectsoft - site oficial",
+        "url": "https://selectsoft.ro/"
+      }
+    ],
+    "verified_on": "2026-10-01"
+  }
+]

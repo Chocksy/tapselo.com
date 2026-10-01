@@ -1,0 +1,76 @@
+---
+// /ghid/deschide-{type}: one page per entry of src/lib/kb/shop-checklists.json.
+import GuideShell from "../../components/GuideShell.astro";
+import { inlineMd } from "../../lib/markdown.ts";
+import { checklistSources, type Checklist } from "../../lib/mcp/answers/checklist.ts";
+import checklists from "../../lib/kb/shop-checklists.json";
+
+export function getStaticPaths() {
+  return (checklists as Checklist[]).map((c) => ({
+    params: { type: c.page.replace(/^\/ghid\/deschide-/, "") },
+    props: { c },
+  }));
+}
+
+const { c } = Astro.props as { c: Checklist };
+---
+
+<GuideShell
+  title={`${c.title}: autorizatii si pasi | Ghid Tapselo`}
+  description={c.summary}
+  heading={c.title}
+  lead={c.summary}
+  sources={checklistSources(c)}
+  verifiedOn={c.verified_on}
+  campaign={c.id}
+>
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Coduri CAEN</h2>
+    <ul class="mt-4 space-y-2 pl-5 text-text-secondary">
+      {c.caen.map((x) => (
+        <li class="list-disc leading-relaxed"><strong class="text-primary">{x.code}</strong> {x.label}</li>
+      ))}
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Pasi</h2>
+    <ol class="mt-6 space-y-8">
+      {c.steps.map((s, i) => (
+        <li class="flex gap-4">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">{i + 1}</span>
+          <div class="min-w-0">
+            <h3 class="text-primary">{s.title}</h3>
+            {s.authority && <p class="mt-1 text-sm font-medium text-text-muted">{s.authority}</p>}
+            <p class="kb-prose mt-2" set:html={inlineMd(s.body)} />
+            {s.sources && s.sources.length > 0 && (
+              <p class="mt-2 text-sm text-text-muted">
+                Surse:{" "}
+                {s.sources.map((src, j) => (
+                  <>
+                    {j > 0 && ", "}
+                    <a href={src.url} rel="noopener" target="_blank" class="text-accent hover:text-accent-hover">{src.title}</a>
+                  </>
+                ))}
+              </p>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Obligatii fiscale</h2>
+    <ul class="kb-prose mt-4">
+      {c.fiscal.map((x) => <li set:html={inlineMd(x)} />)}
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Documente de pastrat</h2>
+    <ul class="kb-prose mt-4">
+      {c.documents.map((x) => <li set:html={inlineMd(x)} />)}
+    </ul>
+  </section>
+</GuideShell>
