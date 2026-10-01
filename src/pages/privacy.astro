@@ -123,10 +123,6 @@ import Footer from "../components/Footer.astro";
             le sterge din baza de date.
           </li>
           <li class="list-disc leading-relaxed">
-            Pentru flyere: numele produselor intr-un cache comun de poze, ca aceeasi poza (de exemplu "telemea de vaca")
-            sa fie folosita pentru toti utilizatorii. Pozele sunt publice.
-          </li>
-          <li class="list-disc leading-relaxed">
             Raspunsurile la intrebari (reguli, erori, calcule, verificari) nu se salveaza.
           </li>
         </ul>
@@ -141,10 +137,6 @@ import Footer from "../components/Footer.astro";
           <li class="list-disc leading-relaxed">ANAF (serviciul public de verificare TVA): primeste CUI-ul pe care il verifici.</li>
           <li class="list-disc leading-relaxed">BNR: citim cursul euro publicat. Nu trimitem date despre tine.</li>
           <li class="list-disc leading-relaxed">Open Food Facts: primeste codurile de bare (EAN) pe care le cauti.</li>
-          <li class="list-disc leading-relaxed">
-            fal.ai si OpenRouter: pentru pozele din flyere, functia noastra din Supabase trimite numele produsului
-            (fara magazin, preturi sau alte date) ca sa obtina o poza generica.
-          </li>
           <li class="list-disc leading-relaxed">
             Supabase (infrastructura in Uniunea Europeana) pastreaza documentele, iar Cloudflare gazduieste site-ul si
             conectorul.
@@ -218,11 +210,9 @@ import Footer from "../components/Footer.astro";
           AI connector ("Tapselo pentru magazine", https://tapselo.com/mcp, used from Claude or ChatGPT, no account):
           we receive only the tool arguments the AI app sends (for example an error code, a CUI, barcodes or a product
           list), never the chat history, memory or uploaded files. Answers are not stored. Documents made by the
-          document tools are stored for 30 days and then deleted by a daily job; flyer product names also go into a
-          shared picture cache. Logs hold the tool name, success or error, duration, error type and, on failure, the technical error message; they hold no user text or tool arguments.
-          Outside services: ANAF (the CUI you check), BNR (exchange rate, nothing sent about you), Open Food Facts (the
-          barcodes you look up), and fal.ai and OpenRouter (product names only, for flyer pictures, through our
-          Supabase function). Document pages are public to anyone with the link and marked noindex. To delete a
+          document tools are stored for 30 days and then deleted by a daily job. Logs hold the tool name, success or error, duration, error type and, on failure, the technical error message; they hold no user text or tool arguments.
+          Outside services: ANAF (the CUI you check), BNR (exchange rate, nothing sent about you), and Open Food Facts
+          (the barcodes you look up). Document pages are public to anyone with the link and marked noindex. To delete a
           document or report abuse, email contact@tapselo.com with the link. Last updated: 1 October 2026.
         </p>
       </section>

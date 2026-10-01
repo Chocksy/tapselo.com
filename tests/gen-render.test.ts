@@ -93,18 +93,19 @@ test("payload with a URL or a bad kind renders the not-found page", () => {
   assert.equal(renderDraft(null, ID).maxAge, 60);
 });
 
-test("flyer: offers look, pictures by product key, emoji fallback, prices, cache", () => {
+test("flyer: offers look, emoji only (no AI pictures), prices, cache", () => {
   const r = renderDraft(MOCK_DRAFTS.flyer, ID);
   const out = r.html;
-  assert.equal(r.maxAge, 60); // one picture still pending
+  assert.equal(r.maxAge, 600);
   assert.match(out, /<link rel="canonical" href="https:\/\/tapselo\.com\/g\/Ab3dEf7hJk" \/>/);
   assert.match(out, /<title>Oferte Alimentara La Doi Pasi<\/title>/);
-  assert.equal((out.match(/<img /g) ?? []).length, 1);
-  assert.ok(out.includes(`<img src="${MOCK_DRAFTS.flyer.images!["telemea de vaca"]!.url}"`));
-  assert.match(out, /☕/); // cafea: pending -> emoji
-  assert.match(out, /🍞/); // paine: skipped -> emoji
-  assert.match(out, /🍅/); // rosii: failed -> emoji
-  assert.match(out, /🫒/); // ulei: no key
+  assert.equal((out.match(/<img /g) ?? []).length, 0); // even with a "ready" picture stored
+  for (const p of (MOCK_DRAFTS.flyer.payload as any).products) assert.ok(out.includes(emojiFor(p.name)), p.name);
+  assert.match(out, /🧀/); // telemea: ready picture ignored -> emoji
+  assert.match(out, /☕/);
+  assert.match(out, /🍞/);
+  assert.match(out, /🍅/);
+  assert.match(out, /🫒/);
   // Telemea 32 -> 27, no 30-day low given: struck regular price labelled "Pret anterior", no 30-day line
   assert.match(out, /<p class="old">Pret anterior: <s[^>]*>32,00 lei<\/s><\/p>/);
   assert.match(out, /<span class="new">27,00<\/span><span class="unit">lei \/ kg<\/span>/);
@@ -119,6 +120,7 @@ test("flyer: offers look, pictures by product key, emoji fallback, prices, cache
 
   const done = clone("flyer");
   done.images!["cafea jacobs"] = { status: "ready", url: `${IMAGE_URL_PREFIX}public/abc.jpg` };
+  assert.equal(hasPendingImages(MOCK_DRAFTS.flyer), true);
   assert.equal(hasPendingImages(done), false);
   assert.equal(renderDraft(done, ID).maxAge, 600);
   assert.equal(flyerImageUrl(done, 1), `${IMAGE_URL_PREFIX}public/abc.jpg`);

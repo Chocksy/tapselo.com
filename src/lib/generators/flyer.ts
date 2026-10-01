@@ -86,7 +86,8 @@ export function flyerToOffers(p: FlyerPayload, draft: Pick<DraftRecord, "product
       prior_lowest_cents: prior,
       prior_days: prior !== null ? 30 : null,
       promo_to: p.valid_until ?? null,
-      image_url: flyerImageUrl(draft, i),
+      // ponytail: AI pictures off (Claude directory policy); flyerImageUrl(draft, i) restores them.
+      image_url: null,
       // Without a given 30-day low, the struck price is the user's regular price, labelled as such.
       old_label: hasPromo && prior === null ? "Pret anterior" : null,
     };

@@ -5,7 +5,7 @@
 import type { DraftKind, DraftRecord } from "./types.ts";
 import { isDraftKind, validatePayload } from "./validate.ts";
 import { renderGeneratedNotFound } from "./page.ts";
-import { hasPendingImages, renderFlyer } from "./flyer.ts";
+import { renderFlyer } from "./flyer.ts";
 import { renderLabels } from "./labels.ts";
 import { renderNir } from "./nir.ts";
 import { renderRecipe } from "./recipe.ts";
@@ -47,5 +47,5 @@ export function renderDraft(draft: DraftRecord | null | undefined, id: string): 
     console.warn("g render failed", kind, e instanceof Error ? e.name : "error");
     return notFound;
   }
-  return { html, status: 200, maxAge: kind === "flyer" && hasPendingImages(draft) ? 60 : 600 };
+  return { html, status: 200, maxAge: 600 };
 }

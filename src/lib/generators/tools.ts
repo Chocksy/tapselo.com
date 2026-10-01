@@ -27,7 +27,6 @@ interface Spec<K extends DraftKind> {
   tool: string;
   summary: (p: PayloadByKind[K]) => string;
   structured?: (p: PayloadByKind[K]) => Record<string, unknown>;
-  extraNote?: string;
 }
 
 /** Validate -> RPC -> Romanian answer with the link. Exported for tests. */
@@ -57,7 +56,7 @@ export async function createDraft<K extends DraftKind>(spec: Spec<K>, args: Reco
     "",
     `Documentul: ${url}`,
     "",
-    `Pagina se printeaza sau se salveaza ca PDF cu butonul "Printeaza / Salveaza PDF". Linkul expira in 30 de zile.${spec.extraNote ? ` ${spec.extraNote}` : ""}`,
+    `Pagina se printeaza sau se salveaza ca PDF cu butonul "Printeaza / Salveaza PDF". Linkul expira in 30 de zile.`,
   ].join("\n");
   return { text, structured: { id, url, kind: spec.kind, ...(spec.structured?.(payload) ?? {}) } };
 }
@@ -215,7 +214,7 @@ export const generatorTools: ToolDef[] = [
   {
     name: "create_offer_flyer",
     title: "Flyer cu oferte",
-    description: `Creeaza o pagina printabila (A4) cu ofertele magazinului, pe tapselo.com, cu poze generate pentru produse. Max ${MAX_ITEMS.flyer} produse. Preturi in lei cu TVA. ${NO_URL} Raspunde cu linkul primit.`,
+    description: `Creeaza o pagina printabila (A4) cu ofertele magazinului, pe tapselo.com. Max ${MAX_ITEMS.flyer} produse. Preturi in lei cu TVA. ${NO_URL}`,
     inputSchema: flyerSchema,
     annotations: ANNOTATIONS,
     handler: (args, env) =>
@@ -225,7 +224,6 @@ export const generatorTools: ToolDef[] = [
           tool: "create_offer_flyer",
           summary: flyerSummary,
           structured: (p) => ({ products: p.products.length }),
-          extraNote: "Pozele produselor apar in cateva minute; reincarca pagina.",
         },
         args,
         env,
