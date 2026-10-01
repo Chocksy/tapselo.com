@@ -6,7 +6,7 @@ import Footer from "../components/Footer.astro";
 
 <Layout
   title="Politica de confidentialitate — Tapselo POS"
-  description="Cum colecteaza si foloseste Tapselo POS datele clientilor si ale magazinelor, inclusiv mesajele primite prin integrarea Facebook Messenger."
+  description="Cum colecteaza si foloseste Tapselo POS datele clientilor si ale magazinelor, inclusiv mesajele primite prin integrarea Facebook Messenger si datele primite de asistentul AI."
 >
   <Navbar />
 
@@ -19,7 +19,7 @@ import Footer from "../components/Footer.astro";
         Ce date colectam, de ce le colectam si ce poti face cu ele.
       </p>
       <p class="mt-6 text-sm text-text-on-primary/50">
-        Ultima actualizare: 17 august 2026
+        Ultima actualizare: 1 octombrie 2026
       </p>
     </div>
   </header>
@@ -101,6 +101,69 @@ import Footer from "../components/Footer.astro";
         </p>
       </section>
 
+      <section id="asistent-ai" class="scroll-mt-24">
+        <h2 class="font-display text-3xl italic text-primary">Asistentul AI (Claude si ChatGPT)</h2>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          "Tapselo pentru magazine" este un conector pe care il adaugi in Claude sau ChatGPT, la adresa
+          <code>https://tapselo.com/mcp</code>. Nu are cont si nu cere autentificare. Ce face este descris pe pagina
+          <a href="/ai" class="font-bold text-accent hover:text-accent-hover">Asistent AI</a>.
+        </p>
+        <h3 class="mt-6 font-bold text-primary">Ce primim</h3>
+        <p class="mt-2 leading-relaxed text-text-secondary">
+          Primim doar argumentele pe care aplicatia AI le trimite cand foloseste o unealta: de exemplu un cod de eroare,
+          un CUI, coduri de bare sau lista de produse pentru un flyer. Nu primim conversatia, istoricul chatului,
+          memoria asistentului sau fisierele incarcate de tine. Cererile vin de la serverele Anthropic sau OpenAI,
+          asa ca nu stim cine esti.
+        </p>
+        <h3 class="mt-6 font-bold text-primary">Ce pastram</h3>
+        <ul class="mt-2 space-y-2 pl-5 text-text-secondary">
+          <li class="list-disc leading-relaxed">
+            Documentele create (flyer, etichete de raft, NIR, fisa tehnica, registru de casa): datele trimise pentru
+            document, data crearii si un numar de afisari. Le pastram 30 de zile. Dupa expirare, o sarcina zilnica
+            le sterge din baza de date.
+          </li>
+          <li class="list-disc leading-relaxed">
+            Pentru flyere: numele produselor intr-un cache comun de poze, ca aceeasi poza (de exemplu "telemea de vaca")
+            sa fie folosita pentru toti utilizatorii. Pozele sunt publice.
+          </li>
+          <li class="list-disc leading-relaxed">
+            Raspunsurile la intrebari (reguli, erori, calcule, verificari) nu se salveaza.
+          </li>
+        </ul>
+        <h3 class="mt-6 font-bold text-primary">Ce scriem in loguri</h3>
+        <p class="mt-2 leading-relaxed text-text-secondary">
+          Pentru fiecare folosire a unei unelte scriem o linie cu numele uneltei, daca a mers sau nu, durata si tipul
+          erorii. Cand o eroare apare, scriem si mesajul tehnic al erorii. Nu scriem textul trimis de tine si nici
+          argumentele uneltei.
+        </p>
+        <h3 class="mt-6 font-bold text-primary">Servicii externe</h3>
+        <ul class="mt-2 space-y-2 pl-5 text-text-secondary">
+          <li class="list-disc leading-relaxed">ANAF (serviciul public de verificare TVA): primeste CUI-ul pe care il verifici.</li>
+          <li class="list-disc leading-relaxed">BNR: citim cursul euro publicat. Nu trimitem date despre tine.</li>
+          <li class="list-disc leading-relaxed">Open Food Facts: primeste codurile de bare (EAN) pe care le cauti.</li>
+          <li class="list-disc leading-relaxed">
+            fal.ai si OpenRouter: pentru pozele din flyere, functia noastra din Supabase trimite numele produsului
+            (fara magazin, preturi sau alte date) ca sa obtina o poza generica.
+          </li>
+          <li class="list-disc leading-relaxed">
+            Supabase (infrastructura in Uniunea Europeana) pastreaza documentele, iar Cloudflare gazduieste site-ul si
+            conectorul.
+          </li>
+        </ul>
+        <h3 class="mt-6 font-bold text-primary">Cine vede documentele</h3>
+        <p class="mt-2 leading-relaxed text-text-secondary">
+          Un document creat este o pagina la adresa <code>tapselo.com/g/...</code>. Oricine are linkul o poate deschide
+          pana expira. Paginile au noindex, deci nu apar in motoarele de cautare. Nu pune in documente date personale
+          pe care nu vrei sa le arati.
+        </p>
+        <h3 class="mt-6 font-bold text-primary">Stergere si abuz</h3>
+        <p class="mt-2 leading-relaxed text-text-secondary">
+          Ca sa stergem un document inainte de 30 de zile sau ca sa raportezi o pagina, scrie la
+          <a href="mailto:contact@tapselo.com" class="font-bold text-accent hover:text-accent-hover">contact@tapselo.com</a>
+          cu linkul documentului. Il stergem dupa link.
+        </p>
+      </section>
+
       <section>
         <h2 class="font-display text-3xl italic text-primary">Baza legala si drepturile tale</h2>
         <p class="mt-4 leading-relaxed text-text-secondary">
@@ -149,7 +212,18 @@ import Footer from "../components/Footer.astro";
           integration at any time, which stops all collection. Processing is based on GDPR
           (contract performance and legitimate interest). Users have the right to access, correct
           and delete their data; email the address above. The marketing site sets no tracking
-          cookies. Last updated: 17 August 2026.
+          cookies.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          AI connector ("Tapselo pentru magazine", https://tapselo.com/mcp, used from Claude or ChatGPT, no account):
+          we receive only the tool arguments the AI app sends (for example an error code, a CUI, barcodes or a product
+          list), never the chat history, memory or uploaded files. Answers are not stored. Documents made by the
+          document tools are stored for 30 days and then deleted by a daily job; flyer product names also go into a
+          shared picture cache. Logs hold the tool name, success or error, duration, error type and, on failure, the technical error message; they hold no user text or tool arguments.
+          Outside services: ANAF (the CUI you check), BNR (exchange rate, nothing sent about you), Open Food Facts (the
+          barcodes you look up), and fal.ai and OpenRouter (product names only, for flyer pictures, through our
+          Supabase function). Document pages are public to anyone with the link and marked noindex. To delete a
+          document or report abuse, email contact@tapselo.com with the link. Last updated: 1 October 2026.
         </p>
       </section>
     </div>

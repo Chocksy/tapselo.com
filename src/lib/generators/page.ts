@@ -7,7 +7,7 @@ import { trackedUrl } from "../mcp/links.ts";
 
 export { escapeHtml, formatDate };
 
-export const ABUSE_EMAIL = "abuz@tapselo.com";
+export const ABUSE_EMAIL = "contact@tapselo.com";
 
 /** The one inline script on the page. CSP allows it by hash (tests/gen-render.test.ts checks the hash). */
 export const PRINT_SCRIPT = `document.getElementById("print-btn").addEventListener("click",function(){window.print()});`;

@@ -1,0 +1,192 @@
+---
+// /ai: docs page for the "Tapselo pentru magazine" MCP connector (https://tapselo.com/mcp).
+// The tool list comes from the registry (src/lib/mcp/tools.ts). Every tool needs a line in LINES,
+// else the build fails, so the page cannot drift from the tools.
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import { answerTools } from "../lib/mcp/tools.ts";
+import { generatorTools } from "../lib/generators/tools.ts";
+
+const LINES: Record<string, string> = {
+  search_business_rules:
+    "Raspunde la intrebari despre TVA, grupa TVA pe casa de marcat, plafoane, raport Z, e-Factura, SAF-T, NIR, SGR si alergeni, cu surse oficiale.",
+  explain_datecs_error: "Explica un cod de eroare de la casa de marcat Datecs si spune ce sa faci.",
+  dibal_scale_help: "Ajutor pentru cantarele Dibal: format cod de bare, PLU, etichete, retea si sincronizare cu POS-ul.",
+  decode_scale_barcode: "Citeste un cod de bare de pe eticheta de cantar: PLU, greutate sau pret si cifra de control.",
+  calculate_shelf_price: "Calculeaza pretul la raft din cost, adaos sau marja, cota TVA si rotunjire, plus pretul pe kg sau litru.",
+  check_company: "Verifica o firma dupa CUI in registrul public ANAF: denumire, adresa, TVA, TVA la incasare, e-Factura, stare.",
+  check_tax_thresholds: "Compara cifra de afaceri anuala cu plafonul de scutire TVA si cu plafonul de microintreprindere (curs BNR).",
+  open_shop_checklist: "Lista de autorizatii si pasi pentru un magazin nou: macelarie, brutarie, cafenea, alimentara si altele.",
+  compare_pos_systems: "Compara programe de casa de marcat din Romania pentru tipul tau de magazin. Comparatia este facuta de Tapselo.",
+  lookup_products_by_ean: "Cauta produse dupa codul de bare in Open Food Facts: nume, marca, gramaj, poza. Pana la 30 de coduri.",
+  create_offer_flyer: "Face un flyer A4 cu ofertele magazinului, cu poze generate pentru produse.",
+  create_shelf_labels: "Face etichete de raft A4 (21 pe pagina) cu pret, pret pe kg sau litru si cod de bare.",
+  create_nir: "Face o nota de intrare-receptie (NIR) dintr-o factura de la furnizor, cu TVA, adaos si totaluri.",
+  create_recipe_sheet: "Face o fisa tehnica pentru o reteta: ingrediente, cost pe portie si alergeni.",
+  create_cash_book: "Face registrul de casa pentru o zi: incasari, plati si soldul dupa fiecare inregistrare.",
+};
+
+const describe = (name: string): string => {
+  const line = LINES[name];
+  if (!line) throw new Error(`/ai: missing description for tool ${name}`);
+  return line;
+};
+const groups = [
+  { title: "Raspunsuri", lead: "Unelte care raspund pe loc. Nu salveaza nimic.", tools: answerTools },
+  {
+    title: "Documente",
+    lead: "Unelte care fac o pagina printabila pe tapselo.com. Linkul expira in 30 de zile.",
+    tools: generatorTools,
+  },
+].map((g) => ({ ...g, tools: g.tools.map((t) => ({ name: t.name, title: t.title, line: describe(t.name) })) }));
+const extra = Object.keys(LINES).filter((n) => ![...answerTools, ...generatorTools].some((t) => t.name === n));
+if (extra.length) throw new Error(`/ai: descriptions for unknown tools: ${extra.join(", ")}`);
+
+const PROMPTS = [
+  "Ce grupa TVA pun pentru paine pe casa de marcat?",
+  "Casa de marcat Datecs imi da eroarea -111008, ce fac?",
+  "Decodeaza codul de bare 2800123012342",
+  "Cost 10 lei fara TVA, adaos 30%, TVA 11%, rotunjit la ,99",
+  "Verifica CUI 14399840",
+  "Vreau sa deschid o macelarie, ce autorizatii imi trebuie?",
+  "Ce program de casa de marcat e bun pentru o brutarie cu retete?",
+  "Fa-mi un flyer cu oferte: Telemea 32 lei/kg redus la 27, Cafea Jacobs 250g 22 lei redus la 18",
+  "Fa etichete de raft pentru: Ulei Floriol 1L 11,99 lei, EAN 5941234567890",
+  "(cu poza facturii atasata) Fa-mi NIR cu adaos 25%",
+];
+
+const MCP_URL = "https://tapselo.com/mcp";
+const a = "font-bold text-accent hover:text-accent-hover";
+const p = "mt-4 leading-relaxed text-text-secondary";
+const li = "list-disc leading-relaxed";
+---
+
+<Layout
+  title="Tapselo pentru magazine in Claude si ChatGPT | Tapselo"
+  description="Conectorul Tapselo pentru Claude si ChatGPT: reguli fiscale, erori Datecs, cantare Dibal, calcul pret, verificare firma si documente printabile pentru magazinele mici din Romania."
+>
+  <Navbar />
+
+  <header class="bg-primary pt-28 pb-14 md:pt-32">
+    <div class="mx-auto max-w-3xl px-6">
+      <h1 class="font-display text-4xl italic text-white sm:text-5xl">Tapselo pentru magazine in Claude si ChatGPT</h1>
+      <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">
+        Un conector care da asistentului AI reguli verificate si calcule pentru magazinele mici din Romania, plus
+        documente gata de printat.
+      </p>
+    </div>
+  </header>
+
+  <main class="bg-surface-white py-14">
+    <div class="mx-auto max-w-3xl space-y-12 px-6">
+      <section>
+        <h2 class="font-display text-3xl italic text-primary">Ce face</h2>
+        <p class={p}>
+          Intrebi in Claude sau ChatGPT, in romana sau in engleza, iar asistentul foloseste uneltele Tapselo. Raspunde
+          la intrebari despre TVA si casa de marcat, explica erorile Datecs, citeste codurile de bare de la cantarele
+          Dibal, calculeaza pretul la raft, verifica o firma dupa CUI si iti spune ce autorizatii iti trebuie pentru un
+          magazin nou. Poate face si documente printabile: flyer cu oferte, etichete de raft, NIR, fisa tehnica si
+          registru de casa.
+        </p>
+        <p class={p}>Fiecare raspuns are un link catre pagina cu detalii sau catre documentul creat.</p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-3xl italic text-primary">Cum il adaugi in Claude</h2>
+        <p class={p}>Din directorul de conectori: In curand in directorul Claude.</p>
+        <p class={p}>Manual, ca si conector propriu:</p>
+        <ol class="mt-4 space-y-2 pl-5 text-text-secondary">
+          <li class="list-decimal leading-relaxed">Deschide Claude si mergi la <strong class="text-primary">Settings &rarr; Connectors</strong>.</li>
+          <li class="list-decimal leading-relaxed">Apasa <strong class="text-primary">Add custom connector</strong>.</li>
+          <li class="list-decimal leading-relaxed">Nume: <code>Tapselo</code>. URL: <code>{MCP_URL}</code>.</li>
+          <li class="list-decimal leading-relaxed">Nu completa nimic la autentificare (OAuth). Conectorul nu cere cont si nu cere logare.</li>
+          <li class="list-decimal leading-relaxed">Apasa <strong class="text-primary">Add</strong>, apoi activeaza conectorul in chat.</li>
+        </ol>
+        <p class={p}>
+          In ChatGPT conectorul va fi disponibil mai tarziu, dupa verificarea aplicatiilor pentru Romania. Pana atunci
+          poti folosi aceeasi adresa, <code>{MCP_URL}</code>, daca contul tau permite conectori proprii.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-3xl italic text-primary">Unelte</h2>
+        {groups.map((g) => (
+          <div class="mt-6">
+            <h3 class="text-xl font-bold text-primary">{g.title}</h3>
+            <p class="mt-1 text-sm text-text-muted">{g.lead}</p>
+            <ul class="mt-4 space-y-3">
+              {g.tools.map((t) => (
+                <li id={t.name} class="rounded-xl border border-border-light p-4">
+                  <p class="font-bold text-primary">{t.title}</p>
+                  <p class="mt-1 text-sm leading-relaxed text-text-secondary">{t.line}</p>
+                  <p class="mt-2 text-xs text-text-muted"><code>{t.name}</code></p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </section>
+
+      <section>
+        <h2 class="font-display text-3xl italic text-primary">Exemple de intrebari</h2>
+        <ol class="mt-4 space-y-2 pl-5 text-text-secondary">
+          {PROMPTS.map((q) => <li class="list-decimal leading-relaxed">{q}</li>)}
+        </ol>
+      </section>
+
+      <section>
+        <h2 class="font-display text-3xl italic text-primary">Limite</h2>
+        <ul class="mt-4 space-y-2 pl-5 text-text-secondary">
+          <li class={li}>Nu ai nevoie de cont. Conectorul nu stie cine esti si nu vede datele magazinului tau.</li>
+          <li class={li}>Documentele create expira dupa 30 de zile. Salveaza-le ca PDF daca ai nevoie de ele mai tarziu.</li>
+          <li class={li}>Oricine are linkul unui document il poate deschide. Nu pune in documente date pe care nu vrei sa le arati.</li>
+          <li class={li}>Documentele nu pot contine linkuri sau adrese web.</li>
+          <li class={li}>
+            Informatiile au scop informativ si nu sunt consultanta juridica sau fiscala. Verifica sursele oficiale sau
+            intreaba contabilul.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="font-display text-3xl italic text-primary">Datele tale</h2>
+        <p class={p}>
+          Conectorul primeste doar datele trimise pentru o unealta (de exemplu un CUI sau lista de produse), nu
+          conversatia ta. Raspunsurile nu se salveaza. Documentele se pastreaza 30 de zile, apoi se sterg automat.
+          In loguri scriem doar numele uneltei, rezultatul si durata, fara textul tau. Detalii in
+          <a href="/privacy#asistent-ai" class={a}>politica de confidentialitate</a>.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-3xl italic text-primary">Ajutor</h2>
+        <p class={p}>
+          Pentru intrebari, erori, stergerea unui document sau raportarea unei pagini, scrie la
+          <a href="mailto:contact@tapselo.com" class={a}>contact@tapselo.com</a>. Pentru un document, trimite si linkul lui.
+        </p>
+      </section>
+
+      <section id="english" lang="en" class="rounded-xl border border-border bg-surface p-6 md:p-8">
+        <h2 class="font-display text-3xl italic text-primary">In English</h2>
+        <p class={p}>
+          "Tapselo pentru magazine" is an MCP connector for Claude and ChatGPT that helps small shops in Romania. It
+          answers questions on Romanian VAT and cash register rules, explains Datecs fiscal printer errors, decodes
+          Dibal scale barcodes, does shelf price math, checks a company by CUI in the ANAF registry, lists the permits
+          for a new shop, compares POS software (the comparison is made by Tapselo), and looks up products by EAN. It
+          also makes printable pages: offer flyers, shelf labels, NIR (goods received notes), recipe sheets and cash
+          books.
+        </p>
+        <p class={p}>
+          Add it in Claude: Settings &rarr; Connectors &rarr; Add custom connector, URL <code>{MCP_URL}</code>, no
+          sign-in. Documents expire after 30 days and are public to anyone with the link. No account is needed. The
+          information is not legal or tax advice. Privacy:
+          <a href="/privacy#asistent-ai" class={a}>tapselo.com/privacy#asistent-ai</a>. Support:
+          <a href="mailto:contact@tapselo.com" class={a}>contact@tapselo.com</a>.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
