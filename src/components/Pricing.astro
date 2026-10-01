@@ -21,6 +21,7 @@ const extras = [
   ["Casă de marcat în plus", "+39 lei"],
   ["Magazin în plus", "+99 lei"],
   ["Plătești 10 luni, primești 12", "anual"],
+  ["În beta", "gratis"],
 ];
 ---
 
@@ -30,8 +31,11 @@ const extras = [
       <h2 class="animate-on-scroll font-display text-4xl italic text-primary sm:text-5xl">
         Prețuri simple. <span class="text-accent">Totul inclus.</span>
       </h2>
-      <p class="animate-on-scroll animate-delay-100 mt-5 text-lg leading-relaxed text-text-secondary">
-        Toate funcțiile sunt în ambele planuri. Prima lună e gratuită, fără card.
+      <p class="animate-on-scroll animate-delay-100 mt-5 inline-flex items-center rounded-full bg-cash-light px-4 py-1.5 text-sm font-bold text-cash ring-1 ring-cash/30">
+        Beta: totul e gratuit acum
+      </p>
+      <p class="animate-on-scroll animate-delay-100 mt-4 text-lg leading-relaxed text-text-secondary">
+        Cât timp suntem în beta, Tapselo e gratuit, fără card. Prețurile de mai jos se aplică după beta și te anunțăm cu 30 de zile înainte.
       </p>
     </div>
 
@@ -43,9 +47,9 @@ const extras = [
         ]}>
           <h3 class="text-lg font-bold text-primary">Tapselo {plan.name}</h3>
           <p class="mt-1 text-sm text-text-secondary">{plan.note}</p>
-          <p class="mt-6">
-            <span class="font-display text-5xl italic text-primary">{plan.price}</span>
-            <span class="text-sm font-medium text-text-secondary"> lei / lună + TVA</span>
+          <p class="mt-6 flex items-baseline gap-3">
+            <span class="font-display text-5xl italic text-cash">Gratis</span>
+            <span class="text-sm font-medium text-text-secondary"><s>{plan.price} lei</s> / lună + TVA</span>
           </p>
           <p class="mt-2 text-sm font-bold text-text">{plan.tills}</p>
           <a
@@ -55,7 +59,7 @@ const extras = [
               plan.featured ? "bg-accent text-white hover:bg-accent-hover hover:shadow-lg" : "bg-primary text-white hover:bg-primary-light hover:shadow-lg",
             ]}
           >
-            Începe gratuit 30 de zile
+            Începe gratuit
             <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </a>
           <a href="https://app.tapselo.com/?demo=1" class="mt-3 text-center text-sm font-medium text-text-secondary underline-offset-4 hover:text-primary hover:underline">
