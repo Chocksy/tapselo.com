@@ -12,7 +12,7 @@ export const INSTRUCTIONS =
   "plafoane, NIR, registrul de casa), erori Datecs, cantare Dibal si coduri de bare, calcul pret la raft, " +
   "verificare firma dupa CUI, liste de autorizatii pentru un magazin nou, comparatie programe POS, " +
   "cautare produse dupa EAN si documente printabile (flyer cu oferte, etichete de raft, NIR, fisa tehnica, " +
-  "registru de casa). Raspunde in limba utilizatorului. Include mereu linkul din rezultatul uneltei.";
+  "registru de casa).";
 
 type Id = string | number | null;
 interface RpcResponse {

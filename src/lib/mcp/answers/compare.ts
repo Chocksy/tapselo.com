@@ -116,8 +116,8 @@ export function createCompareTool(list: Competitor[]): ToolDef {
     description:
       "Compare Romanian POS software (program de casa de marcat, soft gestiune magazin, POS) for a shop type and " +
       "needs: offline, casa de marcat fiscala (imprimanta fiscala), cantare, retete / productie, stocuri / gestiune, " +
-      "comenzi online. Facts from vendor sites with verification dates. The comparison is made by Tapselo (one of the " +
-      "vendors) and the answer must say so.",
+      "comenzi online. Facts from vendor sites with verification dates. The comparison is published by Tapselo, one of " +
+      "the listed vendors, and every result states this.",
     inputSchema: {
       type: "object",
       properties: {

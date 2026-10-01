@@ -12,7 +12,7 @@ export function createSearchRulesTool(entries: KbEntry[]): ToolDef {
     name: NAME,
     title: "Reguli pentru magazine (TVA, casa de marcat, ANAF)",
     description:
-      "Search verified Romanian business rules for small shops and answer with official sources. Use for questions " +
+      "Search verified Romanian business rules for small shops, with official sources. Use for questions " +
       "about TVA / cota TVA (21%, 11%), grupa TVA pe casa de marcat, plafon TVA, microintreprindere, plafon numerar " +
       "(casa, registru de casa), raport Z, memorie fiscala, e-Factura, SAF-T D406, NIR, pret pe kg/litru, pret " +
       "barat / reducere, garantie SGR / RetuRO, alergeni, e-Transport. Input is the question in Romanian or English.",
