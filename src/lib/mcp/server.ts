@@ -89,7 +89,8 @@ async function handleMessage(msg: unknown, tools: ToolDef[], env: ToolEnv): Prom
             title: t.title,
             description: t.description,
             inputSchema: t.inputSchema,
-            annotations: t.annotations,
+            // The Claude directory reads the display name from annotations.title.
+            annotations: { title: t.title, ...t.annotations },
           })),
         },
       };
