@@ -65,7 +65,7 @@ export async function createDraft<K extends DraftKind>(spec: Spec<K>, args: Reco
 
 const str = (maxLength: number, description: string) => ({ type: "string", maxLength, description });
 const money = (description: string) => ({ type: "number", minimum: 0, maximum: 1_000_000, description });
-const NO_URL = "Fara linkuri sau adrese web (sunt respinse).";
+const NO_URL = "Text with links or web addresses is rejected.";
 
 const flyerSchema = {
   type: "object",
@@ -214,7 +214,7 @@ export const generatorTools: ToolDef[] = [
   {
     name: "create_offer_flyer",
     title: "Flyer cu oferte",
-    description: `Creeaza o pagina printabila (A4) cu ofertele magazinului, pe tapselo.com. Max ${MAX_ITEMS.flyer} produse. Preturi in lei cu TVA. ${NO_URL}`,
+    description: `Create a printable A4 offer flyer (flyer cu oferte, promotii, pliant) for a shop in Romania from product names and prices in lei. Use when the user asks for an offer flyer, promo sheet or price list for their shop. Returns a link to a page on tapselo.com that prints or saves as PDF; it does not return an image. Max ${MAX_ITEMS.flyer} products. Prices in lei with VAT. ${NO_URL}`,
     inputSchema: flyerSchema,
     annotations: ANNOTATIONS,
     handler: (args, env) =>
@@ -232,7 +232,7 @@ export const generatorTools: ToolDef[] = [
   {
     name: "create_shelf_labels",
     title: "Etichete de raft",
-    description: `Creeaza etichete de raft printabile (A4, 21 pe pagina): nume, pret, pret unitar pe kg/l (obligatoriu), cod de bare EAN-13. Max ${MAX_ITEMS.labels} produse. Pentru pretul unitar trimite unit_quantity + unit_label (ex. 250 + "g"). ${NO_URL}`,
+    description: `Create printable shelf labels (etichete de raft, etichete pret), 21 per A4 page: name, price, the unit price per kg or litre required in Romania, and an EAN-13 barcode. Use when the user asks for shelf or price labels. Returns a link to a printable page on tapselo.com. Max ${MAX_ITEMS.labels} products. For the unit price send unit_quantity + unit_label (for example 250 + "g"). ${NO_URL}`,
     inputSchema: labelsSchema,
     annotations: ANNOTATIONS,
     handler: (args, env) =>
@@ -254,7 +254,7 @@ export const generatorTools: ToolDef[] = [
   {
     name: "create_nir",
     title: "NIR (nota de intrare-receptie)",
-    description: `Creeaza o nota de intrare-receptie printabila dintr-o factura de la furnizor: valori la cost, TVA, adaos, valoare de vanzare, totaluri, semnaturi. Max ${MAX_ITEMS.nir} linii. unit_cost este FARA TVA; sale_price este CU TVA. Daca userul da un adaos %, trimite markup_percent. ${NO_URL}`,
+    description: `Create a printable goods received note (NIR, nota de intrare-receptie) from a supplier invoice: cost values, VAT, markup, sale value, totals and signatures. Use when the user asks for a NIR or to record received goods from an invoice. Returns a link to a printable page on tapselo.com. Max ${MAX_ITEMS.nir} lines. unit_cost is WITHOUT VAT; sale_price is WITH VAT. If the user gives a markup %, send markup_percent. ${NO_URL}`,
     inputSchema: nirSchema,
     annotations: ANNOTATIONS,
     handler: (args, env) =>
@@ -282,7 +282,7 @@ export const generatorTools: ToolDef[] = [
   {
     name: "create_recipe_sheet",
     title: "Fisa tehnica (reteta)",
-    description: `Creeaza o fisa tehnica printabila: ingrediente, cost total si pe portie, alergeni (cei 14 din UE, gasiti si dupa numele ingredientelor; operatorul ii confirma). Max ${MAX_ITEMS.recipe} ingrediente. ${NO_URL}`,
+    description: `Create a printable recipe sheet (fisa tehnica, reteta): ingredients, total cost and cost per portion, allergens (the 14 EU allergens, also detected from ingredient names; the operator confirms them). Use when the user asks for a recipe sheet, recipe costing or allergen list for a product they make. Returns a link to a printable page on tapselo.com. Max ${MAX_ITEMS.recipe} ingredients. ${NO_URL}`,
     inputSchema: recipeSchema,
     annotations: ANNOTATIONS,
     handler: (args, env) =>
@@ -303,7 +303,7 @@ export const generatorTools: ToolDef[] = [
   {
     name: "create_cash_book",
     title: "Registru de casa",
-    description: `Creeaza registrul de casa pentru o zi: sold initial, incasari si plati cu sold dupa fiecare, sold final, avertisment peste plafonul de 50.000 lei. Max ${MAX_ITEMS.cashbook} inregistrari; fiecare are receipt sau payment. ${NO_URL}`,
+    description: `Create a printable daily cash book (registru de casa) for a Romanian company: opening balance, receipts and payments with the balance after each, closing balance, and a warning above the 50,000 lei cash limit. Use when the user asks for a cash book or registru de casa for a day. Returns a link to a printable page on tapselo.com. Max ${MAX_ITEMS.cashbook} entries; each has receipt or payment. ${NO_URL}`,
     inputSchema: cashbookSchema,
     annotations: ANNOTATIONS,
     handler: (args, env) =>
