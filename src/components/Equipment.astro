@@ -1,0 +1,81 @@
+---
+import { Printer, Scale, ScanBarcode, Monitor, Smartphone, CircleSlash } from "@lucide/astro";
+import LazyVideo from "./LazyVideo.astro";
+
+// Only what we have tested. Keep this list in sync with the product, never ahead of it.
+const items = [
+  {
+    icon: Printer,
+    title: "Casă de marcat fiscală",
+    lead: "Datecs FP-700, conectată pe USB.",
+    text: "Bon fiscal, plată cash, card sau tichete, raport X și Z, jurnal electronic, export .p7b pentru ANAF, afișaj client.",
+    note: "Alte modele (Daisy, Tremol): în curând. Întreabă-ne.",
+  },
+  {
+    icon: Scale,
+    title: "Cântar",
+    lead: "Dibal în rețea, testat pe D-900.",
+    text: "Prețurile pleacă singure în cântar (PLU 1-999). Casa citește greutatea din codul de bare al etichetei.",
+  },
+  {
+    icon: ScanBarcode,
+    title: "Cititor coduri de bare",
+    lead: "Orice cititor USB.",
+    text: "Inventarul pe telefon citește cu camera EAN-13, EAN-8, UPC-A și Code 128.",
+  },
+  {
+    icon: Monitor,
+    title: "Calculator",
+    lead: "Imaginea Tapselo pentru kiosk (Linux), Windows, macOS sau Linux.",
+    text: "Testat pe Shuttle X50V6 cu ecran tactil.",
+  },
+  {
+    icon: Smartphone,
+    title: "Inventar",
+    lead: "Telefon Android sau iPhone.",
+    text: "Sau direct din browser.",
+  },
+];
+---
+
+<section id="echipamente" class="bg-surface py-24">
+  <div class="mx-auto max-w-6xl px-6">
+    <h2 class="animate-on-scroll font-display text-4xl italic text-primary sm:text-5xl">
+      Echipamente compatibile
+    </h2>
+    <p class="animate-on-scroll animate-delay-100 mt-4 max-w-2xl text-lg leading-relaxed text-text-secondary">
+      Ce am testat cu Tapselo. Dacă ai alt model, scrie-ne și verificăm.
+    </p>
+
+    <div class="mt-12 grid items-start gap-10 lg:grid-cols-2">
+      <ul class="space-y-6">
+        {items.map(({ icon: Icon, title, lead, text, note }) => (
+          <li class="animate-on-scroll flex gap-4">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary text-white">
+              <Icon class="h-5 w-5" />
+            </span>
+            <div>
+              <h3 class="text-base font-bold text-primary">{title}</h3>
+              <p class="mt-0.5 text-sm font-medium text-text">{lead}</p>
+              <p class="mt-1 text-sm leading-relaxed text-text-secondary">{text}</p>
+              {note && <p class="mt-1 text-sm text-text-secondary">{note}</p>}
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div class="lg:sticky lg:top-24">
+        <div class="animate-on-scroll overflow-hidden rounded-xl border border-border shadow-xl shadow-primary/10">
+          <LazyVideo slug="equipment" label="Casa Datecs pe USB, cititor de coduri, raport X și Z, cântare Dibal și Z-urile trimise la ANAF" />
+        </div>
+        <div class="animate-on-scroll mt-6 flex gap-3 rounded-xl border border-border bg-surface-white p-5">
+          <CircleSlash class="mt-0.5 h-5 w-5 shrink-0 text-text-muted" />
+          <p class="text-sm leading-relaxed text-text-secondary">
+            <span class="font-bold text-primary">Nu merge încă cu:</span>
+            terminale de card, sertar de bani, imprimante pe rețea sau Bluetooth.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

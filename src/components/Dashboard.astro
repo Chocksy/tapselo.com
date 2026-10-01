@@ -1,4 +1,5 @@
 ---
+import LazyVideo from "./LazyVideo.astro";
 ---
 
 <section id="dashboard" class="bg-primary py-24">
@@ -52,17 +53,7 @@
           style="transform: rotateY(-4deg) rotateX(1deg); transform-style: preserve-3d;"
         >
           <div class="pointer-events-none absolute inset-0 z-10 bg-gradient-to-br from-white/[0.06] via-transparent to-transparent rounded-2xl"></div>
-          <video
-            class="w-full"
-            autoplay
-            muted
-            loop
-            playsinline
-            preload="metadata"
-            poster="/screenshots/mockup/admin-sales-v2.jpg"
-          >
-            <source src="/videos/video-dashboard-admin.mp4" type="video/mp4" />
-          </video>
+          <LazyVideo slug="reports" label="Rapoarte pe ultimele 30 de zile și Z-urile zilnice sincronizate cu ANAF" />
         </div>
       </div>
     </div>

@@ -1,0 +1,52 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import { ArrowRight } from "@lucide/astro";
+---
+
+<Layout
+  title="Demo Tapselo: casa de marcat și administrarea, într-un tur scurt"
+  description="Vezi Tapselo la lucru în mai puțin de 3 minute: vânzare, cântar, recepție marfă, inventar, rețete, oferte și comenzi. Apoi încearcă demo-ul, fără cont și fără card."
+>
+  <Navbar />
+  <main class="relative overflow-hidden bg-primary pt-28 pb-20 md:pt-32">
+    <div class="pointer-events-none absolute inset-0 opacity-[0.04]" style="background-image: radial-gradient(circle, rgba(255,255,255,1) 1px, transparent 1px); background-size: 32px 32px;" aria-hidden="true"></div>
+
+    <div class="relative mx-auto max-w-5xl px-6">
+      <h1 class="font-display text-[clamp(2.5rem,4vw+1rem,4rem)] italic leading-[1.05] tracking-tight text-white">
+        Vezi Tapselo <span class="text-accent">la lucru</span>
+      </h1>
+      <p class="mt-5 max-w-2xl text-lg leading-relaxed text-text-on-primary">
+        Un tur de mai puțin de 3 minute. Vânzare, cântar, recepție marfă, inventar, rețete, oferte și comenzi.
+      </p>
+
+      <div class="mt-10 overflow-hidden rounded-2xl border border-white/15 shadow-2xl shadow-black/50">
+        <video
+          class="block aspect-video h-auto w-full bg-primary"
+          width="1280"
+          height="720"
+          controls
+          playsinline
+          preload="none"
+          poster="/videos/v2/walkthrough-short.jpg"
+          aria-label="Turul Tapselo, pe scurt"
+        >
+          <source src="/videos/v2/walkthrough-short.mp4" type="video/mp4" />
+        </video>
+      </div>
+
+      <div class="mt-12 flex flex-col items-center text-center">
+        <a
+          href="https://app.tapselo.com/?demo=1"
+          class="group inline-flex items-center justify-center gap-3 rounded-lg bg-accent px-10 py-5 text-xl font-bold text-white transition-all duration-150 hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/25 active:scale-[0.98]"
+        >
+          Încearcă demo-ul
+          <ArrowRight class="h-6 w-6 transition-transform duration-150 group-hover:translate-x-0.5" />
+        </a>
+        <p class="mt-4 text-base text-text-on-primary">Nu ai nevoie de cont sau de card.</p>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>

@@ -1,5 +1,14 @@
 ---
 import { Menu, X } from "@lucide/astro";
+
+const links = [
+  ["/#features", "Funcții"],
+  ["/#echipamente", "Echipamente"],
+  ["/#pricing", "Prețuri"],
+  ["/ghid", "Ghid"],
+  ["/ai", "Asistent AI"],
+  ["https://app.tapselo.com", "Intră în cont"],
+];
 ---
 
 <nav class="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur-sm border-b border-white/10">
@@ -9,30 +18,24 @@ import { Menu, X } from "@lucide/astro";
       Tapselo
     </a>
 
-    <div class="hidden items-center gap-8 md:flex">
-      <a href="/#features" class="text-sm font-medium text-text-on-primary transition-colors hover:text-white">Functionalitati</a>
-      <a href="/#how-it-works" class="text-sm font-medium text-text-on-primary transition-colors hover:text-white">Cum functioneaza</a>
-      <a href="/#dashboard" class="text-sm font-medium text-text-on-primary transition-colors hover:text-white">Dashboard</a>
-      <a href="/ghid" class="text-sm font-medium text-text-on-primary transition-colors hover:text-white">Ghid</a>
-      <a href="/ai" class="text-sm font-medium text-text-on-primary transition-colors hover:text-white">Asistent AI</a>
-      <a href="https://app.tapselo.com" class="text-sm font-medium text-text-on-primary transition-colors hover:text-white">Intră în cont</a>
+    <div class="hidden items-center gap-6 lg:flex xl:gap-8">
+      {links.map(([href, label]) => (
+        <a href={href} class="text-sm font-medium text-text-on-primary transition-colors hover:text-white">{label}</a>
+      ))}
       <a href="https://app.tapselo.com/?demo=1" class="rounded-md bg-accent px-5 py-2 text-sm font-bold text-white transition-all hover:bg-accent-hover active:scale-[0.97]">Încearcă demo</a>
     </div>
 
-    <button id="mobile-menu-btn" class="text-white md:hidden" aria-label="Toggle menu">
+    <button id="mobile-menu-btn" class="text-white lg:hidden" aria-label="Toggle menu">
       <Menu class="h-5 w-5" id="menu-open-icon" />
       <X class="hidden h-5 w-5" id="menu-close-icon" />
     </button>
   </div>
 
-  <div id="mobile-menu" class="hidden border-t border-white/10 bg-primary md:hidden">
+  <div id="mobile-menu" class="hidden border-t border-white/10 bg-primary lg:hidden">
     <div class="flex flex-col gap-4 px-6 py-6">
-      <a href="/#features" class="text-sm font-medium text-text-on-primary hover:text-white">Functionalitati</a>
-      <a href="/#how-it-works" class="text-sm font-medium text-text-on-primary hover:text-white">Cum functioneaza</a>
-      <a href="/#dashboard" class="text-sm font-medium text-text-on-primary hover:text-white">Dashboard</a>
-      <a href="/ghid" class="text-sm font-medium text-text-on-primary hover:text-white">Ghid</a>
-      <a href="/ai" class="text-sm font-medium text-text-on-primary hover:text-white">Asistent AI</a>
-      <a href="https://app.tapselo.com" class="text-sm font-medium text-text-on-primary hover:text-white">Intră în cont</a>
+      {links.map(([href, label]) => (
+        <a href={href} class="text-sm font-medium text-text-on-primary hover:text-white">{label}</a>
+      ))}
       <a href="https://app.tapselo.com/?demo=1" class="rounded-md bg-accent px-5 py-2 text-center text-sm font-bold text-white hover:bg-accent-hover">Încearcă demo</a>
     </div>
   </div>

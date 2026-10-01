@@ -1,0 +1,49 @@
+---
+// Muted loop that plays only while on screen. preload="none" keeps the
+// download to the poster until the first play(). With prefers-reduced-motion
+// the poster stays and the video gets controls instead of autoplay.
+interface Props {
+  slug: string; // public/videos/v2/<slug>.webm|mp4|jpg
+  label: string;
+  class?: string;
+}
+const { slug, label, class: className = "" } = Astro.props;
+const base = `/videos/v2/${slug}`;
+---
+
+<video
+  data-lazy-video
+  class:list={["block aspect-video h-auto w-full bg-primary", className]}
+  width="1280"
+  height="720"
+  muted
+  loop
+  playsinline
+  preload="none"
+  poster={`${base}.jpg`}
+  aria-label={label}
+>
+  <source src={`${base}.webm`} type="video/webm" />
+  <source src={`${base}.mp4`} type="video/mp4" />
+</video>
+
+<script>
+  const videos = document.querySelectorAll<HTMLVideoElement>("video[data-lazy-video]");
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    // Poster only; the visitor can press play.
+    videos.forEach((v) => (v.controls = true));
+  } else {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) v.play().catch(() => {});
+          else v.pause();
+        }
+      },
+      { threshold: 0.25 },
+    );
+    videos.forEach((v) => io.observe(v));
+  }
+</script>
