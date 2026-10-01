@@ -1,5 +1,5 @@
 ---
-// /ai: docs page for the "Tapselo pentru magazine" MCP connector (https://tapselo.com/mcp).
+// /ai: docs page for the "Tapselo" MCP connector (https://tapselo.com/mcp).
 // The tool list comes from the registry (src/lib/mcp/tools.ts). Every tool needs a line in LINES,
 // else the build fails, so the page cannot drift from the tools.
 import Layout from "../layouts/Layout.astro";
@@ -63,14 +63,14 @@ const li = "list-disc leading-relaxed";
 ---
 
 <Layout
-  title="Tapselo pentru magazine in Claude si ChatGPT | Tapselo"
+  title="Tapselo in Claude si ChatGPT | Tapselo"
   description="Conectorul Tapselo pentru Claude si ChatGPT: reguli fiscale, erori Datecs, cantare Dibal, calcul pret, verificare firma si documente printabile pentru magazinele mici din Romania."
 >
   <Navbar />
 
   <header class="bg-primary pt-28 pb-14 md:pt-32">
     <div class="mx-auto max-w-3xl px-6">
-      <h1 class="font-display text-4xl italic text-white sm:text-5xl">Tapselo pentru magazine in Claude si ChatGPT</h1>
+      <h1 class="font-display text-4xl italic text-white sm:text-5xl">Tapselo in Claude si ChatGPT</h1>
       <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">
         Un conector care da asistentului AI reguli verificate si calcule pentru magazinele mici din Romania, plus
         documente gata de printat.
@@ -170,7 +170,7 @@ const li = "list-disc leading-relaxed";
       <section id="english" lang="en" class="rounded-xl border border-border bg-surface p-6 md:p-8">
         <h2 class="font-display text-3xl italic text-primary">In English</h2>
         <p class={p}>
-          "Tapselo pentru magazine" is an MCP connector for Claude and ChatGPT that helps small shops in Romania. It
+          "Tapselo" is an MCP connector for Claude and ChatGPT that helps small shops in Romania. It
           answers questions on Romanian VAT and cash register rules, explains Datecs fiscal printer errors, decodes
           Dibal scale barcodes, does shelf price math, checks a company by CUI in the ANAF registry, lists the permits
           for a new shop, compares POS software (the comparison is made by Tapselo), and looks up products by EAN. It

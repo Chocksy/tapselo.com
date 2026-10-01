@@ -72,7 +72,7 @@ async function handleMessage(msg: unknown, tools: ToolDef[], env: ToolEnv): Prom
         result: {
           protocolVersion,
           capabilities: { tools: {} },
-          serverInfo: { name: "tapselo", title: "Tapselo pentru magazine", version: SERVER_VERSION },
+          serverInfo: { name: "tapselo", title: "Tapselo", version: SERVER_VERSION },
           instructions: INSTRUCTIONS,
         },
       };
