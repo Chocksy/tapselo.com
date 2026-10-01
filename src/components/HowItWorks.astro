@@ -1,62 +1,452 @@
 ---
+import { Usb, Smartphone, ArrowRight, Check, WifiOff, KeyRound, Monitor } from "@lucide/astro";
+import LazyVideo from "./LazyVideo.astro";
+
+const steps = [
+  {
+    meta: "Aprox. 20 de minute",
+    title: "Pornești de pe stick",
+    text: "Pui stickul USB în orice calculator. Merge și pe un PC mai vechi. În aproximativ 20 de minute ai casa de marcat funcțională.",
+    duration: 6000,
+  },
+  {
+    meta: "6 caractere",
+    title: "Tastezi un cod scurt",
+    text: "Generezi codul din panoul de administrare și îl tastezi pe ecranul casei. Casa e activă. Fără tehnicieni.",
+    duration: 7000,
+  },
+  {
+    meta: "Cu sau fără internet",
+    title: "Începi să vinzi",
+    text: "Scanezi produsele, încasezi, tipărești bonul fiscal. Cu sau fără internet, totul se salvează automat.",
+    duration: 6500,
+  },
+];
+
+const code = ["A", "7", "K", "2", "9", "Q"];
 ---
 
 <section id="how-it-works" class="bg-surface-white py-24 border-y border-border">
   <div class="mx-auto max-w-6xl px-6">
-    <h2 class="animate-on-scroll font-display text-4xl italic text-primary sm:text-5xl">
-      20 de minute.
-    </h2>
-    <p class="animate-on-scroll animate-delay-100 mt-1 font-display text-4xl italic text-primary/20 sm:text-5xl">
-      De la cutie la prima vanzare.
-    </p>
-
-    <div class="mt-16 grid gap-12 md:grid-cols-3 md:gap-8">
-      <div class="animate-on-scroll relative">
-        <div class="font-display text-[80px] italic leading-none text-accent/15 md:text-[100px]" aria-hidden="true">1</div>
-        <div class="mt-[-16px] relative">
-          <h3 class="text-xl font-bold text-primary">Pornesti de pe stick</h3>
-          <p class="mt-2 text-sm leading-relaxed text-text-secondary">
-            Pui un stick USB in orice calculator. Astepti 20 de minute. Gata — ai casa de marcat functionala. Merge si pe un PC mai vechi.
-          </p>
-        </div>
+    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <div>
+        <h2 class="animate-on-scroll font-display text-4xl italic text-primary sm:text-5xl">
+          20 de minute.
+        </h2>
+        <p class="animate-on-scroll animate-delay-100 mt-1 font-display text-4xl italic text-primary/20 sm:text-5xl">
+          De la cutie la prima vânzare.
+        </p>
       </div>
-      <div class="animate-on-scroll animate-delay-100 relative">
-        <div class="font-display text-[80px] italic leading-none text-accent/15 md:text-[100px]" aria-hidden="true">2</div>
-        <div class="mt-[-16px] relative">
-          <h3 class="text-xl font-bold text-primary">Tastezi un cod scurt</h3>
-          <p class="mt-2 text-sm leading-relaxed text-text-secondary">
-            6 caractere pe care le generezi din panoul de administrare. Le tastezi pe ecran si casa e activa. Fara tehnicieni.
-          </p>
-        </div>
-      </div>
-      <div class="animate-on-scroll animate-delay-200 relative">
-        <div class="font-display text-[80px] italic leading-none text-accent/15 md:text-[100px]" aria-hidden="true">3</div>
-        <div class="mt-[-16px] relative">
-          <h3 class="text-xl font-bold text-primary">Incepi sa vinzi</h3>
-          <p class="mt-2 text-sm leading-relaxed text-text-secondary">
-            Scanezi produsele, incasezi, tiparesti bonul fiscal. Cu sau fara internet — totul se salveaza automat.
-          </p>
-        </div>
-      </div>
+      <p class="animate-on-scroll animate-delay-200 text-base md:pb-2 leading-relaxed text-text-secondary md:text-right">
+        Trei pași, fără tehnician.
+      </p>
     </div>
 
-    <!-- Product screenshots -->
-    <div class="mt-16 grid gap-6 md:grid-cols-3">
-      <div class="animate-on-scroll group">
-        <img src="/screenshots/mockup/pos-cart-v2.jpg" alt="Ecranul casei de marcat" class="w-full rounded-lg transition-transform duration-500 group-hover:-translate-y-2" loading="lazy" />
-        <p class="mt-3 text-center text-sm font-bold text-primary">Casa de marcat</p>
-        <p class="text-center text-xs text-text-secondary">Scanezi, adaugi in cos, incasezi</p>
+    <div class="hiw mt-12 grid items-center gap-8 lg:mt-16 lg:grid-cols-12 lg:gap-14" data-hiw>
+      <!-- Stage: one visual that follows the active step -->
+      <div class="animate-on-scroll lg:order-2 lg:col-span-7">
+        <div class="hiw-stage relative overflow-hidden rounded-2xl bg-primary p-3 pb-16 sm:p-6 lg:p-8">
+          <div class="pointer-events-none absolute inset-0 opacity-[0.05]" style="background-image: radial-gradient(circle, rgba(255,255,255,1) 1px, transparent 1px); background-size: 28px 28px;" aria-hidden="true"></div>
+          <div class="hiw-glow pointer-events-none absolute -top-1/3 left-1/2 h-[120%] w-[90%] -translate-x-1/2 rounded-full" aria-hidden="true"></div>
+
+          <div class="hiw-screen relative">
+            <!-- Panel 1: start from the USB stick -->
+            <div class="hiw-panel is-active" id="hiw-panel-0" role="tabpanel" aria-labelledby="hiw-tab-0" data-panel="0">
+              <div class="hiw-window">
+                <div class="hiw-titlebar" aria-hidden="true"><span></span><span></span><span></span><p>Tapselo · pornire de pe stick</p></div>
+                <div class="hiw-body hiw-body--boot">
+                  <div class="hiw-boot">
+                    <div class="hiw-icon"><Usb /></div>
+                    <p class="hiw-h">Se pregătește casa de marcat</p>
+                    <p class="hiw-sub">Pornit de pe stickul USB</p>
+                    <div class="hiw-bar" aria-hidden="true"><span></span></div>
+                    <ul class="hiw-checks" aria-hidden="true">
+                      <li><Check />Stick USB pornit</li>
+                      <li><Check />Calculator pregătit</li>
+                      <li class="is-pending"><span class="hiw-dot"></span>Casa de marcat, în curând</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <p class="hiw-chip hiw-chip--bl"><Monitor /> Orice calculator, și unul mai vechi</p>
+            </div>
+
+            <!-- Panel 2: type the activation code -->
+            <div class="hiw-panel" id="hiw-panel-1" role="tabpanel" aria-labelledby="hiw-tab-1" data-panel="1">
+              <div class="hiw-window">
+                <div class="hiw-titlebar" aria-hidden="true"><span></span><span></span><span></span><p>Tapselo · casa de marcat</p></div>
+                <div class="hiw-body">
+                  <div class="hiw-card">
+                    <div class="hiw-icon"><Smartphone /></div>
+                    <p class="hiw-h">Activare dispozitiv</p>
+                    <p class="hiw-sub">Introdu codul generat din panoul de administrare</p>
+                    <div class="hiw-code" aria-label={`Cod de activare ${code.join("")}`}>
+                      {code.map((c, i) => (
+                        <span class:list={["hiw-box", i === 3 && "hiw-box--gap"]} data-char={c}>{c}</span>
+                      ))}
+                    </div>
+                    <div class="hiw-btn">
+                      <span class="hiw-btn-idle">Activează dispozitivul <ArrowRight /></span>
+                      <span class="hiw-btn-done"><Check /> Casa e activă</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="hiw-chip hiw-chip--tr hiw-admin" aria-hidden="true">
+                <KeyRound />
+                <span>
+                  <small>Panoul de administrare</small>
+                  <b>A7K 29Q</b>
+                </span>
+              </div>
+            </div>
+
+            <!-- Panel 3: the first sale (real footage) -->
+            <div class="hiw-panel" id="hiw-panel-2" role="tabpanel" aria-labelledby="hiw-tab-2" data-panel="2">
+              <div class="hiw-window hiw-window--video">
+                <LazyVideo slug="first-sale" label="Prima vânzare: plata cu cardul, apoi bonul fiscal tipărit" />
+              </div>
+              <p class="hiw-chip hiw-chip--bl"><WifiOff /> Cu sau fără internet, se salvează automat</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="animate-on-scroll animate-delay-100 group">
-        <img src="/screenshots/mockup/admin-dashboard-v2.jpg" alt="Panoul de administrare" class="w-full rounded-lg transition-transform duration-500 group-hover:-translate-y-2" loading="lazy" />
-        <p class="mt-3 text-center text-sm font-bold text-primary">Panoul de administrare</p>
-        <p class="text-center text-xs text-text-secondary">Totul intr-un singur loc</p>
-      </div>
-      <div class="animate-on-scroll animate-delay-200 group">
-        <img src="/screenshots/mockup/admin-receptie-v2.jpg" alt="Receptie marfa cu scanare factura" class="w-full rounded-lg transition-transform duration-500 group-hover:-translate-y-2" loading="lazy" />
-        <p class="mt-3 text-center text-sm font-bold text-primary">Receptie marfa</p>
-        <p class="text-center text-xs text-text-secondary">Fotografiezi factura, se completeaza singura</p>
+
+      <!-- Steps -->
+      <div class="lg:order-1 lg:col-span-5">
+        <ol class="hiw-steps" role="tablist" aria-orientation="vertical" aria-label="Pașii de pornire">
+          {steps.map((s, i) => (
+            <li class:list={["hiw-step animate-on-scroll", i === 1 && "animate-delay-100", i === 2 && "animate-delay-200", i === 0 && "is-active"]} data-step={i} data-duration={s.duration}>
+              {i < steps.length - 1 && <span class="hiw-rail" aria-hidden="true"><span></span></span>}
+              <button
+                type="button"
+                role="tab"
+                id={`hiw-tab-${i}`}
+                aria-controls={`hiw-panel-${i}`}
+                aria-selected={i === 0 ? "true" : "false"}
+                tabindex={i === 0 ? 0 : -1}
+                class="hiw-tab"
+              >
+                <span class="hiw-num" aria-hidden="true">
+                  <span class="hiw-num-n">{i + 1}</span>
+                  <Check class="hiw-num-c" />
+                </span>
+                <span class="hiw-txt">
+                  <span class="hiw-meta">{s.meta}</span>
+                  <span class="hiw-title">{s.title}</span>
+                  <span class="hiw-more"><span><span class="hiw-p">{s.text}</span></span></span>
+                </span>
+              </button>
+            </li>
+          ))}
+        </ol>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  /* ---------- Steps list ---------- */
+  .hiw-steps { position: relative; display: flex; flex-direction: column; gap: 0.25rem; }
+  .hiw-step { position: relative; }
+  .hiw-tab {
+    display: flex; width: 100%; gap: 1.25rem; padding: 1.125rem 1.25rem 1.25rem;
+    text-align: left; border-radius: 1rem; cursor: pointer;
+    border: 1px solid transparent;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hiw-tab:hover { background: var(--color-surface-elevated); }
+  .hiw-step.is-active .hiw-tab {
+    background: var(--color-surface-white);
+    border-color: var(--color-border-light);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 32px -12px rgba(15, 23, 42, 0.14);
+  }
+
+  .hiw-num {
+    position: relative; z-index: 1; display: grid; place-items: center; flex-shrink: 0;
+    width: 2.75rem; height: 2.75rem; border-radius: 9999px;
+    background: var(--color-surface-white);
+    border: 1.5px solid var(--color-border);
+    color: var(--color-primary);
+    font-weight: 700; font-size: 1.0625rem; font-variant-numeric: tabular-nums;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hiw-num > * { grid-area: 1 / 1; transition: opacity 0.2s ease, transform 0.2s ease; }
+  .hiw-num :global(.hiw-num-c) { width: 1.125rem; height: 1.125rem; opacity: 0; transform: scale(0.6); stroke-width: 3; }
+  .hiw-step.is-active .hiw-num {
+    background: var(--color-accent); border-color: var(--color-accent); color: #fff;
+    box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.12);
+  }
+  .hiw-step.is-done .hiw-num { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+  .hiw-step.is-done .hiw-num-n { opacity: 0; transform: scale(0.6); }
+  .hiw-step.is-done .hiw-num :global(.hiw-num-c) { opacity: 1; transform: scale(1); }
+
+  /* Connector between markers: fills while its step is active */
+  .hiw-rail {
+    position: absolute; left: calc(1.25rem + 1.375rem - 1px); top: calc(1.125rem + 2.75rem + 0.375rem);
+    bottom: calc(-1.125rem - 0.25rem + 0.375rem); width: 2px; border-radius: 2px;
+    background: var(--color-border-light); overflow: hidden; z-index: 0;
+  }
+  .hiw-rail > span {
+    display: block; height: 100%; background: var(--color-accent);
+    transform: scaleY(0); transform-origin: top;
+  }
+  .hiw-step.is-done .hiw-rail > span { transform: scaleY(1); transition: transform 0.4s ease; }
+  .hiw-step.is-running .hiw-rail > span { transform: scaleY(1); transition: transform var(--hiw-d, 6000ms) linear; }
+
+  .hiw-txt { display: flex; min-width: 0; flex-direction: column; padding-top: 0.0625rem; }
+  .hiw-meta {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--color-text-muted); transition: color 0.3s ease;
+  }
+  .hiw-step.is-active .hiw-meta { color: var(--color-accent); }
+  .hiw-title {
+    margin-top: 0.125rem; font-size: 1.25rem; line-height: 1.35; font-weight: 700;
+    color: var(--color-text-secondary); transition: color 0.3s ease;
+  }
+  .hiw-step.is-active .hiw-title, .hiw-tab:hover .hiw-title { color: var(--color-primary); }
+
+  /* Paragraph expands for the active step (always open without JS) */
+  .hiw-more { display: grid; grid-template-rows: 1fr; }
+  .hiw-more > span { overflow: hidden; }
+  .hiw-p { display: block; padding-top: 0.5rem; font-size: 0.9375rem; line-height: 1.6; color: var(--color-text-secondary); }
+  .hiw[data-ready] .hiw-more { grid-template-rows: 0fr; transition: grid-template-rows 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
+  .hiw[data-ready] .hiw-p { opacity: 0; transition: opacity 0.3s ease; }
+  .hiw[data-ready] .hiw-step.is-active .hiw-more { grid-template-rows: 1fr; }
+  .hiw[data-ready] .hiw-step.is-active .hiw-p { opacity: 1; transition-delay: 0.1s; }
+
+  /* ---------- Stage ---------- */
+  .hiw-glow { background: radial-gradient(closest-side, rgba(37, 99, 235, 0.28), transparent 70%); }
+  .hiw-screen { aspect-ratio: 1 / 1; }
+  @media (min-width: 640px) { .hiw-screen { aspect-ratio: 12 / 7; } }
+
+  .hiw-panel {
+    position: absolute; inset: 0; opacity: 0; visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.5s;
+  }
+  .hiw-panel.is-active { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+
+  .hiw-window {
+    position: relative; height: 100%; overflow: hidden; border-radius: 10px;
+    background: #f8fafc; container-type: inline-size;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    display: flex; flex-direction: column;
+  }
+  .hiw-window--video { background: #0f172a; }
+  .hiw-window--video :global(video) {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    aspect-ratio: auto; object-fit: cover; object-position: left top;
+  }
+
+  /* macOS title bar, same proportions as the product videos */
+  .hiw-titlebar {
+    position: relative; display: flex; align-items: center; gap: 0.6cqw; flex-shrink: 0;
+    height: 2.1cqw; padding-inline: 1cqw;
+    background: #fff; border-bottom: 1px solid #e2e8f0;
+  }
+  .hiw-titlebar > span { width: 0.85cqw; height: 0.85cqw; border-radius: 9999px; background: #ff5f57; }
+  .hiw-titlebar > span:nth-child(2) { background: #febc2e; }
+  .hiw-titlebar > span:nth-child(3) { background: #28c840; }
+  .hiw-titlebar > p {
+    position: absolute; inset: 0; display: grid; place-items: center; margin: 0;
+    font-size: 1.1cqw; color: #475569; pointer-events: none;
+  }
+
+  .hiw-body {
+    flex: 1; display: grid; place-items: center; padding: 3cqw;
+    font-size: clamp(11px, 2.55cqw, 18px);
+    background: #f1f5f9;
+  }
+  .hiw-body--boot { background: linear-gradient(180deg, #f8fafc, #eef2f7); }
+
+  .hiw-card, .hiw-boot {
+    width: min(100%, 25em); text-align: center;
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 1.1em;
+    padding: 1.6em 1.8em 1.7em;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 20px 40px -24px rgba(15, 23, 42, 0.25);
+  }
+  .hiw-icon {
+    display: grid; place-items: center; width: 3.2em; height: 3.2em; margin: 0 auto 0.9em;
+    border-radius: 0.9em; background: #dbeafe; color: #2563eb;
+  }
+  .hiw-icon :global(svg) { width: 1.6em; height: 1.6em; }
+  .hiw-h { margin: 0; font-size: 1.3em; font-weight: 600; color: #0f172a; line-height: 1.25; }
+  .hiw-sub { margin: 0.35em 0 0; font-size: 0.88em; color: #64748b; line-height: 1.4; }
+
+  /* Boot progress */
+  .hiw-bar { margin: 1.3em 0 1.1em; height: 0.42em; border-radius: 9999px; background: #e2e8f0; overflow: hidden; }
+  .hiw-bar > span { display: block; height: 100%; width: 100%; border-radius: inherit; background: #2563eb; transform-origin: left; transform: scaleX(0.72); }
+  .hiw-panel.is-active .hiw-bar > span { animation: hiw-fill 5.5s cubic-bezier(0.3, 0.6, 0.4, 1) both; }
+  @keyframes hiw-fill { from { transform: scaleX(0.08); } to { transform: scaleX(0.72); } }
+  .hiw-checks { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.5em; text-align: left; font-size: 0.88em; color: #334155; }
+  .hiw-checks li { display: flex; align-items: center; gap: 0.6em; }
+  .hiw-checks :global(svg) { width: 1.15em; height: 1.15em; padding: 0.15em; border-radius: 9999px; background: #d1fae5; color: #059669; stroke-width: 3; }
+  .hiw-checks .is-pending { color: #64748b; }
+  .hiw-dot { width: 1.15em; height: 1.15em; border-radius: 9999px; border: 2px solid #bfdbfe; border-top-color: #2563eb; }
+  .hiw-panel.is-active .hiw-dot { animation: hiw-spin 1s linear infinite; }
+  @keyframes hiw-spin { to { transform: rotate(360deg); } }
+
+  /* Activation code */
+  .hiw-code { display: flex; justify-content: center; gap: 0.45em; margin: 1.3em 0 1.2em; }
+  .hiw-box {
+    display: grid; place-items: center; width: 2.35em; height: 2.9em;
+    border-radius: 0.6em; border: 1.5px solid #cbd5e1; background: #fff;
+    font-family: var(--font-mono); font-size: 1.25em; font-weight: 700; color: #0f172a;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .hiw-box--gap { margin-left: 0.6em; }
+  .hiw[data-ready] .hiw-box { color: transparent; }
+  .hiw[data-ready] .hiw-box.is-filled { color: #0f172a; border-color: #94a3b8; }
+  .hiw[data-ready] .hiw-box.is-caret { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+  .hiw-btn {
+    display: grid; border-radius: 0.75em; padding: 0.85em 1em; font-weight: 600; font-size: 0.95em;
+    background: #2563eb; color: #fff; transition: background-color 0.3s ease, opacity 0.3s ease;
+  }
+  .hiw-btn > span { grid-area: 1 / 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.45em; transition: opacity 0.25s ease; }
+  .hiw-btn :global(svg) { width: 1.1em; height: 1.1em; }
+  .hiw-btn-done { opacity: 0; }
+  .hiw[data-ready] [data-panel="1"]:not(.is-filled-all) .hiw-btn { opacity: 0.45; }
+  .hiw [data-panel="1"].is-activated .hiw-btn { background: #059669; }
+  .hiw [data-panel="1"].is-activated .hiw-btn-idle { opacity: 0; }
+  .hiw [data-panel="1"].is-activated .hiw-btn-done { opacity: 1; }
+
+  /* Floating chips on the stage */
+  .hiw-chip {
+    position: absolute; z-index: 2; margin: 0; display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.55rem 0.85rem; border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.96); color: var(--color-primary);
+    font-size: 0.8125rem; font-weight: 600; line-height: 1.2;
+    box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(15, 23, 42, 0.06);
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.4s ease 0.25s, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+  }
+  .hiw-chip :global(svg) { width: 1rem; height: 1rem; color: var(--color-accent); flex-shrink: 0; }
+  .hiw-panel.is-active .hiw-chip { opacity: 1; transform: none; }
+  .hiw-chip--bl { left: 0.75rem; bottom: 0.75rem; }
+  .hiw-chip--tr { right: 0.75rem; top: 1.5rem; }
+  .hiw-admin { align-items: center; padding: 0.6rem 0.85rem; }
+  .hiw-admin small { display: block; font-size: 0.6875rem; font-weight: 500; color: var(--color-text-secondary); }
+  .hiw-admin b { display: block; font-family: var(--font-mono); font-size: 0.9375rem; letter-spacing: 0.12em; }
+  @media (min-width: 640px) {
+    .hiw-chip--bl { left: -0.5rem; bottom: -0.875rem; }
+    .hiw-chip--tr { right: -0.5rem; top: 3.25rem; }
+  }
+  @media (min-width: 1024px) {
+    .hiw-chip--bl { left: -1rem; }
+    .hiw-chip--tr { right: -1rem; }
+  }
+  @media (max-width: 639px) {
+    .hiw-chip { font-size: 0.75rem; padding: 0.45rem 0.7rem; }
+    .hiw-chip--bl, .hiw-chip--tr { left: 0; right: auto; top: auto; bottom: -3.25rem; }
+    .hiw-admin { padding: 0.35rem 0.7rem; }
+    .hiw-admin small { font-size: 0.625rem; }
+    .hiw-admin b { font-size: 0.8125rem; }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-hiw]");
+  if (root) {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const items = [...root.querySelectorAll<HTMLElement>(".hiw-step")];
+    const tabs = items.map((li) => li.querySelector<HTMLButtonElement>("[role=tab]")!);
+    const panels = [...root.querySelectorAll<HTMLElement>(".hiw-panel")];
+    const codePanel = panels[1];
+    const boxes = [...codePanel.querySelectorAll<HTMLElement>(".hiw-box")];
+    const video = panels[2].querySelector("video");
+
+    let active = 0;
+    let auto = !reduce;
+    let inView = false;
+    let timer: number | undefined;
+    let typing: number[] = [];
+
+    root.setAttribute("data-ready", "");
+
+    function setCode(n: number, caret: boolean) {
+      boxes.forEach((b, i) => {
+        b.classList.toggle("is-filled", i < n);
+        b.classList.toggle("is-caret", caret && i === n);
+      });
+      codePanel.classList.toggle("is-filled-all", n >= boxes.length);
+    }
+
+    function playCode() {
+      typing.forEach(clearTimeout);
+      typing = [];
+      codePanel.classList.remove("is-activated");
+      if (reduce) {
+        setCode(boxes.length, false);
+        codePanel.classList.add("is-activated");
+        return;
+      }
+      setCode(0, true);
+      boxes.forEach((_, i) => typing.push(window.setTimeout(() => setCode(i + 1, true), 900 + i * 380)));
+      const end = 900 + boxes.length * 380;
+      typing.push(window.setTimeout(() => setCode(boxes.length, false), end));
+      typing.push(window.setTimeout(() => codePanel.classList.add("is-activated"), end + 700));
+    }
+
+    function render(runTimer: boolean) {
+      items.forEach((li, i) => {
+        li.classList.toggle("is-active", i === active);
+        li.classList.toggle("is-done", i < active);
+        li.classList.remove("is-running");
+        tabs[i].setAttribute("aria-selected", String(i === active));
+        tabs[i].tabIndex = i === active ? 0 : -1;
+      });
+      panels.forEach((p, i) => p.classList.toggle("is-active", i === active));
+      if (active === 1) playCode();
+      if (active === 2 && video && !reduce) {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      }
+
+      clearTimeout(timer);
+      if (!runTimer) return;
+      const li = items[active];
+      const d = Number(li.dataset.duration) || 6000;
+      li.style.setProperty("--hiw-d", `${d}ms`);
+      // Next frame so the rail transition starts from empty.
+      requestAnimationFrame(() => requestAnimationFrame(() => li.classList.add("is-running")));
+      timer = window.setTimeout(() => {
+        active = (active + 1) % items.length;
+        render(auto && inView);
+      }, d);
+    }
+
+    function select(i: number, focus = false) {
+      auto = false;
+      active = i;
+      render(false);
+      if (focus) tabs[i].focus();
+    }
+
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => select(i));
+      t.addEventListener("keydown", (e) => {
+        const k = e.key;
+        if (k === "ArrowDown" || k === "ArrowRight") { e.preventDefault(); select((i + 1) % tabs.length, true); }
+        else if (k === "ArrowUp" || k === "ArrowLeft") { e.preventDefault(); select((i - 1 + tabs.length) % tabs.length, true); }
+        else if (k === "Home") { e.preventDefault(); select(0, true); }
+        else if (k === "End") { e.preventDefault(); select(tabs.length - 1, true); }
+      });
+    });
+
+    if (reduce) setCode(boxes.length, false);
+
+    new IntersectionObserver(
+      ([e]) => {
+        const was = inView;
+        inView = e.isIntersecting;
+        if (inView && !was) render(auto);
+        else if (!inView) {
+          clearTimeout(timer);
+          items.forEach((li) => li.classList.remove("is-running"));
+        }
+      },
+      { threshold: 0.35 },
+    ).observe(root);
+  }
+</script>
