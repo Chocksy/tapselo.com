@@ -107,15 +107,15 @@ export function flyerToOffers(p: FlyerPayload, draft: Pick<DraftRecord, "product
 }
 
 const FLYER_PRINT_CSS = `<style>${CHROME_CSS}
-@media print{@page{size:A4;margin:8mm}
+@media print{@page{size:A4;margin:0}
 body{background:#fff}
-.hero{padding:6mm 0 12mm}
+.hero{padding:10mm 0 12mm}
 .main{margin-top:-6mm;min-height:0;padding-bottom:0}
-.wrap{max-width:none;padding:0 2mm}
+.wrap{max-width:none;padding:0 10mm}
 .grid{grid-template-columns:repeat(3,1fr) !important;gap:3mm}
 .promo{break-inside:avoid;box-shadow:none;border:1px solid #e2e8f0}
 .art{height:24mm}
-.ftr{padding:3mm 0 0}}
+.ftr{padding:3mm 0 8mm}}
 </style>`;
 
 export function renderFlyer(p: FlyerPayload, draft: DraftRecord, id: string): string {
