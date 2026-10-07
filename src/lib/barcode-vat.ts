@@ -69,7 +69,7 @@ export function toBarcodeVat(ean: string, data: unknown): BarcodeVat | null {
   return out;
 }
 
-function json(body: unknown, status: number, method: string, headers: Record<string, string> = {}): Response {
+export function json(body: unknown, status: number, method: string, headers: Record<string, string> = {}): Response {
   // "<" escaped so the body is inert even if something ever embeds it in HTML.
   const text = JSON.stringify(body).replace(/</g, "\\u003c");
   return new Response(method === "HEAD" ? null : text, {
@@ -83,8 +83,8 @@ function json(body: unknown, status: number, method: string, headers: Record<str
   });
 }
 
-const cache = (seconds: number) => ({ "Cache-Control": `public, max-age=${seconds}` });
-const NO_STORE = { "Cache-Control": "no-store" };
+export const cache = (seconds: number) => ({ "Cache-Control": `public, max-age=${seconds}` });
+export const NO_STORE = { "Cache-Control": "no-store" };
 
 export async function handleBarcodeRequest(
   request: Request,

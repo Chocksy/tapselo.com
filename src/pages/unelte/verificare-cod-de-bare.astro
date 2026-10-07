@@ -1,0 +1,73 @@
+---
+import ToolShell from "../../components/ToolShell.astro";
+import BarcodeLookupTool from "../../components/unelte/BarcodeLookupTool.astro";
+import { barcodeApiBase } from "../../lib/unelte/barcode.ts";
+import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
+
+const path = "/unelte/verificare-cod-de-bare";
+const heading = "Verificare cod de bare";
+const barcodeApi = barcodeApiBase(import.meta.env.PUBLIC_BARCODE_API_URL);
+
+const faq = [
+  {
+    q: "Cum verific un cod de bare online?",
+    a: "Introdu cele 13 cifre ale codului EAN (sau scanează-l) și apasă „Caută”. Vezi imediat prefixul GS1 și țara care a alocat codul, dacă cifra de control este corectă, iar dacă produsul există în nomenclatorul Tapselo sau în Open Food Facts, denumirea, marca, cantitatea, categoria și imaginea lui.",
+  },
+  {
+    q: "Ce este codul EAN-13?",
+    a: "EAN-13 este codul de bare de 13 cifre de pe ambalajul produselor din comerț. Primele cifre sunt prefixul GS1 (organizația națională care a alocat codul), urmează codul firmei și al produsului, iar ultima cifră este cifra de control. Codurile UPC-A de 12 cifre din SUA devin EAN-13 cu un 0 în față.",
+  },
+  {
+    q: "Ce înseamnă codul de bare 594? Care este codul de bare al României?",
+    a: "Prefixul 594 este alocat de GS1 România: un cod EAN care începe cu 594 a fost înregistrat de o firmă din România. Prefixul arată unde s-a înregistrat codul, nu neapărat unde a fost fabricat produsul: un producător străin poate folosi coduri 594 prin distribuitorul român, iar o firmă românească poate avea coduri din altă țară.",
+  },
+  {
+    q: "Cum se calculează cifra de control a unui cod EAN?",
+    a: "Pentru primele 12 cifre, numărând de la dreapta, înmulțești alternativ cu 3 și cu 1 și aduni rezultatele. Cifra de control este numărul care completează suma până la următorul multiplu de 10. Dacă ultima cifră de pe ambalaj nu se potrivește, codul a fost tastat sau scanat greșit.",
+  },
+  {
+    q: "De ce codurile care încep cu 20–29 nu găsesc niciun produs?",
+    a: "Codurile EAN 20–29 sunt coduri interne, create de magazin: etichetele de la cântar, produsele vrac sau marfa reambalată. Ele au sens doar în magazinul care le-a tipărit, de aceea nu le căutăm în bazele de date.",
+  },
+  {
+    q: "De unde vin datele despre produs?",
+    a: "Denumirea și cota TVA (21% sau 11%) vin din nomenclatorul Tapselo. Marca, cantitatea, categoria și imaginea vin din Open Food Facts, o bază de date deschisă despre produse alimentare (date ODbL, imagini CC BY-SA). Dacă un produs lipsește dintr-o sursă, afișăm ce găsim în cealaltă.",
+  },
+  {
+    q: "Pot scana codul de bare cu telefonul sau cu un cititor USB?",
+    a: "Da. Cititorul de coduri de bare USB funcționează ca o tastatură: scanezi și căutarea pornește singură. Pe telefoanele cu browser compatibil (de exemplu Chrome pe Android) apare butonul „Scanează cu camera”. Dacă nu apare, tastează codul.",
+  },
+  {
+    q: "Arată și prețul produsului?",
+    a: "Nu. Unealta nu afișează prețuri și nu păstrează codurile căutate. Prețul de raft îl stabilește fiecare magazin.",
+  },
+];
+
+const jsonLd = toolJsonLd({
+  path,
+  heading,
+  appName: "Verificare cod de bare Tapselo",
+  description:
+    "Verificare cod de bare EAN-13 online: țara prefixului GS1 (594 = România), cifra de control, denumirea, cota TVA, marca și imaginea produsului.",
+  faq,
+});
+---
+
+<ToolShell
+  title="Verificare cod de bare (EAN) – caută produs online | Gratuit"
+  description="Verifică gratuit un cod de bare EAN-13: afli țara prefixului (594 = România), dacă cifra de control e corectă, denumirea, cota TVA, marca și imaginea produsului."
+  heading={heading}
+  path={path}
+  lead="Caută un produs după codul EAN: tastează sau scanează codul de bare și vezi țara prefixului, cifra de control, denumirea, cota TVA și imaginea produsului. Gratuit, fără cont."
+  campaign="verificare-cod-de-bare"
+  ctaTitle="Scanezi, iar casa de marcat știe produsul"
+  ctaBody="Tapselo recunoaște codurile de bare la casă și pune fiecare produs pe cota TVA corectă, inclusiv etichetele de la cântar."
+  related={[
+    { href: "/unelte/calculator-tva", label: "Calculator TVA 21% și 11%" },
+    { href: "/ghid/cote-tva-casa-de-marcat", label: "Cotele de TVA 21% și 11% și grupele de TVA din casa de marcat" },
+  ]}
+  jsonLd={jsonLd}
+  faq={faq}
+>
+  <BarcodeLookupTool barcodeApi={barcodeApi} />
+</ToolShell>
