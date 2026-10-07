@@ -19,6 +19,8 @@ jobs:
 
       - run: npm install --legacy-peer-deps
       - run: npm run build
+        env:
+          PUBLIC_A4200_PDF_URL: ${{ vars.PUBLIC_A4200_PDF_URL }}
 
       - name: Deploy to Cloudflare Pages
         run: npx wrangler pages deploy dist --project-name tapselo-com --branch main --commit-message "deploy ${{ github.sha }}"
