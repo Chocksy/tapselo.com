@@ -97,6 +97,7 @@ const { barcodeApi } = Astro.props;
 </style>
 
 <script>
+  import { trackBarcodeLookup, trackToolUsed } from "../../lib/analytics-client.ts";
   import { barcodeResultHtml, lookupBarcode, MESSAGES } from "../../lib/unelte/barcode.ts";
   import { analyzeEan, codeInfoHtml } from "../../lib/unelte/gs1.ts";
   import { lookupOff, MSG_OFF_NOT_FOUND, MSG_OFF_UNAVAILABLE, offProductHtml } from "../../lib/unelte/off.ts";
@@ -140,7 +141,7 @@ const { barcodeApi } = Astro.props;
     errEl.classList.remove("hidden");
   }
 
-  async function run() {
+  async function run(via: "lookup" | "camera_scan" = "lookup") {
     const id = ++runId;
     errEl.classList.add("hidden");
     const a = analyzeEan(input.value);
@@ -169,9 +170,15 @@ const { barcodeApi } = Astro.props;
     searchBtn.disabled = true;
     searchBtn.textContent = "Se caută…";
 
+    trackToolUsed("verificare_cod_de_bare", via === "camera_scan" ? "camera_scan" : "lookup");
+
+    let foundTapselo = false;
+    let foundOff = false;
+
     const tapselo = apiBase
       ? lookupBarcode(apiBase, a.ean).then((r) => {
           if (id !== runId || !tapseloEl) return;
+          foundTapselo = r.ok;
           if (r.ok) tapseloEl.innerHTML = barcodeResultHtml(r.product);
           else if (r.code === "not_found") tapseloEl.innerHTML = muted("Nu avem acest cod în nomenclatorul Tapselo.");
           else tapseloEl.innerHTML = muted(escapeHtml(r.message));
@@ -180,6 +187,7 @@ const { barcodeApi } = Astro.props;
 
     const off = lookupOff(a.ean).then((r) => {
       if (id !== runId) return;
+      foundOff = r.ok;
       if (r.ok) {
         offEl.innerHTML = offProductHtml(r.product);
         return;
@@ -202,6 +210,7 @@ const { barcodeApi } = Astro.props;
 
     try {
       await Promise.all([tapselo, off]);
+      if (id === runId) trackBarcodeLookup(foundTapselo, foundOff);
     } finally {
       if (id === runId) {
         searchBtn.disabled = false;
@@ -265,7 +274,7 @@ const { barcodeApi } = Astro.props;
       if (hit) {
         stopCamera();
         input.value = hit.rawValue;
-        void run();
+        void run("camera_scan");
         return;
       }
       timer = window.setTimeout(() => void tick(), 250);

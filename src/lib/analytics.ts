@@ -13,10 +13,22 @@ export type AnalyticsTool =
   | "calculator_tva"
   | "registru_casa"
   | "generator_nir"
+  | "generator_cod_de_bare"
   | "calculator_adaos"
   | "verificare_cod_de_bare";
 
-export type ToolAction = "check" | "generate_pdf" | "download" | "calculate" | "lookup" | "print";
+export type ToolAction =
+  | "check"
+  | "generate_pdf"
+  | "download"
+  | "calculate"
+  | "lookup"
+  | "ean_lookup"
+  | "camera_scan"
+  | "print"
+  | "download_png"
+  | "download_svg"
+  | "print_sheet";
 
 export type A4200CheckResult = "ok" | "errors";
 

@@ -64,7 +64,7 @@ const { barcodeApi } = Astro.props;
 </section>
 
 <script>
-  import { trackBarcodeLookup, trackToolUsed } from "../../lib/analytics-client.ts";
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
   import { calculateVat, isVatRateRo, type VatMode, type VatRateRo } from "../../lib/unelte/vat.ts";
   import { barcodeResultHtml, checkEan, lookupBarcode, productDetailsHref } from "../../lib/unelte/barcode.ts";
   import { parseRoNumber } from "../../lib/unelte/parse.ts";
@@ -162,8 +162,7 @@ const { barcodeApi } = Astro.props;
       searchBtn.textContent = "Se caută…";
       try {
         const r = await lookupBarcode(apiBase, check.ean);
-        trackToolUsed("verificare_cod_de_bare", "lookup");
-        trackBarcodeLookup(r.ok, false);
+        trackToolUsed("calculator_tva", "ean_lookup");
         if (!r.ok) {
           showError(r.message);
           return;
