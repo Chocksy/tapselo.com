@@ -1,7 +1,7 @@
 ---
 import GuideShell from "../../components/GuideShell.astro";
 import A4200Checker from "../../components/A4200Checker.astro";
-import { XSD_BUNDLE, VERIFIED_ON } from "../../lib/a4200/constants.ts";
+import { VERIFIED_ON } from "../../lib/a4200/constants.ts";
 
 const siteUrl = "https://tapselo.com";
 const pageUrl = `${siteUrl}/ghid/verificare-a4200`;
@@ -9,35 +9,27 @@ const pageUrl = `${siteUrl}/ghid/verificare-a4200`;
 const faq = [
   {
     q: "Ce este declarația A4200?",
-    a: "Este pachetul lunar de raportare pentru casa de marcat electronică fiscală (AMEF): un opis al perioadei și câte un fișier pentru fiecare zi fiscală (raport Z).",
+    a: "Este raportarea lunară a casei de marcat cu jurnal electronic: un fișier de perioadă și câte un fișier pentru fiecare zi închisă cu raportul Z.",
   },
   {
-    q: "Ce este opisul (registrul)?",
-    a: "Fișierul A4200 semnat (de obicei Perioada_raportare.p7b) care spune ce rapoarte Z intră în declarație: nrRapI, nrRapF, CIF și tip AMEF.",
+    q: "Ce fișiere primesc de la service?",
+    a: "De obicei o arhivă sau un stick cu fișierul de perioadă (nume tip Perioada_raportare) și fișierele zilnice pentru fiecare raport Z din lună.",
   },
   {
-    q: "De ce DUKIntegrator spune că lipsește o zi?",
-    a: "Folderul trebuie să conțină toate zilele din intervalul din opis, fără duplicate și fără alte fișiere. Verificatorul de mai sus compară opisul cu lista de .p7b încărcate.",
-  },
-  {
-    q: "Trebuie semnate fișierele?",
-    a: "Da, exportul din casă este PKCS#7 (.p7b) semnat cu certificatul AMEF. Pentru depunere folosești DUKIntegrator: Validare + creare PDF semnat cu tokenul tău.",
+    q: "De ce îmi spune că lipsește o zi?",
+    a: "Setul trebuie să conțină toate zilele din intervalul declarat în fișierul de perioadă, fără duplicate. Asistentul de mai sus compară lista din registru cu fișierele încărcate.",
   },
   {
     q: "Fișierele mele pleacă de pe calculator?",
-    a: "Nu. Această pagină rulează în browser; nu încărcăm opisul sau zilele pe server.",
+    a: "Verificarea din pașii 1–2 rulează în browser și nu trimite conținutul fișierelor. Doar dacă generezi PDF-ul prin Tapselo, exportul este trimis criptat către server, procesat și șters imediat.",
   },
   {
-    q: "De ce văd erori XSD la cote 11% sau 21%?",
-    a: "Schema XSD publică din 2018 listează alte cote TVA. Validatorul ANAF actualizat (J1.0.5+) le acceptă de obicei; actualizează kitul A4203 în DUKIntegrator.",
-  },
-  {
-    q: "Pot folosi arhive ZIP de la contabil?",
-    a: "Da, poți trage un .zip cu .p7b-uri; le extragem local în browser.",
+    q: "Pot folosi arhiva ZIP de la contabil?",
+    a: "Da. Poți încărca arhiva .zip; o deschidem local în browser.",
   },
   {
     q: "Am nevoie de A4200 dacă casa nu a transmis Z-urile din cauza internetului?",
-    a: "Da, pentru rapoartele Z netransmise la ANAF în perioada fără conexiune sau înainte de conectare. Vezi ghidul Casa de marcat fără internet: bonuri offline, transmitere ANAF și F4110.",
+    a: "Da, pentru rapoartele Z care nu au ajuns la ANAF. Vezi ghidul Casa de marcat fără internet: bonuri offline, transmitere ANAF și F4110.",
   },
 ];
 
@@ -53,7 +45,7 @@ const jsonLd = [
     isAccessibleForFree: true,
     offers: { "@type": "Offer", price: "0", priceCurrency: "RON" },
     description:
-      "Verificare gratuită A4200: opis și zile fiscale înainte de DUKIntegrator, în browser, fără upload.",
+      "Asistent pas cu pas pentru verificarea și depunerea declarației A4200: export de la casă, PDF, semnare și încărcare ANAF.",
   },
   {
     "@context": "https://schema.org",
@@ -68,15 +60,13 @@ const jsonLd = [
 ---
 
 <GuideShell
-  title="Verificare A4200 gratuită: opis și zile fiscale | Tapselo"
-  description="Verificare A4200 gratuită în browser: opis și zile fiscale .p7b sau XML, fără upload. Compară cu DUKIntegrator, decodează .err.txt, ghid semnare."
-  heading="Verifică fișierele A4200 înainte de DUKIntegrator"
-  lead="Încarcă opisul și zilele exportate din Datecs sau alt AMEF. Validăm schema ANAF, potrivim rapoartele Z și explicăm erorile în română — totul local, fără trimitere pe internet."
+  title="Verificare A4200 gratuită: ghid pas cu pas | Tapselo"
+  description="Verifică exportul lunar de la casă, generează PDF-ul, semnează și încarcă la ANAF — asistent în 4 pași, în română, fără jargon."
+  heading="Depune A4200 fără să te pierzi în fișiere"
+  lead="Asistent în patru pași pentru magazine: încarcă arhiva de la service, verificăm zilele, obții PDF-ul semnat și știi cum verifici recipisa ANAF."
   sources={[
     { title: "ANAF — Formular A4200", url: "https://static.anaf.ro/static/10/Anaf/Declaratii_R/4200.html" },
     { title: "ANAF — Validator A4203", url: "https://static.anaf.ro/static/10/Anaf/Declaratii_R/4203.html" },
-    { title: XSD_BUNDLE.a4200.file, url: XSD_BUNDLE.a4200.url },
-    { title: XSD_BUNDLE.a4203.file, url: XSD_BUNDLE.a4203.url },
     { title: "DUKIntegrator", url: "https://static.anaf.ro/static/DUKIntegrator/DUKIntegrator.htm" },
   ]}
   verifiedOn={VERIFIED_ON}
@@ -89,34 +79,14 @@ const jsonLd = [
   </section>
 
   <section>
-    <h2 class="font-display text-3xl italic text-primary">Flux complet (după verificare)</h2>
-    <ol class="kb-prose mt-4 list-decimal space-y-2 pl-5">
-      <li>Folder gol, cale <strong>fără spații</strong>: doar <code>Perioada_raportare.p7b</code> și zilele <code>NUI_Zxxxx.p7b</code>.</li>
-      <li>PDF cu DUKIntegrator: <code>java -jar DUKIntegrator.jar -p A4200 Perioada_raportare.p7b</code> (în același folder). <code>.err.txt</code> trebuie să conțină <code>ok</code>.</li>
-      <li>Semnare calificată în <strong>certSIGN webSIGN</strong>.</li>
-      <li>Elimină coada LTV (unealta din verificator sau <code>pdfsig</code> + trunchiere la sfârșitul ByteRange).</li>
-      <li>Upload la <a href="https://decl.anaf.mfinante.gov.ro/WAS6DUS/" rel="noopener" target="_blank">decl.anaf.mfinante.gov.ro</a>; verifică recipisa la <a href="https://stare.anaf.ro/StareD112" rel="noopener" target="_blank">stare.anaf.ro</a>.</li>
-    </ol>
-  </section>
-
-  <section>
     <h2 class="font-display text-3xl italic text-primary">Internet întrerupt la casă</h2>
     <p class="mt-4 text-sm leading-relaxed text-text-secondary">
-      Dacă AMEF a emis bonuri offline dar rapoartele Z nu au ajuns la ANAF, exportul lunar în .p7b și declarația A4200 rămân calea de recuperare.
-      <a href="/ghid/articole/casa-de-marcat-fara-internet" class="text-accent hover:text-accent-hover">Casa de marcat fără internet</a>
-      — obligații, F4110 pentru zone fără semnal, amendă neconectare.
+      Dacă casa de marcat a emis bonuri offline, dar rapoartele Z nu au ajuns la ANAF, exportul lunar și declarația A4200
+      rămân calea de recuperare.
+      <a href="/ghid/articole/casa-de-marcat-fara-internet" class="text-accent hover:text-accent-hover"
+        >Casa de marcat fără internet</a
+      > — obligații, F4110 pentru zone fără semnal, amendă pentru neconectare.
     </p>
-  </section>
-
-  <section>
-    <h2 class="font-display text-3xl italic text-primary">Note tehnice (export Datecs)</h2>
-    <ul class="kb-prose mt-4 list-disc pl-5 text-sm">
-      <li>Exporturile Datecs sunt <strong>PKCS#7 (.p7b)</strong> cu XML-ul împărțit în bucăți OCTET STRING (de ex. 4096 octeți); le reconstruim din CMS SignedData, nu prin scanare text.</li>
-      <li>Numărul raportului Z este în ultimele 4 caractere ale <code>idM</code> / <code>idR</code> (28 caractere), aliniat cu numele <code>_Zxxxx.p7b</code>.</li>
-      <li>Opisul poate să nu aibă <code>an</code>/<code>luna</code>; folosim data din <code>idM</code> și comparăm cu zilele.</li>
-      <li>Schema XSD publică (2018) nu listează încă cotele 11% și 21%; validatorul ANAF actualizat le acceptă — actualizează kitul A4203 dacă XSD-ul din browser raportează multe erori de cote.</li>
-      <li>Încă de confirmat pe mai multe modele: variante de nume fișier, arhive parțiale, XMLDSig în loc de CMS, și mesaje .err.txt reale pentru extinderea decoderului.</li>
-    </ul>
   </section>
 
   <section>
@@ -130,4 +100,14 @@ const jsonLd = [
       ))}
     </div>
   </section>
+
+  <details class="mt-8 rounded-xl border border-border-light p-4 text-sm">
+    <summary class="cursor-pointer font-semibold text-primary">Detalii tehnice (validare ANAF)</summary>
+    <ul class="kb-prose mt-4 list-disc pl-5 text-text-secondary">
+      <li>Exporturile Datecs sunt fișiere semnate PKCS#7 (.p7b) cu XML reconstruit din CMS SignedData.</li>
+      <li>Numărul raportului Z este în ultimele 4 caractere ale identificatorului mesajului (idM / idR), aliniat cu numele _Zxxxx.</li>
+      <li>Schema XSD publică (2018) poate semnala cote TVA 11% și 21%; validatorul ANAF actualizat le acceptă de obicei.</li>
+      <li>Decoderul pentru mesaje DUKIntegrator (.err.txt) este în secțiunea Detalii tehnice a asistentului de mai sus.</li>
+    </ul>
+  </details>
 </GuideShell>

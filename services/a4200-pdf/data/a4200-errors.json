@@ -19,7 +19,7 @@
     "NO_DAYS": {
       "title": "Lipsesc zilele fiscale",
       "ce_inseamna": "Opisul listează rapoarte Z, dar nu ai încărcat fișiere zi (A4203).",
-      "ce_faci": "Adaugă toate fișierele NUI_Zxxxx.p7b din intervalul nrRapI–nrRapF."
+      "ce_faci": "Adaugă toate fișierele zilnice (NUI_Zxxxx) din intervalul declarat în opis."
     },
     "NUI_MISMATCH": {
       "title": "NUI diferit",
@@ -33,7 +33,7 @@
     },
     "PERIOD_MISMATCH": {
       "title": "Zile din luni diferite",
-      "ce_inseamna": "Fișierele zi fiscală nu sunt toate din aceeași lună calendaristică.",
+      "ce_inseamna": "Fișierele de zi fiscală nu sunt toate din aceeași lună calendaristică.",
       "ce_faci": "Depune câte un A4200 pe lună. Separă exporturile în foldere distincte."
     },
     "MISSING_Z": {

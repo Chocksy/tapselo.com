@@ -1,142 +1,211 @@
 ---
 import { ANAF_VALIDATOR_VERSIONS, XSD_BUNDLE, VERIFIED_ON } from "../lib/a4200/constants.ts";
 import { formatDateRo } from "../lib/mcp/text.ts";
+import { WIZARD_STEP_COUNT } from "../lib/a4200/wizard.ts";
 
 const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ?? "";
 ---
 
-<div id="a4200-checker" class="space-y-8">
-  <div
-    class="rounded-xl border-2 border-dashed border-border-light bg-surface p-8 text-center transition-colors"
-    id="a4200-drop"
-    data-active-class="border-accent bg-ticket-light/40"
-  >
-    <p class="text-lg font-semibold text-primary">Trage fișierele A4200 aici</p>
-    <p class="mt-2 text-sm text-text-secondary">
-      Un arhivă <code class="text-xs">.zip</code>, un folder, sau mai multe fișiere:
-      opis (<code class="text-xs">Perioada_raportare.p7b</code>), zile (<code class="text-xs">*_Zxxxx.p7b</code>)
-      sau <code class="text-xs">.xml</code>. Nimic nu pleacă din browser.
-    </p>
-    <label class="mt-5 inline-block cursor-pointer rounded-md bg-accent px-5 py-2.5 text-sm font-bold text-white hover:bg-accent-hover">
-      Alege fișiere
-      <input type="file" id="a4200-file-input" class="hidden" multiple accept=".p7b,.xml,.zip,.p7s" />
-    </label>
-    <label class="mt-3 ml-0 block sm:ml-3 sm:mt-0 sm:inline-block cursor-pointer text-sm font-medium text-accent hover:text-accent-hover">
-      sau un folder întreg
-      <input type="file" id="a4200-folder-input" class="hidden" webkitdirectory multiple />
-    </label>
+<div
+  id="a4200-checker"
+  class="mx-auto max-w-xl space-y-6"
+  data-pdf-service={a4200PdfBase || undefined}
+  data-wizard-steps={WIZARD_STEP_COUNT}
+>
+  <div class="space-y-2" aria-live="polite">
+    <p id="a4200-progress" class="text-sm font-semibold text-accent">Pasul 1 din 4</p>
+    <div
+      class="h-2 overflow-hidden rounded-full bg-border-light"
+      role="progressbar"
+      id="a4200-progressbar"
+      aria-valuemin="1"
+      aria-valuemax={WIZARD_STEP_COUNT}
+      aria-valuenow="1"
+    >
+      <div id="a4200-progress-fill" class="h-full w-1/4 bg-accent transition-all duration-300" />
+    </div>
   </div>
 
-  <p class="text-sm text-text-muted" id="a4200-privacy">
-    Procesare 100% locală în browserul tău. Nu trimitem conținutul fișierelor către server.
-  </p>
-
-  <div id="a4200-summary" class="hidden rounded-xl border border-border-light p-5"></div>
-  <div id="a4200-z-table" class="hidden overflow-x-auto rounded-xl border border-border-light"></div>
-
-  <div id="a4200-issues" class="hidden space-y-3"></div>
-
-  {
-    a4200PdfBase ? (
-      <section id="a4200-pdf-section" class="hidden rounded-xl border border-accent/40 bg-ticket-light/30 p-5">
-        <h2 class="font-display text-2xl italic text-primary">Generează PDF A4200</h2>
-        <p class="mt-2 text-sm text-text-secondary">
-          După ce verificările locale au trecut, poți genera PDF-ul cu DUKIntegrator pe serverul Tapselo. Fișierele{" "}
-          <code class="text-xs">.p7b</code> sunt trimise criptat (HTTPS), procesate în memorie și{" "}
-          <strong>șterse imediat</strong> după răspuns. Nu păstrăm copii și nu înregistrăm conținutul fișierelor în
-          jurnal.
-        </p>
-        <button
-          type="button"
-          id="a4200-pdf-btn"
-          class="mt-4 rounded-md bg-accent px-5 py-2.5 text-sm font-bold text-white hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
-          disabled
-        >
-          Generează PDF A4200
-        </button>
-        <p id="a4200-pdf-status" class="mt-3 text-sm text-text-muted" />
-        <a
-          id="a4200-pdf-download"
-          class="mt-2 hidden inline-block rounded-md border border-border px-4 py-2 text-sm font-semibold text-primary hover:border-accent"
-          download="Perioada_raportare.p7b.pdf"
-        >
-          Descarcă PDF generat
-        </a>
-      </section>
-    ) : null
-  }
-
-  <section id="a4200-next-steps" class="hidden rounded-xl border border-border-light p-5">
-    <h2 class="font-display text-2xl italic text-primary">Pași după verificare (depunere ANAF)</h2>
-    <ol class="kb-prose mt-4 list-decimal space-y-3 pl-5 text-sm text-text-secondary">
-      <li>
-        Pune într-un folder <strong>fără spații în cale</strong> doar opisul și zilele <code>.p7b</code> (nimic altceva).
-      </li>
-      <li>
-        Generează PDF-ul pe calculator:
-        <code class="text-xs">java -jar DUKIntegrator.jar -p A4200 Perioada_raportare.p7b</code>
-        (în folderul cu zilele). Verifică că <code>.err.txt</code> conține <code>ok</code>.
-      </li>
-      <li>Semnează PDF-ul în <strong>certSIGN webSIGN</strong> (semnătură calificată în browser).</li>
-      <li>
-        Elimină incrementul LTV adăugat de webSIGN (altfel DUKIntegrator poate raporta „semnătura nu acoperă tot documentul”).
-        Folosește unealta de mai jos sau pe Mac/Linux:
-        <code class="text-xs">pdfsig … | head -c $end</code> ca în ghid.
-      </li>
-      <li>
-        Încarcă PDF-ul la
-        <a href="https://decl.anaf.mfinante.gov.ro/WAS6DUS/" target="_blank" rel="noopener">decl.anaf.mfinante.gov.ro</a>
-        (certificat în browser, un fișier odată).
-      </li>
-      <li>
-        Verifică recipisa la
-        <a href="https://stare.anaf.ro/StareD112" target="_blank" rel="noopener">stare.anaf.ro</a>
-        („Nu există erori de validare”).
-      </li>
-    </ol>
+  <!-- Step 1 -->
+  <section id="a4200-step-1" class="a4200-step space-y-4" data-step="1" aria-labelledby="a4200-step-1-title">
+    <h2 id="a4200-step-1-title" class="font-display text-2xl italic text-primary" tabindex="-1">
+      Încarcă arhiva de la service
+    </h2>
+    <p class="text-sm leading-relaxed text-text-secondary">
+      Poți încărca arhiva <strong>.zip</strong> primită de la service, un folder întreg sau fișierele individuale de pe stick.
+      Verificarea inițială rulează pe calculatorul tău — nu trimitem conținutul către server la acest pas.
+    </p>
+    <div
+      class="rounded-xl border-2 border-dashed border-border-light bg-surface p-6 text-center transition-colors sm:p-8"
+      id="a4200-drop"
+      data-active-class="border-accent bg-ticket-light/40"
+    >
+      <p class="text-base font-semibold text-primary sm:text-lg">Trage aici arhiva sau fișierele</p>
+      <p class="mt-2 text-sm text-text-secondary">O arhivă .zip sau exportul lunar de la casă.</p>
+      <label
+        class="mt-5 inline-flex min-h-11 cursor-pointer items-center justify-center rounded-md bg-accent px-6 py-3 text-sm font-bold text-white hover:bg-accent-hover"
+      >
+        Alege fișiere
+        <input type="file" id="a4200-file-input" class="hidden" multiple accept=".p7b,.xml,.zip,.p7s" />
+      </label>
+      <label
+        class="mt-3 block cursor-pointer text-sm font-medium text-accent hover:text-accent-hover sm:inline-block sm:ml-3"
+      >
+        sau un folder întreg
+        <input type="file" id="a4200-folder-input" class="hidden" webkitdirectory multiple />
+      </label>
+      <p id="a4200-file-hint" class="mt-4 text-xs text-text-muted" />
+    </div>
   </section>
 
-  <section class="rounded-xl border border-border-light p-5">
-    <h2 class="font-display text-2xl italic text-primary">Elimină LTV din PDF semnat (webSIGN)</h2>
-    <p class="mt-2 text-sm text-text-secondary">
-      Taie fișierul la sfârșitul ultimului interval <code>ByteRange</code> din prima semnătură — același principiu ca
-      <code>pdfsig</code> + <code>head -c</code>. Nu verificăm legalitatea semnăturii; doar trunchiem local.
+  <!-- Step 2 -->
+  <section
+    id="a4200-step-2"
+    class="a4200-step hidden space-y-4"
+    data-step="2"
+    aria-labelledby="a4200-step-2-title"
+    hidden
+  >
+    <h2 id="a4200-step-2-title" class="font-display text-2xl italic text-primary" tabindex="-1">Verificăm fișierele</h2>
+    <div id="a4200-plain-summary" class="rounded-xl border border-border-light bg-surface p-5 text-sm leading-relaxed" />
+    <ul id="a4200-missing-list" class="hidden list-disc space-y-2 pl-5 text-sm text-text-secondary" />
+    <p id="a4200-step2-hint" class="text-sm text-text-muted" />
+  </section>
+
+  <!-- Step 3 -->
+  <section
+    id="a4200-step-3"
+    class="a4200-step hidden space-y-4"
+    data-step="3"
+    aria-labelledby="a4200-step-3-title"
+    hidden
+  >
+    <h2 id="a4200-step-3-title" class="font-display text-2xl italic text-primary" tabindex="-1">
+      Descarcă PDF-ul și semnează-l
+    </h2>
+    <p class="text-sm leading-relaxed text-text-secondary">
+      Generează PDF-ul declarației, semnează-l electronic cu certificatul firmei, apoi încarcă aici PDF-ul semnat. Îl
+      pregătim automat pentru portalul ANAF.
     </p>
-    <label class="mt-4 inline-block cursor-pointer rounded-md border border-border px-4 py-2 text-sm font-semibold text-primary hover:border-accent">
-      Alege PDF semnat
-      <input type="file" id="a4200-ltv-input" class="hidden" accept=".pdf,application/pdf" />
-    </label>
-    <p id="a4200-ltv-msg" class="mt-3 text-sm text-text-muted"></p>
+    {
+      a4200PdfBase ? (
+        <p class="text-xs text-text-muted">
+          La generarea PDF, fișierele de la casă sunt trimise criptat către serverul Tapselo, procesate în memorie și
+          șterse imediat după răspuns.
+        </p>
+      ) : (
+        <p class="text-xs text-amber-800 rounded-md border border-amber-200 bg-amber-50/80 p-3">
+          Generarea PDF în browser nu este disponibilă momentan pe acest site. Poți folosi programul de la ANAF pe
+          calculatorul tău sau reveni mai târziu.
+        </p>
+      )
+    }
+    <ol class="list-decimal space-y-2 pl-5 text-sm text-text-secondary">
+      <li>Apasă butonul de mai jos și salvează PDF-ul pe calculator.</li>
+      <li>
+        Deschide <strong>certSIGN webSIGN</strong> (sau aplicația de semnare pe care o folosești) și semnează PDF-ul cu
+        certificatul calificat al firmei.
+      </li>
+      <li>Încarcă PDF-ul semnat — îl pregătim pentru încărcarea la ANAF.</li>
+    </ol>
+    <p id="a4200-pdf-status" class="text-sm text-text-muted" />
     <a
-      id="a4200-ltv-download"
-      class="mt-2 hidden inline-block rounded-md bg-accent px-4 py-2 text-sm font-bold text-white hover:bg-accent-hover"
-      download="Perioada_raportare-stripped.pdf"
+      id="a4200-pdf-download"
+      class="hidden inline-flex min-h-11 items-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-primary hover:border-accent"
+      download="Perioada_raportare.pdf"
     >
-      Descarcă PDF fără LTV
+      Descarcă PDF generat
+    </a>
+    <label
+      class="mt-2 flex min-h-11 cursor-pointer items-center justify-center rounded-md border border-dashed border-border-light bg-surface px-4 py-3 text-sm font-medium text-primary hover:border-accent"
+    >
+      Încarcă PDF-ul semnat
+      <input type="file" id="a4200-signed-pdf-input" class="hidden" accept=".pdf,application/pdf" />
+    </label>
+    <p id="a4200-anaf-ready-msg" class="hidden text-sm text-green-700" />
+    <a
+      id="a4200-anaf-ready-download"
+      class="hidden inline-flex min-h-11 items-center rounded-md bg-accent px-4 py-2 text-sm font-bold text-white hover:bg-accent-hover"
+      download="declarare-anaf.pdf"
+    >
+      Descarcă fișierul pentru ANAF
     </a>
   </section>
 
-  <section class="rounded-xl border border-border-light p-5">
-    <h2 class="font-display text-2xl italic text-primary">Decoder mesaje DUKIntegrator (.err.txt)</h2>
-    <p class="mt-2 text-sm text-text-secondary">Lipește logul de erori din DUKIntegrator pentru explicații în română.</p>
-    <textarea
-      id="a4200-errtxt"
-      class="mt-4 w-full min-h-[120px] rounded-md border border-border-light bg-white p-3 text-sm text-text-secondary"
-      placeholder="Liniile din fișierul .err.txt…"
-    ></textarea>
-    <button type="button" id="a4200-decode-btn" class="mt-3 rounded-md border border-border px-4 py-2 text-sm font-semibold text-primary hover:border-accent">
-      Decodează mesajele
-    </button>
-    <div id="a4200-duk-out" class="mt-4 space-y-3"></div>
+  <!-- Step 4 -->
+  <section
+    id="a4200-step-4"
+    class="a4200-step hidden space-y-4"
+    data-step="4"
+    aria-labelledby="a4200-step-4-title"
+    hidden
+  >
+    <h2 id="a4200-step-4-title" class="font-display text-2xl italic text-primary" tabindex="-1">
+      Încarcă la ANAF și verifică recipisa
+    </h2>
+    <ol class="list-decimal space-y-3 pl-5 text-sm leading-relaxed text-text-secondary">
+      <li>
+        Deschide portalul
+        <a href="https://decl.anaf.mfinante.gov.ro/WAS6DUS/" target="_blank" rel="noopener" class="text-accent hover:text-accent-hover"
+          >decl.anaf.mfinante.gov.ro</a
+        > și autentifică-te cu certificatul digital al firmei.
+      </li>
+      <li>Încarcă PDF-ul pregătit la pasul anterior (un singur fișier per depunere).</li>
+      <li>
+        După încărcare, verifică recipisa la
+        <a href="https://stare.anaf.ro/StareD112" target="_blank" rel="noopener" class="text-accent hover:text-accent-hover"
+          >stare.anaf.ro</a
+        > — mesajul „Nu există erori de validare” confirmă că declarația a fost acceptată.
+      </li>
+      <li>Păstrează recipisa și PDF-ul semnat în arhiva firmei.</li>
+    </ol>
   </section>
 
-  <section class="text-sm text-text-muted">
-    <p>
-      Scheme XSD: {XSD_BUNDLE.a4200.file} v{XSD_BUNDLE.a4200.version}, {XSD_BUNDLE.a4203.file} v{XSD_BUNDLE.a4203.version}.
-      Validator ANAF referință: A4200 {ANAF_VALIDATOR_VERSIONS.a4200Jar}, A4203 {ANAF_VALIDATOR_VERSIONS.a4203Jar}.
-      Verificat la {formatDateRo(VERIFIED_ON)}.
-    </p>
-  </section>
+  <div class="sticky bottom-0 -mx-1 border-t border-border-light bg-white/95 px-1 py-3 backdrop-blur-sm sm:static sm:border-0 sm:bg-transparent sm:p-0">
+    <button
+      type="button"
+      id="a4200-primary-btn"
+      class="flex min-h-12 w-full items-center justify-center rounded-md bg-accent px-6 py-3 text-base font-bold text-white hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      Verifică arhiva
+    </button>
+    <button type="button" id="a4200-back-btn" class="mt-2 hidden w-full text-sm font-medium text-text-muted hover:text-primary">
+      Înapoi
+    </button>
+  </div>
+
+  <details id="a4200-tech-details" class="rounded-xl border border-border-light p-4 text-sm">
+    <summary class="cursor-pointer font-semibold text-primary">Detalii tehnice</summary>
+    <div class="mt-4 space-y-6">
+      <div id="a4200-summary" class="hidden rounded-lg border border-border-light p-4" />
+      <div id="a4200-z-table" class="hidden overflow-x-auto rounded-lg border border-border-light" />
+      <div id="a4200-issues" class="hidden space-y-3" />
+
+      <section>
+        <h3 class="font-semibold text-primary">Decoder mesaje DUKIntegrator (.err.txt)</h3>
+        <p class="mt-1 text-text-secondary">Lipește logul de erori pentru explicații în română.</p>
+        <textarea
+          id="a4200-errtxt"
+          class="mt-3 w-full min-h-[100px] rounded-md border border-border-light bg-white p-3 text-sm text-text-secondary"
+          placeholder="Liniile din fișierul .err.txt…"
+        />
+        <button
+          type="button"
+          id="a4200-decode-btn"
+          class="mt-2 rounded-md border border-border px-4 py-2 text-sm font-semibold text-primary hover:border-accent"
+        >
+          Decodează mesajele
+        </button>
+        <div id="a4200-duk-out" class="mt-3 space-y-3" />
+      </section>
+
+      <p class="text-xs text-text-muted">
+        Scheme XSD: {XSD_BUNDLE.a4200.file} v{XSD_BUNDLE.a4200.version}, {XSD_BUNDLE.a4203.file} v{XSD_BUNDLE.a4203.version}.
+        Validator ANAF referință: A4200 {ANAF_VALIDATOR_VERSIONS.a4200Jar}, A4203 {ANAF_VALIDATOR_VERSIONS.a4203Jar}.
+        Verificat la {formatDateRo(VERIFIED_ON)}.
+      </p>
+    </div>
+  </details>
 </div>
 
 <script>
@@ -149,30 +218,94 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   import { stripPdfLtvIncrement } from "../lib/a4200/strip-pdf-ltv.ts";
   import type { CheckerIssue, ClassifiedFile } from "../lib/a4200/types.ts";
   import { collectP7bFromFiles, p7bPayloadsToZip } from "../lib/a4200/collect-p7b.ts";
+  import {
+    WIZARD_STEP_COUNT,
+    buildVerificationPlainSummary,
+    canProceedToPdfStep,
+    primaryButtonLabel,
+    stepFocusTargetId,
+    stepHeading,
+  } from "../lib/a4200/wizard.ts";
 
   const PDF_SERVICE_URL = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ?? "";
 
+  const root = document.getElementById("a4200-checker")!;
+  const progressLabel = document.getElementById("a4200-progress")!;
+  const progressBar = document.getElementById("a4200-progressbar")!;
+  const progressFill = document.getElementById("a4200-progress-fill")!;
+  const primaryBtn = document.getElementById("a4200-primary-btn") as HTMLButtonElement;
+  const backBtn = document.getElementById("a4200-back-btn") as HTMLButtonElement;
   const drop = document.getElementById("a4200-drop")!;
   const fileInput = document.getElementById("a4200-file-input") as HTMLInputElement;
   const folderInput = document.getElementById("a4200-folder-input") as HTMLInputElement;
+  const fileHint = document.getElementById("a4200-file-hint")!;
+  const plainSummaryEl = document.getElementById("a4200-plain-summary")!;
+  const missingListEl = document.getElementById("a4200-missing-list")!;
+  const step2Hint = document.getElementById("a4200-step2-hint")!;
   const summaryEl = document.getElementById("a4200-summary")!;
   const zTableEl = document.getElementById("a4200-z-table")!;
   const issuesEl = document.getElementById("a4200-issues")!;
-  const nextStepsEl = document.getElementById("a4200-next-steps")!;
   const errTxt = document.getElementById("a4200-errtxt") as HTMLTextAreaElement;
   const dukOut = document.getElementById("a4200-duk-out")!;
-  const ltvInput = document.getElementById("a4200-ltv-input") as HTMLInputElement;
-  const ltvMsg = document.getElementById("a4200-ltv-msg")!;
-  const ltvDownload = document.getElementById("a4200-ltv-download") as HTMLAnchorElement;
-  const activeClass = drop.dataset.activeClass ?? "";
-  const pdfSection = document.getElementById("a4200-pdf-section");
-  const pdfBtn = document.getElementById("a4200-pdf-btn") as HTMLButtonElement | null;
+  const signedPdfInput = document.getElementById("a4200-signed-pdf-input") as HTMLInputElement;
   const pdfStatus = document.getElementById("a4200-pdf-status");
-  const pdfDownload = document.getElementById("a4200-pdf-download") as HTMLAnchorElement | null;
+  const pdfDownload = document.getElementById("a4200-pdf-download") as HTMLAnchorElement;
+  const anafReadyMsg = document.getElementById("a4200-anaf-ready-msg")!;
+  const anafReadyDownload = document.getElementById("a4200-anaf-ready-download") as HTMLAnchorElement;
+  const activeClass = drop.dataset.activeClass ?? "";
 
+  let currentStep = 1;
   let schemas: { a4200: string; a4203: string } | null = null;
   let lastUploadFiles: File[] = [];
-  let lastChecksOk = false;
+  let lastClassified: ClassifiedFile[] = [];
+  let lastIssues: CheckerIssue[] = [];
+  let lastPlainOk = false;
+  let step3AnafReady = false;
+  let pdfGenerated = false;
+
+  function setStep(step: number) {
+    currentStep = step;
+    for (let s = 1; s <= WIZARD_STEP_COUNT; s++) {
+      const panel = document.getElementById(`a4200-step-${s}`)!;
+      const show = s === step;
+      panel.classList.toggle("hidden", !show);
+      panel.hidden = !show;
+    }
+    progressLabel.textContent = `Pasul ${step} din ${WIZARD_STEP_COUNT}`;
+    progressBar.setAttribute("aria-valuenow", String(step));
+    progressFill.style.width = `${(step / WIZARD_STEP_COUNT) * 100}%`;
+    backBtn.classList.toggle("hidden", step <= 1);
+    updatePrimaryButton();
+    const title = document.getElementById(stepFocusTargetId(step));
+    title?.focus();
+  }
+
+  function updatePrimaryButton() {
+    const hasFiles = lastUploadFiles.length > 0;
+    primaryBtn.textContent = primaryButtonLabel(currentStep, {
+      hasFiles,
+      checksOk: lastPlainOk,
+      onStep3ReadyForAnaf: step3AnafReady,
+    });
+    if (currentStep === 1) {
+      primaryBtn.disabled = !hasFiles;
+    } else if (currentStep === 2) {
+      primaryBtn.disabled = false;
+    } else if (currentStep === 3) {
+      if (step3AnafReady) {
+        primaryBtn.disabled = false;
+      } else {
+        primaryBtn.disabled = !lastPlainOk || !PDF_SERVICE_URL;
+      }
+    } else {
+      primaryBtn.disabled = false;
+    }
+    // Update step titles to match wizard copy
+    for (let s = 1; s <= WIZARD_STEP_COUNT; s++) {
+      const el = document.getElementById(`a4200-step-${s}-title`);
+      if (el) el.textContent = stepHeading(s);
+    }
+  }
 
   async function loadSchemas() {
     if (schemas) return schemas;
@@ -184,7 +317,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     return schemas;
   }
 
-  function renderIssues(issues: CheckerIssue[]) {
+  function renderTechnicalIssues(issues: CheckerIssue[]) {
     issuesEl.innerHTML = "";
     if (issues.length === 0) {
       issuesEl.classList.add("hidden");
@@ -196,8 +329,8 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       card.className =
         "rounded-lg border p-4 " +
         (i.severity === "error" ? "border-red-200 bg-red-50/80" : "border-amber-200 bg-amber-50/80");
-      const where = [i.file, i.line ? `linia ${i.line}` : "", i.field].filter(Boolean).join(" · ");
-      card.innerHTML = `<h3 class="font-semibold text-primary">${i.title}</h3>
+      const where = [i.file, i.line ? `linia ${i.line}` : "", i.field, i.code].filter(Boolean).join(" · ");
+      card.innerHTML = `<h4 class="font-semibold text-primary">${i.title}</h4>
         ${where ? `<p class="mt-1 text-xs text-text-muted">${where}</p>` : ""}
         <p class="mt-2 text-sm text-text-secondary"><strong>Ce s-a întâmplat:</strong> ${i.ceInseamna}</p>
         <p class="mt-2 text-sm text-text-secondary"><strong>Ce poți face:</strong> ${i.ceFaci}</p>`;
@@ -227,45 +360,55 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
         return `<tr class="border-t border-border-light"><td class="px-3 py-2 font-mono">${formatZ(r.z)}</td><td class="px-3 py-2">${label}</td><td class="px-3 py-2">${file}</td></tr>`;
       })
       .join("");
-    zTableEl.innerHTML = `<h3 class="px-4 pt-4 text-sm font-semibold text-primary">Rapoarte Z din opis (${summary.zRangeLabel})</h3>
+    zTableEl.innerHTML = `<h4 class="px-4 pt-4 text-sm font-semibold text-primary">Rapoarte Z din opis (${summary.zRangeLabel})</h4>
       <p class="px-4 pb-2 text-xs text-text-muted">CIF ${summary.cif} · NUI ${summary.nui} · ${summary.presentCount}/${summary.expectedCount} zile găsite</p>
       <table class="w-full text-left text-sm"><thead><tr class="bg-surface text-text-muted"><th class="px-3 py-2">Raport</th><th class="px-3 py-2">Stare</th><th class="px-3 py-2">Fișier</th></tr></thead><tbody>${rows}</tbody></table>`;
   }
 
-  function renderSummary(files: ClassifiedFile[], issues: CheckerIssue[]) {
+  function renderTechnicalSummary(files: ClassifiedFile[], issues: CheckerIssue[]) {
     const { input } = buildCrossCheckInput(files);
     const opis = input.opis;
     const summary = buildOpisCheckSummary(input);
     const errs = issues.filter((x) => x.severity === "error").length;
     summaryEl.classList.remove("hidden");
     if (!opis || !summary) {
-      summaryEl.innerHTML = `<p class="text-text-secondary">Fișiere analizate: ${files.length}. ${errs ? `${errs} problemă/probleme.` : "Adaugă opisul (Perioada_raportare.p7b)."}</p>`;
-      nextStepsEl.classList.add("hidden");
+      summaryEl.innerHTML = `<p class="text-text-secondary">Fișiere analizate: ${files.length}. ${errs ? `${errs} problemă/probleme.` : "Lipsește fișierul de perioadă."}</p>`;
       return;
     }
     const ok = errs === 0;
-    summaryEl.innerHTML = `<p class="text-lg font-semibold ${ok ? "text-green-700" : "text-red-700"}">${ok ? "Verificările locale au trecut" : `${errs} problemă/probleme de rezolvat`}</p>
-      <ul class="mt-3 list-disc pl-5 text-sm text-text-secondary">
-        <li>Interval declarat în opis: <strong>${summary.zRangeLabel}</strong> (tip AMEF ${opis.tipAmef})</li>
-        <li>Zile încărcate: <strong>${summary.presentCount}</strong> din ${summary.expectedCount} cerute de opis</li>
+    summaryEl.innerHTML = `<p class="font-semibold ${ok ? "text-green-700" : "text-red-700"}">${ok ? "Verificările locale au trecut" : `${errs} problemă/probleme`}</p>
+      <ul class="mt-2 list-disc pl-5 text-xs text-text-secondary">
+        <li>Interval în registru: <strong>${summary.zRangeLabel}</strong> (tip AMEF ${opis.tipAmef})</li>
+        <li>Zile încărcate: <strong>${summary.presentCount}</strong> din ${summary.expectedCount}</li>
         <li>NUI: <span class="font-mono">${summary.nui}</span> · CIF: <span class="font-mono">${summary.cif}</span></li>
       </ul>`;
-    nextStepsEl.classList.remove("hidden");
-    updatePdfSection(ok);
   }
 
-  function updatePdfSection(ok: boolean) {
-    lastChecksOk = ok;
-    if (!pdfSection || !pdfBtn) return;
-    if (ok && lastUploadFiles.length > 0) {
-      pdfSection.classList.remove("hidden");
-      pdfBtn.disabled = false;
+  function renderPlainStep2(files: ClassifiedFile[], issues: CheckerIssue[]) {
+    const { input } = buildCrossCheckInput(files);
+    const summary = buildOpisCheckSummary(input);
+    const plain = buildVerificationPlainSummary(summary, issues);
+    lastPlainOk = plain.ok;
+
+    const headlineClass = plain.ok ? "text-green-700" : "text-red-700";
+    plainSummaryEl.innerHTML = `<p class="text-lg font-semibold ${headlineClass}">${plain.headline}</p>
+      ${plain.foundLine ? `<p class="mt-3 text-text-secondary">${plain.foundLine}</p>` : ""}`;
+
+    if (plain.missingLines.length > 0) {
+      missingListEl.classList.remove("hidden");
+      missingListEl.innerHTML = plain.missingLines.map((l) => `<li>${l}</li>`).join("");
     } else {
-      pdfSection.classList.add("hidden");
-      pdfBtn.disabled = true;
+      missingListEl.classList.add("hidden");
+      missingListEl.innerHTML = "";
     }
-    if (pdfDownload) pdfDownload.classList.add("hidden");
-    if (pdfStatus) pdfStatus.textContent = "";
+
+    if (!plain.ok) {
+      step2Hint.textContent =
+        "Rezolvă problemele de mai sus (sau deschide Detalii tehnice), apoi încarcă din nou arhiva de la service.";
+    } else {
+      step2Hint.textContent = "Poți continua la generarea PDF și semnare.";
+    }
+    updatePrimaryButton();
   }
 
   async function runXsd(files: ClassifiedFile[]): Promise<CheckerIssue[]> {
@@ -288,27 +431,151 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
           code: "XSD_SKIPPED",
           title: "Validarea XSD nu a rulat în browser",
           ceInseamna: "Nu am putut încărca validatorul din browser (memorie sau rețea).",
-          ceFaci: "Rulează Validare în DUKIntegrator. Verificările de opis și de zile de mai sus au rulat local.",
+          ceFaci: "Rulează Validare în DUKIntegrator. Verificările de opis și de zile au rulat local.",
         },
       ];
     }
   }
 
-  async function handleFiles(fileList: FileList | File[]) {
-    const arr = [...fileList];
-    lastUploadFiles = arr;
-    if (arr.length === 0) return;
-    summaryEl.innerHTML = `<p class="text-sm text-text-muted">Se analizează ${arr.length} fișier(e)…</p>`;
-    summaryEl.classList.remove("hidden");
-    zTableEl.classList.add("hidden");
-    const { files } = await ingestFileList(arr);
+  async function runChecks(fileList: File[]) {
+    plainSummaryEl.innerHTML = `<p class="text-text-muted">Se analizează ${fileList.length} fișier(e)…</p>`;
+    const { files } = await ingestFileList(fileList);
+    lastClassified = files;
     const local = runLocalChecks(files);
     const xsd = await runXsd(files);
-    const all = [...local, ...xsd];
-    renderSummary(files, all);
+    lastIssues = [...local, ...xsd];
+    renderPlainStep2(files, lastIssues);
+    renderTechnicalSummary(files, lastIssues);
     renderZTable(files);
-    renderIssues(all);
+    renderTechnicalIssues(lastIssues);
   }
+
+  function onFilesSelected(fileList: FileList | File[]) {
+    const arr = [...fileList];
+    lastUploadFiles = arr;
+    fileHint.textContent =
+      arr.length > 0 ? `${arr.length} fișier(e) selectate. Apasă „Verifică arhiva”.` : "";
+    updatePrimaryButton();
+  }
+
+  async function generatePdf() {
+    if (!PDF_SERVICE_URL || !lastPlainOk || lastUploadFiles.length === 0) return;
+    primaryBtn.disabled = true;
+    pdfDownload.classList.add("hidden");
+    if (pdfStatus) {
+      pdfStatus.textContent = "Se generează PDF-ul… poate dura câteva zeci de secunde.";
+      pdfStatus.className = "text-sm text-text-muted";
+    }
+    try {
+      const payloads = await collectP7bFromFiles(lastUploadFiles);
+      if (payloads.length === 0) {
+        throw new Error("Nu am găsit fișiere de export în încărcare.");
+      }
+      const zipBytes = p7bPayloadsToZip(payloads);
+      const res = await fetch(`${PDF_SERVICE_URL}/a4200`, {
+        method: "POST",
+        headers: { "Content-Type": "application/zip" },
+        body: zipBytes,
+      });
+      if (res.ok) {
+        const blob = await res.blob();
+        pdfDownload.href = URL.createObjectURL(blob);
+        pdfDownload.classList.remove("hidden");
+        pdfGenerated = true;
+        if (pdfStatus) {
+          pdfStatus.textContent = "PDF generat. Descarcă-l, semnează-l, apoi încarcă PDF-ul semnat mai jos.";
+          pdfStatus.className = "text-sm text-green-700";
+        }
+      } else {
+        const ct = res.headers.get("content-type") ?? "";
+        let msg = "";
+        if (ct.includes("application/json")) {
+          const j = await res.json();
+          msg = [j.message, j.nextStep].filter(Boolean).join(" — ");
+        } else {
+          msg = await res.text();
+        }
+        if (pdfStatus) {
+          pdfStatus.textContent = msg || `Eroare ${res.status} de la server.`;
+          pdfStatus.className = "text-sm text-red-700";
+        }
+      }
+    } catch {
+      if (pdfStatus) {
+        pdfStatus.textContent =
+          "Nu am putut contacta serviciul de PDF. Încearcă din nou sau folosește programul ANAF pe calculator.";
+        pdfStatus.className = "text-sm text-red-700";
+      }
+    } finally {
+      primaryBtn.disabled = false;
+      updatePrimaryButton();
+    }
+  }
+
+  signedPdfInput.addEventListener("change", async () => {
+    const file = signedPdfInput.files?.[0];
+    anafReadyDownload.classList.add("hidden");
+    anafReadyMsg.classList.add("hidden");
+    step3AnafReady = false;
+    if (!file) {
+      updatePrimaryButton();
+      return;
+    }
+    anafReadyMsg.textContent = "Pregătim fișierul pentru ANAF…";
+    anafReadyMsg.classList.remove("hidden");
+    anafReadyMsg.className = "text-sm text-text-muted";
+    const buf = new Uint8Array(await file.arrayBuffer());
+    const res = stripPdfLtvIncrement(buf);
+    if (!res.ok || !res.stripped) {
+      anafReadyMsg.textContent = res.reason ?? "Nu am putut procesa PDF-ul. Încearcă din nou sau contactează-ne.";
+      anafReadyMsg.className = "text-sm text-red-700";
+      updatePrimaryButton();
+      return;
+    }
+    const blob = new Blob([res.stripped], { type: "application/pdf" });
+    anafReadyDownload.href = URL.createObjectURL(blob);
+    anafReadyDownload.download = file.name.replace(/\.pdf$/i, "") + "-anaf.pdf";
+    anafReadyDownload.classList.remove("hidden");
+    anafReadyMsg.textContent = "Fișierul este gata pentru încărcarea la ANAF. Descarcă-l și continuă la pasul următor.";
+    anafReadyMsg.className = "text-sm text-green-700";
+    step3AnafReady = true;
+    updatePrimaryButton();
+  });
+
+  primaryBtn.addEventListener("click", async () => {
+    if (currentStep === 1) {
+      if (lastUploadFiles.length === 0) {
+        fileInput.click();
+        return;
+      }
+      setStep(2);
+      await runChecks(lastUploadFiles);
+      return;
+    }
+    if (currentStep === 2) {
+      if (lastPlainOk) {
+        setStep(3);
+      } else {
+        setStep(1);
+      }
+      return;
+    }
+    if (currentStep === 3) {
+      if (step3AnafReady) {
+        setStep(4);
+        return;
+      }
+      await generatePdf();
+      return;
+    }
+    if (currentStep === 4) {
+      window.open("https://decl.anaf.mfinante.gov.ro/WAS6DUS/", "_blank", "noopener");
+    }
+  });
+
+  backBtn.addEventListener("click", () => {
+    if (currentStep > 1) setStep(currentStep - 1);
+  });
 
   function preventDefaults(e: DragEvent) {
     e.preventDefault();
@@ -323,92 +590,14 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   drop.addEventListener("drop", (e) => {
     drop.classList.remove(...activeClass.split(" "));
     const dt = e.dataTransfer;
-    if (dt?.files?.length) handleFiles(dt.files);
+    if (dt?.files?.length) onFilesSelected(dt.files);
   });
 
   fileInput.addEventListener("change", () => {
-    if (fileInput.files) handleFiles(fileInput.files);
+    if (fileInput.files) onFilesSelected(fileInput.files);
   });
   folderInput.addEventListener("change", () => {
-    if (folderInput.files) handleFiles(folderInput.files);
-  });
-
-  ltvInput.addEventListener("change", async () => {
-    const file = ltvInput.files?.[0];
-    ltvDownload.classList.add("hidden");
-    ltvMsg.textContent = "";
-    if (!file) return;
-    const buf = new Uint8Array(await file.arrayBuffer());
-    const res = stripPdfLtvIncrement(buf);
-    if (!res.ok || !res.stripped) {
-      ltvMsg.textContent = res.reason ?? "Nu am putut procesa PDF-ul.";
-      ltvMsg.className = "mt-3 text-sm text-red-700";
-      return;
-    }
-    if (res.stripped.length === buf.length) {
-      ltvMsg.textContent = "PDF-ul are deja lungimea acoperită de ByteRange (nu pare să aibă coadă LTV).";
-      ltvMsg.className = "mt-3 text-sm text-text-secondary";
-    } else {
-      ltvMsg.textContent = `Am eliminat ${buf.length - res.stripped.length} octeți după semnătură. Descarcă varianta pentru ANAF.`;
-      ltvMsg.className = "mt-3 text-sm text-green-700";
-    }
-    const blob = new Blob([res.stripped], { type: "application/pdf" });
-    ltvDownload.href = URL.createObjectURL(blob);
-    ltvDownload.download = file.name.replace(/\.pdf$/i, "") + "-fara-ltv.pdf";
-    ltvDownload.classList.remove("hidden");
-  });
-
-  pdfBtn?.addEventListener("click", async () => {
-    if (!PDF_SERVICE_URL || !lastChecksOk || lastUploadFiles.length === 0) return;
-    pdfBtn.disabled = true;
-    if (pdfDownload) pdfDownload.classList.add("hidden");
-    if (pdfStatus) {
-      pdfStatus.textContent = "Se generează PDF-ul pe server (DUKIntegrator)…";
-      pdfStatus.className = "mt-3 text-sm text-text-muted";
-    }
-    try {
-      const payloads = await collectP7bFromFiles(lastUploadFiles);
-      if (payloads.length === 0) {
-        throw new Error("Nu am găsit fișiere .p7b în încărcare.");
-      }
-      const zipBytes = p7bPayloadsToZip(payloads);
-      const res = await fetch(`${PDF_SERVICE_URL}/a4200`, {
-        method: "POST",
-        headers: { "Content-Type": "application/zip" },
-        body: zipBytes,
-      });
-      if (res.ok) {
-        const blob = await res.blob();
-        if (pdfDownload) {
-          pdfDownload.href = URL.createObjectURL(blob);
-          pdfDownload.classList.remove("hidden");
-        }
-        if (pdfStatus) {
-          pdfStatus.textContent = "PDF generat. Descarcă fișierul și continuă cu semnarea certSIGN.";
-          pdfStatus.className = "mt-3 text-sm text-green-700";
-        }
-      } else {
-        const ct = res.headers.get("content-type") ?? "";
-        let msg = "";
-        if (ct.includes("application/json")) {
-          const j = await res.json();
-          msg = [j.message, j.nextStep].filter(Boolean).join(" — ");
-        } else {
-          msg = await res.text();
-        }
-        if (pdfStatus) {
-          pdfStatus.textContent = msg || `Eroare ${res.status} de la server.`;
-          pdfStatus.className = "mt-3 text-sm text-red-700";
-        }
-      }
-    } catch {
-      if (pdfStatus) {
-        pdfStatus.textContent = "Nu am putut contacta serviciul PDF. Verifică conexiunea sau generează local cu DUKIntegrator.";
-        pdfStatus.className = "mt-3 text-sm text-red-700";
-      }
-    } finally {
-      pdfBtn.disabled = false;
-    }
+    if (folderInput.files) onFilesSelected(folderInput.files);
   });
 
   document.getElementById("a4200-decode-btn")?.addEventListener("click", () => {
@@ -430,4 +619,6 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       dukOut.appendChild(div);
     }
   });
+
+  updatePrimaryButton();
 </script>
