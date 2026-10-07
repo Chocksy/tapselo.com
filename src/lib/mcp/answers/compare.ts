@@ -19,6 +19,10 @@ export interface Competitor {
   recipes_production?: unknown;
   inventory?: unknown;
   ecommerce_or_orders?: unknown;
+  receiving_photo?: unknown;
+  fiscal_p7b_archive?: unknown;
+  customer_offers?: unknown;
+  ai_assistant?: unknown;
   pricing_public?: string | null;
   pricing_from?: string | null;
   notes?: string | null;
@@ -33,6 +37,10 @@ export const NEEDS = {
   recipes: { field: "recipes_production", label: "Retete" },
   inventory: { field: "inventory", label: "Stocuri" },
   orders: { field: "ecommerce_or_orders", label: "Comenzi" },
+  receiving_photo: { field: "receiving_photo", label: "Receptie din foto" },
+  fiscal_p7b: { field: "fiscal_p7b_archive", label: "Arhiva .p7b" },
+  customer_offers: { field: "customer_offers", label: "Oferte clienti" },
+  ai_tools: { field: "ai_assistant", label: "Asistent AI" },
 } as const;
 export type Need = keyof typeof NEEDS;
 
@@ -129,8 +137,9 @@ export function createCompareTool(list: Competitor[]): ToolDef {
         needs: {
           type: "array",
           items: { type: "string", enum: Object.keys(NEEDS) },
-          maxItems: 6,
-          description: "Cerinte: offline, fiscal_printer, scales, recipes, inventory, orders",
+          maxItems: 10,
+          description:
+            "Cerinte: offline, fiscal_printer, scales, recipes, inventory, orders, receiving_photo, fiscal_p7b, customer_offers, ai_tools",
         },
       },
       required: ["business_type"],
