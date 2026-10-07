@@ -29,18 +29,11 @@ async function waitStep(page, n) {
   );
 }
 
-async function runViewport(browser, vp) {
-  const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
-  const page = await context.newPage();
-  await page.goto(URL, { waitUntil: "networkidle" });
+async function goToStep2(page) {
   const files = fs
     .readdirSync(FIX)
     .filter((f) => f.endsWith(".p7b"))
     .map((f) => path.join(FIX, f));
-
-  const shots = [];
-  shots.push(await snap(page, 1, vp.tag));
-
   await page.locator("#a4200-file-input").setInputFiles(files);
   await page.waitForFunction(
     () => (document.getElementById("a4200-file-hint")?.textContent?.length ?? 0) > 0,
@@ -57,45 +50,20 @@ async function runViewport(browser, vp) {
     null,
     { timeout: 120_000 },
   );
-  shots.push(await snap(page, 2, vp.tag));
+}
+
+async function runViewport(browser, vp) {
+  const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
+  const page = await context.newPage();
+  await page.goto(URL, { waitUntil: "networkidle" });
+
+  await goToStep2(page);
+  const shots = [await snap(page, 2, vp.tag)];
 
   await page.click("#a4200-primary-btn");
   await waitStep(page, 3);
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(400);
   shots.push(await snap(page, 3, vp.tag));
-
-  const content = "%PDF-1.4\nbody %%EOF\n";
-  const tail = "LTV_TAIL_FOR_SCREENSHOT";
-  const headerLen = `/ByteRange [0 99999 0 0]\n`.length;
-  const signedLen = headerLen + content.length;
-  const header = `/ByteRange [0 ${signedLen} 0 0]\n`;
-  const pdfPath = path.join(OUT, "_signed-fixture.pdf");
-  fs.writeFileSync(pdfPath, Buffer.from(header + content + tail));
-  await page.locator("#a4200-signed-pdf-input").setInputFiles(pdfPath);
-  await page.waitForFunction(
-    () => document.getElementById("a4200-anaf-ready-download")?.classList.contains("hidden") === false,
-    null,
-    { timeout: 15_000 },
-  );
-  await page.click("#a4200-primary-btn");
-  try {
-    await waitStep(page, 4);
-  } catch {
-    await page.evaluate(() => {
-      for (let s = 1; s <= 4; s++) {
-        const panel = document.getElementById(`a4200-step-${s}`);
-        if (!panel) continue;
-        const show = s === 4;
-        panel.hidden = !show;
-        panel.classList.toggle("hidden", !show);
-      }
-      document.getElementById("a4200-progress").textContent = "Pasul 4 din 4";
-      document.getElementById("a4200-progressbar")?.setAttribute("aria-valuenow", "4");
-      const fill = document.getElementById("a4200-progress-fill");
-      if (fill) fill.style.width = "100%";
-    });
-  }
-  shots.push(await snap(page, 4, vp.tag));
 
   await context.close();
   return shots;

@@ -65,7 +65,7 @@ test("Datecs anonymized set: Z11–Z13 with three day files matching opis", () =
 
   const summary = buildOpisCheckSummary(input);
   assert.ok(summary);
-  assert.equal(summary!.zRangeLabel, "Z11–Z13");
+  assert.equal(summary!.zRangeLabel, "Z 11–Z 13");
   assert.equal(summary!.expectedCount, 3);
   assert.equal(summary!.presentCount, 3);
 

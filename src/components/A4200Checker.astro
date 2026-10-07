@@ -95,8 +95,8 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
         </p>
       ) : (
         <p class="text-xs text-amber-800 rounded-md border border-amber-200 bg-amber-50/80 p-3">
-          Generarea PDF în browser nu este disponibilă momentan pe acest site. Poți folosi programul de la ANAF pe
-          calculatorul tău sau reveni mai târziu.
+          Generarea PDF nu este disponibilă momentan pe acest site. Poți folosi programul de la ANAF pe calculatorul tău
+          sau reveni mai târziu.
         </p>
       )
     }
@@ -111,25 +111,29 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     <p id="a4200-pdf-status" class="text-sm text-text-muted" />
     <a
       id="a4200-pdf-download"
-      class="hidden inline-flex min-h-11 items-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-primary hover:border-accent"
+      class="hidden min-h-11 items-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-primary hover:border-accent"
+      hidden
       download="Perioada_raportare.pdf"
     >
       Descarcă PDF generat
     </a>
-    <label
-      class="mt-2 flex min-h-11 cursor-pointer items-center justify-center rounded-md border border-dashed border-border-light bg-surface px-4 py-3 text-sm font-medium text-primary hover:border-accent"
-    >
-      Încarcă PDF-ul semnat
-      <input type="file" id="a4200-signed-pdf-input" class="hidden" accept=".pdf,application/pdf" />
-    </label>
-    <p id="a4200-anaf-ready-msg" class="hidden text-sm text-green-700" />
-    <a
-      id="a4200-anaf-ready-download"
-      class="hidden inline-flex min-h-11 items-center rounded-md bg-accent px-4 py-2 text-sm font-bold text-white hover:bg-accent-hover"
-      download="declarare-anaf.pdf"
-    >
-      Descarcă fișierul pentru ANAF
-    </a>
+    <div id="a4200-signed-upload-wrap" class="hidden mt-2 space-y-2" hidden>
+      <label
+        class="flex min-h-11 cursor-pointer items-center justify-center rounded-md border border-dashed border-border-light bg-surface px-4 py-3 text-sm font-medium text-primary hover:border-accent"
+      >
+        Încarcă PDF-ul semnat
+        <input type="file" id="a4200-signed-pdf-input" class="hidden" accept=".pdf,application/pdf" />
+      </label>
+      <p id="a4200-anaf-ready-msg" class="hidden text-sm text-green-700" hidden />
+      <a
+        id="a4200-anaf-ready-download"
+        class="hidden min-h-11 items-center rounded-md bg-accent px-4 py-2 text-sm font-bold text-white hover:bg-accent-hover"
+        hidden
+        download="declarare-anaf.pdf"
+      >
+        Descarcă fișierul pentru ANAF
+      </a>
+    </div>
   </section>
 
   <!-- Step 4 -->
@@ -248,11 +252,53 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   const errTxt = document.getElementById("a4200-errtxt") as HTMLTextAreaElement;
   const dukOut = document.getElementById("a4200-duk-out")!;
   const signedPdfInput = document.getElementById("a4200-signed-pdf-input") as HTMLInputElement;
+  const signedUploadWrap = document.getElementById("a4200-signed-upload-wrap")!;
   const pdfStatus = document.getElementById("a4200-pdf-status");
   const pdfDownload = document.getElementById("a4200-pdf-download") as HTMLAnchorElement;
   const anafReadyMsg = document.getElementById("a4200-anaf-ready-msg")!;
   const anafReadyDownload = document.getElementById("a4200-anaf-ready-download") as HTMLAnchorElement;
   const activeClass = drop.dataset.activeClass ?? "";
+
+  function hideActionLink(el: HTMLAnchorElement) {
+    el.hidden = true;
+    el.classList.add("hidden");
+    el.classList.remove("inline-flex");
+    el.removeAttribute("href");
+  }
+
+  function showActionLink(el: HTMLAnchorElement, href: string) {
+    el.href = href;
+    el.hidden = false;
+    el.classList.remove("hidden");
+    el.classList.add("inline-flex");
+  }
+
+  function resetStep3State() {
+    pdfGenerated = false;
+    step3AnafReady = false;
+    hideActionLink(pdfDownload);
+    hideActionLink(anafReadyDownload);
+    anafReadyMsg.hidden = true;
+    anafReadyMsg.classList.add("hidden");
+    signedUploadWrap.hidden = true;
+    signedUploadWrap.classList.add("hidden");
+    signedPdfInput.value = "";
+  }
+
+  function updateStep3Ui() {
+    if (pdfGenerated) {
+      signedUploadWrap.hidden = false;
+      signedUploadWrap.classList.remove("hidden");
+    } else {
+      signedUploadWrap.hidden = true;
+      signedUploadWrap.classList.add("hidden");
+    }
+    if (currentStep === 3) {
+      primaryBtn.classList.toggle("hidden", pdfGenerated && !step3AnafReady);
+    } else {
+      primaryBtn.classList.remove("hidden");
+    }
+  }
 
   let currentStep = 1;
   let schemas: { a4200: string; a4203: string } | null = null;
@@ -276,6 +322,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     progressFill.style.width = `${(step / WIZARD_STEP_COUNT) * 100}%`;
     backBtn.classList.toggle("hidden", step <= 1);
     updatePrimaryButton();
+    updateStep3Ui();
     const title = document.getElementById(stepFocusTargetId(step));
     title?.focus();
   }
@@ -387,7 +434,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   function renderPlainStep2(files: ClassifiedFile[], issues: CheckerIssue[]) {
     const { input } = buildCrossCheckInput(files);
     const summary = buildOpisCheckSummary(input);
-    const plain = buildVerificationPlainSummary(summary, issues);
+    const plain = buildVerificationPlainSummary(summary, issues, input.days);
     lastPlainOk = plain.ok;
 
     const headlineClass = plain.ok ? "text-green-700" : "text-red-700";
@@ -453,15 +500,17 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   function onFilesSelected(fileList: FileList | File[]) {
     const arr = [...fileList];
     lastUploadFiles = arr;
+    resetStep3State();
     fileHint.textContent =
       arr.length > 0 ? `${arr.length} fișier(e) selectate. Apasă „Verifică arhiva”.` : "";
     updatePrimaryButton();
+    updateStep3Ui();
   }
 
   async function generatePdf() {
     if (!PDF_SERVICE_URL || !lastPlainOk || lastUploadFiles.length === 0) return;
     primaryBtn.disabled = true;
-    pdfDownload.classList.add("hidden");
+    hideActionLink(pdfDownload);
     if (pdfStatus) {
       pdfStatus.textContent = "Se generează PDF-ul… poate dura câteva zeci de secunde.";
       pdfStatus.className = "text-sm text-text-muted";
@@ -479,9 +528,9 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       });
       if (res.ok) {
         const blob = await res.blob();
-        pdfDownload.href = URL.createObjectURL(blob);
-        pdfDownload.classList.remove("hidden");
+        showActionLink(pdfDownload, URL.createObjectURL(blob));
         pdfGenerated = true;
+        updateStep3Ui();
         if (pdfStatus) {
           pdfStatus.textContent = "PDF generat. Descarcă-l, semnează-l, apoi încarcă PDF-ul semnat mai jos.";
           pdfStatus.className = "text-sm text-green-700";
@@ -514,14 +563,17 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
 
   signedPdfInput.addEventListener("change", async () => {
     const file = signedPdfInput.files?.[0];
-    anafReadyDownload.classList.add("hidden");
+    hideActionLink(anafReadyDownload);
+    anafReadyMsg.hidden = true;
     anafReadyMsg.classList.add("hidden");
     step3AnafReady = false;
+    updateStep3Ui();
     if (!file) {
       updatePrimaryButton();
       return;
     }
     anafReadyMsg.textContent = "Pregătim fișierul pentru ANAF…";
+    anafReadyMsg.hidden = false;
     anafReadyMsg.classList.remove("hidden");
     anafReadyMsg.className = "text-sm text-text-muted";
     const buf = new Uint8Array(await file.arrayBuffer());
@@ -533,13 +585,13 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       return;
     }
     const blob = new Blob([res.stripped], { type: "application/pdf" });
-    anafReadyDownload.href = URL.createObjectURL(blob);
+    showActionLink(anafReadyDownload, URL.createObjectURL(blob));
     anafReadyDownload.download = file.name.replace(/\.pdf$/i, "") + "-anaf.pdf";
-    anafReadyDownload.classList.remove("hidden");
     anafReadyMsg.textContent = "Fișierul este gata pentru încărcarea la ANAF. Descarcă-l și continuă la pasul următor.";
     anafReadyMsg.className = "text-sm text-green-700";
     step3AnafReady = true;
     updatePrimaryButton();
+    updateStep3Ui();
   });
 
   primaryBtn.addEventListener("click", async () => {
@@ -620,5 +672,8 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     }
   });
 
+  hideActionLink(pdfDownload);
+  hideActionLink(anafReadyDownload);
   updatePrimaryButton();
+  updateStep3Ui();
 </script>

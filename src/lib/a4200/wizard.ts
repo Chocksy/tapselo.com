@@ -1,4 +1,5 @@
-import { formatZ, type OpisCheckSummary } from "./check-summary.ts";
+import { formatZ, formatZRange, type OpisCheckSummary } from "./check-summary.ts";
+import { checkSingleCalendarMonthAmongDays, type DayEntry } from "./day-groups.ts";
 import { periodFromIdM } from "./parse.ts";
 import type { CheckerIssue, ParsedOpis } from "./types.ts";
 
@@ -36,14 +37,33 @@ export function resolveOpisPeriod(opis: ParsedOpis): { an: number; luna: number 
   return periodFromIdM(opis.idM);
 }
 
-export function formatPeriodLabel(opis: ParsedOpis): string | null {
+/** Calendar month from opis attributes or idM (export timestamp) — not used for wizard copy when day files exist. */
+export function formatPeriodLabelFromOpis(opis: ParsedOpis): string | null {
   const p = resolveOpisPeriod(opis);
   if (!p) return null;
   return `${RO_MONTHS[p.luna - 1]} ${p.an}`;
 }
 
-export function formatZRangePlain(nrRapI: number, nrRapF: number): string {
-  return `Z ${nrRapI}–${nrRapF}`;
+/** Fiscal month from day files (an/luna or idM), aligned with PERIOD_MISMATCH logic in crosscheck. */
+export function formatPeriodLabelFromDays(days: DayEntry[]): string | null {
+  const p = checkSingleCalendarMonthAmongDays(days);
+  if (!p) return null;
+  return `${RO_MONTHS[p.luna - 1]} ${p.an}`;
+}
+
+/** @deprecated Use formatPeriodLabelFromOpis or formatPeriodLabelFromDays */
+export function formatPeriodLabel(opis: ParsedOpis): string | null {
+  return formatPeriodLabelFromOpis(opis);
+}
+
+export function formatZRangePlain(opis: ParsedOpis): string {
+  return formatZRange(opis);
+}
+
+/** Romanian count phrase: „30 din 31 de rapoarte” (≥20 takes „de”). */
+export function formatReportCountPhrase(present: number, expected: number): string {
+  const de = expected >= 20 ? " de" : "";
+  return `${present} din ${expected}${de} rapoarte`;
 }
 
 export interface VerificationPlainSummary {
@@ -58,6 +78,7 @@ export interface VerificationPlainSummary {
 export function buildVerificationPlainSummary(
   summary: OpisCheckSummary | null,
   issues: CheckerIssue[],
+  days: DayEntry[] = [],
 ): VerificationPlainSummary {
   const errorCount = countBlockingIssues(issues);
 
@@ -75,8 +96,9 @@ export function buildVerificationPlainSummary(
     };
   }
 
-  const periodLabel = formatPeriodLabel(summary.opis);
-  const zPlain = formatZRangePlain(summary.opis.nrRapI, summary.opis.nrRapF);
+  const periodLabel =
+    (days.length > 0 ? formatPeriodLabelFromDays(days) : null) ?? formatPeriodLabelFromOpis(summary.opis);
+  const zPlain = formatZRangePlain(summary.opis);
   const complete = summary.presentCount === summary.expectedCount && errorCount === 0;
   const ok = complete;
 
@@ -86,9 +108,10 @@ export function buildVerificationPlainSummary(
       ? `Am găsit rapoartele ${zPlain} pentru ${periodLabel}.`
       : `Am găsit toate rapoartele ${zPlain} (${summary.expectedCount} zile).`;
   } else {
+    const countPhrase = formatReportCountPhrase(summary.presentCount, summary.expectedCount);
     foundLine = periodLabel
-      ? `Am găsit ${summary.presentCount} din ${summary.expectedCount} rapoarte pentru ${periodLabel} (interval ${zPlain}).`
-      : `Am găsit ${summary.presentCount} din ${summary.expectedCount} rapoarte (${zPlain}).`;
+      ? `Am găsit ${countPhrase} pentru ${periodLabel} (interval ${zPlain}).`
+      : `Am găsit ${countPhrase} (interval ${zPlain}).`;
   }
 
   const missing = summary.rows.filter((r) => r.status === "missing");
@@ -119,6 +142,7 @@ export interface WizardButtonContext {
   hasFiles?: boolean;
   checksOk?: boolean;
   onStep3ReadyForAnaf?: boolean;
+  pdfGenerated?: boolean;
 }
 
 export function primaryButtonLabel(step: number, ctx: WizardButtonContext = {}): string {

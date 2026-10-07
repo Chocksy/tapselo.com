@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
-import { ingestFileList } from "../src/lib/a4200/ingest.ts";
+import { ingestBuffers, ingestFileList } from "../src/lib/a4200/ingest.ts";
 import { buildCrossCheckInput, runLocalChecks } from "../src/lib/a4200/pipeline.ts";
 import { buildOpisCheckSummary } from "../src/lib/a4200/check-summary.ts";
 import { validateXML } from "xmllint-wasm";
@@ -11,7 +11,9 @@ import {
   buildVerificationPlainSummary,
   canProceedToPdfStep,
   countBlockingIssues,
-  formatPeriodLabel,
+  formatPeriodLabelFromDays,
+  formatPeriodLabelFromOpis,
+  formatReportCountPhrase,
   primaryButtonLabel,
   stepHeading,
   WIZARD_STEP_COUNT,
@@ -26,6 +28,11 @@ test("wizard has four steps with Romanian headings", () => {
   assert.equal(WIZARD_STEP_COUNT, 4);
   assert.match(stepHeading(1), /Încarcă arhiva/);
   assert.match(stepHeading(4), /ANAF/);
+});
+
+test("formatReportCountPhrase uses de for totals 20+", () => {
+  assert.equal(formatReportCountPhrase(30, 31), "30 din 31 de rapoarte");
+  assert.equal(formatReportCountPhrase(3, 5), "3 din 5 rapoarte");
 });
 
 test("primary button labels follow step context", () => {
@@ -60,14 +67,32 @@ test("uploaded anonymized fixtures: plain summary when complete", async () => {
   const { input } = buildCrossCheckInput(classified);
   const summary = buildOpisCheckSummary(input);
   assert.ok(summary, "expected opis summary");
-  const period = formatPeriodLabel(summary!.opis);
-  assert.ok(period, "expected period from opis");
+  const periodFromOpis = formatPeriodLabelFromOpis(summary!.opis);
+  const periodFromDays = formatPeriodLabelFromDays(input.days);
+  assert.ok(periodFromDays, "expected period from day files");
+  assert.notEqual(periodFromOpis, periodFromDays, "opis export month should differ from fiscal month in fixture");
 
-  const plain = buildVerificationPlainSummary(summary, issues);
+  const plain = buildVerificationPlainSummary(summary, issues, input.days);
   assert.equal(countBlockingIssues(issues), 0);
   assert.equal(plain.ok, true);
-  assert.ok(plain.foundLine?.includes("Z 11–13") || plain.foundLine?.includes("Z 11"));
+  assert.match(plain.foundLine ?? "", /decembrie 2025/);
+  assert.doesNotMatch(plain.foundLine ?? "", /ianuarie 2026/);
+  assert.ok(plain.foundLine?.includes("Z 11–Z 13"));
   assert.equal(canProceedToPdfStep(plain), plain.ok);
+});
+
+test("wizard period label uses day files when opis was exported in a later month", () => {
+  const dir = path.join(FIX, "datecs-anon");
+  const entries = fs.readdirSync(dir).map((n) => ({
+    name: n,
+    data: new Uint8Array(fs.readFileSync(path.join(dir, n))),
+  }));
+  const { files } = ingestBuffers(entries);
+  const { input } = buildCrossCheckInput(files);
+  const summary = buildOpisCheckSummary(input);
+  assert.ok(summary);
+  const plain = buildVerificationPlainSummary(summary, [], input.days);
+  assert.equal(plain.periodLabel, "decembrie 2025");
 });
 
 test("missing day produces missing line in plain summary", async () => {
@@ -79,7 +104,7 @@ test("missing day produces missing line in plain summary", async () => {
   const issues = runLocalChecks(classified);
   const { input } = buildCrossCheckInput(classified);
   const summary = buildOpisCheckSummary(input);
-  const plain = buildVerificationPlainSummary(summary, issues);
+  const plain = buildVerificationPlainSummary(summary, issues, input.days);
   assert.equal(plain.ok, false);
-  assert.ok(plain.missingLines.some((l) => /Lipsește raportul Z2/.test(l)));
+  assert.ok(plain.missingLines.some((l) => /Lipsește raportul Z 2/.test(l)));
 });
