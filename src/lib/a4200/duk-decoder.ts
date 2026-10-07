@@ -19,6 +19,7 @@ export function decodeDukErrTxt(text: string): ErrTxtLine[] {
           return {
             raw,
             explained: true,
+            code: rule.code,
             title: e.title,
             ceInseamna: e.ce_inseamna,
             ceFaci: e.ce_faci,

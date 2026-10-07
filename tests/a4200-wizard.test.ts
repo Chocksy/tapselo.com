@@ -73,12 +73,13 @@ test("uploaded anonymized fixtures: plain summary when complete", async () => {
   assert.notEqual(periodFromOpis, periodFromDays, "opis export month should differ from fiscal month in fixture");
 
   const plain = buildVerificationPlainSummary(summary, issues, input.days);
-  assert.equal(countBlockingIssues(issues), 0);
-  assert.equal(plain.ok, true);
+  assert.ok(countBlockingIssues(issues) > 0);
+  assert.equal(plain.ok, false);
+  assert.match(plain.headline, /CUI|NUI|codul fiscal|numărul casei/i);
+  assert.doesNotMatch(plain.headline, /Totul arată în regulă/);
   assert.match(plain.foundLine ?? "", /decembrie 2025/);
-  assert.doesNotMatch(plain.foundLine ?? "", /ianuarie 2026/);
   assert.ok(plain.foundLine?.includes("Z 11–Z 13"));
-  assert.equal(canProceedToPdfStep(plain), plain.ok);
+  assert.equal(canProceedToPdfStep(plain), false);
 });
 
 test("wizard period label uses day files when opis was exported in a later month", () => {

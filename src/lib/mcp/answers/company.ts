@@ -5,6 +5,7 @@
 import type { ToolDef, ToolEnv } from "../types.ts";
 import { formatDateRo, todayBucharest } from "../text.ts";
 import { trackedUrl } from "../links.ts";
+import { isValidCuiCheckDigit } from "../../fiscal/check-digit.ts";
 import { readOnly } from "./kb.ts";
 
 const NAME = "check_company";
@@ -20,14 +21,7 @@ export function normalizeCui(raw: unknown): string | null {
 
 /** CUI control digit (key 753217532). */
 export function isValidCui(cui: string): boolean {
-  if (!/^\d{2,10}$/.test(cui)) return false;
-  const key = "753217532";
-  const body = cui.slice(0, -1).padStart(9, "0");
-  let sum = 0;
-  for (let i = 0; i < 9; i++) sum += Number(body[i]) * Number(key[i]);
-  let c = (sum * 10) % 11;
-  if (c === 10) c = 0;
-  return c === Number(cui[cui.length - 1]);
+  return isValidCuiCheckDigit(cui);
 }
 
 export interface CompanyInfo {

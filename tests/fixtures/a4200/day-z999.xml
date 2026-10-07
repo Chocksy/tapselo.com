@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<msj idM="1234567890202506011200000999" an="2025" luna="6" cif="12345678" xmlns="mfp:anaf:dgti:a4203:declaratie:v1">
+<msj idM="1234567890202506011200000999" an="2025" luna="6" cif="14399840" xmlns="mfp:anaf:dgti:a4203:declaratie:v1">
   <rB idR="1234567890202506011300000999" nrAv="0" nrB="0" totB="0.00" nrBC="0" totBC="0.00" nrA="0" totA="0.00" nrR="0" totR="0.00" nrM="0" totM="0.00" totTva="0.00" totTvaC="0.00" totTaxe="0.00" totNet="0.00" sume_serv_in="0.00" sume_serv_out="0.00" monRef="RON"></rB>
 </msj>

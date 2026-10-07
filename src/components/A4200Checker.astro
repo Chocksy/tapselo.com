@@ -528,6 +528,11 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       });
       if (res.ok) {
         const blob = await res.blob();
+        const disposition = res.headers.get("Content-Disposition");
+        const filenameMatch = disposition?.match(/filename="([^"]+)"/);
+        if (filenameMatch?.[1]) {
+          pdfDownload.download = filenameMatch[1];
+        }
         showActionLink(pdfDownload, URL.createObjectURL(blob));
         pdfGenerated = true;
         updateStep3Ui();

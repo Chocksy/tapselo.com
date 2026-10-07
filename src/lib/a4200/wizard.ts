@@ -121,8 +121,16 @@ export function buildVerificationPlainSummary(
   );
 
   let headline: string;
+  const badCui = issues.some((i) => i.code === "CUI_CHECK_DIGIT");
+  const badNui = issues.some((i) => i.code === "NUI_CHECK_DIGIT");
   if (ok) {
     headline = "Totul arată în regulă pentru depunere.";
+  } else if (badCui && badNui) {
+    headline = "Codul fiscal și numărul casei (NUI) din export par greșite.";
+  } else if (badCui) {
+    headline = "Codul fiscal (CUI) din export nu pare corect.";
+  } else if (badNui) {
+    headline = "Numărul casei de marcat (NUI) din export nu pare corect.";
   } else if (missing.length > 0) {
     headline = "Lipsesc zile din exportul de la casă.";
   } else if (errorCount > 0) {

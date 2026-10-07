@@ -1,4 +1,5 @@
 import { runCrossChecks } from "./crosscheck.ts";
+import { runIdentifierChecks } from "./identifier-checks.ts";
 import { explainParseError } from "./explain.ts";
 import type { ClassifiedFile, CheckerIssue, CrossCheckInput, ParsedDay, ParsedOpis } from "./types.ts";
 import { parseDayXml, parseOpisXml } from "./parse.ts";
@@ -49,5 +50,5 @@ export function buildCrossCheckInput(files: ClassifiedFile[]): {
 
 export function runLocalChecks(files: ClassifiedFile[]): CheckerIssue[] {
   const { input, parseIssues } = buildCrossCheckInput(files);
-  return [...parseIssues, ...runCrossChecks(input)];
+  return [...parseIssues, ...runIdentifierChecks(input), ...runCrossChecks(input)];
 }

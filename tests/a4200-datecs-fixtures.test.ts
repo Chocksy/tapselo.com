@@ -70,5 +70,7 @@ test("Datecs anonymized set: Z11–Z13 with three day files matching opis", () =
   assert.equal(summary!.presentCount, 3);
 
   const blocking = runLocalChecks(files).filter((i) => i.severity === "error");
-  assert.equal(blocking.length, 0, blocking.map((i) => i.code).join(", "));
+  const codes = blocking.map((i) => i.code);
+  assert.ok(codes.includes("CUI_CHECK_DIGIT"), codes.join(", "));
+  assert.ok(codes.includes("NUI_CHECK_DIGIT"), codes.join(", "));
 });

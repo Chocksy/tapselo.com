@@ -48,8 +48,9 @@ export function corsHeaders(origin) {
   if (!origin || !CORS_ORIGINS.includes(origin)) return {};
   return {
     "Access-Control-Allow-Origin": origin,
-    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+    "Access-Control-Allow-Methods": "POST, GET, HEAD, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Expose-Headers": "Content-Disposition",
     Vary: "Origin",
   };
 }
@@ -200,8 +201,13 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (req.method === "GET" && req.url === "/health") {
-    safeEnd(res, 200, { "Content-Type": "application/json" }, JSON.stringify({ ok: true }));
+  if ((req.method === "GET" || req.method === "HEAD") && req.url === "/health") {
+    const healthHeaders = { "Content-Type": "application/json" };
+    if (req.method === "HEAD") {
+      safeEnd(res, 200, healthHeaders, "");
+    } else {
+      safeEnd(res, 200, healthHeaders, JSON.stringify({ ok: true }));
+    }
     return;
   }
 
