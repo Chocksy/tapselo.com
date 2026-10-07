@@ -5,6 +5,8 @@ import rules from "../../lib/kb/rules.json";
 import checklists from "../../lib/kb/shop-checklists.json";
 import dibal from "../../lib/kb/dibal.json";
 import datecsJson from "../../lib/kb/datecs-errors.json";
+import { supportArticles } from "../../lib/articles/load.ts";
+import { articlePath } from "../../lib/articles/schema.ts";
 
 const hintTitles = [...new Set(Object.values(datecsJson.hints as Record<string, { title: string }>).map((h) => h.title))];
 const card = "block rounded-xl border border-border-light p-5 transition-colors hover:border-accent";
@@ -50,6 +52,22 @@ const card = "block rounded-xl border border-border-light p-5 transition-colors 
         Verifică opisul și zilele fiscale .p7b înainte de DUKIntegrator. Fără upload, cu explicații în română și decoder .err.txt.
       </p>
     </a>
+  </section>
+
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Articole de suport</h2>
+    <p class="mt-2 text-sm text-text-secondary">
+      <a href="/ghid/articole" class="text-accent hover:text-accent-hover">Vezi toate articolele</a>
+      — A4200, export .p7b, DUKIntegrator, raport Z Datecs.
+    </p>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2">
+      {supportArticles.map((a) => (
+        <a href={articlePath(a.slug)} class={card}>
+          <h3 class="text-primary">{a.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-text-secondary">{a.description}</p>
+        </a>
+      ))}
+    </div>
   </section>
 
   <section>

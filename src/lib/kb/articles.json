@@ -1,0 +1,204 @@
+{
+  "articles": [
+    {
+      "slug": "depunere-a4200",
+      "title": "Cum depui declarația A4200 cu DUKIntegrator",
+      "description": "Pași pentru depunerea A4200 la ANAF: folder cu opis și zile fiscale, validare în DUKIntegrator, semnare cu certificat digital și încărcare pe e-guvernare.",
+      "type": "howto",
+      "updated": "2026-10-07",
+      "verifiedOn": "2026-10-07",
+      "tags": ["A4200", "ANAF", "DUKIntegrator"],
+      "cta": "a4200",
+      "related": ["erori-dukintegrator", "export-p7b-anaf", "raport-z-datecs-fp-70"],
+      "sources": [
+        {
+          "title": "ANAF — Instrucțiuni depunere A4200 (PDF, 14.01.2019)",
+          "url": "https://static.anaf.ro/static/10/Anaf/Declaratii_R/AplicatiiDec/InstructiuniDepunereA4200_20190114.pdf"
+        },
+        {
+          "title": "ANAF — Schema XSD opis A4200",
+          "url": "https://static.anaf.ro/static/10/Anaf/Declaratii_R/AplicatiiDec/a4200_20180910.xsd"
+        },
+        {
+          "title": "ANAF — Pagina declarație 4200 (kit validare, XSD)",
+          "url": "https://static.anaf.ro/static/10/Anaf/Declaratii_R/4200.html"
+        },
+        {
+          "title": "ANAF — DUKIntegrator",
+          "url": "https://static.anaf.ro/static/DUKIntegrator/DUKIntegrator.htm"
+        }
+      ],
+      "steps": [
+        {
+          "name": "Pregătește folderul lunii",
+          "text": "Creează un folder gol pe disc, fără spații în cale. Copiază în el doar fișierele lunii pentru un singur NUI (număr unic de înregistrare AMEF): un fișier opis (centralizator) și câte un fișier pentru fiecare zi fiscală din perioadă. ANAF cere un folder separat pentru fiecare NUI și pentru fiecare lună."
+        },
+        {
+          "name": "Verifică setul de fișiere",
+          "text": "Opisul descrie perioada (an, lună, CIF, interval rapoarte Z). Fișierele de zi trebuie să acopere exact zilele fiscale din opis, fără duplicate și fără alte fișiere în folder. Poți verifica gratuit structura înainte de Java: Verificare A4200 pe Tapselo."
+        },
+        {
+          "name": "Instalează DUKIntegrator și validatorul A4200",
+          "text": "Descarcă DUKIntegrator de pe site-ul ANAF, instalează Java dacă lipsește, apoi din meniul DUK adaugă validatorul A4200 (și A4203 pentru AMEF de uz general) de pe pagina declarației 4200."
+        },
+        {
+          "name": "Validează doar opisul",
+          "text": "În DUKIntegrator selectează exclusiv fișierul opis (nu și fișierele de zi). Rulează validarea; dacă apare PDF semnat, numele va fi opisul plus „-semnat.pdf”."
+        },
+        {
+          "name": "Semnează și depune pe e-guvernare",
+          "text": "Folosește certificatul digital al firmei (token) la „Validare + creare PDF semnat”. Încarcă PDF-ul semnat pe portalul e-guvernare. Dacă ai mai multe AMEF-uri cu același nume de opis, redenumește PDF-urile semnate ca să eviți eroarea de declarație deja în prelucrare."
+        }
+      ],
+      "body": "Declarația **A4200** raportează activitatea casei de marcat cu jurnal electronic pentru o lună. ANAF descrie setul ca fiind compus din fișiere XML semnate de AMEF: un **opis** (centralizator al perioadei) și câte un fișier pentru **fiecare zi fiscală** (pentru AMEF de uz general, structura zilei este A4203).\n\n**Termen.** Raportarea lunară se face, în mod obișnuit, până pe **20** ale lunii următoare pentru luna închisă. Dacă transmisia automată la distanță a funcționat, este posibil să nu fie nevoie de depunere manuală; urmăriți mesajele din SPV și indicațiile contabilului.\n\n**Reguli de folder (din instrucțiunile ANAF).**\n\n- Un folder **gol**, fără alte documente.\n- **Un NUI** (primele 10 caractere din identificatorul AMEF) și **o lună** per folder.\n- Doar opisul plus fișierele zilelor din perioada declarată.\n- În DUKIntegrator selectați **doar opisul** pentru validare; fișierele de zi stau în același folder, dar nu se bifează împreună cu opisul la același pas.\n\n**Semnare.** După validare, DUKIntegrator generează un PDF pe care îl semnați cu **certificatul digital** al contribuabilului (nu cu certificatul AMEF). PDF-ul semnat se depune pe **e-guvernare**.\n\n**Verificare înainte de Java.** Erorile de structură (lipsă zi, NUI diferit, interval Z greșit) sunt frecvente. Le puteți vedea mai devreme cu [verificarea gratuită A4200](/ghid/verificare-a4200) de pe Tapselo — fișierele rămân în browser.\n\n**Legături utile în ghidul Tapselo:** [raport Z și fișiere .p7b](/ghid/raport-z-memorie-fiscala-p7b), [export .p7b pentru ANAF](/ghid/articole/export-p7b-anaf), [erori DUKIntegrator](/ghid/articole/erori-dukintegrator).\n\n[Tapselo](/?utm_source=ghid&utm_medium=article&utm_campaign=depunere-a4200) poate exporta și arhiva fișierele lunare direct din casă, astfel încât să ajungă la contabil înainte de termen."
+    },
+    {
+      "slug": "erori-dukintegrator",
+      "title": "Erori DUKIntegrator la A4200: ce înseamnă și ce faci",
+      "description": "Mesaje frecvente din DUKIntegrator la validarea A4200: folder greșit, număr de zile, fișier străin, semnătură sau nume PDF duplicat — și cum le rezolvi.",
+      "type": "article",
+      "updated": "2026-10-07",
+      "verifiedOn": "2026-10-07",
+      "tags": ["A4200", "DUKIntegrator", "ANAF"],
+      "cta": "a4200",
+      "related": ["depunere-a4200", "export-p7b-anaf"],
+      "sources": [
+        {
+          "title": "ANAF — Instrucțiuni depunere A4200",
+          "url": "https://static.anaf.ro/static/10/Anaf/Declaratii_R/AplicatiiDec/InstructiuniDepunereA4200_20190114.pdf"
+        },
+        {
+          "title": "ANAF — DUKIntegrator",
+          "url": "https://static.anaf.ro/static/DUKIntegrator/DUKIntegrator.htm"
+        },
+        {
+          "title": "ANAF — Pagina declarație 4200",
+          "url": "https://static.anaf.ro/static/10/Anaf/Declaratii_R/4200.html"
+        }
+      ],
+      "faq": [
+        {
+          "q": "„Numărul de zile fiscale declarate este diferit de numărul de fișiere Z găsite” — de ce apare?",
+          "a": "Opisul spune câte zile fiscale sunt în perioadă, dar în folder lipsesc fișiere de zi, există duplicate sau ați exportat o lună incompletă. Verificați că aveți exact un fișier de zi pentru fiecare zi lucrată din intervalul nrRapI–nrRapF din opis și că stick-ul era gol la export. Re-exportați luna dacă e nevoie."
+        },
+        {
+          "q": "Am pus toate fișierele în folder, dar validarea XSD eșuează. Ce verific mai întâi?",
+          "a": "Scoateți din folder orice alt fișier (text, PDF, copii .zip). ANAF cere folder dedicat, doar cu opisul și zilele lunii. Deschideți opisul și o zi în editor și confirmați că NUI-ul (primele 10 caractere din idM), anul, luna și CIF-ul coincid peste tot."
+        },
+        {
+          "q": "DUKIntegrator spune că există deja o declarație A4200 în prelucrare pentru aceeași perioadă.",
+          "a": "ANAF documentează eroarea MULTI_A4200 când încărcați rapid mai multe PDF-uri semnate cu același nume (de ex. Perioada_raportare.p7b-semnat.pdf) pentru aceeași perioadă. Așteptați recipisa sau redenumiți PDF-urile semnate incluzând NUI-ul și numărul raportului Z, apoi redepuneți la interval."
+        },
+        {
+          "q": "Unde văd explicații pentru fișierul .err.txt lăsat de DUKIntegrator?",
+          "a": "După o rulare eșuată, DUKIntegrator poate lăsa un fișier .err.txt în folderul de lucru. Copiați conținutul în [verificarea A4200](/ghid/verificare-a4200) (secțiunea decoder .err.txt) pentru mapare în română; liniile necunoscute le puteți trimite echipei Tapselo din formularul de contact."
+        },
+        {
+          "q": "Trebuie să selectez toate fișierele XML din folder la validare?",
+          "a": "Nu. Instrucțiunile ANAF spun să selectați doar fișierul opis (centralizator). Fișierele de zi rămân în același folder, dar validarea pornește de la opis; validatorul le corelează cu opisul."
+        },
+        {
+          "q": "Java sau DUKIntegrator nu pornesc pe Windows 11. Ce fac?",
+          "a": "Instalați o versiune LTS de Java de pe site-ul Oracle sau adoptium, apoi reinstalați DUKIntegrator din kitul ANAF. Rulați din o cale fără diacritice și fără spații. Dacă validarea XSD tot nu merge, folosiți verificarea din browser de pe Tapselo pentru structură și lăsați semnarea în DUKIntegrator."
+        }
+      ],
+      "body": "Majoritatea problemelor la **A4200** nu sunt „bug-uri ANAF”, ci un **folder pregătit incomplet** sau un set de fișiere care nu se potrivește cu opisul. DUKIntegrator rulează validatorul oficial; mesajele sunt tehnice, dar se repetă des la magazine.\n\n**Înainte de DUKIntegrator**\n\n1. Un folder per **NUI** și per **lună**.\n2. Stick **gol** la exportul din casă (recomandare uzuală în materialele pentru AMEF).\n3. Minimum **un fișier de zi per zi fiscală** plus **opisul** perioadei.\n\n**După eroare**\n\n- Citiți întregul log sau fișierul **.err.txt**.\n- Corectați la sursă (re-export din casă sau din programul POS).\n- Rulați din nou validarea doar pe opis.\n\n**Verificare rapidă fără instalare Java:** [Verificare A4200 gratuită](/ghid/verificare-a4200) pe Tapselo — aceeași structură de fișiere, explicații în română.\n\n**Alte pagini utile:** [Cum depui A4200](/ghid/articole/depunere-a4200), [Export .p7b](/ghid/articole/export-p7b-anaf), [Erori Datecs pe casă](/ghid/erori-datecs#pasi-raport-z-24h) (dacă nu puteți închide ziua).\n\nDacă mesajul persistă după ce setul arată corect, transmiteți logul contabilului sau service-ului AMEF; [Tapselo](/?utm_source=ghid&utm_medium=article&utm_campaign=erori-dukintegrator) vă poate ajuta să păstrați exporturile lunare ordonate."
+    },
+    {
+      "slug": "export-p7b-anaf",
+      "title": "Cum exporti fișierul .p7b pentru ANAF",
+      "description": "Export lunar al fișierelor semnate .p7b din casa de marcat Datecs: stick USB gol, meniu export, structura folderului pentru A4200 și verificare înainte de depunere.",
+      "type": "howto",
+      "updated": "2026-10-07",
+      "verifiedOn": "2026-10-07",
+      "tags": ["ANAF", "Datecs", "p7b", "A4200"],
+      "cta": "a4200",
+      "related": ["depunere-a4200", "erori-dukintegrator", "raport-z-datecs-fp-70"],
+      "sources": [
+        {
+          "title": "ANAF — Instrucțiuni depunere A4200",
+          "url": "https://static.anaf.ro/static/10/Anaf/Declaratii_R/AplicatiiDec/InstructiuniDepunereA4200_20190114.pdf"
+        },
+        {
+          "title": "Datecs — Descărcarea jurnalului electronic",
+          "url": "https://www.datecs.ro/descarcarea-jurnalului-electronic-casa-de-marcat.html"
+        },
+        {
+          "title": "ANAF — Pagina declarație 4200",
+          "url": "https://static.anaf.ro/static/10/Anaf/Declaratii_R/4200.html"
+        }
+      ],
+      "steps": [
+        {
+          "name": "Pregătește stick-ul USB",
+          "text": "Folosiți un stick gol, formatat compatibil cu casa de marcat. Materialele Datecs și ANAF atrag atenția că fișiere vechi pe stick pot produce erori la depunerea A4200 (număr de zile diferit)."
+        },
+        {
+          "name": "Conectează stick-ul la AMEF",
+          "text": "Introduceți stick-ul în portul USB al casei (sau prin adaptor OTG, după model). Așteptați recunoașterea mediului înainte de a deschide meniul de export."
+        },
+        {
+          "name": "Deschide meniul de export lunar ANAF",
+          "text": "Pe modelele Datecs de tip DP/WP (exemplu documentat în materiale ANAF/parteneri): din meniu, accesați exportul de date, alegeți varianta lunară pentru ANAF și confirmați. Introduceți luna raportată în formatul cerit pe display (de obicei LLAAAA). Pe imprimante fiscale FP, exportul se face din utilitarul DUDE / meniul de rapoarte JE — verificați manualul modelului."
+        },
+        {
+          "name": "Verifică conținutul folderului AMEF",
+          "text": "După export ar trebui să aveți un fișier centralizator de perioadă (opis) și câte un fișier pentru fiecare zi fiscală din lună. Copiați folderul pe PC, într-un director separat pentru fiecare NUI."
+        },
+        {
+          "name": "Validează înainte de DUKIntegrator",
+          "text": "Rulați verificarea structurii în browser: Verificare A4200 Tapselo. Apoi deschideți DUKIntegrator, selectați doar opisul și semnați PDF-ul pentru e-guvernare."
+        }
+      ],
+      "body": "Fișierele **.p7b** (și variante .p7m / .p7s) sunt **XML-uri semnate electronic** de AMEF. Ele stau la baza declarației **A4200**: un fișier de **perioadă** (opis) și fișiere pentru **zilele fiscale**.\n\n**De ce contează exportul corect**\n\n- Fără un set complet, ANAF raportează diferențe între numărul de zile din opis și fișierele găsite în folder.\n- Fișierul semnat nu se poate „recrea” la infinit: păstrați copii lunare pe PC sau în cloudul firmei.\n- Un export pe lună, per **NUI**, într-un folder dedicat.\n\n**Pe case de marcat Datecs (exemplu DP25 / WP50)** procedura documentată în materialele pentru contribuabili folosește meniul de **export date → lunar ANAF**, parolă service unde e cazul, și luna în format **LLAAAA**. Pașii exacți de taste pot varia după firmware; urmați ecranul casei sau manualul de la service.\n\n**Pe imprimante fiscale Datecs (FP)** exportul lunar se face de obicei din **DUDE** sau din meniul de **jurnal electronic (JE)**; consultați [manualul FP-700](https://www.datecs.ro/imprimanta-fiscala-datecs-fp700.html) pentru modelul dvs.\n\n**După export**\n\n1. Copiați folderul pe calculator.\n2. Verificați gratuit: [Verificare A4200](/ghid/verificare-a4200).\n3. Depuneți cu [pașii DUKIntegrator](/ghid/articole/depunere-a4200).\n\nContext în ghidul Tapselo: [Raport Z, memorie fiscală și .p7b](/ghid/raport-z-memorie-fiscala-p7b). Erori la închiderea zilei: [coduri Datecs](/ghid/erori-datecs).\n\n[Tapselo](/?utm_source=ghid&utm_medium=article&utm_campaign=export-p7b-anaf) poate descărca automat fișierele zilnice și le pune la dispoziția contabilului, fără stick la fiecare lună."
+    },
+    {
+      "slug": "raport-z-datecs-fp-70",
+      "title": "Cum scoți raportul Z pe Datecs FP-70",
+      "description": "Închiderea zilei fiscale pe imprimanta Datecs FP-70 / seria FP: raport Z din mod autonom sau din DUDE, fără bon deschis, și ce faci dacă apare eroare.",
+      "type": "howto",
+      "updated": "2026-10-07",
+      "verifiedOn": "2026-10-07",
+      "tags": ["Datecs", "Raport Z", "FP-70"],
+      "cta": "default",
+      "related": ["export-p7b-anaf", "depunere-a4200"],
+      "sources": [
+        {
+          "title": "Datecs — Manual de utilizare FP-700 (seria FP, mod autonom)",
+          "url": "https://www.datecs.ro/imprimanta-fiscala-datecs-fp700.html"
+        },
+        {
+          "title": "HG 479/2003 — norme aparate de marcat electronice fiscale",
+          "url": "https://legislatie.just.ro/Public/DetaliiDocument/156065"
+        },
+        {
+          "title": "ANAF — Material informativ AMEF",
+          "url": "https://static.anaf.ro/static/10/Galati/Vrancea/Material-informativ-AMEF.pdf"
+        }
+      ],
+      "steps": [
+        {
+          "name": "Închide orice bon deschis",
+          "text": "Raportul Z se emite când nu există bon fiscal sau nefiscal deschis. Finalizați sau anulați vânzarea din DUDE / programul POS înainte de a merge în modul autonom."
+        },
+        {
+          "name": "Intră în modul autonom",
+          "text": "Opriți comunicarea cu PC-ul sau ieșiți din vânzare astfel încât imprimanta să accepte comenzi de la tastatură. Pe seria FP documentată de Datecs, meniul autonom listează explicit tipărirea raportului Z."
+        },
+        {
+          "name": "Tipărește raportul Z",
+          "text": "Apăsați tasta dedicată Raport Z sau, din meniul principal, alegeți opțiunea de tipărire raport Z și confirmați cu DA. Imprimanta listează totalurile pe cote și închide ziua fiscală în memorie."
+        },
+        {
+          "name": "Păstrează dovada și verifică transmiterea",
+          "text": "Ruperea raportului Z rămâne în magazin; verificați că AMEF este online conform cerințelor legale. Dacă transmisia la distanță a eșuat, păstrați fișierele lunii pentru A4200."
+        },
+        {
+          "name": "Dacă apare o eroare Datecs",
+          "text": "Notează codul de pe display și caută-l în ghidul de erori Datecs (de exemplu lipsă hârtie, 24 de ore fără Z sau raport Z necesar înainte de operație)."
+        }
+      ],
+      "body": "**Raportul Z** închide ziua fiscală și resetează totalurile zilnice în AMEF. Legislația cere emiterea lui înainte de expirarea a **24 de ore** de la primul bon al zilei (vezi normele la HG 479/2003, art. 34, în forma consolidată).\n\n**Datecs FP-70** face parte din familia de **imprimante fiscale FP** cu mod autonom. Datecs publică procedura detaliată pentru **FP-700** (același mod autonom: meniu principal → tipărire raport Z, sau tasta dedicată **Rapoarte Z** pe panoul frontal). Dacă eticheta de pe echipament arată FP-700 în loc de FP-70, folosiți manualul FP-700 de pe [datecs.ro](https://www.datecs.ro/imprimanta-fiscala-datecs-fp700.html).\n\n**Din program (DUDE / POS)**\n\n- Majoritatea aplicațiilor trimit comanda de închidere Z la sfârșitul programului.\n- În documentația tehnică Datecs, raportul Z corespunde comenzii **69 (45H)** cu parametrul pentru închidere Z (spre deosebire de raportul X, care nu închide ziua).\n\n**Nu confundați raportul Z cu raportul X.** Raportul **X** este informativ, **nu** închide ziua și nu înlocuiește transmiterea lunară.\n\n**Dacă nu puteți emite Z**\n\n- Căutați codul în [Erori casa de marcat Datecs](/ghid/erori-datecs) — de exemplu mesajele despre **24 de ore fără raport Z** sau **rulați raport Z înaintea acestei operațiuni**.\n- După ce ziua este închisă corect, exportați fișierele lunii pentru ANAF: [Export .p7b](/ghid/articole/export-p7b-anaf) și verificați setul cu [Verificare A4200](/ghid/verificare-a4200).\n\n[Tapselo](/?utm_source=ghid&utm_medium=article&utm_campaign=raport-z-datecs-fp-70) poate solicita raportul Z din POS și vă avertizează când se apropie limita de 24 de ore."
+    }
+  ]
+}

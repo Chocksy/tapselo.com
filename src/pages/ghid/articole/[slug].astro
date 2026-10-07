@@ -1,0 +1,82 @@
+---
+// /ghid/articole/{slug} — one support article from src/lib/kb/articles.json.
+import GuideShell from "../../../components/GuideShell.astro";
+import { getArticleBySlug, supportArticles } from "../../../lib/articles/load.ts";
+import { articlePath, buildArticleJsonLd } from "../../../lib/articles/schema.ts";
+import { markdownToHtml } from "../../../lib/markdown.ts";
+
+export function getStaticPaths() {
+  return supportArticles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const related = article.related
+  .map((slug) => supportArticles.find((a) => a.slug === slug))
+  .filter((a): a is NonNullable<typeof a> => Boolean(a));
+
+const jsonLd = buildArticleJsonLd(article, supportArticles);
+const card = "block rounded-xl border border-border-light p-4 transition-colors hover:border-accent";
+---
+
+<GuideShell
+  title={`${article.title} | Ghid Tapselo`}
+  description={article.description}
+  heading={article.title}
+  lead={article.description}
+  sources={article.sources}
+  verifiedOn={article.verifiedOn}
+  campaign={article.slug}
+  articleCta={article.cta}
+  jsonLd={jsonLd}
+  breadcrumbs={[
+    { label: "Ghid pentru magazine", href: "/ghid" },
+    { label: "Articole de suport", href: "/ghid/articole" },
+    { label: article.title },
+  ]}
+>
+  <article class="kb-prose" set:html={markdownToHtml(article.body)} />
+
+  {article.steps && article.steps.length > 0 && (
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Pași rezumați</h2>
+      <ol class="kb-prose mt-4">
+        {article.steps.map((step) => (
+          <li>
+            <strong>{step.name}.</strong> {step.text}
+          </li>
+        ))}
+      </ol>
+    </section>
+  )}
+
+  {article.faq && article.faq.length > 0 && (
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Întrebări frecvente</h2>
+      <div class="mt-6 space-y-6">
+        {article.faq.map((item) => (
+          <div class="rounded-xl border border-border-light p-5">
+            <h3 class="text-primary">{item.q}</h3>
+            <p class="kb-prose mt-2" set:html={markdownToHtml(item.a)} />
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {related.length > 0 && (
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Articole legate</h2>
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        {related.map((a) => (
+          <a href={articlePath(a.slug)} class={card}>
+            <h3 class="text-sm font-semibold text-primary">{a.title}</h3>
+            <p class="mt-1 text-sm text-text-secondary">{a.description}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+</GuideShell>
