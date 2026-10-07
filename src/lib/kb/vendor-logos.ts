@@ -6,7 +6,7 @@ const VENDOR_LOGO_EXT: Record<string, string> = {
   ebriza: "png",
   freyapos: "png",
   boogit: "png",
-  vilicorest: "webp",
+  vilicorest: "png",
   noxta: "ico",
   "pob-soft-retail": "png",
   "selectsoft-retail": "png",
