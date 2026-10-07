@@ -1,5 +1,5 @@
 ---
-import { ArrowRight, BadgePercent, Calculator, ClipboardList, FileCheck, NotebookPen } from "@lucide/astro";
+import { ArrowRight, BadgePercent, Barcode, Calculator, ClipboardList, FileCheck, NotebookPen } from "@lucide/astro";
 import GuideShell from "../components/GuideShell.astro";
 import { A4200_CHECKER_PATH } from "../lib/articles/schema.ts";
 import { barcodeApiBase } from "../lib/unelte/barcode.ts";
@@ -47,6 +47,14 @@ const tools = [
       "De la cost fără TVA la preț de vânzare cu TVA și invers, rotunjire la raft și afiș de preț. Verifică plafonul de 20% pentru alimentele de bază.",
   },
   {
+    href: "/unelte/generator-cod-de-bare",
+    title: "Generator cod de bare",
+    icon: Barcode,
+    action: "Deschide generatorul",
+    description:
+      "EAN-13 cu cifră de control, EAN-8 și Code 128. Descarcă PNG/SVG sau printează o foaie A4 cu etichete pentru produse și cântar.",
+  },
+  {
     href: A4200_CHECKER_PATH,
     title: "Verificare A4200",
     icon: FileCheck,
@@ -59,7 +67,7 @@ const tools = [
 
 <GuideShell
   title="Unelte gratuite pentru comercianți | Tapselo"
-  description="Unelte gratuite Tapselo: calculator TVA, registru de casă, generator NIR, adaos comercial și verificare A4200 — în browser, în română."
+  description="Unelte gratuite Tapselo: calculator TVA, registru de casă, generator NIR, adaos comercial, generator cod de bare și verificare A4200 — în browser, în română."
   heading="Unelte gratuite"
   lead="Instrumente care rulează în browserul tău. Nu colectăm conținutul documentelor pe care le generezi local."
   ctaTitle="Vrei mai puțină muncă manuală la casă?"

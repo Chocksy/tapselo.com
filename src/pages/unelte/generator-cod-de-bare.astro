@@ -1,0 +1,63 @@
+---
+import ToolShell from "../../components/ToolShell.astro";
+import BarcodeGeneratorTool from "../../components/unelte/BarcodeGeneratorTool.astro";
+import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
+
+const path = "/unelte/generator-cod-de-bare";
+const heading = "Generator cod de bare gratuit (EAN-13, Code128) – printare etichete";
+
+const faq = [
+  {
+    q: "Cum generez un cod de bare EAN-13 gratuit?",
+    a: "Alege EAN-13, tastează 12 cifre ale codului tău — calculatorul adaugă automat cifra de control — sau toate cele 13 cifre dacă le ai deja. Descarcă PNG sau SVG sau printează o foaie A4 cu mai multe etichete.",
+  },
+  {
+    q: "Ce înseamnă cifra de control la EAN-13?",
+    a: "Ultima cifră se calculează din celelalte 12, astfel încât scanerul să detecte greșelile de tastare. Dacă introduci doar 12 cifre, o completăm noi; dacă introduci 13, verificăm că cifra de control este corectă.",
+  },
+  {
+    q: "Pot folosi prefixele 20–29 pentru produsele mele?",
+    a: "Da, pentru coduri interne de magazin: legume la cântar, produse de la ghișeul casei sau articole fără cod de la furnizor. Aceste coduri nu înlocuiesc codul GS1 al producătorului și nu apar în baze naționale de produse.",
+  },
+  {
+    q: "Unde obțin un cod EAN oficial?",
+    a: "Codurile EAN pentru produse comercializate la nivel național se alocă prin GS1 România. Generatorul este pentru etichete și teste locale — nu emite coduri înregistrate la GS1.",
+  },
+  {
+    q: "Ce formate suportă generatorul?",
+    a: "EAN-13 (standard la raft), EAN-8 (ambalaje mici) și Code 128 (text: lot, locație, cod intern). Toate se descarcă ca PNG sau SVG și pot fi puse pe o foaie A4 printabilă.",
+  },
+  {
+    q: "Datele mele sunt trimise pe internet?",
+    a: "Nu. Generarea rulează complet în browserul tău; nu încărcăm codul și nu păstrăm denumirea produsului pe server.",
+  },
+];
+
+const jsonLd = toolJsonLd({
+  path,
+  heading,
+  appName: "Generator cod de bare Tapselo",
+  description:
+    "Generator cod de bare gratuit: EAN-13 cu cifră de control, EAN-8, Code 128, descărcare PNG/SVG și foaie A4 cu etichete pentru magazin.",
+  faq,
+});
+---
+
+<ToolShell
+  title="Generator cod de bare gratuit (EAN-13, Code128) – printare etichete | Tapselo"
+  description="Generator cod de bare gratuit pentru magazine: EAN-13 cu cifră de control automată, EAN-8, Code 128. Descarcă PNG/SVG sau printează etichete pe foaie A4 — direct în browser."
+  heading={heading}
+  path={path}
+  lead="Creezi coduri de bare pentru raft sau cântar, fără cont și fără upload. Ideal pentru magazine alimentare și chioșcuri care au nevoie rapid de etichete lizibile la scaner."
+  campaign="generator-cod-de-bare"
+  ctaTitle="Etichete și scanare la casă, din Tapselo"
+  ctaBody="Codurile din nomenclator se sincronizează cu casa de marcat și cu etichetele de la raft — fără să reintroduci manual același produs."
+  related={[
+    { href: "/unelte/verificare-cod-de-bare", label: "Verificare cod de bare EAN — cifră de control și prefix 20–29" },
+    { href: "/unelte/calculator-tva", label: "Calculator TVA cu opțiune de căutare după cod EAN" },
+  ]}
+  jsonLd={jsonLd}
+  faq={faq}
+>
+  <BarcodeGeneratorTool />
+</ToolShell>
