@@ -85,6 +85,7 @@ const showFoodCap = foodCapActive();
 </section>
 
 <script>
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
   import { calculateShelfPrice, type Rounding } from "../../lib/mcp/answers/shelf-price.ts";
   import { escapeHtml, fmtLei, fmtMoney } from "../../lib/generators/page.ts";
   import { foodCapCheck, foodMarkupWarning, markupFromPrice } from "../../lib/unelte/markup.ts";
@@ -93,6 +94,7 @@ const showFoodCap = foodCapActive();
   import { parseRoNumber } from "../../lib/unelte/parse.ts";
 
   let direction: "forward" | "reverse" = "forward";
+  let lastCalcKey = "";
 
   const el = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
   const out = el<HTMLElement>("mk-result");
@@ -146,6 +148,21 @@ const showFoodCap = foodCapActive();
       out.innerHTML = '<p class="ut-err">Costul nu este valid (ex. 4,50).</p>';
       return;
     }
+    let tracked = false;
+    if (direction === "forward") {
+      const markup = num("mk-markup");
+      tracked = markup !== null && markup !== "invalid";
+    } else {
+      const sale = num("mk-sale");
+      tracked = sale !== null && sale !== "invalid" && sale > 0;
+    }
+    if (tracked) {
+      const calcKey = `${direction}:${cost}:${direction === "forward" ? el<HTMLInputElement>("mk-markup").value : el<HTMLInputElement>("mk-sale").value}:${vatRate()}`;
+      if (calcKey !== lastCalcKey) {
+        lastCalcKey = calcKey;
+        trackToolUsed("calculator_adaos", "calculate");
+      }
+    }
     out.innerHTML = direction === "forward" ? renderForward(cost) : renderReverse(cost);
   }
 
@@ -186,6 +203,10 @@ const showFoodCap = foodCapActive();
       showCost: el<HTMLInputElement>("mk-show-cost").checked,
       showMarkup: el<HTMLInputElement>("mk-show-markup").checked,
     });
-    if (!openPrintHtml(html)) showAfisError("Permite ferestrele pop-up pentru a deschide afișul.");
+    if (!openPrintHtml(html)) {
+      showAfisError("Permite ferestrele pop-up pentru a deschide afișul.");
+      return;
+    }
+    trackToolUsed("calculator_adaos", "print");
   });
 </script>
