@@ -1,0 +1,200 @@
+---
+import { ANAF_VALIDATOR_VERSIONS, XSD_BUNDLE, VERIFIED_ON } from "../lib/a4200/constants.ts";
+import { formatDateRo } from "../lib/mcp/text.ts";
+---
+
+<div id="a4200-checker" class="space-y-8">
+  <div
+    class="rounded-xl border-2 border-dashed border-border-light bg-surface p-8 text-center transition-colors"
+    id="a4200-drop"
+    data-active-class="border-accent bg-ticket-light/40"
+  >
+    <p class="text-lg font-semibold text-primary">Trage folderul A4200 aici</p>
+    <p class="mt-2 text-sm text-text-secondary">
+      Opis (<code class="text-xs">Perioada_raportare.p7b</code>) și zile (<code class="text-xs">*_Zxxxx.p7b</code>),
+      plus <code class="text-xs">.xml</code> sau arhive <code class="text-xs">.zip</code>. Fișierele <strong>nu pleacă</strong> din browser.
+    </p>
+    <label class="mt-5 inline-block cursor-pointer rounded-md bg-accent px-5 py-2.5 text-sm font-bold text-white hover:bg-accent-hover">
+      Alege fișiere
+      <input type="file" id="a4200-file-input" class="hidden" multiple accept=".p7b,.xml,.zip,.p7s" />
+    </label>
+    <label class="mt-3 ml-0 block sm:ml-3 sm:mt-0 sm:inline-block cursor-pointer text-sm font-medium text-accent hover:text-accent-hover">
+      sau un folder întreg
+      <input type="file" id="a4200-folder-input" class="hidden" webkitdirectory multiple />
+    </label>
+  </div>
+
+  <p class="text-sm text-text-muted" id="a4200-privacy">
+    Procesare 100% locală în browserul tău. Nu trimitem conținutul fișierelor către server și nu analizăm bonurile în analytics.
+  </p>
+
+  <div id="a4200-summary" class="hidden rounded-xl border border-border-light p-5"></div>
+
+  <div id="a4200-issues" class="hidden space-y-3"></div>
+
+  <section class="rounded-xl border border-border-light p-5">
+    <h2 class="font-display text-2xl italic text-primary">Decoder mesaje DUKIntegrator (.err.txt)</h2>
+    <p class="mt-2 text-sm text-text-secondary">Lipește logul de erori din DUKIntegrator pentru explicații în română.</p>
+    <textarea
+      id="a4200-errtxt"
+      class="mt-4 w-full min-h-[120px] rounded-md border border-border-light bg-white p-3 text-sm text-text-secondary"
+      placeholder="Liniile din fișierul .err.txt…"
+    ></textarea>
+    <button type="button" id="a4200-decode-btn" class="mt-3 rounded-md border border-border px-4 py-2 text-sm font-semibold text-primary hover:border-accent">
+      Decodează mesajele
+    </button>
+    <div id="a4200-duk-out" class="mt-4 space-y-3"></div>
+  </section>
+
+  <section class="text-sm text-text-muted">
+    <p>
+      Scheme XSD: {XSD_BUNDLE.a4200.file} v{XSD_BUNDLE.a4200.version}, {XSD_BUNDLE.a4203.file} v{XSD_BUNDLE.a4203.version}.
+      Validator ANAF referință: A4200 {ANAF_VALIDATOR_VERSIONS.a4200Jar}, A4203 {ANAF_VALIDATOR_VERSIONS.a4203Jar}.
+      Verificat la {formatDateRo(VERIFIED_ON)}.
+    </p>
+  </section>
+</div>
+
+<script>
+  import { ingestFileList } from "../lib/a4200/ingest.ts";
+  import { buildCrossCheckInput, runLocalChecks } from "../lib/a4200/pipeline.ts";
+  import { validateAgainstXsd } from "../lib/a4200/validate-xsd.ts";
+  import { explainXsdMessage } from "../lib/a4200/explain.ts";
+  import { decodeDukErrTxt } from "../lib/a4200/duk-decoder.ts";
+  import type { CheckerIssue, ClassifiedFile } from "../lib/a4200/types.ts";
+
+  const drop = document.getElementById("a4200-drop")!;
+  const fileInput = document.getElementById("a4200-file-input") as HTMLInputElement;
+  const folderInput = document.getElementById("a4200-folder-input") as HTMLInputElement;
+  const summaryEl = document.getElementById("a4200-summary")!;
+  const issuesEl = document.getElementById("a4200-issues")!;
+  const errTxt = document.getElementById("a4200-errtxt") as HTMLTextAreaElement;
+  const dukOut = document.getElementById("a4200-duk-out")!;
+  const activeClass = drop.dataset.activeClass ?? "";
+
+  let schemas: { a4200: string; a4203: string } | null = null;
+
+  async function loadSchemas() {
+    if (schemas) return schemas;
+    const [a4200, a4203] = await Promise.all([
+      fetch("/a4200/a4200_20180910.xsd").then((r) => r.text()),
+      fetch("/a4200/a4203_20180927.xsd").then((r) => r.text()),
+    ]);
+    schemas = { a4200, a4203 };
+    return schemas;
+  }
+
+  function renderIssues(issues: CheckerIssue[]) {
+    issuesEl.innerHTML = "";
+    if (issues.length === 0) {
+      issuesEl.classList.add("hidden");
+      return;
+    }
+    issuesEl.classList.remove("hidden");
+    for (const i of issues) {
+      const card = document.createElement("article");
+      card.className =
+        "rounded-lg border p-4 " +
+        (i.severity === "error" ? "border-red-200 bg-red-50/80" : "border-amber-200 bg-amber-50/80");
+      const where = [i.file, i.line ? `linia ${i.line}` : "", i.field].filter(Boolean).join(" · ");
+      card.innerHTML = `<h3 class="font-semibold text-primary">${i.title}</h3>
+        ${where ? `<p class="mt-1 text-xs text-text-muted">${where}</p>` : ""}
+        <p class="mt-2 text-sm text-text-secondary"><strong>Ce înseamnă:</strong> ${i.ceInseamna}</p>
+        <p class="mt-2 text-sm text-text-secondary"><strong>Ce faci:</strong> ${i.ceFaci}</p>`;
+      issuesEl.appendChild(card);
+    }
+  }
+
+  function renderSummary(files: ClassifiedFile[], issues: CheckerIssue[]) {
+    const { input } = buildCrossCheckInput(files);
+    const opis = input.opis;
+    const dayCount = input.days.length;
+    const errs = issues.filter((x) => x.severity === "error").length;
+    summaryEl.classList.remove("hidden");
+    if (!opis) {
+      summaryEl.innerHTML = `<p class="text-text-secondary">Fișiere analizate: ${files.length}. ${errs ? `${errs} problemă/probleme.` : "Adaugă opisul."}</p>`;
+      return;
+    }
+    const ok = errs === 0;
+    summaryEl.innerHTML = `<p class="text-lg font-semibold ${ok ? "text-green-700" : "text-red-700"}">${ok ? "Totul arată bine la verificările locale" : `${errs} problemă/probleme găsite`}</p>
+      <ul class="mt-3 list-disc pl-5 text-sm text-text-secondary">
+        <li>Opis: rapoarte Z${opis.nrRapI}–Z${opis.nrRapF}, tip AMEF ${opis.tip_amef}</li>
+        <li>${dayCount} zi/zile fiscale încărcate</li>
+        <li>NUI (primele 10 caractere idM): <span class="font-mono">${opis.nui}</span></li>
+      </ul>`;
+  }
+
+  async function runXsd(files: ClassifiedFile[]): Promise<CheckerIssue[]> {
+    try {
+      const sch = await loadSchemas();
+      const { validateXML } = await import("xmllint-wasm");
+      const toValidate = files
+        .filter((f) => f.xml && (f.kind === "opis" || f.kind === "day"))
+        .map((f) => ({
+          name: f.name,
+          xml: f.xml!,
+          schema: f.kind === "opis" ? sch.a4200 : sch.a4203,
+        }));
+      return await validateAgainstXsd(validateXML, toValidate);
+    } catch {
+      const e = explainXsdMessage("XSD WASM unavailable");
+      return [{ ...e, code: "XSD_SKIPPED", title: "Validare XSD indisponibilă", ceInseamna: "Browserul nu a putut rula libxml2 (WASM).", ceFaci: "Folosește DUKIntegrator pentru validarea XSD. Verificările de consistență de mai sus au rulat local." }];
+    }
+  }
+
+  async function handleFiles(fileList: FileList | File[]) {
+    const arr = [...fileList];
+    if (arr.length === 0) return;
+    summaryEl.innerHTML = `<p class="text-sm text-text-muted">Se analizează ${arr.length} fișier(e)…</p>`;
+    summaryEl.classList.remove("hidden");
+    const { files } = await ingestFileList(arr);
+    const local = runLocalChecks(files);
+    const xsd = await runXsd(files);
+    const all = [...local, ...xsd];
+    renderSummary(files, all);
+    renderIssues(all);
+  }
+
+  function preventDefaults(e: DragEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  ["dragenter", "dragover", "dragleave", "drop"].forEach((ev) => {
+    drop.addEventListener(ev, preventDefaults);
+  });
+  drop.addEventListener("dragenter", () => drop.classList.add(...activeClass.split(" ")));
+  drop.addEventListener("dragleave", () => drop.classList.remove(...activeClass.split(" ")));
+  drop.addEventListener("drop", (e) => {
+    drop.classList.remove(...activeClass.split(" "));
+    const dt = e.dataTransfer;
+    if (dt?.files?.length) handleFiles(dt.files);
+  });
+
+  fileInput.addEventListener("change", () => {
+    if (fileInput.files) handleFiles(fileInput.files);
+  });
+  folderInput.addEventListener("change", () => {
+    if (folderInput.files) handleFiles(folderInput.files);
+  });
+
+  document.getElementById("a4200-decode-btn")?.addEventListener("click", () => {
+    const lines = decodeDukErrTxt(errTxt.value);
+    dukOut.innerHTML = "";
+    for (const line of lines) {
+      const div = document.createElement("div");
+      div.className = "rounded-md border border-border-light bg-surface p-3 text-sm";
+      if (line.explained && line.title) {
+        div.innerHTML = `<p class="font-semibold text-primary">${line.title}</p>
+          <p class="mt-1 text-text-muted font-mono text-xs">${line.raw}</p>
+          <p class="mt-2">${line.ceInseamna}</p>
+          <p class="mt-1"><strong>Ce faci:</strong> ${line.ceFaci}</p>`;
+      } else {
+        div.innerHTML = `<p class="font-semibold text-primary">Mesaj nerecunoscut</p>
+          <p class="mt-1 font-mono text-xs">${line.raw}</p>
+          <p class="mt-2">${line.ceFaci ?? "Trimite-ne mesajul prin formularul de contact."}</p>`;
+      }
+      dukOut.appendChild(div);
+    }
+  });
+</script>

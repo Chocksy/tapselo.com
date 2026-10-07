@@ -1,0 +1,3 @@
+Eroare: calea folderului contine spatii in nume
+Selectati doar fisierul opis (registru) in lista de validare
+ZIP corupt la extragere

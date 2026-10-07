@@ -14,6 +14,10 @@ export default defineConfig({
     }),
   ],
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    optimizeDeps: {
+      exclude: ['xmllint-wasm'],
+    },
+    assetsInclude: ['**/*.wasm'],
   }
 });
