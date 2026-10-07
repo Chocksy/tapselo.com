@@ -9,7 +9,7 @@
       "verifiedOn": "2026-10-07",
       "tags": ["A4200", "ANAF", "DUKIntegrator"],
       "cta": "a4200",
-      "related": ["erori-dukintegrator", "export-p7b-anaf", "raport-z-datecs-fp-70"],
+      "related": ["erori-dukintegrator", "export-p7b-anaf", "raport-z-datecs-fp-70", "casa-de-marcat-fara-internet"],
       "sources": [
         {
           "title": "ANAF — Instrucțiuni depunere A4200 (PDF, 14.01.2019)",
@@ -61,7 +61,7 @@
       "verifiedOn": "2026-10-07",
       "tags": ["A4200", "DUKIntegrator", "ANAF"],
       "cta": "a4200",
-      "related": ["depunere-a4200", "export-p7b-anaf"],
+      "related": ["depunere-a4200", "export-p7b-anaf", "casa-de-marcat-fara-internet"],
       "sources": [
         {
           "title": "ANAF — Instrucțiuni depunere A4200",
@@ -113,7 +113,7 @@
       "verifiedOn": "2026-10-07",
       "tags": ["ANAF", "Datecs", "p7b", "A4200"],
       "cta": "a4200",
-      "related": ["depunere-a4200", "erori-dukintegrator", "raport-z-datecs-fp-70"],
+      "related": ["depunere-a4200", "erori-dukintegrator", "raport-z-datecs-fp-70", "casa-de-marcat-fara-internet"],
       "sources": [
         {
           "title": "ANAF — Instrucțiuni depunere A4200",
@@ -161,7 +161,7 @@
       "verifiedOn": "2026-10-07",
       "tags": ["Datecs", "Raport Z", "FP-70"],
       "cta": "default",
-      "related": ["export-p7b-anaf", "depunere-a4200"],
+      "related": ["export-p7b-anaf", "depunere-a4200", "casa-de-marcat-fara-internet"],
       "sources": [
         {
           "title": "Datecs — Manual de utilizare FP-700 (seria FP, mod autonom)",
@@ -198,7 +198,113 @@
           "text": "Notează codul de pe display și caută-l în ghidul de erori Datecs (de exemplu lipsă hârtie, 24 de ore fără Z sau raport Z necesar înainte de operație)."
         }
       ],
-      "body": "**Raportul Z** închide ziua fiscală și resetează totalurile zilnice în AMEF. Legislația cere emiterea lui înainte de expirarea a **24 de ore** de la primul bon al zilei (vezi normele la HG 479/2003, art. 34, în forma consolidată).\n\n**Datecs FP-70** face parte din familia de **imprimante fiscale FP** cu mod autonom. Datecs publică procedura detaliată pentru **FP-700** (același mod autonom: meniu principal → tipărire raport Z, sau tasta dedicată **Rapoarte Z** pe panoul frontal). Dacă eticheta de pe echipament arată FP-700 în loc de FP-70, folosiți manualul FP-700 de pe [datecs.ro](https://www.datecs.ro/imprimanta-fiscala-datecs-fp700.html).\n\n**Din program (DUDE / POS)**\n\n- Majoritatea aplicațiilor trimit comanda de închidere Z la sfârșitul programului.\n- În documentația tehnică Datecs, raportul Z corespunde comenzii **69 (45H)** cu parametrul pentru închidere Z (spre deosebire de raportul X, care nu închide ziua).\n\n**Nu confundați raportul Z cu raportul X.** Raportul **X** este informativ, **nu** închide ziua și nu înlocuiește transmiterea lunară.\n\n**Dacă nu puteți emite Z**\n\n- Căutați codul în [Erori casa de marcat Datecs](/ghid/erori-datecs) — de exemplu mesajele despre **24 de ore fără raport Z** sau **rulați raport Z înaintea acestei operațiuni**.\n- După ce ziua este închisă corect, exportați fișierele lunii pentru ANAF: [Export .p7b](/ghid/articole/export-p7b-anaf) și verificați setul cu [Verificare A4200](/ghid/verificare-a4200).\n\n[Tapselo](/?utm_source=ghid&utm_medium=article&utm_campaign=raport-z-datecs-fp-70) poate solicita raportul Z din POS și vă avertizează când se apropie limita de 24 de ore."
+      "body": "**Raportul Z** închide ziua fiscală și resetează totalurile zilnice în AMEF. Legislația cere emiterea lui înainte de expirarea a **24 de ore** de la primul bon al zilei (vezi normele la HG 479/2003, art. 34, în forma consolidată).\n\n**Datecs FP-70** face parte din familia de **imprimante fiscale FP** cu mod autonom. Datecs publică procedura detaliată pentru **FP-700** (același mod autonom: meniu principal → tipărire raport Z, sau tasta dedicată **Rapoarte Z** pe panoul frontal). Dacă eticheta de pe echipament arată FP-700 în loc de FP-70, folosiți manualul FP-700 de pe [datecs.ro](https://www.datecs.ro/imprimanta-fiscala-datecs-fp700.html).\n\n**Din program (DUDE / POS)**\n\n- Majoritatea aplicațiilor trimit comanda de închidere Z la sfârșitul programului.\n- În documentația tehnică Datecs, raportul Z corespunde comenzii **69 (45H)** cu parametrul pentru închidere Z (spre deosebire de raportul X, care nu închide ziua).\n\n**Nu confundați raportul Z cu raportul X.** Raportul **X** este informativ, **nu** închide ziua și nu înlocuiește transmiterea lunară.\n\n**Dacă nu puteți emite Z**\n\n- Căutați codul în [Erori casa de marcat Datecs](/ghid/erori-datecs) — de exemplu mesajele despre **24 de ore fără raport Z** sau **rulați raport Z înaintea acestei operațiuni**.\n- După ce ziua este închisă corect, exportați fișierele lunii pentru ANAF: [Export .p7b](/ghid/articole/export-p7b-anaf) și verificați setul cu [Verificare A4200](/ghid/verificare-a4200).\n\nVânzarea cu internet întrerupt: [Casa de marcat fără internet](/ghid/articole/casa-de-marcat-fara-internet).\n\n[Tapselo](/?utm_source=ghid&utm_medium=article&utm_campaign=raport-z-datecs-fp-70) poate solicita raportul Z din POS și vă avertizează când se apropie limita de 24 de ore."
+    },
+    {
+      "slug": "casa-de-marcat-fara-internet",
+      "title": "Casa de marcat fără internet: bonuri offline, transmitere ANAF și F4110",
+      "description": "Poți emite bonuri fără internet pe termen scurt, dar AMEF trebuie conectat la ANAF: transmitere după raportul Z, F4110 pentru zone fără semnal, A4200 pentru Z netransmise, amendă 8.000–10.000 lei.",
+      "type": "howto",
+      "updated": "2026-10-07",
+      "verifiedOn": "2026-10-07",
+      "tags": ["ANAF", "A4200", "Conectare ANAF", "Datecs"],
+      "cta": "a4200",
+      "related": ["export-p7b-anaf", "depunere-a4200", "raport-z-datecs-fp-70"],
+      "sources": [
+        {
+          "title": "OUG 28/1999 — formă consolidată (art. 3¹ alin. (4), art. 10 lit. ff), art. 11 alin. (1))",
+          "url": "https://legislatie.just.ro/Public/DetaliiDocument/17431"
+        },
+        {
+          "title": "Legea nr. 296/2023 — restructurare grilei de amenzi (MO 977/27.10.2023)",
+          "url": "https://legislatie.just.ro/Public/DetaliiDocument/274421"
+        },
+        {
+          "title": "OpANAF nr. 435/2021 — procedura de conectare AMEF",
+          "url": "https://legislatie.just.ro/Public/DetaliiDocument/240150"
+        },
+        {
+          "title": "ANAF — Ghid conectare AMEF la sistemul MF-ANAF (v4.3, 16.08.2021)",
+          "url": "https://static.anaf.ro/static/10/Anaf/Informatii_R/GHID_CONECTARE_AMEF_v4_3_160821.pdf"
+        },
+        {
+          "title": "ANAF — Formular F4110 (zone nedeservite de rețea)",
+          "url": "https://static.anaf.ro/static/10/Anaf/Declaratii_R/4110.html"
+        },
+        {
+          "title": "ANAF — Calendar obligații declarative AMEF",
+          "url": "https://static.anaf.ro/static/10/Anaf/AsistentaContribuabili_r/Calendar/Calendar_obligatii_AMEF.htm"
+        },
+        {
+          "title": "ANAF — Instrucțiuni depunere A4200 (PDF, 14.01.2019)",
+          "url": "https://static.anaf.ro/static/10/Anaf/Declaratii_R/AplicatiiDec/InstructiuniDepunereA4200_20190114.pdf"
+        },
+        {
+          "title": "HG 479/2003 — norme AMEF (raport Z în 24 h)",
+          "url": "https://legislatie.just.ro/Public/DetaliiDocument/156065"
+        }
+      ],
+      "steps": [
+        {
+          "name": "Stabilește ce fel de „fără internet” ai",
+          "text": "O pană scurtă (router, cablu, operator) este diferită de un punct de lucru în zonă nedeservită de rețele de comunicații. Pentru a doua situație, ANAF cere declarația F4110 (OpANAF 435/2021, anexa 2), nu doar „așteptarea” semnalului."
+        },
+        {
+          "name": "Continuă vânzarea conform manualului AMEF",
+          "text": "Bonurile fiscale se înregistrează în memoria/jurnalul electronic al aparatului chiar fără legătură la internet. Totuși trebuie să emiteți raportul Z înainte de 24 de ore de la primul bon al zilei (HG 479/2003, art. 34)."
+        },
+        {
+          "name": "Asigură conexiunea AMEF către ANAF",
+          "text": "Operatorul trebuie să asigure conectarea la distanță și condițiile pentru menținerea conexiunii (OUG 28/1999, art. 3¹ alin. (4); ghidul ANAF). Verifică routerul, LAN/Wi‑Fi, cartela SIM GPRS/4G și că abonamentul de date nu a expirat."
+        },
+        {
+          "name": "La revenirea rețelei, închide ziua și verifică transmiterea",
+          "text": "După conectarea efectivă, dovada tehnică obișnuită este un raport Z transmis cu succes la sistemul MF-ANAF (pașii din ghidul ANAF: certificat ANAF, profil online, raport Z atașat la cartea tehnică). Urmărește mesajele din SPV despre fișiere netransmise."
+        },
+        {
+          "name": "Depune F4110 dacă nu există rețea deloc",
+          "text": "Pentru AMEF instalat într-o zonă nedeservită, transmite formularul F4110 online (e-guvernare). Pentru aparate instalate după 01.12.2021, termenul din calendarul ANAF este de 2 zile lucrătoare de la instalare."
+        },
+        {
+          "name": "Recuperează rapoartele Z netransmise prin A4200",
+          "text": "Datele din perioada în care transmisia automată nu a funcționat se raportează prin declarația A4200 (export .p7b din casă), de obicei până pe 20 ale lunii următoare. Verifică setul înainte de DUKIntegrator: Verificare A4200 Tapselo."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Pot folosi o casă de marcat complet fără internet, ca înainte de conectarea la ANAF?",
+          "a": "Nu în sensul legal actual. AMEF-urile cu jurnal electronic trebuie conectate la sistemul informatic național și să transmită date fiscale către ANAF (OUG 28/1999, art. 3¹). Bonurile se pot emite local în timpul unei întreruperi scurte, dar obligația de conectare și de transmitere rămâne — nu există „casă fiscală clasică” scutită de raportare online pentru echipamente noi omologate cu JE."
+        },
+        {
+          "q": "Cât timp poate sta casa de marcat offline fără să încalce legea?",
+          "a": "Legea nu publică un număr fix de ore de toleranță pentru o pană de internet. Textul cere să **asigurați** conectarea la distanță (art. 3¹ alin. (4)); ghidul ANAF vorbește despre menținerea, cu caracter permanent, a condițiilor pentru conexiune — un standard de diligență, nu conexiune perfectă în fiecare secundă. Practic: remediați rapid cauza, verificați transmiterea după raportul Z și SPV. O neconectare nerezolvată la control atrage amendă contravențională."
+        },
+        {
+          "q": "Ce este formularul F4110 și când îl depun?",
+          "a": "F4110 este declarația pe propria răspundere pentru AMEF instalat în **zone nedeservite de rețele de comunicații electronice** (OpANAF 435/2021, anexa 2). Se depune online pe e-guvernare. Calendarul ANAF: 2 zile lucrătoare de la instalare pentru aparate achiziționate după 01.12.2021. Nu înlocuiește A4200 pentru rapoarte Z care nu au ajuns la ANAF din alte motive."
+        },
+        {
+          "q": "Cât este amenda pentru neconectarea casei de marcat la ANAF?",
+          "a": "Nerespectarea art. 3¹ alin. (4) este sancționată la art. 10 lit. ff) din OUG 28/1999, cu amendă **8.000–10.000 lei** (art. 11 alin. (1)). Din 1 ianuarie 2024, după Legea nr. 296/2023, aceeași sumă se citește la **lit. l)** (în materiale mai vechi apare lit. j)). Amenda este distinctă de sancțiunile pentru lipsa bonului fiscal sau lipsa AMEF."
+        },
+        {
+          "q": "Trebuie să depun A4200 dacă casa este conectată și transmite automat?",
+          "a": "De regulă, după conectare reușită, datele pleacă automat după fiecare raport Z, fără declarație lunară manuală pentru perioada în care transmisia funcționează. A4200 rămâne obligatorie pentru perioada **dinaintea** conectării, pentru rapoarte Z **netransmise** sau când ANAF/SPV semnalează lipsuri. Exportul se face din casă în fișiere .p7b — vezi [Export .p7b](/ghid/articole/export-p7b-anaf)."
+        },
+        {
+          "q": "„Casă de marcat offline” și „POS offline” sunt același lucru?",
+          "a": "Nu. **AMEF** (imprimanta fiscală) are propria cale de date către ANAF (LAN, Wi‑Fi sau SIM). **Programul de vânzare** poate rula local fără internet și totuși tipări bonul prin USB/LAN către casă. Transmiterea fiscală către ANAF depinde de AMEF și de conexiunea lui, nu doar de PC-ul de la casă."
+        },
+        {
+          "q": "Ce fac dacă internetul pică în timpul zilei?",
+          "a": "1) Continuați vânzarea dacă AMEF permite emiterea bonului. 2) Remediați rețeaua AMEF (nu doar Wi‑Fi-ul pentru clienți). 3) Emiteți raportul Z la timp (24 h). 4) După revenirea legăturii, confirmați în SPV că nu există Z netransmise. 5) Dacă rămân Z nelivrate, exportați luna și depuneți A4200 — verificați structura cu [Verificare A4200](/ghid/verificare-a4200)."
+        },
+        {
+          "q": "Cum se comportă Tapselo fără internet?",
+          "a": "Conform documentației publice Tapselo: aplicația de vânzare poate funcționa **offline** (bon fiscal prin casa Datecs pe USB), iar vânzările se **sincronizează în cont** când revine internetul pe calculatorul magazinului. Tapselo poate **descărca și arhiva fișierele .p7b** zilnice — util la A4200 dacă lipsesc transmisii. Conectarea AMEF la serverele ANAF (SIM/router, profil online) rămâne în responsabilitatea distribuitorului autorizat și a operatorului; Tapselo nu înlocuiește service-ul fiscal."
+        }
+      ],
+      "body": "**Răspuns scurt:** o casă de marcat cu jurnal electronic poate **tipări bonuri fiscale și în timpul unei întreruperi de internet**, pentru că tranzacțiile se salvează local în AMEF; în același timp, legea vă obligă să **asigurați conectarea la distanță** a aparatului și **transmiterea datelor fiscale către ANAF** (de regulă automat după raportul Z când rețeaua funcționează). Dacă punctul de lucru **nu poate fi deservit de rețea**, notificați ANAF prin **F4110**. Rapoartele Z care nu au ajuns la ANAF se recuperează prin **A4200** (fișiere .p7b). Neconectarea nerezolvată se sancționează cu **amendă 8.000–10.000 lei**.\n\n### Cum funcționează fără internet (tehnic)\n\n- **Vânzare locală:** memoria fiscală / jurnalul electronic înregistrează bonurile chiar dacă legătura către internet lipsește.\n- **Transmitere ulterioară:** după reconectare, AMEF trimite datele către ANAF — în mod obișnuit la generarea raportului Z de închidere zilnică (ghid ANAF, v4.3 din 16.08.2021).\n- **Limită de timp la bonuri:** nu puteți lăsa ziua fiscală deschisă peste **24 de ore** fără raport Z (HG 479/2003, art. 34) — indiferent de internet.\n- **Limită la „offline”:** legea nu dă un număr de zile pentru funcționare fără transmisie; o pană scurtă se remediază, nu se normalizează.\n\n### Obligații legale (cu surse)\n\n| Subiect | Ce spune legea / ANAF |\n| --- | --- |\n| Conectare | Operatorii asigură conectarea la distanță a AMEF pentru transmiterea datelor către ANAF — OUG 28/1999, art. 3¹ alin. (4) |\n| Menținere conexiune | Ghidul ANAF cere asigurarea condițiilor pentru menținerea conexiunii (ex. servicii internet neîntrerupte) — diligență rezonabilă |\n| Zonă fără semnal | Declarație **F4110** pentru zone nedeservite de rețele — OpANAF 435/2021, anexa 2; termen 2 zile lucrătoare de la instalare (AMEF noi după 01.12.2021) |\n| Z netransmise | Declarația **A4200** cu export .p7b, termen obișnuit **până pe 20** ale lunii următoare |\n| Amendă neconectare | 8.000–10.000 lei — art. 10 lit. ff) + art. 11 alin. (1) lit. l) OUG 28/1999 (Legea 296/2023) |\n\n### Conectare efectivă vs. „are SIM”\n\n„Conectat” în practica ANAF înseamnă parcurgerea procedurii de service: certificat digital ANAF în aparat, fișier de profil pentru trecerea online, **raport Z transmis cu succes**, raport atașat la cartea tehnică (ghid ANAF). Un SIM activ sau un router nu înlocuiesc singure acești pași.\n\n### Legături în ghidul Tapselo\n\n- [Raport Z, memorie fiscală și .p7b](/ghid/raport-z-memorie-fiscala-p7b)\n- [Export .p7b pentru ANAF](/ghid/articole/export-p7b-anaf)\n- [Depunere A4200](/ghid/articole/depunere-a4200)\n- [Verificare A4200 gratuită](/ghid/verificare-a4200)\n- [Erori Datecs](/ghid/erori-datecs)\n\n### Tapselo și vânzarea fără internet\n\n**Tapselo** (programul de casă pentru magazine alimentare) este documentat ca funcționând **offline** la vânzare: bonul fiscal iese prin **imprimanta Datecs** legată local (USB), iar datele de vânzare apar în administrare după **sincronizare la revenirea internetului** pe PC-ul magazinului. În plus, Tapselo poate **păstra arhiva fișierelor .p7b** descărcate din casă — pas util când trebuie completată **A4200** pentru zile netransmise la ANAF.\n\nAceasta **nu elimină** obligația ca **AMEF** să aibă propria cale de date (router/SIM) către ANAF și să transmită rapoartele Z; pentru profil, certificat și intervenții rămâneți la **distribuitorul autorizat**.\n\n[Încearcă Tapselo](/?utm_source=ghid&utm_medium=article&utm_campaign=casa-de-marcat-fara-internet) · [Compară programe POS cu mod offline](/comparatie)"
     }
   ]
 }
