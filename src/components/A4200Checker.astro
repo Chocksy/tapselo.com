@@ -9,10 +9,11 @@ import { formatDateRo } from "../lib/mcp/text.ts";
     id="a4200-drop"
     data-active-class="border-accent bg-ticket-light/40"
   >
-    <p class="text-lg font-semibold text-primary">Trage folderul A4200 aici</p>
+    <p class="text-lg font-semibold text-primary">Trage fișierele A4200 aici</p>
     <p class="mt-2 text-sm text-text-secondary">
-      Opis (<code class="text-xs">Perioada_raportare.p7b</code>) și zile (<code class="text-xs">*_Zxxxx.p7b</code>),
-      plus <code class="text-xs">.xml</code> sau arhive <code class="text-xs">.zip</code>. Fișierele <strong>nu pleacă</strong> din browser.
+      Un arhivă <code class="text-xs">.zip</code>, un folder, sau mai multe fișiere:
+      opis (<code class="text-xs">Perioada_raportare.p7b</code>), zile (<code class="text-xs">*_Zxxxx.p7b</code>)
+      sau <code class="text-xs">.xml</code>. Nimic nu pleacă din browser.
     </p>
     <label class="mt-5 inline-block cursor-pointer rounded-md bg-accent px-5 py-2.5 text-sm font-bold text-white hover:bg-accent-hover">
       Alege fișiere
@@ -25,12 +26,63 @@ import { formatDateRo } from "../lib/mcp/text.ts";
   </div>
 
   <p class="text-sm text-text-muted" id="a4200-privacy">
-    Procesare 100% locală în browserul tău. Nu trimitem conținutul fișierelor către server și nu analizăm bonurile în analytics.
+    Procesare 100% locală în browserul tău. Nu trimitem conținutul fișierelor către server.
   </p>
 
   <div id="a4200-summary" class="hidden rounded-xl border border-border-light p-5"></div>
+  <div id="a4200-z-table" class="hidden overflow-x-auto rounded-xl border border-border-light"></div>
 
   <div id="a4200-issues" class="hidden space-y-3"></div>
+
+  <section id="a4200-next-steps" class="hidden rounded-xl border border-border-light p-5">
+    <h2 class="font-display text-2xl italic text-primary">Pași după verificare (depunere ANAF)</h2>
+    <ol class="kb-prose mt-4 list-decimal space-y-3 pl-5 text-sm text-text-secondary">
+      <li>
+        Pune într-un folder <strong>fără spații în cale</strong> doar opisul și zilele <code>.p7b</code> (nimic altceva).
+      </li>
+      <li>
+        Generează PDF-ul pe calculator:
+        <code class="text-xs">java -jar DUKIntegrator.jar -p A4200 Perioada_raportare.p7b</code>
+        (în folderul cu zilele). Verifică că <code>.err.txt</code> conține <code>ok</code>.
+      </li>
+      <li>Semnează PDF-ul în <strong>certSIGN webSIGN</strong> (semnătură calificată în browser).</li>
+      <li>
+        Elimină incrementul LTV adăugat de webSIGN (altfel DUKIntegrator poate raporta „semnătura nu acoperă tot documentul”).
+        Folosește unealta de mai jos sau pe Mac/Linux:
+        <code class="text-xs">pdfsig … | head -c $end</code> ca în ghid.
+      </li>
+      <li>
+        Încarcă PDF-ul la
+        <a href="https://decl.anaf.mfinante.gov.ro/WAS6DUS/" target="_blank" rel="noopener">decl.anaf.mfinante.gov.ro</a>
+        (certificat în browser, un fișier odată).
+      </li>
+      <li>
+        Verifică recipisa la
+        <a href="https://stare.anaf.ro/StareD112" target="_blank" rel="noopener">stare.anaf.ro</a>
+        („Nu există erori de validare”).
+      </li>
+    </ol>
+  </section>
+
+  <section class="rounded-xl border border-border-light p-5">
+    <h2 class="font-display text-2xl italic text-primary">Elimină LTV din PDF semnat (webSIGN)</h2>
+    <p class="mt-2 text-sm text-text-secondary">
+      Taie fișierul la sfârșitul ultimului interval <code>ByteRange</code> din prima semnătură — același principiu ca
+      <code>pdfsig</code> + <code>head -c</code>. Nu verificăm legalitatea semnăturii; doar trunchiem local.
+    </p>
+    <label class="mt-4 inline-block cursor-pointer rounded-md border border-border px-4 py-2 text-sm font-semibold text-primary hover:border-accent">
+      Alege PDF semnat
+      <input type="file" id="a4200-ltv-input" class="hidden" accept=".pdf,application/pdf" />
+    </label>
+    <p id="a4200-ltv-msg" class="mt-3 text-sm text-text-muted"></p>
+    <a
+      id="a4200-ltv-download"
+      class="mt-2 hidden inline-block rounded-md bg-accent px-4 py-2 text-sm font-bold text-white hover:bg-accent-hover"
+      download="Perioada_raportare-stripped.pdf"
+    >
+      Descarcă PDF fără LTV
+    </a>
+  </section>
 
   <section class="rounded-xl border border-border-light p-5">
     <h2 class="font-display text-2xl italic text-primary">Decoder mesaje DUKIntegrator (.err.txt)</h2>
@@ -58,18 +110,25 @@ import { formatDateRo } from "../lib/mcp/text.ts";
 <script>
   import { ingestFileList } from "../lib/a4200/ingest.ts";
   import { buildCrossCheckInput, runLocalChecks } from "../lib/a4200/pipeline.ts";
+  import { buildOpisCheckSummary, formatZ } from "../lib/a4200/check-summary.ts";
   import { validateAgainstXsd } from "../lib/a4200/validate-xsd.ts";
   import { explainXsdMessage } from "../lib/a4200/explain.ts";
   import { decodeDukErrTxt } from "../lib/a4200/duk-decoder.ts";
+  import { stripPdfLtvIncrement } from "../lib/a4200/strip-pdf-ltv.ts";
   import type { CheckerIssue, ClassifiedFile } from "../lib/a4200/types.ts";
 
   const drop = document.getElementById("a4200-drop")!;
   const fileInput = document.getElementById("a4200-file-input") as HTMLInputElement;
   const folderInput = document.getElementById("a4200-folder-input") as HTMLInputElement;
   const summaryEl = document.getElementById("a4200-summary")!;
+  const zTableEl = document.getElementById("a4200-z-table")!;
   const issuesEl = document.getElementById("a4200-issues")!;
+  const nextStepsEl = document.getElementById("a4200-next-steps")!;
   const errTxt = document.getElementById("a4200-errtxt") as HTMLTextAreaElement;
   const dukOut = document.getElementById("a4200-duk-out")!;
+  const ltvInput = document.getElementById("a4200-ltv-input") as HTMLInputElement;
+  const ltvMsg = document.getElementById("a4200-ltv-msg")!;
+  const ltvDownload = document.getElementById("a4200-ltv-download") as HTMLAnchorElement;
   const activeClass = drop.dataset.activeClass ?? "";
 
   let schemas: { a4200: string; a4203: string } | null = null;
@@ -99,29 +158,58 @@ import { formatDateRo } from "../lib/mcp/text.ts";
       const where = [i.file, i.line ? `linia ${i.line}` : "", i.field].filter(Boolean).join(" · ");
       card.innerHTML = `<h3 class="font-semibold text-primary">${i.title}</h3>
         ${where ? `<p class="mt-1 text-xs text-text-muted">${where}</p>` : ""}
-        <p class="mt-2 text-sm text-text-secondary"><strong>Ce înseamnă:</strong> ${i.ceInseamna}</p>
-        <p class="mt-2 text-sm text-text-secondary"><strong>Ce faci:</strong> ${i.ceFaci}</p>`;
+        <p class="mt-2 text-sm text-text-secondary"><strong>Ce s-a întâmplat:</strong> ${i.ceInseamna}</p>
+        <p class="mt-2 text-sm text-text-secondary"><strong>Ce poți face:</strong> ${i.ceFaci}</p>`;
       issuesEl.appendChild(card);
     }
+  }
+
+  function renderZTable(files: ClassifiedFile[]) {
+    const { input } = buildCrossCheckInput(files);
+    const summary = buildOpisCheckSummary(input);
+    if (!summary) {
+      zTableEl.classList.add("hidden");
+      return;
+    }
+    zTableEl.classList.remove("hidden");
+    const rows = summary.rows
+      .map((r) => {
+        const label =
+          r.status === "present"
+            ? `<span class="text-green-700">Prezent</span>`
+            : r.status === "missing"
+              ? `<span class="text-red-700">Lipsește</span>`
+              : r.status === "duplicate"
+                ? `<span class="text-amber-700">Duplicat</span>`
+                : `<span class="text-amber-700">În afara opisului</span>`;
+        const file = r.file ? `<span class="font-mono text-xs">${r.file}</span>` : "—";
+        return `<tr class="border-t border-border-light"><td class="px-3 py-2 font-mono">${formatZ(r.z)}</td><td class="px-3 py-2">${label}</td><td class="px-3 py-2">${file}</td></tr>`;
+      })
+      .join("");
+    zTableEl.innerHTML = `<h3 class="px-4 pt-4 text-sm font-semibold text-primary">Rapoarte Z din opis (${summary.zRangeLabel})</h3>
+      <p class="px-4 pb-2 text-xs text-text-muted">CIF ${summary.cif} · NUI ${summary.nui} · ${summary.presentCount}/${summary.expectedCount} zile găsite</p>
+      <table class="w-full text-left text-sm"><thead><tr class="bg-surface text-text-muted"><th class="px-3 py-2">Raport</th><th class="px-3 py-2">Stare</th><th class="px-3 py-2">Fișier</th></tr></thead><tbody>${rows}</tbody></table>`;
   }
 
   function renderSummary(files: ClassifiedFile[], issues: CheckerIssue[]) {
     const { input } = buildCrossCheckInput(files);
     const opis = input.opis;
-    const dayCount = input.days.length;
+    const summary = buildOpisCheckSummary(input);
     const errs = issues.filter((x) => x.severity === "error").length;
     summaryEl.classList.remove("hidden");
-    if (!opis) {
-      summaryEl.innerHTML = `<p class="text-text-secondary">Fișiere analizate: ${files.length}. ${errs ? `${errs} problemă/probleme.` : "Adaugă opisul."}</p>`;
+    if (!opis || !summary) {
+      summaryEl.innerHTML = `<p class="text-text-secondary">Fișiere analizate: ${files.length}. ${errs ? `${errs} problemă/probleme.` : "Adaugă opisul (Perioada_raportare.p7b)."}</p>`;
+      nextStepsEl.classList.add("hidden");
       return;
     }
     const ok = errs === 0;
-    summaryEl.innerHTML = `<p class="text-lg font-semibold ${ok ? "text-green-700" : "text-red-700"}">${ok ? "Totul arată bine la verificările locale" : `${errs} problemă/probleme găsite`}</p>
+    summaryEl.innerHTML = `<p class="text-lg font-semibold ${ok ? "text-green-700" : "text-red-700"}">${ok ? "Verificările locale au trecut" : `${errs} problemă/probleme de rezolvat`}</p>
       <ul class="mt-3 list-disc pl-5 text-sm text-text-secondary">
-        <li>Opis: rapoarte Z${opis.nrRapI}–Z${opis.nrRapF}, tip AMEF ${opis.tip_amef}</li>
-        <li>${dayCount} zi/zile fiscale încărcate</li>
-        <li>NUI (primele 10 caractere idM): <span class="font-mono">${opis.nui}</span></li>
+        <li>Interval declarat în opis: <strong>${summary.zRangeLabel}</strong> (tip AMEF ${opis.tipAmef})</li>
+        <li>Zile încărcate: <strong>${summary.presentCount}</strong> din ${summary.expectedCount} cerute de opis</li>
+        <li>NUI: <span class="font-mono">${summary.nui}</span> · CIF: <span class="font-mono">${summary.cif}</span></li>
       </ul>`;
+    nextStepsEl.classList.remove("hidden");
   }
 
   async function runXsd(files: ClassifiedFile[]): Promise<CheckerIssue[]> {
@@ -137,8 +225,16 @@ import { formatDateRo } from "../lib/mcp/text.ts";
         }));
       return await validateAgainstXsd(validateXML, toValidate);
     } catch {
-      const e = explainXsdMessage("XSD WASM unavailable");
-      return [{ ...e, code: "XSD_SKIPPED", title: "Validare XSD indisponibilă", ceInseamna: "Browserul nu a putut rula libxml2 (WASM).", ceFaci: "Folosește DUKIntegrator pentru validarea XSD. Verificările de consistență de mai sus au rulat local." }];
+      const e = explainXsdMessage("indisponibil");
+      return [
+        {
+          ...e,
+          code: "XSD_SKIPPED",
+          title: "Validarea XSD nu a rulat în browser",
+          ceInseamna: "Nu am putut încărca validatorul din browser (memorie sau rețea).",
+          ceFaci: "Rulează Validare în DUKIntegrator. Verificările de opis și de zile de mai sus au rulat local.",
+        },
+      ];
     }
   }
 
@@ -147,11 +243,13 @@ import { formatDateRo } from "../lib/mcp/text.ts";
     if (arr.length === 0) return;
     summaryEl.innerHTML = `<p class="text-sm text-text-muted">Se analizează ${arr.length} fișier(e)…</p>`;
     summaryEl.classList.remove("hidden");
+    zTableEl.classList.add("hidden");
     const { files } = await ingestFileList(arr);
     const local = runLocalChecks(files);
     const xsd = await runXsd(files);
     const all = [...local, ...xsd];
     renderSummary(files, all);
+    renderZTable(files);
     renderIssues(all);
   }
 
@@ -178,6 +276,31 @@ import { formatDateRo } from "../lib/mcp/text.ts";
     if (folderInput.files) handleFiles(folderInput.files);
   });
 
+  ltvInput.addEventListener("change", async () => {
+    const file = ltvInput.files?.[0];
+    ltvDownload.classList.add("hidden");
+    ltvMsg.textContent = "";
+    if (!file) return;
+    const buf = new Uint8Array(await file.arrayBuffer());
+    const res = stripPdfLtvIncrement(buf);
+    if (!res.ok || !res.stripped) {
+      ltvMsg.textContent = res.reason ?? "Nu am putut procesa PDF-ul.";
+      ltvMsg.className = "mt-3 text-sm text-red-700";
+      return;
+    }
+    if (res.stripped.length === buf.length) {
+      ltvMsg.textContent = "PDF-ul are deja lungimea acoperită de ByteRange (nu pare să aibă coadă LTV).";
+      ltvMsg.className = "mt-3 text-sm text-text-secondary";
+    } else {
+      ltvMsg.textContent = `Am eliminat ${buf.length - res.stripped.length} octeți după semnătură. Descarcă varianta pentru ANAF.`;
+      ltvMsg.className = "mt-3 text-sm text-green-700";
+    }
+    const blob = new Blob([res.stripped], { type: "application/pdf" });
+    ltvDownload.href = URL.createObjectURL(blob);
+    ltvDownload.download = file.name.replace(/\.pdf$/i, "") + "-fara-ltv.pdf";
+    ltvDownload.classList.remove("hidden");
+  });
+
   document.getElementById("a4200-decode-btn")?.addEventListener("click", () => {
     const lines = decodeDukErrTxt(errTxt.value);
     dukOut.innerHTML = "";
@@ -187,12 +310,12 @@ import { formatDateRo } from "../lib/mcp/text.ts";
       if (line.explained && line.title) {
         div.innerHTML = `<p class="font-semibold text-primary">${line.title}</p>
           <p class="mt-1 text-text-muted font-mono text-xs">${line.raw}</p>
-          <p class="mt-2">${line.ceInseamna}</p>
-          <p class="mt-1"><strong>Ce faci:</strong> ${line.ceFaci}</p>`;
+          <p class="mt-2"><strong>Ce s-a întâmplat:</strong> ${line.ceInseamna}</p>
+          <p class="mt-1"><strong>Ce poți face:</strong> ${line.ceFaci}</p>`;
       } else {
         div.innerHTML = `<p class="font-semibold text-primary">Mesaj nerecunoscut</p>
           <p class="mt-1 font-mono text-xs">${line.raw}</p>
-          <p class="mt-2">${line.ceFaci ?? "Trimite-ne mesajul prin formularul de contact."}</p>`;
+          <p class="mt-2">${line.ceFaci ?? "Trimite-ne mesajul prin formularul de contact (fără date personale)."}</p>`;
       }
       dukOut.appendChild(div);
     }

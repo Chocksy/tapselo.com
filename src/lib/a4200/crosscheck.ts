@@ -1,6 +1,11 @@
 import { SUPPORTED_TIP_AMEF } from "./constants.ts";
-import { periodFromIdM } from "./parse.ts";
-import type { CheckerIssue, CrossCheckInput, ParsedOpis } from "./types.ts";
+import {
+  checkSingleCalendarMonthAmongDays,
+  dayCalendarPeriod,
+  groupDaysByZ,
+  type DayEntry,
+} from "./day-groups.ts";
+import type { CheckerIssue, CrossCheckInput } from "./types.ts";
 
 function issue(
   code: string,
@@ -8,13 +13,9 @@ function issue(
   ceInseamna: string,
   ceFaci: string,
   file?: string,
+  severity: CheckerIssue["severity"] = "error",
 ): CheckerIssue {
-  return { severity: "error", code, title, ceInseamna, ceFaci, file };
-}
-
-function opisPeriod(opis: ParsedOpis): { an: number; luna: number } | null {
-  if (opis.an !== undefined && opis.luna !== undefined) return { an: opis.an, luna: opis.luna };
-  return periodFromIdM(opis.idM);
+  return { severity, code, title, ceInseamna, ceFaci, file };
 }
 
 export function runCrossChecks(input: CrossCheckInput): CheckerIssue[] {
@@ -86,7 +87,6 @@ export function runCrossChecks(input: CrossCheckInput): CheckerIssue[] {
     );
   }
 
-  const period = opisPeriod(opis);
   const expectedCount = opis.nrRapF - opis.nrRapI + 1;
   if (expectedCount < 1) {
     out.push(
@@ -99,8 +99,41 @@ export function runCrossChecks(input: CrossCheckInput): CheckerIssue[] {
     );
   }
 
-  const zSeen = new Map<number, string>();
-  for (const d of days) {
+  const dayEntries: DayEntry[] = days;
+  const grouped = groupDaysByZ(dayEntries);
+
+  const monthRef = checkSingleCalendarMonthAmongDays(dayEntries);
+  if (dayEntries.length > 0) {
+    const periods = dayEntries.map((d) => dayCalendarPeriod(d.parsed)).filter((p): p is { an: number; luna: number } => p !== null);
+    const mixedMonths = periods.length > 1 && monthRef === null;
+    if (mixedMonths) {
+      const sample = periods
+        .slice(0, 3)
+        .map((p) => `${p.luna}/${p.an}`)
+        .join(", ");
+      out.push(
+        issue(
+          "PERIOD_MISMATCH",
+          "Zile din luni diferite",
+          `Nu toate zilele fiscale sunt din aceeași lună calendaristică (ex.: ${sample}).`,
+          "Depune câte un A4200 pe lună. Separă exporturile în foldere distincte.",
+        ),
+      );
+    }
+  }
+
+  for (const dup of grouped.duplicateZ) {
+    out.push(
+      issue(
+        "DUPLICATE_Z",
+        "Raport Z duplicat",
+        `Z${dup.z} apare în mai multe fișiere: ${dup.files}.`,
+        "Păstrează o singură zi fiscală per număr Z (sau o pereche .p7b + .xml pentru același Z).",
+      ),
+    );
+  }
+
+  for (const d of dayEntries) {
     if (d.parsed.nui !== opis.nui) {
       out.push(
         issue(
@@ -125,24 +158,6 @@ export function runCrossChecks(input: CrossCheckInput): CheckerIssue[] {
       );
     }
 
-    if (period) {
-      const dayPeriod =
-        d.parsed.an !== undefined && d.parsed.luna !== undefined
-          ? { an: d.parsed.an, luna: d.parsed.luna }
-          : periodFromIdM(d.parsed.idM);
-      if (dayPeriod && (dayPeriod.an !== period.an || dayPeriod.luna !== period.luna)) {
-        out.push(
-          issue(
-            "PERIOD_MISMATCH",
-            "Lună/an diferit față de opis",
-            `Ziua ${d.file} pare din ${dayPeriod.luna}/${dayPeriod.an}, opisul din ${period.luna}/${period.an}.`,
-            "Raportează o singură perioadă calendaristică. Separă lunile în foldere diferite.",
-            d.file,
-          ),
-        );
-      }
-    }
-
     const z = d.parsed.zReport;
     if (z < opis.nrRapI || z > opis.nrRapF) {
       out.push(
@@ -155,27 +170,12 @@ export function runCrossChecks(input: CrossCheckInput): CheckerIssue[] {
         ),
       );
     }
-
-    const prev = zSeen.get(z);
-    if (prev) {
-      out.push(
-        issue(
-          "DUPLICATE_Z",
-          "Raport Z duplicat",
-          `Z${z} apare în ${prev} și în ${d.file}.`,
-          "Păstrează o singură zi fiscală per număr Z.",
-          d.file,
-        ),
-      );
-    } else {
-      zSeen.set(z, d.file);
-    }
   }
 
-  if (expectedCount > 0 && days.length > 0) {
+  if (expectedCount > 0 && grouped.uniqueZ.size > 0) {
     const missing: number[] = [];
     for (let z = opis.nrRapI; z <= opis.nrRapF; z++) {
-      if (!zSeen.has(z)) missing.push(z);
+      if (!grouped.uniqueZ.has(z)) missing.push(z);
     }
     if (missing.length > 0) {
       const sample = missing.slice(0, 8).map((z) => `Z${z}`).join(", ");
@@ -184,18 +184,18 @@ export function runCrossChecks(input: CrossCheckInput): CheckerIssue[] {
         issue(
           "MISSING_Z",
           "Lipsesc zile fiscale",
-          `Opisul cere ${expectedCount} zile (Z${opis.nrRapI}–Z${opis.nrRapF}), ai ${days.length}. Lipsesc: ${sample}${more}.`,
+          `Opisul cere ${expectedCount} zile (Z${opis.nrRapI}–Z${opis.nrRapF}), ai ${grouped.uniqueZ.size} rapoarte Z distincte. Lipsesc: ${sample}${more}.`,
           "Reexportă zilele lipsă din casa de marcat sau verifică că ai dezarhivat toate .p7b din arhivă.",
         ),
       );
     }
 
-    if (days.length !== expectedCount && missing.length === 0) {
+    if (grouped.uniqueZ.size !== expectedCount && missing.length === 0) {
       out.push(
         issue(
           "Z_COUNT_MISMATCH",
           "Număr de zile nepotrivit",
-          `Opisul cere ${expectedCount} zile, dar ai ${days.length} fișiere zi fiscală (fără duplicate).`,
+          `Opisul cere ${expectedCount} rapoarte Z, dar ai ${grouped.uniqueZ.size} numere Z distincte în fișiere.`,
           "Verifică intervalul nrRapI–nrRapF și lista de fișiere încărcate.",
         ),
       );

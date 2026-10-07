@@ -89,14 +89,13 @@ const jsonLd = [
   </section>
 
   <section>
-    <h2 class="font-display text-3xl italic text-primary">Pași în DUKIntegrator (semnare)</h2>
-    <ol class="kb-prose mt-4 list-decimal pl-5">
-      <li>Descarcă kitul de la <a href="https://static.anaf.ro/static/DUKIntegrator/DUKIntegrator.htm" rel="noopener" target="_blank">ANAF DUKIntegrator</a> și instalează validatorii A4200 + A4203.</li>
-      <li>Copiază într-un folder gol doar opisul și zilele .p7b (cale fără spații, de ex. <code>C:\A4200\</code>).</li>
-      <li>Deschide DUKIntegrator, alege declarația <strong>A4200</strong>.</li>
-      <li>În listă selectează <strong>doar</strong> fișierul opis (Perioada_raportare.p7b) — zilele sunt citite automat din același folder.</li>
-      <li>Rulează <strong>Validare</strong>, apoi <strong>Validare + creare PDF semnat</strong> cu tokenul tău.</li>
-      <li>Încarcă PDF-ul semnat pe e-guvernare / SPV conform instrucțiunilor ANAF.</li>
+    <h2 class="font-display text-3xl italic text-primary">Flux complet (după verificare)</h2>
+    <ol class="kb-prose mt-4 list-decimal space-y-2 pl-5">
+      <li>Folder gol, cale <strong>fără spații</strong>: doar <code>Perioada_raportare.p7b</code> și zilele <code>NUI_Zxxxx.p7b</code>.</li>
+      <li>PDF cu DUKIntegrator: <code>java -jar DUKIntegrator.jar -p A4200 Perioada_raportare.p7b</code> (în același folder). <code>.err.txt</code> trebuie să conțină <code>ok</code>.</li>
+      <li>Semnare calificată în <strong>certSIGN webSIGN</strong>.</li>
+      <li>Elimină coada LTV (unealta din verificator sau <code>pdfsig</code> + trunchiere la sfârșitul ByteRange).</li>
+      <li>Upload la <a href="https://decl.anaf.mfinante.gov.ro/WAS6DUS/" rel="noopener" target="_blank">decl.anaf.mfinante.gov.ro</a>; verifică recipisa la <a href="https://stare.anaf.ro/StareD112" rel="noopener" target="_blank">stare.anaf.ro</a>.</li>
     </ol>
   </section>
 
@@ -112,7 +111,7 @@ const jsonLd = [
   <section>
     <h2 class="font-display text-3xl italic text-primary">Note tehnice (export Datecs)</h2>
     <ul class="kb-prose mt-4 list-disc pl-5 text-sm">
-      <li>Exporturile semnate sunt <strong>PKCS#7 (.p7b)</strong> cu XML-ul fiscal în interior; extragem conținutul local, fără verificarea certificatului AMEF în browser.</li>
+      <li>Exporturile Datecs sunt <strong>PKCS#7 (.p7b)</strong> cu XML-ul împărțit în bucăți OCTET STRING (de ex. 4096 octeți); le reconstruim din CMS SignedData, nu prin scanare text.</li>
       <li>Numărul raportului Z este în ultimele 4 caractere ale <code>idM</code> / <code>idR</code> (28 caractere), aliniat cu numele <code>_Zxxxx.p7b</code>.</li>
       <li>Opisul poate să nu aibă <code>an</code>/<code>luna</code>; folosim data din <code>idM</code> și comparăm cu zilele.</li>
       <li>Schema XSD publică (2018) nu listează încă cotele 11% și 21%; validatorul ANAF actualizat le acceptă — actualizează kitul A4203 dacă XSD-ul din browser raportează multe erori de cote.</li>

@@ -32,9 +32,9 @@
       "ce_faci": "Verifică firma și reexportă memoria fiscală pentru CIF-ul corect."
     },
     "PERIOD_MISMATCH": {
-      "title": "Perioadă diferită",
-      "ce_inseamna": "Luna sau anul din zi nu se potrivesc cu opisul.",
-      "ce_faci": "Depune câte o declarație pe lună. Separă exporturile pe foldere distincte."
+      "title": "Zile din luni diferite",
+      "ce_inseamna": "Fișierele zi fiscală nu sunt toate din aceeași lună calendaristică.",
+      "ce_faci": "Depune câte un A4200 pe lună. Separă exporturile în foldere distincte."
     },
     "MISSING_Z": {
       "title": "Zile lipsă",
@@ -99,7 +99,7 @@
     "XSD_COTA_NEW_VAT": {
       "title": "Cotă TVA 11% sau 21%",
       "ce_inseamna": "Bonul folosește cote introduse după publicarea XSD-ului din 2018.",
-      "ce_faci": "Actualizează A4203Validator în DUKIntegrator. Eroarea XSD aici nu înseamnă neapărat că depunerea va fi respinsă."
+      "ce_faci": "Actualizează A4203Validator în DUKIntegrator. Avertismentul XSD aici nu înseamnă neapărat că depunerea va fi respinsă."
     },
     "XSD_MISSING_ATTR": {
       "title": "Atribut obligatoriu lipsă",
@@ -137,6 +137,14 @@
       "ce_faci": "Nu deschide .p7b în editor text. Reexportă din casă și validează imediat."
     }
   },
+  "parse_rules": [
+    { "pattern": "rădăcina nu este opis|mReg", "code": "PARSE_ERROR" },
+    { "pattern": "rădăcina nu este zi|msj", "code": "PARSE_ERROR" },
+    { "pattern": "raportul Z|rB", "code": "PARSE_ERROR" },
+    { "pattern": "idM trebuie", "code": "XSD_IDM_LEN" },
+    { "pattern": "nrRapI|nrRapF", "code": "Z_RANGE_INVALID" },
+    { "pattern": "lipsește atributul", "code": "XSD_MISSING_ATTR" }
+  ],
   "xsd_rules": [
     { "pattern": "attribute 'cif'.*pattern", "code": "XSD_CIF" },
     { "pattern": "attribute 'idM'.*maxLength", "code": "XSD_IDM_LEN" },

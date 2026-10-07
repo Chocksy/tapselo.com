@@ -1,4 +1,5 @@
 import { unzipSync } from "fflate";
+import { explainP7bExtractFailed } from "./explain.ts";
 import { extractXmlPayload, isLikelyP7b } from "./unwrap.ts";
 import { classifyXml, parseDayXml, parseOpisXml } from "./parse.ts";
 import type { ClassifiedFile, FileKind } from "./types.ts";
@@ -21,10 +22,11 @@ function classifyOne(name: string, bytes: Uint8Array, source: ClassifiedFile["so
   } else if (isLikelyP7b(name, bytes)) {
     const extracted = extractXmlPayload(bytes);
     if (!extracted) {
+      const issue = explainP7bExtractFailed(name);
       return {
         name,
         kind: "unreadable",
-        parseError: "Nu am putut extrage XML din fișierul semnat (.p7b).",
+        parseError: issue.ceInseamna,
         source,
       };
     }
