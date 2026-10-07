@@ -1,6 +1,8 @@
-// Nota de intrare-receptie (kind "nir"), A4 landscape. Layout follows the admin app's
-// ReceivingPrintLayout: buyer / supplier boxes, invoice data, lines with cost, VAT and sale
-// values, VAT breakdown, signature boxes. Retail price method: markup and non-chargeable VAT.
+// Nota de receptie si constatare de diferente (kind "nir", form 14-3-1A), A4 landscape. Layout
+// follows the admin app's ReceivingPrintLayout: buyer / supplier boxes, NIR and invoice data,
+// lines with documented and received quantity, cost, VAT and sale values, VAT breakdown,
+// signature boxes. Retail price method: markup and non-chargeable VAT. Values use the received
+// quantity (quantity_received, default = quantity on the document).
 
 import type { DraftRecord, NirLine, NirPayload } from "./types.ts";
 import { roundMoney } from "./validate.ts";
@@ -36,8 +38,13 @@ export interface NirTotals {
   vat_groups: { rate: number; base: number; vat: number; total: number }[];
 }
 
+export function receivedQty(l: NirLine): number {
+  return l.quantity_received ?? l.quantity;
+}
+
 export function nirLine(l: NirLine, markupPercent?: number): NirLineCalc {
-  const cost_value = roundMoney(l.quantity * l.unit_cost);
+  const qty = receivedQty(l);
+  const cost_value = roundMoney(qty * l.unit_cost);
   const cost_vat = roundMoney((cost_value * l.vat_rate) / 100);
   const cost_total = roundMoney(cost_value + cost_vat);
   let sale_price: number | null = null;
@@ -48,7 +55,7 @@ export function nirLine(l: NirLine, markupPercent?: number): NirLineCalc {
   if (sale_price === null) {
     return { cost_value, cost_vat, cost_total, sale_price, sale_value: null, sale_vat: null, markup_value: null, markup_percent: null };
   }
-  const sale_value = roundMoney(l.quantity * sale_price);
+  const sale_value = roundMoney(qty * sale_price);
   const sale_base = roundMoney(sale_value / (1 + l.vat_rate / 100));
   const sale_vat = roundMoney(sale_value - sale_base);
   const markup_value = roundMoney(sale_base - cost_value);
@@ -91,19 +98,37 @@ const CSS = `
 .party{flex:1;border:1px solid #94a3b8;padding:2mm 3mm;font-size:9pt}
 .party .lbl{font-size:7.5pt;font-weight:700;color:#475569;letter-spacing:.05em}
 .party .nm{font-size:10.5pt;font-weight:700}
+.party .tax{font-size:8.5pt;color:#334155}
 .vat-sum{width:60%;margin-top:4mm;margin-left:auto}
 `;
 
-export function renderNir(p: NirPayload, draft: DraftRecord): string {
+export interface RenderOptions {
+  /** Built in the browser by /unelte (see page.ts renderShell). */
+  local?: boolean;
+}
+
+const BLANK = "______________";
+const orBlank = (v: string | undefined) => (v ? escapeHtml(v) : BLANK);
+
+export function renderNir(p: NirPayload, draft: DraftRecord, opts: RenderOptions = {}): string {
   const t = nirTotals(p);
+  const diffs: string[] = [];
   const rows = p.lines
     .map((l, i) => {
       const c = nirLine(l, p.markup_percent);
+      const rec = receivedQty(l);
+      if (rec !== l.quantity) {
+        const d = Math.round((rec - l.quantity) * 1000) / 1000;
+        diffs.push(
+          `linia ${i + 1} (${escapeHtml(l.name)}): ${escapeHtml(fmtQty(l.quantity))} ${escapeHtml(l.unit)} pe document, ${escapeHtml(fmtQty(rec))} ${escapeHtml(l.unit)} recepționate (${d > 0 ? "+" : ""}${escapeHtml(fmtQty(d))})`,
+        );
+      }
       return `<tr>
 <td class="ctr">${i + 1}</td>
 <td>${escapeHtml(l.name)}</td>
 <td class="ctr">${escapeHtml(l.unit)}</td>
 <td class="num">${escapeHtml(fmtQty(l.quantity))}</td>
+<td class="num">${escapeHtml(fmtQty(rec))}</td>
 <td class="num">${escapeHtml(fmtMoney(l.unit_cost))}</td>
 <td class="num">${escapeHtml(fmtMoney(c.cost_value))}</td>
 <td class="ctr">${escapeHtml(String(l.vat_rate))}%</td>
@@ -119,45 +144,58 @@ export function renderNir(p: NirPayload, draft: DraftRecord): string {
   const vatRows = t.vat_groups
     .map((g) => `<tr><td>TVA ${escapeHtml(String(g.rate))}%</td><td class="num">${fmtMoney(g.base)}</td><td class="num">${fmtMoney(g.vat)}</td><td class="num">${fmtMoney(g.total)}</td></tr>`)
     .join("\n");
-  const body = `<h1 class="doc-title">Nota de intrare-receptie</h1>
+  const taxId = (v: string | undefined) => (v ? `<div class="tax">CIF: ${escapeHtml(v)}</div>` : "");
+  const body = `<h1 class="doc-title">Notă de recepție și constatare de diferențe (NIR)</h1>
 <div class="parties">
-<div class="party"><div class="lbl">UNITATEA (CUMPARATOR)</div><div class="nm">${escapeHtml(p.company)}</div></div>
-<div class="party"><div class="lbl">FURNIZOR</div><div class="nm">${escapeHtml(p.supplier)}</div></div>
+<div class="party"><div class="lbl">UNITATEA (CUMPĂRĂTOR)</div><div class="nm">${escapeHtml(p.company)}</div>${taxId(p.company_tax_id)}</div>
+<div class="party"><div class="lbl">FURNIZOR</div><div class="nm">${escapeHtml(p.supplier)}</div>${taxId(p.supplier_tax_id)}</div>
 </div>
 <div class="doc-meta">
-<span><b>Factura nr.:</b> ${escapeHtml(p.invoice_number)}</span>
+<span><b>NIR nr.:</b> ${orBlank(p.nir_number)}</span>
+<span><b>Data NIR:</b> ${p.nir_date ? escapeHtml(formatDate(p.nir_date) ?? p.nir_date) : BLANK}</span>
+<span><b>Gestiunea:</b> ${orBlank(p.management)}</span>
+<span><b>Factura / avizul nr.:</b> ${escapeHtml(p.invoice_number)}</span>
 <span><b>Data facturii:</b> ${escapeHtml(formatDate(p.invoice_date) ?? p.invoice_date)}</span>
 ${p.markup_percent !== undefined ? `<span><b>Adaos comercial:</b> ${escapeHtml(fmtMoney(p.markup_percent))}%</span>` : ""}
-<span><b>Valori in lei</b></span>
+<span><b>Valori în lei</b></span>
 </div>
 <table class="doc">
 <thead>
-<tr><th rowspan="2">Nr.</th><th rowspan="2">Denumire produs</th><th rowspan="2">UM</th><th rowspan="2">Cant.</th>
-<th colspan="4">Pret de achizitie</th><th colspan="2">Adaos comercial</th><th rowspan="2">TVA neexigibil</th><th colspan="2">Pret de vanzare (cu TVA)</th></tr>
-<tr><th>Pret unitar fara TVA</th><th>Valoare fara TVA</th><th>TVA %</th><th>Valoare TVA</th><th>%</th><th>Valoare</th><th>Pret unitar</th><th>Valoare</th></tr>
+<tr><th rowspan="2">Nr. crt.</th><th rowspan="2">Denumirea bunurilor</th><th rowspan="2">UM</th><th colspan="2">Cantitate</th>
+<th colspan="4">Preț de achiziție</th><th colspan="2">Adaos comercial</th><th rowspan="2">TVA neexigibilă</th><th colspan="2">Preț de vânzare (cu TVA)</th></tr>
+<tr><th>Conform documentelor</th><th>Recepționată</th><th>Preț unitar fără TVA</th><th>Valoare fără TVA</th><th>TVA %</th><th>Valoare TVA</th><th>%</th><th>Valoare</th><th>Preț unitar</th><th>Valoare</th></tr>
 </thead>
 <tbody>
 ${rows}
 </tbody>
 <tfoot>
-<tr><td colspan="5">TOTAL</td><td class="num">${fmtMoney(t.cost_value)}</td><td></td><td class="num">${fmtMoney(t.cost_vat)}</td><td></td>
+<tr><td colspan="6">TOTAL</td><td class="num">${fmtMoney(t.cost_value)}</td><td></td><td class="num">${fmtMoney(t.cost_vat)}</td><td></td>
 <td class="num">${t.sale_value ? fmtMoney(t.markup_value) : dash}</td><td class="num">${t.sale_value ? fmtMoney(t.sale_vat) : dash}</td><td></td><td class="num">${t.sale_value ? fmtMoney(t.sale_value) : dash}</td></tr>
 </tfoot>
 </table>
 <table class="doc vat-sum">
-<thead><tr><th>Cota TVA</th><th>Baza (achizitie)</th><th>TVA</th><th>Total cu TVA</th></tr></thead>
+<thead><tr><th>Cota TVA</th><th>Baza (achiziție)</th><th>TVA</th><th>Total cu TVA</th></tr></thead>
 <tbody>
 ${vatRows}
 </tbody>
 <tfoot><tr><td>TOTAL</td><td class="num">${fmtMoney(t.cost_value)}</td><td class="num">${fmtMoney(t.cost_vat)}</td><td class="num">${fmtMoney(t.cost_total)}</td></tr></tfoot>
 </table>
-${t.complete_sale ? "" : `<p class="note muted">Liniile fara pret de vanzare (nici pret dat, nici adaos) au valorile de vanzare goale.</p>`}
+${diffs.length ? `<p class="warn">Diferențe la recepție: ${diffs.join("; ")}.</p>` : ""}
+${t.complete_sale ? "" : `<p class="note muted">Liniile fără preț de vânzare (nici preț dat, nici adaos) au valorile de vânzare goale.</p>`}
 <div class="signs">
-<div>Comisia de receptie<span>Nume, prenume, semnatura</span></div>
-<div>Gestionar (am primit marfa)<span>Nume, prenume, semnatura</span></div>
-<div>Data receptiei<span>&nbsp;</span></div>
+<div>Comisia de recepție<span>Nume, prenume, semnătura</span></div>
+<div>Primit în gestiune (gestionar)<span>Nume, prenume, semnătura</span></div>
+<div>Data primirii în gestiune<span>&nbsp;</span></div>
 </div>`;
-  return renderShell({ kind: "nir", title: `NIR ${p.invoice_number}`, expiresAt: draft.expires_at, body, css: CSS, landscape: true });
+  return renderShell({
+    kind: "nir",
+    title: `NIR ${p.nir_number ?? p.invoice_number}`,
+    expiresAt: draft.expires_at,
+    body,
+    css: CSS,
+    landscape: true,
+    local: opts.local,
+  });
 }
 
 export function nirSummary(p: NirPayload): string {

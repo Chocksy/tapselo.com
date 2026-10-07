@@ -53,6 +53,8 @@ export interface NirLine {
   vat_rate: number;
   /** Sale price per unit with VAT, lei. */
   sale_price?: number;
+  /** Quantity actually received; defaults to `quantity` (the invoice/aviz quantity). Values use this one. */
+  quantity_received?: number;
 }
 
 export interface NirPayload {
@@ -63,6 +65,14 @@ export interface NirPayload {
   invoice_date: string;
   markup_percent?: number;
   lines: NirLine[];
+  /** NIR number and date (form 14-3-1A). Left as blanks to fill by hand when missing. */
+  nir_number?: string;
+  /** YYYY-MM-DD */
+  nir_date?: string;
+  /** Gestiunea (store / warehouse) */
+  management?: string;
+  company_tax_id?: string;
+  supplier_tax_id?: string;
 }
 
 export interface RecipeIngredient {
@@ -82,6 +92,8 @@ export interface RecipePayload {
 
 export interface CashbookEntry {
   doc: string;
+  /** "Nr. anexe" column of form 14-4-7A */
+  annexes?: string;
   description: string;
   receipt?: number;
   payment?: number;
