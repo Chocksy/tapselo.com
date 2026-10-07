@@ -1,0 +1,262 @@
+---
+---
+
+<section class="ut-card" aria-labelledby="bc-gen-title">
+  <h2 id="bc-gen-title" class="font-display text-2xl italic text-primary">Generare cod de bare</h2>
+  <p class="mt-2 text-sm text-text-secondary">
+    Alege formatul, tastează codul sau textul, apoi descarcă imaginea sau printează o foaie A4 cu mai multe etichete. Totul rulează în browser — nimic nu se trimite pe server.
+  </p>
+
+  <div class="mt-6 space-y-5" id="bc-tool">
+    <div class="ut-seg" role="group" aria-label="Format cod de bare">
+      <button type="button" data-bc-format="ean13" aria-pressed="true">EAN-13</button>
+      <button type="button" data-bc-format="ean8" aria-pressed="false">EAN-8</button>
+      <button type="button" data-bc-format="code128" aria-pressed="false">Code 128</button>
+    </div>
+
+    <div>
+      <label class="ut-label" for="bc-value" id="bc-value-label">Cod EAN-13</label>
+      <input
+        class="ut-input"
+        id="bc-value"
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        placeholder="ex. 590123412345 sau 5901234123457"
+        aria-describedby="bc-value-hint"
+      />
+      <p class="ut-hint" id="bc-value-hint">
+        Tastează 12 cifre — calculăm automat cifra de control — sau toate cele 13 cifre pentru verificare.
+      </p>
+      <p class="ut-err hidden" id="bc-value-err" role="alert"></p>
+    </div>
+
+    <aside class="rounded-lg border border-border-light bg-surface p-4 text-sm leading-relaxed text-text-secondary" id="bc-ean-note">
+      <p>
+        <strong class="text-primary">Coduri interne 20–29:</strong> prefixele 20–29 sunt folosite în magazin pentru produse cântărite la cântar sau articole proprii (de exemplu legume la kg). Le poți genera aici pentru etichete, dar nu înlocuiesc codul GS1 al producătorului.
+      </p>
+      <p class="mt-2">
+        Pentru produse comercializate național, codurile oficiale EAN se obțin de la
+        <a href="https://www.gs1romania.ro/" class="font-semibold text-accent underline-offset-2 hover:underline" rel="noopener noreferrer">GS1 România</a>.
+      </p>
+    </aside>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="bc-product">Denumire produs (pe etichetă)</label>
+        <input class="ut-input" id="bc-product" type="text" autocomplete="off" maxlength="80" placeholder="ex. Telemea de vacă 500 g" />
+      </div>
+      <div>
+        <label class="ut-label" for="bc-copies">Număr etichete pe foaie</label>
+        <input class="ut-input" id="bc-copies" type="number" min="1" max="48" value="12" inputmode="numeric" />
+        <p class="ut-hint">Grilă A4: până la 48 etichete (3 coloane).</p>
+      </div>
+    </div>
+
+    <div class="rounded-lg border border-border-light bg-white p-4 text-center" id="bc-preview-wrap" aria-live="polite">
+      <p class="text-sm text-text-secondary" id="bc-preview-placeholder">Introdu un cod valid pentru previzualizare.</p>
+      <svg id="bc-preview-svg" class="mx-auto hidden max-w-full" role="img" aria-label="Previzualizare cod de bare"></svg>
+    </div>
+
+    <div class="flex flex-wrap gap-3">
+      <button type="button" class="ut-btn ut-btn-primary" id="bc-dl-png" disabled>Descarcă PNG</button>
+      <button type="button" class="ut-btn ut-btn-secondary" id="bc-dl-svg" disabled>Descarcă SVG</button>
+      <button type="button" class="ut-btn ut-btn-secondary" id="bc-print" disabled>Printează foaia A4</button>
+    </div>
+  </div>
+</section>
+
+<script>
+  import JsBarcode from "jsbarcode";
+  import {
+    type BarcodeFormat,
+    clampLabelCopies,
+    renderBarcodeLabelSheetHtml,
+    resolveBarcodeInput,
+  } from "../../lib/unelte/barcode-generator.ts";
+  import { openPrintHtml } from "../../lib/unelte/document-export.ts";
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
+
+  const root = document.getElementById("bc-tool");
+  if (!root) throw new Error("bc-tool missing");
+
+  let format: BarcodeFormat = "ean13";
+  let lastValue: string | null = null;
+
+  const valueInput = document.getElementById("bc-value") as HTMLInputElement;
+  const valueLabel = document.getElementById("bc-value-label")!;
+  const valueHint = document.getElementById("bc-value-hint")!;
+  const valueErr = document.getElementById("bc-value-err")!;
+  const eanNote = document.getElementById("bc-ean-note")!;
+  const previewSvg = document.getElementById("bc-preview-svg") as SVGSVGElement;
+  const previewPlaceholder = document.getElementById("bc-preview-placeholder")!;
+  const btnPng = document.getElementById("bc-dl-png") as HTMLButtonElement;
+  const btnSvg = document.getElementById("bc-dl-svg") as HTMLButtonElement;
+  const btnPrint = document.getElementById("bc-print") as HTMLButtonElement;
+
+  const FORMAT_UI: Record<
+    BarcodeFormat,
+    { label: string; placeholder: string; hint: string; inputMode: string; showEanNote: boolean }
+  > = {
+    ean13: {
+      label: "Cod EAN-13",
+      placeholder: "ex. 590123412345 sau 5901234123457",
+      hint: "Tastează 12 cifre — calculăm automat cifra de control — sau toate cele 13 cifre pentru verificare.",
+      inputMode: "numeric",
+      showEanNote: true,
+    },
+    ean8: {
+      label: "Cod EAN-8",
+      placeholder: "ex. 9638507 sau 96385074",
+      hint: "Pentru ambalaje mici: 7 cifre (fără control) sau 8 cifre (cu control).",
+      inputMode: "numeric",
+      showEanNote: true,
+    },
+    code128: {
+      label: "Text Code 128",
+      placeholder: "ex. LOT-2026-014",
+      hint: "Litere, cifre și simboluri ASCII — util pentru cod intern, lot sau locație raft.",
+      inputMode: "text",
+      showEanNote: false,
+    },
+  };
+
+  const jsFormat = (f: BarcodeFormat): string => {
+    switch (f) {
+      case "ean13":
+        return "EAN13";
+      case "ean8":
+        return "EAN8";
+      case "code128":
+        return "CODE128";
+      default: {
+        const never: never = f;
+        throw new Error(`unexpected ${String(never)}`);
+      }
+    }
+  };
+
+  function setButtons(enabled: boolean) {
+    btnPng.disabled = !enabled;
+    btnSvg.disabled = !enabled;
+    btnPrint.disabled = !enabled;
+  }
+
+  function renderBarcode(target: SVGSVGElement | HTMLCanvasElement, value: string) {
+    JsBarcode(target, value, {
+      format: jsFormat(format),
+      displayValue: true,
+      font: "monospace",
+      fontSize: 14,
+      textMargin: 4,
+      margin: 8,
+      width: 2,
+      height: 80,
+    });
+  }
+
+  function freshSvg(): SVGSVGElement {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    renderBarcode(svg, lastValue!);
+    return svg;
+  }
+
+  function syncPreview() {
+    valueErr.classList.add("hidden");
+    valueErr.textContent = "";
+    const resolved = resolveBarcodeInput(format, valueInput.value);
+    if (!resolved.ok) {
+      lastValue = null;
+      previewSvg.classList.add("hidden");
+      previewSvg.innerHTML = "";
+      previewPlaceholder.classList.remove("hidden");
+      previewPlaceholder.textContent = resolved.message;
+      valueInput.setAttribute("aria-invalid", valueInput.value.trim() ? "true" : "false");
+      if (valueInput.value.trim()) {
+        valueErr.textContent = resolved.message;
+        valueErr.classList.remove("hidden");
+      }
+      setButtons(false);
+      return;
+    }
+    valueInput.removeAttribute("aria-invalid");
+    lastValue = resolved.value;
+    previewPlaceholder.classList.add("hidden");
+    previewSvg.classList.remove("hidden");
+    previewSvg.innerHTML = "";
+    renderBarcode(previewSvg, lastValue);
+    const label = resolved.checkDigitAdded ? `Cod complet: ${lastValue} (cifră de control adăugată)` : `Cod: ${lastValue}`;
+    previewSvg.setAttribute("aria-label", `Cod de bare ${lastValue}`);
+    valueHint.textContent = `${FORMAT_UI[format].hint} ${resolved.checkDigitAdded ? "Cifra de control a fost calculată automat." : ""}`.trim();
+    previewPlaceholder.textContent = label;
+    setButtons(true);
+  }
+
+  function applyFormatUi() {
+    const ui = FORMAT_UI[format];
+    valueLabel.textContent = ui.label;
+    valueInput.placeholder = ui.placeholder;
+    valueHint.textContent = ui.hint;
+    valueInput.inputMode = ui.inputMode as HTMLInputElement["inputMode"];
+    eanNote.classList.toggle("hidden", !ui.showEanNote);
+    syncPreview();
+  }
+
+  root.querySelectorAll<HTMLButtonElement>("[data-bc-format]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const f = btn.dataset.bcFormat;
+      format = f === "ean8" || f === "code128" ? f : "ean13";
+      root.querySelectorAll("[data-bc-format]").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+      applyFormatUi();
+    });
+  });
+
+  valueInput.addEventListener("input", syncPreview);
+
+  btnPng.addEventListener("click", () => {
+    if (!lastValue) return;
+    const canvas = document.createElement("canvas");
+    renderBarcode(canvas, lastValue);
+    const url = canvas.toDataURL("image/png");
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `cod-de-bare-${format}.png`;
+    a.click();
+    trackToolUsed("generator_cod_de_bare", "download_png");
+  });
+
+  btnSvg.addEventListener("click", () => {
+    if (!lastValue) return;
+    const svg = freshSvg();
+    const blob = new Blob([svg.outerHTML], { type: "image/svg+xml;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `cod-de-bare-${format}.svg`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    trackToolUsed("generator_cod_de_bare", "download_svg");
+  });
+
+  btnPrint.addEventListener("click", () => {
+    if (!lastValue) return;
+    const copiesInput = document.getElementById("bc-copies") as HTMLInputElement;
+    const product = (document.getElementById("bc-product") as HTMLInputElement).value;
+    const copies = clampLabelCopies(Number(copiesInput.value));
+    copiesInput.value = String(copies);
+    const svg = freshSvg();
+    const html = renderBarcodeLabelSheetHtml({
+      productName: product,
+      barcodeValue: lastValue,
+      barcodeSvg: svg.outerHTML,
+      copies,
+    });
+    if (!openPrintHtml(html)) {
+      valueErr.textContent = "Browserul a blocat fereastra de printare. Permite popup-urile pentru tapselo.com și încearcă din nou.";
+      valueErr.classList.remove("hidden");
+      return;
+    }
+    trackToolUsed("generator_cod_de_bare", "print_sheet");
+  });
+
+  applyFormatUi();
+</script>
