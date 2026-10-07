@@ -1,0 +1,167 @@
+{
+  "verified_on": "2026-10-07",
+  "crosscheck": {
+    "FOREIGN_FILES": {
+      "title": "Fișiere care nu aparțin declarației",
+      "ce_inseamna": "Folderul pentru DUKIntegrator trebuie să conțină doar opisul și zilele fiscale semnate.",
+      "ce_faci": "Mută PDF-urile, recipisele și alte fișiere în alt loc. Păstrează doar .p7b / .xml de la casă."
+    },
+    "MULTIPLE_OPIS": {
+      "title": "Mai multe opisuri",
+      "ce_inseamna": "Există mai mult de un fișier registru (mReg) în selecție.",
+      "ce_faci": "Lasă un singur Perioada_raportare.p7b pentru perioada aleasă."
+    },
+    "NO_OPIS": {
+      "title": "Lipsește opisul",
+      "ce_inseamna": "Validatorul ANAF are nevoie de fișierul opis (A4200) pe lângă zile.",
+      "ce_faci": "Exportă din casă opisul perioadei și adaugă-l în aceeași selecție."
+    },
+    "NO_DAYS": {
+      "title": "Lipsesc zilele fiscale",
+      "ce_inseamna": "Opisul listează rapoarte Z, dar nu ai încărcat fișiere zi (A4203).",
+      "ce_faci": "Adaugă toate fișierele NUI_Zxxxx.p7b din intervalul nrRapI–nrRapF."
+    },
+    "NUI_MISMATCH": {
+      "title": "NUI diferit",
+      "ce_inseamna": "Numărul unic de identificare al AMEF (primele 10 caractere din idM) nu coincide între opis și o zi.",
+      "ce_faci": "Nu amesteca exporturi de la două case. Refă folderul doar cu fișierele aceluiași aparat."
+    },
+    "CIF_MISMATCH": {
+      "title": "CIF diferit",
+      "ce_inseamna": "Codul fiscal din zi nu este același cu cel din opis.",
+      "ce_faci": "Verifică firma și reexportă memoria fiscală pentru CIF-ul corect."
+    },
+    "PERIOD_MISMATCH": {
+      "title": "Perioadă diferită",
+      "ce_inseamna": "Luna sau anul din zi nu se potrivesc cu opisul.",
+      "ce_faci": "Depune câte o declarație pe lună. Separă exporturile pe foldere distincte."
+    },
+    "MISSING_Z": {
+      "title": "Zile lipsă",
+      "ce_inseamna": "Opisul acoperă mai multe rapoarte Z decât fișiere încărcate.",
+      "ce_faci": "Reexportă rapoartele Z lipsă sau corectează nrRapI/nrRapF în opis."
+    },
+    "DUPLICATE_Z": {
+      "title": "Raport Z duplicat",
+      "ce_inseamna": "Două fișiere reprezintă același număr de raport Z.",
+      "ce_faci": "Păstrează o singură versiune a zilei și șterge duplicatul."
+    },
+    "Z_OUT_OF_RANGE": {
+      "title": "Zi în afara intervalului",
+      "ce_inseamna": "Un fișier zi are număr Z în afara intervalului declarat în opis.",
+      "ce_faci": "Scoate zilele în plus sau regenerează opisul cu intervalul corect."
+    },
+    "Z_COUNT_MISMATCH": {
+      "title": "Număr de zile greșit",
+      "ce_inseamna": "Numărul de fișiere zi nu corespunde cu nrRapF − nrRapI + 1.",
+      "ce_faci": "Numără fișierele Z și compară cu opisul."
+    },
+    "Z_RANGE_INVALID": {
+      "title": "Interval Z invalid",
+      "ce_inseamna": "nrRapI este mai mare decât nrRapF în opis.",
+      "ce_faci": "Regenerează opisul din casa de marcat."
+    },
+    "TIP_AMEF_ST": {
+      "title": "AMEF schimb valutar sau taximetrie",
+      "ce_inseamna": "tip_amef S sau T folosește alte formulare (A4201/A4202).",
+      "ce_faci": "Folosește DUKIntegrator cu validatorul potrivit tipului de AMEF. Verificatorul web Tapselo acoperă doar uz general (U) în v1."
+    },
+    "TIP_AMEF_UNSUPPORTED": {
+      "title": "Tip AMEF necunoscut",
+      "ce_inseamna": "Valoarea tip_amef nu este în lista așteptată.",
+      "ce_faci": "Contactează service-ul AMEF sau verifică manual în DUKIntegrator."
+    },
+    "PARSE_ERROR": {
+      "title": "XML de citit",
+      "ce_inseamna": "Structura fișierului nu poate fi interpretată ca opis sau zi fiscală.",
+      "ce_faci": "Reexportă din casă. Dacă fișierul este .p7b, verifică că nu este truncat."
+    },
+    "P7B_EXTRACT_FAILED": {
+      "title": "Semnătură .p7b",
+      "ce_inseamna": "Fișierul PKCS#7 nu conține XML fiscal recunoscut.",
+      "ce_faci": "Copiază din nou exportul de pe stick/USB. Nu redenumi fișierele înainte de validare."
+    },
+    "XSD_CIF": {
+      "title": "CIF invalid în XML",
+      "ce_inseamna": "Atributul cif nu respectă formatul CUI/CNP din schema ANAF (1–10 cifre, fără zerouri la început).",
+      "ce_faci": "Verifică CIF-ul în programul de casă. Pentru test, reexportă după corectarea datelor firmei."
+    },
+    "XSD_IDM_LEN": {
+      "title": "idM prea lung sau scurt",
+      "ce_inseamna": "Identificatorul mesajului nu are lungimea cerută (24 pe opis, 28 pe zi).",
+      "ce_faci": "Nu edita manual XML-ul. Reexportă din memoria fiscală."
+    },
+    "XSD_COTA_ENUM": {
+      "title": "Cotă TVA în afara listei XSD",
+      "ce_inseamna": "Schema XSD publicată (2018) listează cotele 0, 5, 9, 19, 20. Casele noi pot emite 11% sau 21%.",
+      "ce_faci": "DUKIntegrator cu validator J1.0.5+ acceptă de obicei cotele actuale. Dacă ANAF respinge online, actualizează validatorul din kitul A4203."
+    },
+    "XSD_COTA_NEW_VAT": {
+      "title": "Cotă TVA 11% sau 21%",
+      "ce_inseamna": "Bonul folosește cote introduse după publicarea XSD-ului din 2018.",
+      "ce_faci": "Actualizează A4203Validator în DUKIntegrator. Eroarea XSD aici nu înseamnă neapărat că depunerea va fi respinsă."
+    },
+    "XSD_MISSING_ATTR": {
+      "title": "Atribut obligatoriu lipsă",
+      "ce_inseamna": "Un câmp cerut de schema ANAF nu apare pe element.",
+      "ce_faci": "Reexportă ziua sau opisul. Dacă persistă, contactează furnizorul software-ului de casă."
+    },
+    "XSD_OTHER": {
+      "title": "Eroare de validare XSD",
+      "ce_inseamna": "Fișierul nu respectă schema ANAF A4200/A4203.",
+      "ce_faci": "Notează mesajul și rulează Validare în DUKIntegrator. Compară cu mesajul de aici."
+    },
+    "XSD_SKIPPED": {
+      "title": "Validare XSD indisponibilă",
+      "ce_inseamna": "Browserul nu a putut încărca validatorul WASM sau a rămas fără memorie.",
+      "ce_faci": "Folosește DUKIntegrator pentru XSD. Verificările de consistență de mai sus au rulat local."
+    },
+    "DUK_FOLDER_SPACES": {
+      "title": "Cale folder cu spații",
+      "ce_inseamna": "DUKIntegrator este sensibil la spații în calea folderului.",
+      "ce_faci": "Mută fișierele în C:\\A4200\\ sau alt folder fără spații în nume."
+    },
+    "DUK_SELECT_OPIS": {
+      "title": "Selectare greșită în DUKIntegrator",
+      "ce_inseamna": "Trebuie selectat doar fișierul opis, nu și zilele individual.",
+      "ce_faci": "În listă bifează doar Perioada_raportare.p7b (sau opisul .xml). Zilele sunt citite automat din același folder."
+    },
+    "DUK_ZIP_CORRUPT": {
+      "title": "Arhivă coruptă",
+      "ce_inseamna": "Validatorul ANAF nu poate citi arhiva sau fișierul semnat.",
+      "ce_faci": "Reexportă memoria fiscală. Verifică că stick-ul nu este plin sau protejat la scriere."
+    },
+    "DUK_SIGNATURE": {
+      "title": "Semnătură AMEF",
+      "ce_inseamna": "Certificatul din .p7b nu este recunoscut sau fișierul a fost alterat.",
+      "ce_faci": "Nu deschide .p7b în editor text. Reexportă din casă și validează imediat."
+    }
+  },
+  "xsd_rules": [
+    { "pattern": "attribute 'cif'.*pattern", "code": "XSD_CIF" },
+    { "pattern": "attribute 'idM'.*maxLength", "code": "XSD_IDM_LEN" },
+    { "pattern": "attribute 'cota'.*enumeration.*'11'", "code": "XSD_COTA_NEW_VAT" },
+    { "pattern": "attribute 'cota'.*enumeration.*'21'", "code": "XSD_COTA_NEW_VAT" },
+    { "pattern": "attribute 'cota'.*enumeration", "code": "XSD_COTA_ENUM" },
+    { "pattern": "missing attribute", "code": "XSD_MISSING_ATTR" },
+    { "pattern": "Required attribute", "code": "XSD_MISSING_ATTR" }
+  ],
+  "xsd_fallback": {
+    "title": "Eroare XSD",
+    "ce_inseamna": "Conținutul nu trece validarea schemei ANAF.",
+    "ce_faci": "Corectează în casa de marcat și reexportă, sau urmează pașii din DUKIntegrator."
+  },
+  "duk_rules": [
+    { "pattern": "spati|spaț|space.*cale|path", "code": "DUK_FOLDER_SPACES" },
+    { "pattern": "select.*opis|doar.*opis|registru", "code": "DUK_SELECT_OPIS" },
+    { "pattern": "ZIP corupt|zip corupt|corupt", "code": "DUK_ZIP_CORRUPT" },
+    { "pattern": "semnatur|semnătur|certificat|p7b", "code": "DUK_SIGNATURE" },
+    { "pattern": "NUI|idM", "code": "NUI_MISMATCH" },
+    { "pattern": "nrRap|raport.*Z", "code": "MISSING_Z" }
+  ],
+  "duk_fallback": {
+    "title": "Mesaj DUKIntegrator",
+    "ce_inseamna": "Nu avem încă o explicație automată pentru această linie.",
+    "ce_faci": "Trimite-ne mesajul prin formularul de contact (fără date personale) ca să îl adăugăm în ghid."
+  }
+}

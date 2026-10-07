@@ -5,12 +5,15 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  /** Extra JSON-LD objects (FAQPage, WebApplication, etc.) */
+  jsonLd?: Record<string, unknown>[];
 }
 
 const {
   title = "Tapselo POS — Casa de marcat pentru magazine alimentare",
   description = "Casa de marcat care merge si fara internet. Cu bon fiscal, cantar integrat si rapoarte inteligente. Gata in 20 de minute, pe orice calculator.",
   noindex = false,
+  jsonLd = [],
 } = Astro.props;
 
 const siteUrl = "https://tapselo.com";
@@ -81,6 +84,9 @@ const ogImageUrl = `${siteUrl}/og-image.jpg`;
         }
       }
     })} />
+    {jsonLd.map((block) => (
+      <script type="application/ld+json" set:html={JSON.stringify(block)} />
+    ))}
 
     <meta name="generator" content={Astro.generator} />
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>

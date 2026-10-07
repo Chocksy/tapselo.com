@@ -17,13 +17,14 @@ interface Props {
   campaign: string;
   breadcrumb?: boolean;
   ctaTitle?: string;
+  jsonLd?: Record<string, unknown>[];
 }
 
-const { title, description, heading, lead, sources = [], verifiedOn, campaign, breadcrumb = true, ctaTitle = "Tapselo face asta automat la casa de marcat" } = Astro.props;
+const { title, description, heading, lead, sources = [], verifiedOn, campaign, breadcrumb = true, ctaTitle = "Tapselo face asta automat la casa de marcat", jsonLd = [] } = Astro.props;
 const ctaUrl = `/?utm_source=ghid&utm_medium=site&utm_campaign=${encodeURIComponent(campaign)}`;
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} jsonLd={jsonLd}>
   <Navbar />
 
   <header class="bg-primary pt-28 pb-14 md:pt-32">
