@@ -202,11 +202,11 @@ export function nirSummary(p: NirPayload): string {
   const t = nirTotals(p);
   const parts = [
     `NIR pentru factura ${p.invoice_number} de la ${p.supplier}: ${p.lines.length} linii.`,
-    `Valoare achizitie fara TVA ${fmtMoney(t.cost_value)} lei, TVA ${fmtMoney(t.cost_vat)} lei, total ${fmtMoney(t.cost_total)} lei.`,
+    `Valoare de achiziție fără TVA ${fmtMoney(t.cost_value)} lei, TVA ${fmtMoney(t.cost_vat)} lei, total ${fmtMoney(t.cost_total)} lei.`,
   ];
   if (t.sale_value > 0) {
-    parts.push(`Valoare de vanzare cu TVA ${fmtMoney(t.sale_value)} lei (adaos ${fmtMoney(t.markup_value)} lei, TVA neexigibil ${fmtMoney(t.sale_vat)} lei).`);
+    parts.push(`Valoare de vânzare cu TVA ${fmtMoney(t.sale_value)} lei (adaos ${fmtMoney(t.markup_value)} lei, TVA neexigibilă ${fmtMoney(t.sale_vat)} lei).`);
   }
-  if (!t.complete_sale) parts.push("Unele linii nu au pret de vanzare: da `markup_percent` sau `sale_price` ca sa fie completate.");
+  if (!t.complete_sale) parts.push("Unele linii nu au preț de vânzare: dă `markup_percent` sau `sale_price` ca să fie completate.");
   return parts.join("\n");
 }

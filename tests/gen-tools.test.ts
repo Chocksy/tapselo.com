@@ -62,7 +62,7 @@ test("each tool: validates, calls the RPC, answers with a tracked tapselo.com/g/
 test("NIR answer carries the totals", async () => {
   const { env } = stubEnv({ ok: true, data: "Ab3dEf7hJk" });
   const r = await tool("create_nir").handler(structuredClone(MOCK_DRAFTS.nir.payload) as Record<string, unknown>, env);
-  assert.match(r.text, /Valoare achizitie fara TVA 482,20 lei, TVA 57,31 lei, total 539,51 lei\./);
+  assert.match(r.text, /Valoare de achiziție fără TVA 482,20 lei, TVA 57,31 lei, total 539,51 lei\./);
   assert.equal(r.structured?.cost_total, 539.51);
   assert.equal(r.structured?.sale_value, 687.83);
 });
@@ -71,7 +71,7 @@ test("labels answer names invalid EANs and missing unit prices", async () => {
   const { env } = stubEnv({ ok: true, data: "Ab3dEf7hJk" });
   const r = await tool("create_shelf_labels").handler(structuredClone(MOCK_DRAFTS.labels.payload) as Record<string, unknown>, env);
   assert.match(r.text, /Cod EAN invalid .*: Ulei Floriol 1L\./);
-  assert.match(r.text, /Fara pret unitar .*: Biscuiti cu unt\./);
+  assert.match(r.text, /Fără preț unitar .*: Biscuiti cu unt\./);
   assert.equal(r.structured?.invalid_ean, 1);
 });
 
@@ -85,7 +85,7 @@ test("bad input: isError in Romanian, no RPC call", async () => {
   const { env, calls } = stubEnv({ ok: true, data: "Ab3dEf7hJk" });
   const r = await tool("create_offer_flyer").handler({ store_name: "Magazin", products: [{ name: "Vezi https://x.ro", price: 5, unit: "buc" }] }, env);
   assert.equal(r.isError, true);
-  assert.match(r.text, /^Datele nu sunt bune: Campul "products\[0\]\.name" contine o adresa web/);
+  assert.match(r.text, /^Datele nu sunt bune: Câmpul "products\[0\]\.name" conține o adresă web.* Corectează și încearcă din nou\.$/);
   assert.equal(calls.length, 0);
 });
 
@@ -103,4 +103,45 @@ test("RPC failures map to friendly errors", async () => {
     r = await tool("create_cash_book").handler(structuredClone(MOCK_DRAFTS.cashbook.payload) as Record<string, unknown>, stubEnv({ ok: true, data }).env);
     assert.equal(r.isError, true, String(data));
   }
+});
+
+const ASCII_RO = /(?<!\p{L})(pret|fara|achizitie|vanzare|incasari|inregistrari|plati|portie|portii|gasit|pagina|printeaza|salveaza|expira|atentie|fisa|tehnica|neexigibil|confirmati|campul|lipseste|corecteaza)(?!\p{L})/iu;
+
+test("create_nir schema offers only VAT 21% and 11%", () => {
+  const schema = tool("create_nir").inputSchema as { properties: { lines: { items: { properties: { vat_rate: { enum: number[] } } } } } };
+  assert.deepEqual(schema.properties.lines.items.properties.vat_rate.enum, [21, 11]);
+});
+
+test("old VAT rate in a NIR: isError with the 21/11 rule, no RPC call", async () => {
+  const { env, calls } = stubEnv({ ok: true, data: "Ab3dEf7hJk" });
+  const payload = structuredClone(MOCK_DRAFTS.nir.payload) as { lines: { vat_rate: number }[] };
+  payload.lines[2].vat_rate = 19;
+  const r = await tool("create_nir").handler(payload as unknown as Record<string, unknown>, env);
+  assert.equal(r.isError, true);
+  assert.equal(r.text, 'Datele nu sunt bune: Cota TVA din "lines[2].vat_rate" trebuie să fie 21 sau 11 (cotele în vigoare din 1 august 2025). Corectează și încearcă din nou.');
+  assert.equal(calls.length, 0);
+});
+
+test("every answer is Romanian with diacritics", async () => {
+  for (const [kind, name] of Object.entries(BY_KIND)) {
+    const { env } = stubEnv({ ok: true, data: "Ab3dEf7hJk" });
+    const r = await tool(name).handler(structuredClone(MOCK_DRAFTS[kind as keyof typeof BY_KIND].payload) as Record<string, unknown>, env);
+    assert.match(r.text, /Pagina se printează sau se salvează ca PDF cu butonul „Printează \/ Salvează PDF”\. Linkul expiră în 30 de zile\.$/, kind);
+    const summary = r.text.split("\n\nDocumentul:")[0];
+    assert.doesNotMatch(summary, ASCII_RO, `${kind}: ${summary}`);
+  }
+  assert.equal(MSG_SERVICE, "Serviciul de documente nu este disponibil acum. Încearcă din nou peste câteva minute.");
+});
+
+test("cash book and recipe summaries", async () => {
+  let r = await tool("create_cash_book").handler(structuredClone(MOCK_DRAFTS.cashbook.payload) as Record<string, unknown>, stubEnv({ ok: true, data: "Ab3dEf7hJk" }).env);
+  assert.match(r.text, /^Registrul de casă 30\.09\.2026, Panviro & Fiii SRL: 3 înregistrări\.\nSold din ziua precedentă 1\.250,40 lei, încasări 4\.820,15 lei, plăți 4\.120,00 lei, sold final 1\.950,55 lei\.\n/);
+  const over = structuredClone(MOCK_DRAFTS.cashbook.payload) as { opening_balance: number };
+  over.opening_balance = 60000;
+  r = await tool("create_cash_book").handler(over as unknown as Record<string, unknown>, stubEnv({ ok: true, data: "Ab3dEf7hJk" }).env);
+  assert.match(r.text, /\nAtenție: Soldul final \(60\.700,15 lei\) depășește plafonul de casă de 50\.000,00 lei\./);
+  r = await tool("create_recipe_sheet").handler(structuredClone(MOCK_DRAFTS.recipe.payload) as Record<string, unknown>, stubEnv({ ok: true, data: "Ab3dEf7hJk" }).env);
+  assert.match(r.text, /^Fișă tehnică „[^”]+”: \d+ ingrediente, \d+ porții\.\nCost total [\d.,]+ lei, cost pe porție [\d.,]+ lei/);
+  assert.match(r.text, /Ouă/);
+  assert.match(r.text, /Alergenii trebuie confirmați de operator\./);
 });

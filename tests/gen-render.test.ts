@@ -90,7 +90,9 @@ test("payload with a URL or a bad kind renders the not-found page", () => {
   assert.equal(renderDraft({ ...clone("nir"), kind: "nope" }, ID).status, 404);
   assert.equal(renderDraft(null, ID).status, 404);
   assert.equal(renderDraft(MOCK_DRAFTS.nir, "short").status, 404);
-  assert.match(renderGeneratedNotFound(), /Documentul nu a fost gasit/);
+  assert.match(renderGeneratedNotFound(), /Documentul nu a fost găsit/);
+  assert.match(renderGeneratedNotFound(), /<title>Documentul nu a fost găsit - Tapselo<\/title>/);
+  assert.match(renderGeneratedNotFound(), /Linkul nu există sau documentul a expirat \(documentele se păstrează 30 de zile\)\./);
   assert.equal(renderDraft(null, ID).maxAge, 60);
 });
 
@@ -107,8 +109,8 @@ test("flyer: offers look, emoji only (no AI pictures), prices, cache", () => {
   assert.match(out, /🍞/);
   assert.match(out, /🍅/);
   assert.match(out, /🫒/);
-  // Telemea 32 -> 27, no 30-day low given: struck regular price labelled "Pret anterior", no 30-day line
-  assert.match(out, /<p class="old">Pret anterior: <s[^>]*>32,00 lei<\/s><\/p>/);
+  // Telemea 32 -> 27, no 30-day low given: struck regular price labelled "Preț anterior", no 30-day line
+  assert.match(out, /<p class="old">Preț anterior: <s[^>]*>32,00 lei<\/s><\/p>/);
   assert.match(out, /<span class="new">27,00<\/span><span class="unit">lei \/ kg<\/span>/);
   // Cafea: 30-day low given -> struck 21,50 and the legal line
   assert.match(out, /<p class="old"><s[^>]*>21,50 lei<\/s><\/p>/);
@@ -142,9 +144,9 @@ test("labels: big price, unit price, barcode only for a valid EAN-13", () => {
   const out = renderDraft(MOCK_DRAFTS.labels, ID).html;
   assert.equal((out.match(/<article class="lbl">/g) ?? []).length, 5);
   assert.match(out, /<b>11<\/b><sup>,99<\/sup><span>lei \/ buc<\/span>/);
-  assert.match(out, /Pret unitar: <b>88,00 lei \/ kg<\/b>/);
-  assert.match(out, /Pret unitar: <b>32,00 lei \/ kg<\/b>/);
-  assert.match(out, /Pret unitar: \.+ lei \/ kg/); // biscuiti, no quantity
+  assert.match(out, /Preț unitar: <b>88,00 lei \/ kg<\/b>/);
+  assert.match(out, /Preț unitar: <b>32,00 lei \/ kg<\/b>/);
+  assert.match(out, /Preț unitar: \.+ lei \/ kg/); // biscuiti, no quantity
   assert.equal((out.match(/<svg class="ean"/g) ?? []).length, 1); // only 5901234123457
   assert.match(out, /aria-label="Cod de bare 5901234123457"/);
   assert.match(out, /<p class="ean">EAN 5941234567890<\/p>/); // invalid: digits, no bars
@@ -186,10 +188,10 @@ test("NIR: received quantity drives the values and the differences note", () => 
 
 test("recipe: cost per portion and the allergen note", () => {
   const out = renderDraft(MOCK_DRAFTS.recipe, ID).html;
-  assert.match(out, /Cost pe portie: <b>2,11 lei<\/b>/);
+  assert.match(out, /Cost pe porție: <b>2,11 lei<\/b>/);
   assert.ok(out.includes(ALLERGEN_NOTE));
-  assert.equal(ALLERGEN_NOTE, "Alergenii trebuie confirmati de operator.");
-  for (const a of ["Cereale care contin gluten", "Oua", "Lapte (inclusiv lactoza)", "Seminte de susan"]) assert.ok(out.includes(`<li>${a}</li>`), a);
+  assert.equal(ALLERGEN_NOTE, "Alergenii trebuie confirmați de operator.");
+  for (const a of ["Cereale care conțin gluten", "Ouă", "Lapte (inclusiv lactoză)", "Semințe de susan"]) assert.ok(out.includes(`<li>${a}</li>`), a);
 });
 
 test("cash book: balances and the 50,000 lei warning", () => {
@@ -205,4 +207,21 @@ test("cash book: balances and the 50,000 lei warning", () => {
   const d = clone("cashbook");
   d.payload.opening_balance = 60000;
   assert.match(renderDraft(d, ID).html, /<p class="warn">Soldul final \(60\.700,15 lei\) depășește plafonul de casă de 50\.000,00 lei\. Depune diferența la bancă în cel mult două zile lucrătoare\./);
+});
+
+test("a stored NIR with a VAT rate no longer in force renders the not-found page", () => {
+  for (const old of [0, 5, 9, 19]) {
+    const d = clone("nir");
+    d.payload.lines[0].vat_rate = old;
+    const r = renderDraft(d, ID);
+    assert.equal(r.status, 404, String(old));
+    assert.match(r.html, /Documentul nu a fost găsit/);
+  }
+});
+
+test("recipe sheet in Romanian with diacritics", () => {
+  const out = renderDraft(MOCK_DRAFTS.recipe, ID).html;
+  assert.match(out, /<h1 class="doc-title">Fișă tehnică<\/h1>/);
+  assert.match(out, /<b>Număr de porții:<\/b>/);
+  assert.match(out, /<div>Întocmit<span>Nume, prenume, semnătura<\/span><\/div>/);
 });

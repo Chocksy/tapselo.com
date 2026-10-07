@@ -1,7 +1,7 @@
-import { roundMoney } from "../generators/validate.ts";
+import { roundMoney, VAT_RATES } from "../generators/validate.ts";
 
-/** Romanian VAT rates from 1 August 2025 (Legea 141/2025): 21% standard, 11% reduced. */
-export const VAT_RATES_RO = [21, 11] as const;
+/** Same list as the /g document validators: 21% standard, 11% reduced (from 1 August 2025). */
+export const VAT_RATES_RO = VAT_RATES;
 export type VatRateRo = (typeof VAT_RATES_RO)[number];
 
 export function isVatRateRo(n: unknown): n is VatRateRo {

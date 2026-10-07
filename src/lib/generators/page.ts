@@ -18,7 +18,7 @@ export const KIND_TITLES: Record<string, string> = {
   flyer: "Flyer cu oferte",
   labels: "Etichete de raft",
   nir: "Notă de recepție și constatare de diferențe (NIR)",
-  recipe: "Fisa tehnica",
+  recipe: "Fișă tehnică",
   cashbook: "Registrul de casă",
 };
 
@@ -164,14 +164,14 @@ export function renderGeneratedNotFound(): string {
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Documentul nu a fost gasit - Tapselo</title>
+<title>Documentul nu a fost găsit - Tapselo</title>
 <meta name="robots" content="noindex, nofollow" />
 <style>${DOC_CSS}${CHROME_CSS}.sheet{text-align:center;font-size:12pt}</style>
 </head>
 <body>
 <main class="sheet">
-<h1 class="doc-title">Documentul nu a fost gasit</h1>
-<p>Linkul nu exista sau documentul a expirat (documentele se pastreaza 30 de zile).</p>
+<h1 class="doc-title">Documentul nu a fost găsit</h1>
+<p>Linkul nu există sau documentul a expirat (documentele se păstrează 30 de zile).</p>
 <p><a href="${escapeHtml(trackedUrl("/", "g_not_found"))}">Mergi pe tapselo.com</a></p>
 </main>
 </body>

@@ -101,8 +101,8 @@ ${c.warnings.map((w) => `<p class="warn">${escapeHtml(w)}</p>`).join("\n")}
 export function cashbookSummary(p: CashbookPayload): string {
   const c = cashbookCalc(p);
   return [
-    `Registru de casa ${formatDate(p.date) ?? p.date}, ${p.company}: ${p.entries.length} inregistrari.`,
-    `Sold initial ${fmtMoney(p.opening_balance)} lei, incasari ${fmtMoney(c.total_receipts)} lei, plati ${fmtMoney(c.total_payments)} lei, sold final ${fmtMoney(c.closing_balance)} lei.`,
-    ...c.warnings.map((w) => `Atentie: ${w}`),
+    `Registrul de casă ${formatDate(p.date) ?? p.date}, ${p.company}: ${p.entries.length} înregistrări.`,
+    `Sold din ziua precedentă ${fmtMoney(p.opening_balance)} lei, încasări ${fmtMoney(c.total_receipts)} lei, plăți ${fmtMoney(c.total_payments)} lei, sold final ${fmtMoney(c.closing_balance)} lei.`,
+    ...c.warnings.map((w) => `Atenție: ${w}`),
   ].join("\n");
 }
