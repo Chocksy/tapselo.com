@@ -45,11 +45,23 @@ const BARCODES = {
   "5941234000037": { status: 429 },
   "5941234000044": { status: 400 },
   "5941234000051": { status: 500 },
+  "5941234000068": { status: 200, body: { ean: "5941234000068", name: "APA MINERALA 2L 1L=1.20LEI", vat_rate: 21 } },
 };
 
-async function phonePage() {
+const OFF_IMG = "https://images.openfoodfacts.org/images/products/594/123/400/0013/front_ro.3.200.png";
+// 1×1 transparent PNG, served for every OFF image so the test never leaves the machine.
+const PNG = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=", "base64");
+const offProduct = (ean, fields) => ({ ean, name: null, brand: null, quantity: null, category: null, nutriscore: null, countries: null, image: null, url: `https://world.openfoodfacts.org/product/${ean}`, ...fields });
+const OFF = {
+  "5941234000013": { status: 200, body: offProduct("5941234000013", { name: `Telemea ${EVIL}`, brand: `Napolact ${EVIL}`, quantity: "400 g", category: "Brânzeturi", nutriscore: "d", countries: "România", image: OFF_IMG }) },
+  "5941234000020": { status: 200, body: offProduct("5941234000020", { name: "Nutella", brand: "Ferrero", quantity: "750 g", category: "Creme tartinabile", image: "https://evil.example/x.png" }) },
+};
+
+async function phonePage(init) {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, locale: "ro-RO", acceptDownloads: true });
+  if (init) await ctx.addInitScript(init);
   const calls = [];
+  const offCalls = [];
   await ctx.route("**/api/barcodes/*", (route) => {
     const url = new URL(route.request().url());
     assert.equal(url.origin, base, "barcode lookup is same-origin");
@@ -58,10 +70,24 @@ async function phonePage() {
     const r = BARCODES[ean] ?? { status: 404 };
     return route.fulfill({ status: r.status, contentType: "application/json", body: r.body ? JSON.stringify(r.body) : "" });
   });
+  await ctx.route("**/api/off/*", (route) => {
+    const url = new URL(route.request().url());
+    assert.equal(url.origin, base, "Open Food Facts goes through the same-origin proxy");
+    const ean = url.pathname.split("/").pop();
+    offCalls.push(ean);
+    const r = OFF[ean] ?? { status: 404 };
+    return route.fulfill({ status: r.status, contentType: "application/json", body: JSON.stringify(r.body ?? { error: "Produsul nu există în Open Food Facts." }) });
+  });
+  await ctx.route("https://images.openfoodfacts.org/**", (route) => route.fulfill({ status: 200, contentType: "image/png", body: PNG }));
+  const direct = [];
+  await ctx.route("https://world.openfoodfacts.org/**", (route) => {
+    direct.push(route.request().url());
+    return route.abort();
+  });
   const page = await ctx.newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  return { ctx, page, calls, errors };
+  return { ctx, page, calls, offCalls, direct, errors };
 }
 
 async function open(page, path) {
@@ -105,10 +131,10 @@ after(async () => {
   server?.close();
 });
 
-test("hub: five tools, footer link only", async () => {
+test("hub: six tools, footer link only", async () => {
   const { ctx, page } = await phonePage();
   await open(page, "/unelte/");
-  assert.equal(await page.locator("main li a").count(), 5);
+  assert.equal(await page.locator("main li a").count(), 6);
   assert.equal(await page.locator('nav a[href="/unelte"], header a[href="/unelte"]').count(), 0, "no Unelte link in the header");
   assert.equal(await page.locator('footer a[href="/unelte"]').count(), 1);
   assert.match(await page.textContent("main"), /cota TVA după codul de bare EAN/);
@@ -120,6 +146,7 @@ test("hub: five tools, footer link only", async () => {
     assert.equal(card.cursor, "pointer");
   }
   assert.ok(cards.some((c) => c.href === "/ghid/verificare-a4200"), "hub lists the A4200 checker");
+  assert.ok(cards.some((c) => c.href === "/unelte/verificare-cod-de-bare"), "hub lists the barcode tool");
   await ctx.close();
 });
 
@@ -194,6 +221,10 @@ test("calculator TVA: barcode lookup validates, escapes and maps errors", async 
   assert.doesNotMatch(card, /24,8|62,00|lei/i);
   assert.doesNotMatch(card, /\bX\b/);
   assert.equal(await page.evaluate(() => window.__xss), undefined);
+  assert.equal(await page.textContent("#vat-ean-details"), "Vezi detalii produs →");
+  assert.equal(await page.getAttribute("#vat-ean-details", "href"), "/unelte/verificare-cod-de-bare/?ean=5941234000013");
+  assert.equal(await page.locator('#vat-barcode-block a[href="/unelte/verificare-cod-de-bare/"]').count(), 1);
+  assert.equal(await page.locator('#related-title + ul a[href="/unelte/verificare-cod-de-bare"]').count(), 1);
 
   const expect = [
     ["5941234000020", /Nu am găsit produsul în baza de date Tapselo/],
@@ -207,6 +238,159 @@ test("calculator TVA: barcode lookup validates, escapes and maps errors", async 
     await page.waitForFunction(() => !document.querySelector("#vat-ean-search")?.hasAttribute("disabled"));
     assert.match(await page.textContent("#vat-ean-err"), msg, ean);
   }
+  await ctx.close();
+});
+
+const done = (page) => page.waitForFunction(() => !document.querySelector("#bc-search")?.hasAttribute("disabled") && !document.querySelector("#bc-results")?.textContent?.includes("Se caută…"));
+
+test("verificare cod de bare: SEO head, JSON-LD, autofocus, no camera without BarcodeDetector", async () => {
+  const { ctx, page, errors } = await phonePage(() => {
+    delete window.BarcodeDetector;
+  });
+  await open(page, "/unelte/verificare-cod-de-bare/");
+  assert.equal(await page.title(), "Verificare cod de bare (EAN) – caută produs online | Gratuit");
+  assert.equal(await page.textContent("h1"), "Verificare cod de bare");
+  const crumbs = await page.$$eval('nav[aria-label="Breadcrumb"] > *:not(span.mx-2)', (els) => els.map((e) => [e.textContent.trim(), e.getAttribute("href")]));
+  assert.deepEqual(crumbs, [
+    ["Acasă", "/"],
+    ["Unelte gratuite", "/unelte"],
+    ["Verificare cod de bare", null],
+  ]);
+  const ld = await page.$$eval('script[type="application/ld+json"]', (s) => s.map((x) => JSON.parse(x.textContent)));
+  for (const type of ["WebApplication", "FAQPage", "BreadcrumbList"]) assert.ok(ld.some((b) => b["@type"] === type), type);
+  assert.equal(ld.find((b) => b["@type"] === "WebApplication").url, "https://tapselo.com/unelte/verificare-cod-de-bare/");
+  const faq = ld.find((b) => b["@type"] === "FAQPage").mainEntity.map((q) => q.name);
+  assert.ok(faq.some((q) => /594/.test(q)), "FAQ on 594 / România");
+  assert.ok(faq.some((q) => /EAN-13/.test(q)));
+  const main = await page.textContent("main");
+  assert.doesNotMatch(main, /[şţŞŢ]/, "comma-below diacritics only");
+  assert.doesNotMatch(main, /\bQR\b|generator cod/i);
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "bc-ean");
+  assert.equal(await page.isVisible("#bc-camera"), false, "without BarcodeDetector the camera button stays hidden");
+  assert.match(await page.textContent("#bc-ean-hint"), /cititor de coduri de bare USB/);
+  assert.deepEqual(errors, []);
+  await ctx.close();
+});
+
+test("verificare cod de bare: USB-scanner style input, both sources, escaping, no prices", async () => {
+  const { ctx, page, calls, offCalls, direct, errors } = await phonePage();
+  await open(page, "/unelte/verificare-cod-de-bare/");
+  // A USB scanner types the digits fast and ends with Enter.
+  await page.keyboard.type("5941234000013\n", { delay: 5 });
+  await done(page);
+  assert.deepEqual(calls, ["5941234000013"]);
+  assert.deepEqual(offCalls, ["5941234000013"]);
+  assert.match(await page.textContent("#bc-code"), /594 — România/);
+  assert.match(await page.textContent("#bc-code"), /3 — corectă/);
+  const tapselo = await page.textContent("#bc-tapselo");
+  assert.match(tapselo, /Telemea <img src=x onerror="window.__xss=1">/);
+  assert.match(tapselo, /11%/);
+  const off = await page.textContent("#bc-off");
+  assert.match(off, /Napolact <img src=x/);
+  assert.match(off, /400 g/);
+  assert.match(off, /Brânzeturi/);
+  assert.match(off, /Date și imagini: Open Food Facts \(ODbL \/ CC BY-SA\)/);
+  assert.equal(await page.getAttribute("#bc-off [data-off-attribution] a", "href"), "https://world.openfoodfacts.org/product/5941234000013");
+  assert.equal(await page.getAttribute("#bc-off img", "src"), OFF_IMG);
+  assert.equal(await page.$eval("#bc-off img", (img) => img.complete && img.naturalWidth > 0), true, "OFF image loads");
+  assert.doesNotMatch(await page.textContent("#bc-results"), /24,8|62,00|\blei\b/i);
+  assert.equal(await page.evaluate(() => window.__xss), undefined);
+  assert.equal(new URL(page.url()).search, "?ean=5941234000013");
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "bc-ean");
+  assert.equal(await page.$eval("#bc-ean", (i) => i.selectionEnd - i.selectionStart), 13, "code selected for the next scan");
+  if (SHOTS) await page.screenshot({ path: join(SHOTS, "verificare-cod-de-bare-result-390.png"), fullPage: true });
+
+  // Next scan replaces the code; Tapselo misses, OFF has it, a foreign image host is dropped.
+  await page.keyboard.type("5941234000020\n", { delay: 5 });
+  await done(page);
+  assert.match(await page.textContent("#bc-tapselo"), /Nu avem acest cod în nomenclatorul Tapselo/);
+  assert.match(await page.textContent("#bc-off"), /Nutella/);
+  assert.equal(await page.locator("#bc-off img").count(), 0);
+
+  // Tapselo has it, OFF does not.
+  await page.fill("#bc-ean", "5941234000068");
+  await page.click("#bc-search");
+  await done(page);
+  assert.match(await page.textContent("#bc-tapselo"), /APA MINERALA 2L/);
+  assert.doesNotMatch(await page.textContent("#bc-tapselo"), /LEI/);
+  assert.match(await page.textContent("#bc-off"), /Produsul nu există în Open Food Facts/);
+
+  // Neither source; other countries decode too.
+  await page.fill("#bc-ean", "4006381333931");
+  await page.press("#bc-ean", "Enter");
+  await done(page);
+  assert.match(await page.textContent("#bc-code"), /400 — Germania/);
+  assert.match(await page.textContent("#bc-tapselo"), /Nu avem acest cod/);
+  assert.match(await page.textContent("#bc-off"), /nu există în Open Food Facts/);
+
+  // Tapselo rate limit: OFF still shows.
+  await page.fill("#bc-ean", "5941234000037");
+  await page.press("#bc-ean", "Enter");
+  await done(page);
+  assert.match(await page.textContent("#bc-tapselo"), /Prea multe căutări/);
+  assert.deepEqual(direct, []);
+  assert.deepEqual(errors, []);
+  await ctx.close();
+});
+
+test("verificare cod de bare: wrong check digit and in-store codes decode without any lookup", async () => {
+  const { ctx, page, calls, offCalls } = await phonePage();
+  await open(page, "/unelte/verificare-cod-de-bare/");
+  await page.fill("#bc-ean", "5941234000014");
+  await page.press("#bc-ean", "Enter");
+  assert.match(await page.textContent("#bc-code"), /594 — România/);
+  assert.match(await page.textContent("#bc-code"), /4 — greșită \(cifra corectă ar fi 3\)/);
+  assert.match(await page.textContent("#bc-err"), /Cifra de control nu se potrivește/);
+  await page.fill("#bc-ean", "2000000000008");
+  await page.press("#bc-ean", "Enter");
+  assert.match(await page.textContent("#bc-code"), /Cod intern de magazin/);
+  assert.match(await page.textContent("#bc-err"), /coduri interne de magazin/);
+  await page.fill("#bc-ean", "12345");
+  await page.press("#bc-ean", "Enter");
+  assert.match(await page.textContent("#bc-err"), /EAN-13 de 13 cifre/);
+  assert.equal(await page.isVisible("#bc-results"), false);
+  assert.deepEqual(calls, []);
+  assert.deepEqual(offCalls, []);
+  await ctx.close();
+});
+
+test("verificare cod de bare: ?ean= deep link from the VAT calculator searches on load", async () => {
+  const { ctx, page, calls } = await phonePage();
+  await open(page, "/unelte/verificare-cod-de-bare/?ean=5941234000013");
+  await done(page);
+  assert.deepEqual(calls, ["5941234000013"]);
+  assert.match(await page.textContent("#bc-off"), /Napolact/);
+  await ctx.close();
+});
+
+test("verificare cod de bare: camera scan via BarcodeDetector", async () => {
+  const { ctx, page, errors } = await phonePage(() => {
+    let seen = 0;
+    window.BarcodeDetector = class {
+      static async getSupportedFormats() {
+        return ["ean_13", "qr_code"];
+      }
+      async detect() {
+        seen += 1;
+        return seen < 3 ? [] : [{ rawValue: "5941234000013", format: "ean_13" }];
+      }
+    };
+    navigator.mediaDevices.getUserMedia = async () => {
+      const c = document.createElement("canvas");
+      c.width = 64;
+      c.height = 48;
+      c.getContext("2d").fillRect(0, 0, 64, 48);
+      return c.captureStream(5);
+    };
+  });
+  await open(page, "/unelte/verificare-cod-de-bare/");
+  assert.equal(await page.isVisible("#bc-camera"), true);
+  await page.click("#bc-camera");
+  await page.waitForFunction(() => document.querySelector("#bc-ean")?.value === "5941234000013");
+  await done(page);
+  assert.equal(await page.isVisible("#bc-scanner"), false, "camera stops after a hit");
+  assert.match(await page.textContent("#bc-tapselo"), /11%/);
+  assert.deepEqual(errors, []);
   await ctx.close();
 });
 

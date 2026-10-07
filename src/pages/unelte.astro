@@ -1,5 +1,5 @@
 ---
-import { ArrowRight, BadgePercent, Calculator, ClipboardList, FileCheck, NotebookPen } from "@lucide/astro";
+import { ArrowRight, BadgePercent, Calculator, ClipboardList, FileCheck, NotebookPen, ScanBarcode } from "@lucide/astro";
 import GuideShell from "../components/GuideShell.astro";
 import { A4200_CHECKER_PATH } from "../lib/articles/schema.ts";
 import { barcodeApiBase } from "../lib/unelte/barcode.ts";
@@ -21,6 +21,14 @@ const tools = [
     description:
       "Adaugă sau scoate TVA la 21% și 11%. Calculează preț cu TVA, preț fără TVA și suma TVA." +
       (barcodeEnabled ? " Opțional: cota TVA după codul de bare EAN." : ""),
+  },
+  {
+    href: "/unelte/verificare-cod-de-bare",
+    title: "Verificare cod de bare",
+    icon: ScanBarcode,
+    action: "Deschide verificarea",
+    description:
+      "Caută un produs după codul EAN-13: țara prefixului (594 = România), cifra de control, denumirea, cota TVA, marca și imaginea.",
   },
   {
     href: "/unelte/registru-de-casa",
@@ -59,7 +67,7 @@ const tools = [
 
 <GuideShell
   title="Unelte gratuite pentru comercianți | Tapselo"
-  description="Unelte gratuite Tapselo: calculator TVA, registru de casă, generator NIR, adaos comercial și verificare A4200 — în browser, în română."
+  description="Unelte gratuite Tapselo: calculator TVA, verificare cod de bare, registru de casă, generator NIR, adaos comercial și verificare A4200 — în browser, în română."
   heading="Unelte gratuite"
   lead="Instrumente care rulează în browserul tău. Nu colectăm conținutul documentelor pe care le generezi local."
   ctaTitle="Vrei mai puțină muncă manuală la casă?"
