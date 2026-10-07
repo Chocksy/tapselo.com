@@ -126,7 +126,7 @@ export function offersDescription(p: OffersPayload): string {
       const price = formatLei(x.promo_price_cents);
       return price ? `${(x.name ?? "").trim()} ${price}` : (x.name ?? "").trim();
     });
-    const more = promos.length > 3 ? ` si inca ${promos.length - 3}` : "";
+    const more = promos.length > 3 ? ` și încă ${promos.length - 3}` : "";
     return truncate(`Oferte la ${name}: ${parts.join(", ")}${more}.`, 200);
   }
   const ann = (p.announcements ?? []).find((a) => (a.title ?? "").trim());
@@ -219,7 +219,7 @@ ${f.body}
 </div></main>
 <footer class="ftr"><div class="wrap">
 ${f.footer}
-${f.made ?? `<p class="made">Pagina realizata cu <a href="/">Tapselo</a>, programul de casa al magazinului.</p>`}
+${f.made ?? `<p class="made">Pagină realizată cu <a href="/">Tapselo</a>, programul de casă al magazinului.</p>`}
 </div></footer>
 ${f.bodyEnd ? `${f.bodyEnd}\n` : ""}</body>
 </html>
@@ -322,7 +322,7 @@ ${media}
 <div class="ann-body">
 <h3>${escapeHtml(title)}</h3>
 ${body ? `<p>${multiline(body)}</p>` : ""}
-${until ? `<span class="until">Pana pe ${escapeHtml(until)}</span>` : ""}
+${until ? `<span class="until">Până pe ${escapeHtml(until)}</span>` : ""}
 </div>
 </article>`;
 }
@@ -349,10 +349,10 @@ function renderPromo(x: OfferPromo): string {
 <div class="art${img ? " has-img" : ""}" aria-hidden="true">${img ? `<img src="${escapeHtml(img)}" alt="" loading="lazy" decoding="async" width="1024" height="1024" />` : escapeHtml(emoji)}${percent >= 1 ? `<span class="badge">-${percent}%</span>` : ""}</div>
 <div class="promo-body">
 <h3>${escapeHtml(name)}</h3>
-${showOld ? `<p class="old">${(x.old_label ?? "").trim() ? `${escapeHtml((x.old_label ?? "").trim())}: ` : ""}<s aria-label="Pret vechi ${escapeHtml(regular)}">${escapeHtml(regular)}</s></p>` : ""}
+${showOld ? `<p class="old">${(x.old_label ?? "").trim() ? `${escapeHtml((x.old_label ?? "").trim())}: ` : ""}<s aria-label="Preț vechi ${escapeHtml(regular)}">${escapeHtml(regular)}</s></p>` : ""}
 ${promoNumber ? `<p class="tag"><span class="new">${escapeHtml(promoNumber)}</span><span class="unit">${escapeHtml(unitLabel(x.unit))}</span></p>` : ""}
-${prior && Number.isFinite(days) && days > 0 ? `<p class="prior">Cel mai mic pret in ultimele ${escapeHtml(daysLabel(days))}: ${escapeHtml(prior)}</p>` : ""}
-${until ? `<p class="valid">Pana pe ${escapeHtml(until)}</p>` : ""}
+${prior && Number.isFinite(days) && days > 0 ? `<p class="prior">Cel mai mic preț în ultimele ${escapeHtml(daysLabel(days))}: ${escapeHtml(prior)}</p>` : ""}
+${until ? `<p class="valid">Până pe ${escapeHtml(until)}</p>` : ""}
 </div>
 </article>`;
 }
@@ -369,7 +369,7 @@ export function renderOffersPage(p: OffersPayload, slug: string, opts: OffersRen
   const parts: string[] = [];
 
   if (anns.length > 0) {
-    parts.push(`<section aria-label="Anunturi">${anns.map(renderAnnouncement).join("\n")}</section>`);
+    parts.push(`<section aria-label="Anunțuri">${anns.map(renderAnnouncement).join("\n")}</section>`);
   }
 
   if (promos.length > 0) {
@@ -380,14 +380,14 @@ ${promos.map(renderPromo).join("\n")}
 </div>
 </section>`);
   } else if (anns.length === 0) {
-    parts.push(`<div class="card empty"><p>Acum nu sunt oferte. Revino in curand.</p></div>`);
+    parts.push(`<div class="card empty"><p>Acum nu sunt oferte. Revino în curând.</p></div>`);
   }
 
   if (p.signup_enabled && !opts.hideSignup) {
     parts.push(`<section class="cta">
 <p>Vrei ofertele pe email sau WhatsApp?</p>
-<small>Te anuntam cand apar preturi noi.</small>
-<a class="btn" href="/c/${escapeHtml(s)}">Inscrie-te</a>
+<small>Te anunțăm când apar prețuri noi.</small>
+<a class="btn" href="/c/${escapeHtml(s)}">Înscrie-te</a>
 </section>`);
   }
 
@@ -400,7 +400,7 @@ ${promos.map(renderPromo).join("\n")}
     `<p><strong>${escapeHtml(company || name)}</strong></p>`,
     address ? `<p>${escapeHtml(address)}</p>` : "",
     phone ? `<p>Telefon: ${tel ? `<a href="tel:${escapeHtml(tel)}">${escapeHtml(phone)}</a>` : escapeHtml(phone)}</p>` : "",
-    opts.hidePrivacyLink ? "" : `<p class="links"><a href="/p/${escapeHtml(s)}">Cum folosim datele clientilor</a></p>`,
+    opts.hidePrivacyLink ? "" : `<p class="links"><a href="/p/${escapeHtml(s)}">Cum folosim datele clienților</a></p>`,
     anyImage ? `<p class="img-note">${IMAGE_NOTE}</p>` : "",
   ]
     .filter(Boolean)
@@ -413,7 +413,7 @@ ${promos.map(renderPromo).join("\n")}
     storeLabel: name,
     kicker: "Ofertele de azi",
     heading: "Oferte",
-    sub: "Preturi mici la produsele de mai jos, doar in magazin.",
+    sub: "Prețuri mici la produsele de mai jos, doar în magazin.",
     body: parts.join("\n"),
     footer,
     theme,
@@ -427,16 +427,16 @@ ${promos.map(renderPromo).join("\n")}
 // Unknown slug, page turned off, or the service is not reachable.
 export function renderNotFoundPage(): string {
   return page({
-    title: "Pagina nu a fost gasita - Tapselo",
-    description: "Pagina de oferte nu exista sau nu este activa.",
+    title: "Pagina nu a fost găsită - Tapselo",
+    description: "Pagina de oferte nu există sau nu este activă.",
     canonical: `${SITE}/`,
     storeLabel: "Oferte",
     kicker: "",
-    heading: "Nu am gasit ofertele",
+    heading: "Nu am găsit ofertele",
     headingClass: "h1-sm",
     sub: "",
     body: `<div class="card">
-<p>Magazinul nu are o pagina de oferte activa la aceasta adresa. Verifica linkul sau intreaba la casa magazinului.</p>
+<p>Magazinul nu are o pagină de oferte activă la această adresă. Verifică linkul sau întreabă la casa magazinului.</p>
 </div>`,
     footer: "",
     theme: "piata",

@@ -16,7 +16,7 @@ const { c } = Astro.props as { c: Checklist };
 ---
 
 <GuideShell
-  title={`${c.title}: autorizatii si pasi | Ghid Tapselo`}
+  title={`${c.title}: autorizații și pași | Ghid Tapselo`}
   description={c.summary}
   heading={c.title}
   lead={c.summary}
@@ -34,7 +34,7 @@ const { c } = Astro.props as { c: Checklist };
   </section>
 
   <section>
-    <h2 class="font-display text-3xl italic text-primary">Pasi</h2>
+    <h2 class="font-display text-3xl italic text-primary">Pași</h2>
     <ol class="mt-6 space-y-8">
       {c.steps.map((s, i) => (
         <li class="flex gap-4">
@@ -61,14 +61,14 @@ const { c } = Astro.props as { c: Checklist };
   </section>
 
   <section>
-    <h2 class="font-display text-3xl italic text-primary">Obligatii fiscale</h2>
+    <h2 class="font-display text-3xl italic text-primary">Obligații fiscale</h2>
     <ul class="kb-prose mt-4">
       {c.fiscal.map((x) => <li set:html={inlineMd(x)} />)}
     </ul>
   </section>
 
   <section>
-    <h2 class="font-display text-3xl italic text-primary">Documente de pastrat</h2>
+    <h2 class="font-display text-3xl italic text-primary">Documente de păstrat</h2>
     <ul class="kb-prose mt-4">
       {c.documents.map((x) => <li set:html={inlineMd(x)} />)}
     </ul>

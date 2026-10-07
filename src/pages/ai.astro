@@ -10,21 +10,21 @@ import { generatorTools } from "../lib/generators/tools.ts";
 
 const LINES: Record<string, string> = {
   search_business_rules:
-    "Raspunde la intrebari despre TVA, grupa TVA pe casa de marcat, plafoane, raport Z, e-Factura, SAF-T, NIR, SGR si alergeni, cu surse oficiale.",
-  explain_datecs_error: "Explica un cod de eroare de la casa de marcat Datecs si spune ce sa faci.",
-  dibal_scale_help: "Ajutor pentru cantarele Dibal: format cod de bare, PLU, etichete, retea si sincronizare cu POS-ul.",
-  decode_scale_barcode: "Citeste un cod de bare de pe eticheta de cantar: PLU, greutate sau pret si cifra de control.",
-  calculate_shelf_price: "Calculeaza pretul la raft din cost, adaos sau marja, cota TVA si rotunjire, plus pretul pe kg sau litru.",
-  check_company: "Verifica o firma dupa CUI in registrul public ANAF: denumire, adresa, TVA, TVA la incasare, e-Factura, stare.",
-  check_tax_thresholds: "Compara cifra de afaceri anuala cu plafonul de scutire TVA si cu plafonul de microintreprindere (curs BNR).",
-  open_shop_checklist: "Lista de autorizatii si pasi pentru un magazin nou: macelarie, brutarie, cafenea, alimentara si altele.",
-  compare_pos_systems: "Compara programe de casa de marcat din Romania pentru tipul tau de magazin. Comparatia este facuta de Tapselo.",
-  lookup_products_by_ean: "Cauta produse dupa codul de bare in Open Food Facts: nume, marca, gramaj, poza. Pana la 30 de coduri.",
+    "Răspunde la întrebări despre TVA, grupa TVA pe casa de marcat, plafoane, raport Z, e-Factura, SAF-T, NIR, SGR și alergeni, cu surse oficiale.",
+  explain_datecs_error: "Explică un cod de eroare de la casa de marcat Datecs și spune ce să faci.",
+  dibal_scale_help: "Ajutor pentru cântarele Dibal: format cod de bare, PLU, etichete, rețea și sincronizare cu POS-ul.",
+  decode_scale_barcode: "Citește un cod de bare de pe eticheta de cântar: PLU, greutate sau preț și cifra de control.",
+  calculate_shelf_price: "Calculează prețul la raft din cost, adaos sau marjă, cota TVA și rotunjire, plus prețul pe kg sau litru.",
+  check_company: "Verifică o firmă după CUI în registrul public ANAF: denumire, adresă, TVA, TVA la încasare, e-Factura, stare.",
+  check_tax_thresholds: "Compară cifra de afaceri anuală cu plafonul de scutire TVA și cu plafonul de microîntreprindere (curs BNR).",
+  open_shop_checklist: "Lista de autorizații și pași pentru un magazin nou: măcelărie, brutărie, cafenea, alimentară și altele.",
+  compare_pos_systems: "Compară programe de casă de marcat din România pentru tipul tău de magazin. Comparația este făcută de Tapselo.",
+  lookup_products_by_ean: "Caută produse după codul de bare în Open Food Facts: nume, marcă, gramaj, poză. Până la 30 de coduri.",
   create_offer_flyer: "Face un flyer A4 cu ofertele magazinului.",
-  create_shelf_labels: "Face etichete de raft A4 (21 pe pagina) cu pret, pret pe kg sau litru si cod de bare.",
-  create_nir: "Face o nota de intrare-receptie (NIR) dintr-o factura de la furnizor, cu TVA, adaos si totaluri.",
-  create_recipe_sheet: "Face o fisa tehnica pentru o reteta: ingrediente, cost pe portie si alergeni.",
-  create_cash_book: "Face registrul de casa pentru o zi: incasari, plati si soldul dupa fiecare inregistrare.",
+  create_shelf_labels: "Face etichete de raft A4 (21 pe pagină) cu preț, preț pe kg sau litru și cod de bare.",
+  create_nir: "Face o notă de intrare-recepție (NIR) dintr-o factură de la furnizor, cu TVA, adaos și totaluri.",
+  create_recipe_sheet: "Face o fișă tehnică pentru o rețetă: ingrediente, cost pe porție și alergeni.",
+  create_cash_book: "Face registrul de casă pentru o zi: încasări, plăți și soldul după fiecare înregistrare.",
 };
 
 const describe = (name: string): string => {
@@ -33,10 +33,10 @@ const describe = (name: string): string => {
   return line;
 };
 const groups = [
-  { title: "Raspunsuri", lead: "Unelte care raspund pe loc. Nu salveaza nimic.", tools: answerTools },
+  { title: "Răspunsuri", lead: "Unelte care răspund pe loc. Nu salvează nimic.", tools: answerTools },
   {
     title: "Documente",
-    lead: "Unelte care fac o pagina printabila pe tapselo.com. Linkul expira in 30 de zile.",
+    lead: "Unelte care fac o pagină printabilă pe tapselo.com. Linkul expiră în 30 de zile.",
     tools: generatorTools,
   },
 ].map((g) => ({ ...g, tools: g.tools.map((t) => ({ name: t.name, title: t.title, line: describe(t.name) })) }));
@@ -44,16 +44,16 @@ const extra = Object.keys(LINES).filter((n) => ![...answerTools, ...generatorToo
 if (extra.length) throw new Error(`/ai: descriptions for unknown tools: ${extra.join(", ")}`);
 
 const PROMPTS = [
-  "Ce grupa TVA pun pentru paine pe casa de marcat?",
-  "Casa de marcat Datecs imi da eroarea -111008, ce fac?",
-  "Decodeaza codul de bare 2800123012342",
-  "Cost 10 lei fara TVA, adaos 30%, TVA 11%, rotunjit la ,99",
-  "Verifica CUI 14399840",
-  "Vreau sa deschid o macelarie, ce autorizatii imi trebuie?",
-  "Ce program de casa de marcat e bun pentru o brutarie cu retete?",
-  "Fa-mi un flyer cu oferte: Telemea 32 lei/kg redus la 27, Cafea Jacobs 250g 22 lei redus la 18",
-  "Fa etichete de raft pentru: Ulei Floriol 1L 11,99 lei, EAN 5941234567890",
-  "(cu poza facturii atasata) Fa-mi NIR cu adaos 25%",
+  "Ce grupă TVA pun pentru pâine pe casa de marcat?",
+  "Casa de marcat Datecs îmi dă eroarea -111008, ce fac?",
+  "Decodează codul de bare 2800123012342",
+  "Cost 10 lei fără TVA, adaos 30%, TVA 11%, rotunjit la ,99",
+  "Verifică CUI 14399840",
+  "Vreau să deschid o măcelărie, ce autorizații îmi trebuie?",
+  "Ce program de casă de marcat e bun pentru o brutărie cu rețete?",
+  "Fă-mi un flyer cu oferte: Telemea 32 lei/kg redus la 27, Cafea Jacobs 250g 22 lei redus la 18",
+  "Fă etichete de raft pentru: Ulei Floriol 1L 11,99 lei, EAN 5941234567890",
+  "(cu poza facturii atașată) Fă-mi NIR cu adaos 25%",
 ];
 
 const MCP_URL = "https://tapselo.com/mcp";
@@ -63,16 +63,16 @@ const li = "list-disc leading-relaxed";
 ---
 
 <Layout
-  title="Tapselo in Claude si ChatGPT | Tapselo"
-  description="Conectorul Tapselo pentru Claude si ChatGPT: reguli fiscale, erori Datecs, cantare Dibal, calcul pret, verificare firma si documente printabile pentru magazinele mici din Romania."
+  title="Tapselo în Claude și ChatGPT | Tapselo"
+  description="Conectorul Tapselo pentru Claude și ChatGPT: reguli fiscale, erori Datecs, cântare Dibal, calcul preț, verificare firmă și documente printabile pentru magazinele mici din România."
 >
   <Navbar />
 
   <header class="bg-primary pt-28 pb-14 md:pt-32">
     <div class="mx-auto max-w-5xl px-6">
-      <h1 class="font-display text-4xl italic text-white sm:text-5xl">Tapselo in Claude si ChatGPT</h1>
+      <h1 class="font-display text-4xl italic text-white sm:text-5xl">Tapselo în Claude și ChatGPT</h1>
       <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">
-        Un conector care da asistentului AI reguli verificate si calcule pentru magazinele mici din Romania, plus
+        Un conector care dă asistentului AI reguli verificate și calcule pentru magazinele mici din România, plus
         documente gata de printat.
       </p>
     </div>
@@ -83,29 +83,29 @@ const li = "list-disc leading-relaxed";
       <section>
         <h2 class="font-display text-3xl italic text-primary">Ce face</h2>
         <p class={p}>
-          Intrebi in Claude sau ChatGPT, in romana sau in engleza, iar asistentul foloseste uneltele Tapselo. Raspunde
-          la intrebari despre TVA si casa de marcat, explica erorile Datecs, citeste codurile de bare de la cantarele
-          Dibal, calculeaza pretul la raft, verifica o firma dupa CUI si iti spune ce autorizatii iti trebuie pentru un
-          magazin nou. Poate face si documente printabile: flyer cu oferte, etichete de raft, NIR, fisa tehnica si
-          registru de casa.
+          Întrebi în Claude sau ChatGPT, în română sau în engleză, iar asistentul folosește uneltele Tapselo. Răspunde
+          la întrebări despre TVA și casa de marcat, explică erorile Datecs, citește codurile de bare de la cântarele
+          Dibal, calculează prețul la raft, verifică o firmă după CUI și îți spune ce autorizații îți trebuie pentru un
+          magazin nou. Poate face și documente printabile: flyer cu oferte, etichete de raft, NIR, fișă tehnică și
+          registru de casă.
         </p>
-        <p class={p}>Fiecare raspuns are un link catre pagina cu detalii sau catre documentul creat.</p>
+        <p class={p}>Fiecare răspuns are un link către pagina cu detalii sau către documentul creat.</p>
       </section>
 
       <section>
-        <h2 class="font-display text-3xl italic text-primary">Cum il adaugi in Claude</h2>
-        <p class={p}>Din directorul de conectori: In curand in directorul Claude.</p>
-        <p class={p}>Manual, ca si conector propriu:</p>
+        <h2 class="font-display text-3xl italic text-primary">Cum îl adaugi în Claude</h2>
+        <p class={p}>Din directorul de conectori: În curând în directorul Claude.</p>
+        <p class={p}>Manual, ca și conector propriu:</p>
         <ol class="mt-4 space-y-2 pl-5 text-text-secondary">
-          <li class="list-decimal leading-relaxed">Deschide Claude si mergi la <strong class="text-primary">Settings &rarr; Connectors</strong>.</li>
-          <li class="list-decimal leading-relaxed">Apasa <strong class="text-primary">Add custom connector</strong>.</li>
+          <li class="list-decimal leading-relaxed">Deschide Claude și mergi la <strong class="text-primary">Settings &rarr; Connectors</strong>.</li>
+          <li class="list-decimal leading-relaxed">Apasă <strong class="text-primary">Add custom connector</strong>.</li>
           <li class="list-decimal leading-relaxed">Nume: <code>Tapselo</code>. URL: <code>{MCP_URL}</code>.</li>
-          <li class="list-decimal leading-relaxed">Nu completa nimic la autentificare (OAuth). Conectorul nu cere cont si nu cere logare.</li>
-          <li class="list-decimal leading-relaxed">Apasa <strong class="text-primary">Add</strong>, apoi activeaza conectorul in chat.</li>
+          <li class="list-decimal leading-relaxed">Nu completa nimic la autentificare (OAuth). Conectorul nu cere cont și nu cere logare.</li>
+          <li class="list-decimal leading-relaxed">Apasă <strong class="text-primary">Add</strong>, apoi activează conectorul în chat.</li>
         </ol>
         <p class={p}>
-          In ChatGPT conectorul va fi disponibil mai tarziu, dupa verificarea aplicatiilor pentru Romania. Pana atunci
-          poti folosi aceeasi adresa, <code>{MCP_URL}</code>, daca contul tau permite conectori proprii.
+          În ChatGPT conectorul va fi disponibil mai târziu, după verificarea aplicațiilor pentru România. Până atunci
+          poți folosi aceeași adresă, <code>{MCP_URL}</code>, dacă contul tău permite conectori proprii.
         </p>
       </section>
 
@@ -129,7 +129,7 @@ const li = "list-disc leading-relaxed";
       </section>
 
       <section>
-        <h2 class="font-display text-3xl italic text-primary">Exemple de intrebari</h2>
+        <h2 class="font-display text-3xl italic text-primary">Exemple de întrebări</h2>
         <ol class="mt-4 space-y-2 pl-5 text-text-secondary">
           {PROMPTS.map((q) => <li class="list-decimal leading-relaxed">{q}</li>)}
         </ol>
@@ -138,13 +138,13 @@ const li = "list-disc leading-relaxed";
       <section>
         <h2 class="font-display text-3xl italic text-primary">Limite</h2>
         <ul class="mt-4 space-y-2 pl-5 text-text-secondary">
-          <li class={li}>Nu ai nevoie de cont. Conectorul nu stie cine esti si nu vede datele magazinului tau.</li>
-          <li class={li}>Documentele create expira dupa 30 de zile. Salveaza-le ca PDF daca ai nevoie de ele mai tarziu.</li>
-          <li class={li}>Oricine are linkul unui document il poate deschide. Nu pune in documente date pe care nu vrei sa le arati.</li>
-          <li class={li}>Documentele nu pot contine linkuri sau adrese web.</li>
+          <li class={li}>Nu ai nevoie de cont. Conectorul nu știe cine ești și nu vede datele magazinului tău.</li>
+          <li class={li}>Documentele create expiră după 30 de zile. Salvează-le ca PDF dacă ai nevoie de ele mai târziu.</li>
+          <li class={li}>Oricine are linkul unui document îl poate deschide. Nu pune în documente date pe care nu vrei să le arăți.</li>
+          <li class={li}>Documentele nu pot conține linkuri sau adrese web.</li>
           <li class={li}>
-            Informatiile au scop informativ si nu sunt consultanta juridica sau fiscala. Verifica sursele oficiale sau
-            intreaba contabilul.
+            Informațiile au scop informativ și nu sunt consultanță juridică sau fiscală. Verifică sursele oficiale sau
+            întreabă contabilul.
           </li>
         </ul>
       </section>
@@ -152,18 +152,18 @@ const li = "list-disc leading-relaxed";
       <section>
         <h2 class="font-display text-3xl italic text-primary">Datele tale</h2>
         <p class={p}>
-          Conectorul primeste doar datele trimise pentru o unealta (de exemplu un CUI sau lista de produse), nu
-          conversatia ta. Raspunsurile nu se salveaza. Documentele se pastreaza 30 de zile, apoi se sterg automat.
-          In loguri scriem doar numele uneltei, rezultatul si durata, fara textul tau. Detalii in
-          <a href="/privacy#asistent-ai" class={a}>politica de confidentialitate</a>.
+          Conectorul primește doar datele trimise pentru o unealtă (de exemplu un CUI sau lista de produse), nu
+          conversația ta. Răspunsurile nu se salvează. Documentele se păstrează 30 de zile, apoi se șterg automat.
+          În loguri scriem doar numele uneltei, rezultatul și durata, fără textul tău. Detalii în
+          <a href="/privacy#asistent-ai" class={a}>politica de confidențialitate</a>.
         </p>
       </section>
 
       <section>
         <h2 class="font-display text-3xl italic text-primary">Ajutor</h2>
         <p class={p}>
-          Pentru intrebari, erori, stergerea unui document sau raportarea unei pagini, scrie la
-          <a href="mailto:contact@tapselo.com" class={a}>contact@tapselo.com</a>. Pentru un document, trimite si linkul lui.
+          Pentru întrebări, erori, ștergerea unui document sau raportarea unei pagini, scrie la
+          <a href="mailto:contact@tapselo.com" class={a}>contact@tapselo.com</a>. Pentru un document, trimite și linkul lui.
         </p>
       </section>
 

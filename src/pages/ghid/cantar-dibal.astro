@@ -13,16 +13,16 @@ const verified = dibal.map((e) => e.verified_on).sort().at(-1) ?? null;
 ---
 
 <GuideShell
-  title="Cantar Dibal: cod de bare cu greutate, PLU, etichete | Ghid Tapselo"
-  description="Cum citeste casa de marcat codul de bare de la cantarul Dibal (28CCCCCWWWWWX), PLU 1-999, cod cu pret sau cu greutate, eticheta, retea si sincronizare din POS."
-  heading="Cantar Dibal"
-  lead="Codul de bare de pe eticheta, PLU, setarea etichetei si legatura cu casa de marcat."
+  title="Cântar Dibal: cod de bare cu greutate, PLU, etichete | Ghid Tapselo"
+  description="Cum citește casa de marcat codul de bare de la cântarul Dibal (28CCCCCWWWWWX), PLU 1-999, cod cu preț sau cu greutate, etichetă, rețea și sincronizare din POS."
+  heading="Cântar Dibal"
+  lead="Codul de bare de pe etichetă, PLU, setarea etichetei și legătura cu casa de marcat."
   sources={sources}
   verifiedOn={verified}
   campaign="cantar-dibal"
 >
   <nav class="rounded-xl border border-border-light p-5">
-    <p class="text-sm font-bold text-primary">Pe pagina</p>
+    <p class="text-sm font-bold text-primary">Pe pagină</p>
     <ul class="mt-2 space-y-1 pl-5 text-sm">
       {dibal.map((e) => (
         <li class="list-disc"><a href={`#${anchor(e.page, e.id)}`} class="text-accent hover:text-accent-hover">{e.title}</a></li>

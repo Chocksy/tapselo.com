@@ -25,6 +25,17 @@ export function toolBreadcrumbs(heading: string, path: string): Crumb[] {
   ];
 }
 
+export interface BreadcrumbLink {
+  label: string;
+  /** Omitted on the current page. */
+  href?: string;
+}
+
+/** Every crumb links to its page except the last one (the current page). */
+export function breadcrumbLinks(crumbs: Crumb[]): BreadcrumbLink[] {
+  return crumbs.map((c, i) => ({ label: c.name, href: i < crumbs.length - 1 ? c.path : undefined }));
+}
+
 export function webApplicationJsonLd(opts: { name: string; path: string; description: string }): Record<string, unknown> {
   return {
     "@context": "https://schema.org",

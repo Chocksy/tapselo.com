@@ -13,10 +13,10 @@ const card = "block rounded-xl border border-border-light p-5 transition-colors 
 ---
 
 <GuideShell
-  title="Ghid pentru magazine: TVA, casa de marcat, autorizatii | Tapselo"
-  description="Reguli verificate pentru magazinele mici din Romania: cote TVA, plafoane, raport Z, e-Factura, SGR, NIR, autorizatii pentru un magazin nou, erori Datecs si cantare Dibal. Cu surse oficiale."
+  title="Ghid pentru magazine: TVA, casa de marcat, autorizații | Tapselo"
+  description="Reguli verificate pentru magazinele mici din România: cote TVA, plafoane, raport Z, e-Factura, SGR, NIR, autorizații pentru un magazin nou, erori Datecs și cântare Dibal. Cu surse oficiale."
   heading="Ghid pentru magazine"
-  lead="Reguli si pasi practici pentru magazinele mici din Romania, cu surse oficiale si data verificarii."
+  lead="Reguli și pași practici pentru magazinele mici din România, cu surse oficiale și data verificării."
   campaign="ghid"
   breadcrumb={false}
 >
@@ -73,17 +73,17 @@ const card = "block rounded-xl border border-border-light p-5 transition-colors 
   <section>
     <h2 class="font-display text-3xl italic text-primary">Casa de marcat Datecs</h2>
     <a href="/ghid/erori-datecs" class={`mt-6 ${card}`}>
-      <h3 class="text-primary">Erori casa de marcat Datecs</h3>
+      <h3 class="text-primary">Erori casă de marcat Datecs</h3>
       <p class="mt-2 text-sm leading-relaxed text-text-secondary">
-        {datecsJson.count} coduri de eroare in romana si engleza. Pasi de rezolvare pentru: {hintTitles.join(", ").toLowerCase()}.
+        {datecsJson.count} coduri de eroare în română și engleză. Pași de rezolvare pentru: {hintTitles.join(", ").toLowerCase()}.
       </p>
     </a>
   </section>
 
   <section>
-    <h2 class="font-display text-3xl italic text-primary">Cantar Dibal</h2>
+    <h2 class="font-display text-3xl italic text-primary">Cântar Dibal</h2>
     <a href="/ghid/cantar-dibal" class={`mt-6 ${card}`}>
-      <h3 class="text-primary">Cantar Dibal si casa de marcat</h3>
+      <h3 class="text-primary">Cântar Dibal și casa de marcat</h3>
       <ul class="mt-2 space-y-1 pl-5 text-sm text-text-secondary">
         {dibal.map((e) => <li class="list-disc">{e.title}</li>)}
       </ul>
@@ -91,11 +91,11 @@ const card = "block rounded-xl border border-border-light p-5 transition-colors 
   </section>
 
   <section>
-    <h2 class="font-display text-3xl italic text-primary">Comparatie</h2>
+    <h2 class="font-display text-3xl italic text-primary">Comparație</h2>
     <a href="/comparatie" class={`mt-6 ${card}`}>
-      <h3 class="text-primary">Programe de casa de marcat si POS din Romania</h3>
+      <h3 class="text-primary">Programe de casă de marcat și POS din România</h3>
       <p class="mt-2 text-sm leading-relaxed text-text-secondary">
-        Ce stie fiecare program: offline, casa de marcat, cantare, retete, stocuri, comenzi. Date de pe site-urile producatorilor.
+        Ce știe fiecare program: offline, casa de marcat, cântare, rețete, stocuri, comenzi. Date de pe site-urile producătorilor.
       </p>
     </a>
   </section>

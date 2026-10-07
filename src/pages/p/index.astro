@@ -4,18 +4,18 @@
 import PublicShell from "../../components/PublicShell.astro";
 ---
 
-<PublicShell title="Datele clientilor" wide>
-  <p id="loading" class="pub-card pub-text">Se incarca...</p>
+<PublicShell title="Datele clienților" wide>
+  <p id="loading" class="pub-card pub-text">Se încarcă...</p>
 
   <div id="missing" class="pub-card hidden">
-    <p class="pub-text text-xl font-semibold text-primary" id="missing-msg">Nu am gasit acest magazin.</p>
+    <p class="pub-text text-xl font-semibold text-primary" id="missing-msg">Nu am găsit acest magazin.</p>
   </div>
 
   <article id="notice" class="pub-card pub-notice hidden">
-    <h1 class="pub-title">Cum folosim datele clientilor la <span data-f="store_name"></span></h1>
+    <h1 class="pub-title">Cum folosim datele clienților la <span data-f="store_name"></span></h1>
     <p class="text-sm">Versiunea din 28 septembrie 2026.</p>
 
-    <h3>Cine raspunde de date</h3>
+    <h3>Cine răspunde de date</h3>
     <p>
       Operatorul datelor este <strong><span data-f="company_name"></span></strong>,
       CUI <span data-f="cui"></span>, adresa <span data-f="address"></span>.
@@ -25,73 +25,73 @@ import PublicShell from "../../components/PublicShell.astro";
 
     <h3>Ce date avem</h3>
     <ul>
-      <li>numele, numarul de telefon si adresa de email pe care ni le dai;</li>
-      <li>ce ai ales: client inscris, oferte pe email, oferte pe WhatsApp, oferte pe baza cumparaturilor;</li>
-      <li>cand si unde ti-ai dat acordul si ce text ai vazut atunci;</li>
-      <li>cumparaturile legate de numele tau la casa: produsele, sumele, data si magazinul.</li>
+      <li>numele, numărul de telefon și adresa de email pe care ni le dai;</li>
+      <li>ce ai ales: client înscris, oferte pe email, oferte pe WhatsApp, oferte pe baza cumpărăturilor;</li>
+      <li>când și unde ți-ai dat acordul și ce text ai văzut atunci;</li>
+      <li>cumpărăturile legate de numele tău la casă: produsele, sumele, data și magazinul.</li>
     </ul>
 
-    <h3>De ce le folosim si pe ce baza</h3>
+    <h3>De ce le folosim și pe ce bază</h3>
     <ul>
       <li>
-        <strong>Client inscris:</strong> te recunoastem la casa si iti dam
-        <span class="discount-part" hidden>reducerea de <span data-f="discount"></span>% si </span>avantajele
-        de client. Baza: contractul dintre tine si magazin (art. 6 alin. 1 lit. b GDPR).
+        <strong>Client înscris:</strong> te recunoaștem la casă și îți dăm
+        <span class="discount-part" hidden>reducerea de <span data-f="discount"></span>% și </span>avantajele
+        de client. Baza: contractul dintre tine și magazin (art. 6 alin. 1 lit. b GDPR).
       </li>
       <li>
-        <strong>Oferte pe email:</strong> iti trimitem oferte pe email, numai dupa ce confirmi adresa.
-        Baza: acordul tau (art. 6 alin. 1 lit. a GDPR si Legea 506/2004).
+        <strong>Oferte pe email:</strong> îți trimitem oferte pe email, numai după ce confirmi adresa.
+        Baza: acordul tău (art. 6 alin. 1 lit. a GDPR și Legea 506/2004).
       </li>
       <li>
-        <strong>Oferte pe WhatsApp:</strong> iti trimitem oferte pe WhatsApp. Baza: acordul tau
-        (art. 6 alin. 1 lit. a GDPR si Legea 506/2004).
+        <strong>Oferte pe WhatsApp:</strong> îți trimitem oferte pe WhatsApp. Baza: acordul tău
+        (art. 6 alin. 1 lit. a GDPR și Legea 506/2004).
       </li>
       <li>
-        <strong>Oferte pe baza cumparaturilor:</strong> ne uitam la ce cumperi (produse, date,
-        magazin) ca sa alegem ofertele potrivite pentru tine. Asta inseamna profilare (art. 4
-        pct. 4 GDPR). Nu luam decizii automate cu efect juridic asupra ta. Baza: acordul tau.
+        <strong>Oferte pe baza cumpărăturilor:</strong> ne uităm la ce cumperi (produse, date,
+        magazin) ca să alegem ofertele potrivite pentru tine. Asta înseamnă profilare (art. 4
+        pct. 4 GDPR). Nu luăm decizii automate cu efect juridic asupra ta. Baza: acordul tău.
       </li>
     </ul>
     <p>
       Fiecare acord este separat. Reducerea de client nu depinde de acordul pentru oferte.
-      Nu vindem datele tale si nu le dam altor firme pentru reclame.
+      Nu vindem datele tale și nu le dăm altor firme pentru reclame.
     </p>
 
-    <h3>Cat timp le pastram</h3>
+    <h3>Cât timp le păstrăm</h3>
     <p>
-      Pastram datele 24 de luni de la ultima cumparare. Apoi le stergem automat, impreuna cu
-      istoricul acordurilor. Bonurile fiscale raman in evidenta contabila a magazinului cat cere legea,
-      fara datele tale de contact.
+      Păstrăm datele 24 de luni de la ultima cumpărare. Apoi le ștergem automat, împreună cu
+      istoricul acordurilor. Bonurile fiscale rămân în evidența contabilă a magazinului cât cere legea,
+      fără datele tale de contact.
     </p>
 
-    <h3>Cine ne ajuta sa le prelucram</h3>
+    <h3>Cine ne ajută să le prelucrăm</h3>
     <ul>
-      <li>Tapselo (Ciocanel Razvan Tudor PFA, Romania): programul de casa si evidenta clientilor.</li>
-      <li>Supabase: baza de date, gazduita in Uniunea Europeana.</li>
+      <li>Tapselo (Ciocanel Razvan Tudor PFA, România): programul de casă și evidența clienților.</li>
+      <li>Supabase: baza de date, găzduită în Uniunea Europeană.</li>
       <li>Resend: trimiterea mesajelor pe email.</li>
-      <li>Meta (WhatsApp): trimiterea mesajelor pe WhatsApp, numai daca ai ales oferte pe WhatsApp.</li>
+      <li>Meta (WhatsApp): trimiterea mesajelor pe WhatsApp, numai dacă ai ales oferte pe WhatsApp.</li>
     </ul>
-    <p>Acesti furnizori folosesc datele numai la cererea noastra, pe baza unui contract.</p>
+    <p>Acești furnizori folosesc datele numai la cererea noastră, pe baza unui contract.</p>
 
     <h3>Drepturile tale</h3>
     <ul>
-      <li>sa vezi ce date avem despre tine si sa primesti o copie;</li>
-      <li>sa corectezi datele gresite;</li>
-      <li>sa ceri stergerea datelor;</li>
-      <li>sa te opui prelucrarii si sa ceri limitarea ei;</li>
-      <li>sa retragi oricand orice acord. Retragerea nu afecteaza ce s-a facut inainte.</li>
+      <li>să vezi ce date avem despre tine și să primești o copie;</li>
+      <li>să corectezi datele greșite;</li>
+      <li>să ceri ștergerea datelor;</li>
+      <li>să te opui prelucrării și să ceri limitarea ei;</li>
+      <li>să retragi oricând orice acord. Retragerea nu afectează ce s-a făcut înainte.</li>
     </ul>
     <p>
-      Te poti dezabona si din orice mesaj cu oferte, cu linkul din josul mesajului.
+      Te poți dezabona și din orice mesaj cu oferte, cu linkul din josul mesajului.
       <span class="contact-email-line">Pentru restul, scrie la <a data-f="privacy_email" class="pub-link contact-email" href="#"></a>.</span>
       <span class="contact-store-line" hidden>Pentru restul, spune la casa magazinului.</span>
-      Raspundem in cel mult o luna.
+      Răspundem în cel mult o lună.
     </p>
 
-    <h3>Plangeri</h3>
+    <h3>Plângeri</h3>
     <p>
-      Poti face plangere la Autoritatea Nationala de Supraveghere a Prelucrarii Datelor cu
-      Caracter Personal (ANSPDCP), B-dul G-ral. Gheorghe Magheru 28-30, Bucuresti,
+      Poți face plângere la Autoritatea Națională de Supraveghere a Prelucrării Datelor cu
+      Caracter Personal (ANSPDCP), B-dul G-ral. Gheorghe Magheru 28-30, București,
       <a class="pub-link" href="https://www.dataprotection.ro" rel="noopener noreferrer" target="_blank">www.dataprotection.ro</a>.
     </p>
   </article>
@@ -122,7 +122,7 @@ import PublicShell from "../../components/PublicShell.astro";
     const f = infoFields(info);
     fillFields(document, f);
     $("shell-store").textContent = f.store_name;
-    document.title = `Datele clientilor - ${f.store_name}`;
+    document.title = `Datele clienților - ${f.store_name}`;
     document.querySelectorAll<HTMLElement>(".discount-part").forEach((el) => (el.hidden = !f.discount));
 
     const hasEmail = Boolean(f.privacy_email);

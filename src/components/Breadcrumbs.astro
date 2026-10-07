@@ -1,0 +1,22 @@
+---
+import type { BreadcrumbLink } from "../lib/unelte/jsonld.ts";
+
+interface Props {
+  items: BreadcrumbLink[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav aria-label="Breadcrumb" class="text-sm font-medium text-text-on-primary/80">
+  {items.map((item, i) => (
+    <>
+      {i > 0 && <span class="mx-2 text-text-on-primary/40">/</span>}
+      {item.href ? (
+        <a href={item.href} class="transition-colors hover:text-white">{item.label}</a>
+      ) : (
+        <span class="text-white" aria-current="page">{item.label}</span>
+      )}
+    </>
+  ))}
+</nav>

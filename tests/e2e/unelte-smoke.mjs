@@ -112,6 +112,41 @@ test("hub: five tools, footer link only", async () => {
   assert.equal(await page.locator('nav a[href="/unelte"], header a[href="/unelte"]').count(), 0, "no Unelte link in the header");
   assert.equal(await page.locator('footer a[href="/unelte"]').count(), 1);
   assert.match(await page.textContent("main"), /cota TVA după codul de bare EAN/);
+  const cards = await page.$$eval("main li a", (links) =>
+    links.map((a) => ({ href: a.getAttribute("href"), action: a.lastElementChild?.textContent?.trim(), cursor: getComputedStyle(a).cursor })),
+  );
+  for (const card of cards) {
+    assert.match(card.action ?? "", /^Deschide /, `${card.href}: card ends with a "Deschide …" action`);
+    assert.equal(card.cursor, "pointer");
+  }
+  assert.ok(cards.some((c) => c.href === "/ghid/verificare-a4200"), "hub lists the A4200 checker");
+  await ctx.close();
+});
+
+test("A4200 checker: same breadcrumb and BreadcrumbList as the other tools", async () => {
+  const { ctx, page } = await phonePage();
+  await open(page, "/ghid/verificare-a4200/");
+  const crumbs = await page.$$eval('nav[aria-label="Breadcrumb"] > *:not(span.mx-2)', (els) => els.map((e) => [e.textContent.trim(), e.getAttribute("href")]));
+  assert.deepEqual(crumbs, [
+    ["Acasă", "/"],
+    ["Unelte gratuite", "/unelte"],
+    ["Depune A4200 fără să te pierzi în fișiere", null],
+  ]);
+  const ld = await page.$$eval('script[type="application/ld+json"]', (s) => s.map((x) => JSON.parse(x.textContent)));
+  const list = ld.find((b) => b["@type"] === "BreadcrumbList");
+  assert.deepEqual(list.itemListElement.map((i) => i.item), ["https://tapselo.com/", "https://tapselo.com/unelte/", "https://tapselo.com/ghid/verificare-a4200/"]);
+  assert.equal(await page.locator('header a[href="/ghid"]').count(), 0, "no back-link to the guide index");
+  await ctx.close();
+});
+
+test("sticky footer: short pages fill a tall viewport", async () => {
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 2000 } });
+  const page = await ctx.newPage();
+  for (const path of ["/unelte/", "/demo/"]) {
+    await page.goto(`${base}${path}`, { waitUntil: "load" });
+    const bottom = await page.evaluate(() => document.querySelector("body > footer").getBoundingClientRect().bottom + scrollY);
+    assert.equal(Math.round(bottom), 2000, `${path}: footer ends at the viewport bottom`);
+  }
   await ctx.close();
 });
 

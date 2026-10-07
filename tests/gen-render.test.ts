@@ -35,7 +35,7 @@ test("every kind renders the shell: noindex, banner, print button, script, foote
     assert.match(out, /<p class="g-abuse no-print">Pagină creată de un utilizator\. Expiră pe 31\.10\.2026\. Raportează abuz: <a href="mailto:contact@tapselo\.com">contact@tapselo\.com<\/a><\/p>/, k);
     assert.match(out, /@page\{size:A4/, k);
     assert.match(out, /\.no-print\{display:none !important\}/, k);
-    assert.doesNotMatch(out, /Inscrie-te|Cum folosim datele clientilor/, k);
+    assert.doesNotMatch(out, /Înscrie-te|Cum folosim datele clienților/, k);
   }
 });
 
@@ -114,11 +114,11 @@ test("flyer: offers look, emoji only (no AI pictures), prices, cache", () => {
   assert.match(out, /<span class="new">27,00<\/span><span class="unit">lei \/ kg<\/span>/);
   // Cafea: 30-day low given -> struck 21,50 and the legal line
   assert.match(out, /<p class="old"><s[^>]*>21,50 lei<\/s><\/p>/);
-  assert.match(out, /Cel mai mic pret in ultimele 30 de zile: 21,50 lei/);
-  assert.equal((out.match(/Cel mai mic pret/g) ?? []).length, 1);
+  assert.match(out, /Cel mai mic preț în ultimele 30 de zile: 21,50 lei/);
+  assert.equal((out.match(/Cel mai mic preț/g) ?? []).length, 1);
   // no promo: plain price, no struck price
   assert.match(out, /<h3>Paine alba feliata<\/h3>\n\n<p class="tag"><span class="new">6,50<\/span>/);
-  assert.match(out, /Pana pe 12\.10\.2026/);
+  assert.match(out, /Până pe 12\.10\.2026/);
   assert.match(out, /<a href="tel:0722123456">0722 123 456<\/a>/);
 
   const done = clone("flyer");

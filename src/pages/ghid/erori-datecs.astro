@@ -25,15 +25,15 @@ const hintAnchor = (key: string) => `pasi-${key.replace(/[^A-Za-z0-9]+/g, "-").t
 ---
 
 <GuideShell
-  title="Erori casa de marcat Datecs: coduri si ce faci | Ghid Tapselo"
-  description="Toate codurile de eroare Datecs (aparate fiscale si COM Server), in romana si engleza, cu pasi de rezolvare pentru lipsa hartie, capac deschis, raport Z, grupa TVA si altele."
-  heading="Erori casa de marcat Datecs"
-  lead={`${kb.count} coduri de eroare, in romana si engleza. Mai intai erorile frecvente, cu pasi de rezolvare.`}
+  title="Erori casă de marcat Datecs: coduri și ce faci | Ghid Tapselo"
+  description="Toate codurile de eroare Datecs (aparate fiscale și COM Server), în română și engleză, cu pași de rezolvare pentru lipsă hârtie, capac deschis, raport Z, grupa TVA și altele."
+  heading="Erori casă de marcat Datecs"
+  lead={`${kb.count} coduri de eroare, în română și engleză. Mai întâi erorile frecvente, cu pași de rezolvare.`}
   sources={[{ title: kb.source_title }]}
   campaign="erori-datecs"
 >
   <section>
-    <h2 class="font-display text-3xl italic text-primary">Erori frecvente si ce faci</h2>
+    <h2 class="font-display text-3xl italic text-primary">Erori frecvente și ce faci</h2>
     <div class="mt-6 space-y-8">
       {hintGroups.map((g) => (
         <div id={hintAnchor(g.key)} class="rounded-xl border border-border-light p-5">
@@ -59,14 +59,14 @@ const hintAnchor = (key: string) => `pasi-${key.replace(/[^A-Za-z0-9]+/g, "-").t
   <section>
     <h2 class="font-display text-3xl italic text-primary">Toate codurile</h2>
     <p class="mt-3 text-text-secondary">
-      Daca nu ai pasi pentru codul tau, noteaza codul complet si suna service-ul autorizat sau furnizorul programului de vanzare.
+      Dacă nu ai pași pentru codul tău, notează codul complet și sună service-ul autorizat sau furnizorul programului de vânzare.
     </p>
     {[...groups].map(([group, codes]) => (
       <div class="mt-8 overflow-x-auto">
         <h3 class="text-primary">{group}</h3>
         <table class="kb-table mt-3">
           <thead>
-            <tr><th>Cod</th><th>Romana</th><th>English</th></tr>
+            <tr><th>Cod</th><th>Română</th><th>English</th></tr>
           </thead>
           <tbody>
             {codes.map((code) => {

@@ -11,15 +11,15 @@ import PublicShell from "../../components/PublicShell.astro";
     <div id="ask" class="hidden space-y-6">
       <p class="pub-text">
         Nu mai vrei oferte pe <strong class="text-primary" data-channel></strong>?
-        Apasa butonul si nu iti mai trimitem.
+        Apasă butonul și nu îți mai trimitem.
       </p>
       <p id="error" class="pub-error hidden" role="alert"></p>
-      <button type="button" id="go" class="pub-btn">Dezaboneaza-ma</button>
+      <button type="button" id="go" class="pub-btn">Dezabonează-mă</button>
     </div>
 
     <div id="ok" class="hidden space-y-4" role="status">
-      <p class="pub-ok">Gata. Nu mai primesti oferte pe <strong data-channel></strong>.</p>
-      <p class="pub-text">Daca esti client inscris, reducerea de la casa ramane.</p>
+      <p class="pub-ok">Gata. Nu mai primești oferte pe <strong data-channel></strong>.</p>
+      <p class="pub-text">Dacă ești client înscris, reducerea de la casă rămâne.</p>
     </div>
 
     <p id="bad" class="pub-error hidden" role="alert">
@@ -55,10 +55,10 @@ import PublicShell from "../../components/PublicShell.astro";
       const res = await rpc<boolean>("public_unsubscribe", { p_token: token, p_channel: channel });
 
       btn.disabled = false;
-      btn.textContent = "Dezaboneaza-ma";
+      btn.textContent = "Dezabonează-mă";
       if (res.ok && res.data === true) return show("ok");
       if (res.ok) {
-        $("bad").textContent = "Nu am gasit aceasta inscriere. Poate ai fost deja dezabonat sau datele au fost sterse. Daca primesti in continuare oferte, spune la casa magazinului.";
+        $("bad").textContent = "Nu am găsit această înscriere. Poate ai fost deja dezabonat sau datele au fost șterse. Dacă primești în continuare oferte, spune la casa magazinului.";
         return show("bad");
       }
       if (res.kind === "rejected") return show("bad");
