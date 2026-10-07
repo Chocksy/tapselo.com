@@ -23,16 +23,18 @@ const NUI_WEIGHTS = [7, 8, 6, 2, 1, 3, 4, 5, 9] as const;
 
 export function isValidNuiCheckDigit(nui: string): boolean {
   if (!/^\d{10}$/.test(nui)) return false;
-  let n = BigInt(nui);
+  let val = BigInt(nui);
   let sum = 0n;
+  let lastDigit = 0n;
   for (let i = 0; i < 9; i++) {
-    const digit = n % 10n;
-    n /= 10n;
-    if (digit >= 5n) n += 1n;
+    const digit = val % 10n;
+    val /= 10n;
+    if (digit >= 5n) val += 1n;
     sum += digit * BigInt(NUI_WEIGHTS[i]);
+    lastDigit = digit;
   }
-  let check = n % 10n;
-  if (check >= 5n) check -= 1n;
+  // MReg.checkNUI: decrement val when the last loop digit (9th from right) is >= 5.
+  if (lastDigit >= 5n) val -= 1n;
   const expected = BigInt(1 + Number(sum % 9n));
-  return check === expected;
+  return val === expected;
 }
