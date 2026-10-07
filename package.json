@@ -11,7 +11,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "node --experimental-strip-types --test 'tests/*.test.ts'",
-    "test:e2e": "PUBLIC_BARCODE_API_URL=https://barcode.test/api/public/v1 astro build --outDir dist-e2e && node --test tests/e2e/unelte-smoke.mjs"
+    "test:e2e": "astro build --outDir dist-e2e && node --test tests/e2e/unelte-smoke.mjs"
   },
   "overrides": {
     "@lucide/astro": {

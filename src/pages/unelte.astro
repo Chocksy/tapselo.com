@@ -1,7 +1,8 @@
 ---
 import GuideShell from "../components/GuideShell.astro";
+import { barcodeApiBase } from "../lib/unelte/barcode.ts";
 
-const barcodeEnabled = Boolean(import.meta.env.PUBLIC_BARCODE_API_URL);
+const barcodeEnabled = barcodeApiBase(import.meta.env.PUBLIC_BARCODE_API_URL) !== "";
 
 const tools = [
   {

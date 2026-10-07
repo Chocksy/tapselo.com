@@ -1,5 +1,6 @@
 // Browser smoke test for /unelte at a 390px phone viewport: math, print/PDF popups, poster,
-// .xlsx download, barcode lookup (mocked API) and XSS. Needs a build with the barcode block on:
+// .xlsx download, barcode lookup and XSS. Builds with the default config, so the barcode box
+// calls the same-origin GET /api/barcodes/{ean}; the test answers it in the browser:
 //   npm run test:e2e
 // Env: CHROME_PATH (default /usr/local/bin/google-chrome), SCREENSHOT_DIR (optional).
 
@@ -15,7 +16,6 @@ import { chromium } from "playwright-core";
 const DIST = resolve(process.argv[2] ?? process.env.E2E_DIST ?? "dist-e2e");
 const CHROME = process.env.CHROME_PATH ?? "/usr/local/bin/google-chrome";
 const SHOTS = process.env.SCREENSHOT_DIR;
-const BARCODE_API = "https://barcode.test/api/public/v1";
 const EVIL = `<img src=x onerror="window.__xss=1">`;
 
 const MIME = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".woff2": "font/woff2", ".xml": "application/xml", ".txt": "text/plain" };
@@ -50,8 +50,10 @@ const BARCODES = {
 async function phonePage() {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, locale: "ro-RO", acceptDownloads: true });
   const calls = [];
-  await ctx.route(`${BARCODE_API}/**`, (route) => {
-    const ean = route.request().url().split("/").pop();
+  await ctx.route("**/api/barcodes/*", (route) => {
+    const url = new URL(route.request().url());
+    assert.equal(url.origin, base, "barcode lookup is same-origin");
+    const ean = url.pathname.split("/").pop();
     calls.push(ean);
     const r = BARCODES[ean] ?? { status: 404 };
     return route.fulfill({ status: r.status, contentType: "application/json", body: r.body ? JSON.stringify(r.body) : "" });
@@ -137,10 +139,16 @@ test("calculator TVA: barcode lookup validates, escapes and maps errors", async 
   await open(page, "/unelte/calculator-tva/");
   assert.equal(await page.isVisible("#vat-barcode-block"), true);
 
-  await page.fill("#vat-ean", "5941234000014");
-  await page.click("#vat-ean-search");
-  assert.match(await page.textContent("#vat-ean-err"), /8 sau 13 cifre/);
-  assert.deepEqual(calls, [], "invalid EAN never reaches the API");
+  for (const [code, msg] of [
+    ["5941234000014", /EAN-13 de 13 cifre/],
+    ["96385074", /EAN-13 de 13 cifre/],
+    ["2000000000008", /coduri interne de magazin/],
+  ]) {
+    await page.fill("#vat-ean", code);
+    await page.click("#vat-ean-search");
+    assert.match(await page.textContent("#vat-ean-err"), msg, code);
+  }
+  assert.deepEqual(calls, [], "codes the endpoint would reject never reach it");
 
   await page.fill("#vat-ean", "5941234000013");
   await page.click("#vat-ean-search");
@@ -154,7 +162,7 @@ test("calculator TVA: barcode lookup validates, escapes and maps errors", async 
   const expect = [
     ["5941234000020", /Nu am găsit produsul în baza de date Tapselo/],
     ["5941234000037", /Prea multe căutări/],
-    ["5941234000044", /8 sau 13 cifre/],
+    ["5941234000044", /EAN-13 de 13 cifre/],
     ["5941234000051", /nu răspunde acum/],
   ];
   for (const [ean, msg] of expect) {

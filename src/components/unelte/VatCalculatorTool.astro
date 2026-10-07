@@ -61,7 +61,7 @@ const { barcodeApi } = Astro.props;
 
 <script>
   import { calculateVat, isVatRateRo, type VatMode, type VatRateRo } from "../../lib/unelte/vat.ts";
-  import { barcodeResultHtml, lookupBarcode, MESSAGES, normalizeEan } from "../../lib/unelte/barcode.ts";
+  import { barcodeResultHtml, checkEan, lookupBarcode } from "../../lib/unelte/barcode.ts";
   import { parseRoNumber } from "../../lib/unelte/parse.ts";
   import { fmtLei } from "../../lib/generators/page.ts";
 
@@ -142,15 +142,15 @@ const { barcodeApi } = Astro.props;
       if (searchBtn.disabled) return;
       errEl.classList.add("hidden");
       resEl.classList.add("hidden");
-      const ean = normalizeEan(eanInput.value);
-      if (!ean) {
-        showError(MESSAGES.invalid);
+      const check = checkEan(eanInput.value);
+      if (!check.ok) {
+        showError(check.message);
         return;
       }
       searchBtn.disabled = true;
       searchBtn.textContent = "Se caută…";
       try {
-        const r = await lookupBarcode(apiBase, ean);
+        const r = await lookupBarcode(apiBase, check.ean);
         if (!r.ok) {
           showError(r.message);
           return;

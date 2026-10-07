@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { barcodeEndpoint, barcodeResultHtml, lookupBarcode, MESSAGES, normalizeEan } from "../src/lib/unelte/barcode.ts";
+import { barcodeApiBase, barcodeEndpoint, barcodeResultHtml, checkEan, DEFAULT_BARCODE_API, lookupBarcode, MESSAGES } from "../src/lib/unelte/barcode.ts";
 
 const BASE = "https://x.test/v1";
 const EAN = "5901234123457";
@@ -15,14 +15,28 @@ test("barcodeEndpoint joins base and ean", () => {
   );
 });
 
-test("normalizeEan: validates the check digit, strips separators, pads UPC-A", () => {
-  assert.equal(normalizeEan(" 5901234 123457 "), EAN);
-  assert.equal(normalizeEan("590-1234-123457"), EAN);
-  assert.equal(normalizeEan("96385074"), "96385074");
-  assert.equal(normalizeEan("036000291452"), "0036000291452");
-  assert.equal(normalizeEan("5901234123458"), null);
-  assert.equal(normalizeEan("12345"), null);
-  assert.equal(normalizeEan("abc"), null);
+test("barcodeApiBase: defaults to the same-origin /api endpoint, \"off\" hides the lookup", () => {
+  assert.equal(DEFAULT_BARCODE_API, "/api");
+  assert.equal(barcodeApiBase(undefined), "/api");
+  assert.equal(barcodeApiBase(""), "/api");
+  assert.equal(barcodeApiBase("  "), "/api");
+  assert.equal(barcodeApiBase("https://x.test/v1/"), "https://x.test/v1");
+  assert.equal(barcodeApiBase("/api/"), "/api");
+  assert.equal(barcodeApiBase("off"), "");
+  assert.equal(barcodeApiBase(" OFF "), "");
+  assert.equal(barcodeEndpoint(barcodeApiBase(undefined), EAN), `/api/barcodes/${EAN}`);
+});
+
+test("checkEan: same rules as GET /api/barcodes/{ean} (EAN-13, no in-store 20–29 codes)", () => {
+  assert.deepEqual(checkEan(" 5901234 123457 "), { ok: true, ean: EAN });
+  assert.deepEqual(checkEan("590-1234-123457"), { ok: true, ean: EAN });
+  assert.deepEqual(checkEan("036000291452"), { ok: true, ean: "0036000291452" });
+  for (const bad of ["5901234123458", "96385074", "12345", "abc", ""]) {
+    assert.deepEqual(checkEan(bad), { ok: false, code: "invalid", message: MESSAGES.invalid }, bad);
+  }
+  assert.deepEqual(checkEan("2000000000008"), { ok: false, code: "in_store", message: MESSAGES.in_store });
+  assert.deepEqual(checkEan("2912345000011"), { ok: false, code: "in_store", message: MESSAGES.in_store });
+  assert.match(MESSAGES.in_store, /20–29 sunt coduri interne de magazin/);
 });
 
 test("lookupBarcode: 400 / 404 / 429 / 5xx map to Romanian messages", async () => {
@@ -42,7 +56,7 @@ test("lookupBarcode: 400 / 404 / 429 / 5xx map to Romanian messages", async () =
     }
   }
   assert.match(MESSAGES.not_found, /^Nu am găsit produsul în baza de date Tapselo\./);
-  assert.match(MESSAGES.invalid, /8 sau 13 cifre/);
+  assert.match(MESSAGES.invalid, /EAN-13 de 13 cifre/);
 });
 
 test("lookupBarcode: network error, timeout and invalid JSON", async () => {
