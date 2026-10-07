@@ -34,7 +34,9 @@ const { barcodeApi } = Astro.props;
       />
     </div>
     <button type="submit" class="ut-btn ut-btn-primary" id="bc-search">Caută</button>
-    <button type="button" class="ut-btn ut-btn-secondary hidden" id="bc-camera">Scanează cu camera</button>
+    <div class="hidden" id="bc-camera-wrap">
+      <button type="button" class="ut-btn ut-btn-secondary w-full" id="bc-camera">Scanează cu camera</button>
+    </div>
   </form>
   <p class="ut-hint" id="bc-ean-hint">
     Merge și cu un cititor de coduri de bare USB: scanează produsul, iar căutarea pornește singură.
@@ -276,7 +278,7 @@ const { barcodeApi } = Astro.props;
     const formats = (await Detector.getSupportedFormats?.().catch(() => [])) ?? [];
     if (!formats.includes("ean_13")) return;
     const detector = new Detector({ formats: formats.filter((f) => f === "ean_13" || f === "upc_a") });
-    cameraBtn.classList.remove("hidden");
+    $("bc-camera-wrap").classList.remove("hidden");
     cameraBtn.addEventListener("click", () => void startCamera(detector));
     $("bc-camera-stop").addEventListener("click", stopCamera);
     window.addEventListener("pagehide", stopCamera);
