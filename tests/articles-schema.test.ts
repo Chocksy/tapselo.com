@@ -12,11 +12,12 @@ import {
 
 const articlesJson = JSON.parse(readFileSync(join(process.cwd(), "src/lib/kb/articles.json"), "utf8"));
 
-test("articles.json validates and includes four live articles", () => {
+test("articles.json validates and includes five live articles", () => {
   const articles = parseArticlesFile(articlesJson);
-  assert.equal(articles.length, 4);
+  assert.equal(articles.length, 5);
   const slugs = articles.map((a) => a.slug).sort();
   assert.deepEqual(slugs, [
+    "casa-de-marcat-fara-internet",
     "depunere-a4200",
     "erori-dukintegrator",
     "export-p7b-anaf",
@@ -50,6 +51,13 @@ test("buildArticleJsonLd emits Article, BreadcrumbList, HowTo and FAQPage", () =
   assert.ok(faqArticle);
   const faqNodes = buildArticleJsonLd(faqArticle, articles);
   assert.ok(faqNodes.some((n) => n["@type"] === "FAQPage"));
+
+  const offlineHowto = articles.find((a) => a.slug === "casa-de-marcat-fara-internet");
+  assert.ok(offlineHowto);
+  const offlineLd = buildArticleJsonLd(offlineHowto, articles);
+  const offlineTypes = offlineLd.map((n) => n["@type"]);
+  assert.ok(offlineTypes.includes("HowTo"));
+  assert.ok(offlineTypes.includes("FAQPage"));
 });
 
 test("article paths match route prefix", () => {

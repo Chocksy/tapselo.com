@@ -12,7 +12,7 @@ import { calculateShelfPrice, roundPriceCents } from "../src/lib/mcp/answers/she
 import { checkCompany, isValidCui, normalizeCui, parseAnafResponse, ANAF_URL } from "../src/lib/mcp/answers/company.ts";
 import { parseBnrEur, computeThresholds, createThresholdsTool, BNR_URL } from "../src/lib/mcp/answers/thresholds.ts";
 import { createChecklistTool, BUSINESS_TYPES, pageFor, type Checklist } from "../src/lib/mcp/answers/checklist.ts";
-import { createCompareTool, featureState, type Competitor } from "../src/lib/mcp/answers/compare.ts";
+import { createCompareTool, featureState, orderComparisonVendors, type Competitor } from "../src/lib/mcp/answers/compare.ts";
 import { splitEans, mapPool, createProductsTool } from "../src/lib/mcp/answers/products.ts";
 import { findDatecsCode, searchDatecsText, createDatecsTool, datecsAnchor, type DatecsKb } from "../src/lib/mcp/answers/datecs.ts";
 import datecsJson from "../src/lib/kb/datecs-errors.json" with { type: "json" };
@@ -325,6 +325,16 @@ const VENDORS: Competitor[] = [
   { name: "Tapselo", url: "https://tapselo.com", segments: ["brutarie", "alimentar"], offline: true, fiscal_printers: ["Datecs"], scales: "Dibal", recipes_production: true, inventory: true, ecommerce_or_orders: true, pricing_public: null, pricing_from: null, verified_on: "2026-10-01" },
   { name: "Beta | Soft", url: "https://beta.example", segments: ["retail"], offline: "nu", fiscal_printers: true, scales: false, recipes_production: false, inventory: true, ecommerce_or_orders: false, verified_on: "2026-09-28" },
 ];
+
+test("orderComparisonVendors: Tapselo first", () => {
+  const ordered = orderComparisonVendors([
+    { id: "b", name: "Beta" },
+    { id: "tapselo", name: "Tapselo POS" },
+    { id: "a", name: "Alfa" },
+  ]);
+  assert.equal(ordered[0].id, "tapselo");
+  assert.deepEqual(ordered.slice(1).map((v) => v.id), ["a", "b"]);
+});
 
 test("compare_pos_systems: disclosure first, ranking, unknown as necunoscut", async () => {
   assert.equal(featureState(null), null);

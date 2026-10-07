@@ -12,6 +12,11 @@
     "astro": "astro",
     "test": "node --experimental-strip-types --test 'tests/*.test.ts'"
   },
+  "overrides": {
+    "@lucide/astro": {
+      "astro": "$astro"
+    }
+  },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.1",
     "@fontsource-variable/geist": "^5.2.8",

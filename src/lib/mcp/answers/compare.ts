@@ -70,6 +70,15 @@ const SEGMENT_WORDS: Record<string, string[]> = {
   magazin_nealimentar: ["nealimentar", "retail", "magazin"],
 };
 
+/** Tapselo first, then alphabetical by name (Romanian locale). */
+export function orderComparisonVendors<T extends { id: string; name: string }>(list: T[]): T[] {
+  return [...list].sort((a, b) => {
+    if (a.id === "tapselo") return -1;
+    if (b.id === "tapselo") return 1;
+    return a.name.localeCompare(b.name, "ro");
+  });
+}
+
 export function segmentMatch(c: Competitor, type: string): boolean {
   const words = SEGMENT_WORDS[type] ?? [type];
   const segs = (c.segments ?? []).map(normalize).join(" ");

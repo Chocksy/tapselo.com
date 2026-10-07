@@ -1,5 +1,5 @@
 /** Static vendor logos under /public/vendors (id + extension). */
-const VENDOR_LOGO_EXT: Record<string, string> = {
+export const VENDOR_LOGO_EXT: Record<string, string> = {
   tapselo: "png",
   "smartbill-pos": "png",
   oblio: "ico",

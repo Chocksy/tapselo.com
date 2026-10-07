@@ -35,6 +35,10 @@ const faq = [
     q: "Pot folosi arhive ZIP de la contabil?",
     a: "Da, poți trage un .zip cu .p7b-uri; le extragem local în browser.",
   },
+  {
+    q: "Am nevoie de A4200 dacă casa nu a transmis Z-urile din cauza internetului?",
+    a: "Da, pentru rapoartele Z netransmise la ANAF în perioada fără conexiune sau înainte de conectare. Vezi ghidul Casa de marcat fără internet: bonuri offline, transmitere ANAF și F4110.",
+  },
 ];
 
 const jsonLd = [
@@ -93,6 +97,15 @@ const jsonLd = [
       <li>Elimină coada LTV (unealta din verificator sau <code>pdfsig</code> + trunchiere la sfârșitul ByteRange).</li>
       <li>Upload la <a href="https://decl.anaf.mfinante.gov.ro/WAS6DUS/" rel="noopener" target="_blank">decl.anaf.mfinante.gov.ro</a>; verifică recipisa la <a href="https://stare.anaf.ro/StareD112" rel="noopener" target="_blank">stare.anaf.ro</a>.</li>
     </ol>
+  </section>
+
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Internet întrerupt la casă</h2>
+    <p class="mt-4 text-sm leading-relaxed text-text-secondary">
+      Dacă AMEF a emis bonuri offline dar rapoartele Z nu au ajuns la ANAF, exportul lunar în .p7b și declarația A4200 rămân calea de recuperare.
+      <a href="/ghid/articole/casa-de-marcat-fara-internet" class="text-accent hover:text-accent-hover">Casa de marcat fără internet</a>
+      — obligații, F4110 pentru zone fără semnal, amendă neconectare.
+    </p>
   </section>
 
   <section>

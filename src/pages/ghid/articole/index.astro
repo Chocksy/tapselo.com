@@ -6,7 +6,7 @@ import { articlePath } from "../../../lib/articles/schema.ts";
 
 const card = "block rounded-xl border border-border-light p-5 transition-colors hover:border-accent";
 
-const tagOrder = ["A4200", "ANAF", "DUKIntegrator", "Datecs", "p7b", "Raport Z", "FP-70"];
+const tagOrder = ["A4200", "ANAF", "Conectare ANAF", "DUKIntegrator", "Datecs", "p7b", "Raport Z", "FP-70"];
 const tags = [...new Set(supportArticles.flatMap((a) => a.tags))].sort((a, b) => {
   const ia = tagOrder.indexOf(a);
   const ib = tagOrder.indexOf(b);

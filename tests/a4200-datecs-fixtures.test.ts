@@ -69,8 +69,6 @@ test("Datecs anonymized set: Z11–Z13 with three day files matching opis", () =
   assert.equal(summary!.expectedCount, 3);
   assert.equal(summary!.presentCount, 3);
 
-  const blocking = runLocalChecks(files).filter(
-    (i) => !["PERIOD_MISMATCH"].includes(i.code),
-  );
+  const blocking = runLocalChecks(files).filter((i) => i.severity === "error");
   assert.equal(blocking.length, 0, blocking.map((i) => i.code).join(", "));
 });
