@@ -1,3 +1,4 @@
+import { formatZ, formatZRange } from "./check-summary.ts";
 import { SUPPORTED_TIP_AMEF } from "./constants.ts";
 import {
   checkSingleCalendarMonthAmongDays,
@@ -127,7 +128,7 @@ export function runCrossChecks(input: CrossCheckInput): CheckerIssue[] {
       issue(
         "DUPLICATE_Z",
         "Raport Z duplicat",
-        `Z${dup.z} apare în mai multe fișiere: ${dup.files}.`,
+        `${formatZ(dup.z)} apare în mai multe fișiere: ${dup.files}.`,
         "Păstrează o singură zi fiscală per număr Z (sau o pereche .p7b + .xml pentru același Z).",
       ),
     );
@@ -164,7 +165,7 @@ export function runCrossChecks(input: CrossCheckInput): CheckerIssue[] {
         issue(
           "Z_OUT_OF_RANGE",
           "Raport Z în afara opisului",
-          `Ziua ${d.file} este raportul Z${z}, dar opisul acoperă Z${opis.nrRapI}–Z${opis.nrRapF}.`,
+          `Ziua ${d.file} este raportul ${formatZ(z)}, dar opisul acoperă ${formatZRange(opis)}.`,
           "Scoate zilele din afara perioadei sau regenerează opisul cu nrRapI/nrRapF corecte.",
           d.file,
         ),
@@ -178,13 +179,13 @@ export function runCrossChecks(input: CrossCheckInput): CheckerIssue[] {
       if (!grouped.uniqueZ.has(z)) missing.push(z);
     }
     if (missing.length > 0) {
-      const sample = missing.slice(0, 8).map((z) => `Z${z}`).join(", ");
+      const sample = missing.slice(0, 8).map((z) => formatZ(z)).join(", ");
       const more = missing.length > 8 ? ` (+${missing.length - 8})` : "";
       out.push(
         issue(
           "MISSING_Z",
           "Lipsesc zile fiscale",
-          `Opisul cere ${expectedCount} zile (Z${opis.nrRapI}–Z${opis.nrRapF}), ai ${grouped.uniqueZ.size} rapoarte Z distincte. Lipsesc: ${sample}${more}.`,
+          `Opisul cere ${expectedCount} zile (${formatZRange(opis)}), ai ${grouped.uniqueZ.size} rapoarte Z distincte. Lipsesc: ${sample}${more}.`,
           "Reexportă zilele lipsă din casa de marcat sau verifică că ai dezarhivat toate .p7b din arhivă.",
         ),
       );

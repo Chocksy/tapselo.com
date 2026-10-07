@@ -17,6 +17,9 @@
       "astro": "$astro"
     }
   },
+  "devDependencies": {
+    "busboy": "^1.6.0"
+  },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.1",
     "@fontsource-variable/geist": "^5.2.8",

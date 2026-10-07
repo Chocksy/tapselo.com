@@ -21,10 +21,11 @@ export interface OpisCheckSummary {
 }
 
 export function formatZ(z: number): string {
-  return `Z${z}`;
+  return `Z ${z}`;
 }
 
 export function formatZRange(opis: ParsedOpis): string {
+  if (opis.nrRapI === opis.nrRapF) return formatZ(opis.nrRapI);
   return `${formatZ(opis.nrRapI)}–${formatZ(opis.nrRapF)}`;
 }
 
