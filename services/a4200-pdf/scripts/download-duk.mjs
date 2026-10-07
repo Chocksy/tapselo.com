@@ -4,6 +4,7 @@
  */
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const VERSIUNI_URL =
   process.env.ANAF_VERSIUNI_URL ??
@@ -14,16 +15,21 @@ const OUT_LIB = join(OUT_DIST, "lib");
 
 const DECL_TAGS = ["A4200", "A4201", "A4202", "A4203"];
 
+/** ANAF versiuni.xml still lists http:// URLs; port 80 often times out. */
+export function toHttps(url) {
+  return url.trim().replace(/^http:\/\//i, "https://");
+}
+
 function extractUrls(xml, section) {
   const urls = [];
   const blockRe = new RegExp(`<${section}>([\\s\\S]*?)</${section}>`, "i");
   const block = xml.match(blockRe)?.[1];
   if (!block) return urls;
   for (const m of block.matchAll(/<jarURL>([^<]+)<\/jarURL>/gi)) {
-    urls.push(m[1].trim());
+    urls.push(toHttps(m[1]));
   }
   for (const m of block.matchAll(/<(JURL|PURL)>([^<]+)<\/(JURL|PURL)>/gi)) {
-    urls.push(m[2].trim());
+    urls.push(toHttps(m[2]));
   }
   return urls;
 }
@@ -57,14 +63,14 @@ async function main() {
     const block = xml.match(new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`, "i"))?.[1];
     if (!block) throw new Error(`Missing <${tag}> in versiuni.xml`);
     for (const m of block.matchAll(/<(JURL|PURL)>([^<]+)<\/(JURL|PURL)>/gi)) {
-      declUrls.push(m[2].trim());
+      declUrls.push(toHttps(m[2]));
     }
   }
 
   const configBlock = integrator.match(/<cFisiere>([\s\S]*?)<\/cFisiere>/i)?.[1] ?? "";
   const configUrls = [];
   for (const m of configBlock.matchAll(/<fisierURL>([^<]+)<\/fisierURL>/gi)) {
-    configUrls.push(m[1].trim());
+    configUrls.push(toHttps(m[1]));
   }
   const configDir = join(OUT_DIST, "config");
   await mkdir(configDir, { recursive: true });
@@ -88,7 +94,10 @@ async function main() {
   console.log(`Done: ${seen.size} jar URL(s) processed → ${OUT_DIST}`);
 }
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+if (isMain) {
+  main().catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
+}

@@ -387,10 +387,22 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
           pdfStatus.textContent = "PDF generat. Descarcă fișierul și continuă cu semnarea certSIGN.";
           pdfStatus.className = "mt-3 text-sm text-green-700";
         }
-      } else {
-        const errText = await res.text();
+      } else if (res.status === 504) {
         if (pdfStatus) {
-          pdfStatus.textContent = errText || `Eroare ${res.status} de la server.`;
+          pdfStatus.textContent = "Timpul alocat generării PDF a expirat. Încearcă din nou sau generează local cu DUKIntegrator.";
+          pdfStatus.className = "mt-3 text-sm text-red-700";
+        }
+      } else {
+        const ct = res.headers.get("content-type") ?? "";
+        let msg = "";
+        if (ct.includes("application/json")) {
+          const j = await res.json();
+          msg = [j.message, j.nextStep].filter(Boolean).join(" — ");
+        } else {
+          msg = await res.text();
+        }
+        if (pdfStatus) {
+          pdfStatus.textContent = msg || `Eroare ${res.status} de la server.`;
           pdfStatus.className = "mt-3 text-sm text-red-700";
         }
       }

@@ -15,7 +15,7 @@ Small HTTP service for generating **A4200** PDFs with ANAF **DUKIntegrator** (`-
   - `multipart/form-data` with one or more `.p7b` parts, or
   - raw `application/zip`
 
-Success: `200` + `application/pdf`. Validation failure: `422` + plain text from DUKIntegrator `.err.txt`.
+Success: `200` + `application/pdf` (`Content-Disposition`: `A4200_<NUI>_Z<start>-Z<end>.pdf`). Validation failure: `422` + JSON (`message`, `nextStep`, `details` with raw `.err.txt`, `lines` decoded like the site checker). Client mistakes: `4xx` JSON with `message` and `nextStep`.
 
 ## Limits (env)
 
@@ -27,6 +27,9 @@ Success: `200` + `application/pdf`. Validation failure: `422` + plain text from 
 | `RATE_LIMIT_MAX` | 20 per window |
 | `RATE_LIMIT_WINDOW_MS` | 60000 |
 | `CORS_ORIGINS` | `https://tapselo.com,https://www.tapselo.com` |
+| `TRUST_PROXY` | unset — ignore `X-Forwarded-For`; set `1` behind Coolify to rate-limit by the last proxy hop |
+| `MAX_ZIP_ENTRIES` | 64 |
+| `MAX_UNZIPPED_BYTES` | 83886080 (80 MiB) |
 
 ## Build
 

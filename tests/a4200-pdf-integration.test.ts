@@ -107,11 +107,16 @@ test(
       if (res.ok) {
         assert.ok(buf.subarray(0, 4).toString() === "%PDF", "expected PDF header");
       } else {
-        const text = buf.toString("utf8");
         assert.equal(res.status, 422);
-        assert.ok(text.length > 0, "expected DUKIntegrator .err.txt body");
-        // Self-signed / anonymized fixtures may fail signature validation; document outcome.
-        t.diagnostic(`DUKIntegrator rejected anonymized fixtures: ${text.slice(0, 200)}`);
+        const ct = res.headers.get("content-type") ?? "";
+        if (ct.includes("application/json")) {
+          const j = JSON.parse(buf.toString("utf8"));
+          assert.ok(j.message && j.nextStep, "expected Romanian JSON error");
+          assert.ok(j.details?.length > 0, "expected raw DUK details");
+          t.diagnostic(`DUKIntegrator rejected anonymized fixtures: ${j.details.slice(0, 200)}`);
+        } else {
+          assert.ok(buf.length > 0, "expected DUKIntegrator error body");
+        }
       }
     } finally {
       await run("docker", ["stop", containerName], { timeout: 30_000 }).catch(() => {});

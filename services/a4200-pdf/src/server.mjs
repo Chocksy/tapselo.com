@@ -3,15 +3,30 @@ import { spawn } from "node:child_process";
 import fs from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, basename, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { Readable } from "node:stream";
 import Busboy from "busboy";
-import { unzipSync } from "fflate";
+import { ClientError, JavaTimeoutError } from "./lib/client-error.mjs";
+import { clientIp } from "./lib/client-ip.mjs";
+import { checkRate } from "./lib/rate-limit.mjs";
+import { opisPathInDir } from "./lib/opis-resolve.mjs";
+import {
+  parseZipP7bEntries,
+  writeP7bMapToDir,
+  writeP7bFiles,
+} from "./lib/zip-ingest.mjs";
+import { formatDuk422Payload } from "./lib/duk-format.mjs";
+import { buildPdfDownloadName } from "./lib/pdf-filename.mjs";
+import {
+  safeEnd,
+  sendClientError,
+  sendDukValidationError,
+} from "./lib/respond.mjs";
 
 const PORT = Number(process.env.PORT ?? 8787);
 const MAX_BODY_BYTES = Number(process.env.MAX_BODY_BYTES ?? 25 * 1024 * 1024);
 const REQUEST_TIMEOUT_MS = Number(process.env.REQUEST_TIMEOUT_MS ?? 120_000);
 const JAVA_TIMEOUT_MS = Number(process.env.JAVA_TIMEOUT_MS ?? 90_000);
-const RATE_LIMIT_WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS ?? 60_000);
-const RATE_LIMIT_MAX = Number(process.env.RATE_LIMIT_MAX ?? 20);
 const DUK_JAR = process.env.DUK_JAR ?? "/duk/dist/DUKIntegrator.jar";
 const DUK_HOME = process.env.DUK_HOME ?? dirname(DUK_JAR);
 
@@ -20,14 +35,11 @@ const CORS_ORIGINS = (process.env.CORS_ORIGINS ?? "https://tapselo.com,https://w
   .map((s) => s.trim())
   .filter(Boolean);
 
-/** @type {Map<string, { count: number; resetAt: number }>} */
-const rateBuckets = new Map();
-
 function log(msg) {
   console.log(JSON.stringify({ ts: new Date().toISOString(), msg }));
 }
 
-function corsHeaders(origin) {
+export function corsHeaders(origin) {
   if (!origin || !CORS_ORIGINS.includes(origin)) return {};
   return {
     "Access-Control-Allow-Origin": origin,
@@ -37,46 +49,46 @@ function corsHeaders(origin) {
   };
 }
 
-function checkRate(ip) {
-  const now = Date.now();
-  let b = rateBuckets.get(ip);
-  if (!b || now >= b.resetAt) {
-    b = { count: 0, resetAt: now + RATE_LIMIT_WINDOW_MS };
-    rateBuckets.set(ip, b);
-  }
-  b.count += 1;
-  return b.count <= RATE_LIMIT_MAX;
-}
-
-function clientIp(req) {
-  const fwd = req.headers["x-forwarded-for"];
-  if (typeof fwd === "string" && fwd.length) return fwd.split(",")[0].trim();
-  return req.socket.remoteAddress ?? "unknown";
-}
-
 async function readBodyLimited(req, maxBytes) {
   const chunks = [];
   let total = 0;
   for await (const chunk of req) {
     total += chunk.length;
     if (total > maxBytes) {
-      throw new Error("PAYLOAD_TOO_LARGE");
+      throw new ClientError(
+        413,
+        "Arhiva sau fișierele depășesc limita permisă.",
+        "Trimite un set mai mic (doar opisul și zilele din perioadă).",
+        "PAYLOAD_TOO_LARGE",
+      );
     }
     chunks.push(chunk);
   }
   return Buffer.concat(chunks);
 }
 
-async function parseMultipart(req) {
+async function parseMultipartBody(body, contentType) {
   return new Promise((resolve, reject) => {
-    const busboy = Busboy({ headers: req.headers, limits: { fileSize: MAX_BODY_BYTES, files: 64 } });
+    const busboy = Busboy({
+      headers: { "content-type": contentType },
+      limits: { fileSize: MAX_BODY_BYTES, files: 64, parts: 32 },
+    });
     const files = [];
     let zipBuf = null;
 
     busboy.on("file", (fieldname, file, info) => {
       const chunks = [];
       file.on("data", (d) => chunks.push(d));
-      file.on("limit", () => reject(new Error("PAYLOAD_TOO_LARGE")));
+      file.on("limit", () =>
+        reject(
+          new ClientError(
+            413,
+            "Un fișier din cerere depășește limita permisă.",
+            "Reduce dimensiunea arhivei sau încarcă zilele în mai multe trimiteri.",
+            "FILE_TOO_LARGE",
+          ),
+        ),
+      );
       file.on("end", () => {
         const buf = Buffer.concat(chunks);
         const name = info.filename || fieldname;
@@ -88,42 +100,13 @@ async function parseMultipart(req) {
       });
     });
 
-    busboy.on("error", reject);
+    busboy.on("error", (e) => reject(e));
     busboy.on("finish", () => resolve({ files, zipBuf }));
-    req.pipe(busboy);
+    Readable.from(body).pipe(busboy);
   });
 }
 
-async function extractZipToDir(zipBuf, dir) {
-  const entries = unzipSync(new Uint8Array(zipBuf));
-  for (const [path, data] of Object.entries(entries)) {
-    if (path.endsWith("/")) continue;
-    const base = basename(path);
-    if (!base.toLowerCase().endsWith(".p7b")) continue;
-    await fs.writeFile(join(dir, base), Buffer.from(data));
-  }
-}
-
-async function writeP7bFiles(dir, files) {
-  for (const f of files) {
-    const base = basename(f.name);
-    if (!base.toLowerCase().endsWith(".p7b")) continue;
-    await fs.writeFile(join(dir, base), f.data);
-  }
-}
-
-async function findOpis(dir) {
-  const names = await fs.readdir(dir);
-  const p7b = names.filter((n) => n.toLowerCase().endsWith(".p7b"));
-  const preferred = p7b.find((n) => /^perioada_raportare\.p7b$/i.test(n));
-  if (preferred) return join(dir, preferred);
-  const opisLike = p7b.filter((n) => /perioada|raportare/i.test(n));
-  if (opisLike.length === 1) return join(dir, opisLike[0]);
-  if (p7b.length === 0) throw new Error("NO_P7B");
-  throw new Error("OPIS_AMBIGUOUS");
-}
-
-function runDuk(opisPath, workDir) {
+function runDuk(opisPath) {
   return new Promise((resolve, reject) => {
     const child = spawn(
       "java",
@@ -136,7 +119,7 @@ function runDuk(opisPath, workDir) {
     });
     const timer = setTimeout(() => {
       child.kill("SIGKILL");
-      reject(new Error("JAVA_TIMEOUT"));
+      reject(new JavaTimeoutError());
     }, JAVA_TIMEOUT_MS);
     child.on("error", (e) => {
       clearTimeout(timer);
@@ -150,16 +133,20 @@ function runDuk(opisPath, workDir) {
 }
 
 async function generatePdf(workDir) {
-  const opisPath = await findOpis(workDir);
+  const names = await fs.readdir(workDir);
+  const opisPath = opisPathInDir(workDir, names);
   const opisBase = basename(opisPath);
-  await runDuk(opisPath, workDir);
+  const opisBytes = await fs.readFile(opisPath);
+  const downloadName = buildPdfDownloadName(opisBytes);
+
+  await runDuk(opisPath);
 
   const pdfPath = join(workDir, `${opisBase}.pdf`);
   const errPath = join(workDir, `${opisBase}.err.txt`);
 
   try {
     const pdf = await fs.readFile(pdfPath);
-    return { ok: true, pdf, contentType: "application/pdf" };
+    return { ok: true, pdf, downloadName };
   } catch {
     let errText = "";
     try {
@@ -167,53 +154,78 @@ async function generatePdf(workDir) {
     } catch {
       errText = "DUKIntegrator nu a produs PDF și nu există .err.txt.";
     }
-    return { ok: false, errText };
+    return { ok: false, payload: formatDuk422Payload(errText) };
   }
 }
 
-async function handleA4200(req, res, origin) {
+export async function handleA4200(req, res, origin) {
   const workDir = await fs.mkdtemp(join(tmpdir(), "a4200-"));
   try {
     const ct = req.headers["content-type"] ?? "";
-    let files = [];
     if (ct.includes("multipart/form-data")) {
-      const parsed = await parseMultipart(req);
+      const body = await readBodyLimited(req, MAX_BODY_BYTES);
+      const parsed = await parseMultipartBody(body, ct);
       if (parsed.zipBuf) {
-        await extractZipToDir(parsed.zipBuf, workDir);
+        const map = parseZipP7bEntries(parsed.zipBuf);
+        await writeP7bMapToDir(workDir, map);
       }
-      files = parsed.files;
-      if (files.length) await writeP7bFiles(workDir, files);
+      if (parsed.files.length) await writeP7bFiles(workDir, parsed.files);
     } else if (ct.includes("application/zip") || ct.includes("application/x-zip-compressed")) {
       const zipBuf = await readBodyLimited(req, MAX_BODY_BYTES);
-      await extractZipToDir(zipBuf, workDir);
+      const map = parseZipP7bEntries(zipBuf);
+      await writeP7bMapToDir(workDir, map);
     } else {
-      res.writeHead(415, { ...corsHeaders(origin), "Content-Type": "application/json; charset=utf-8" });
-      res.end(JSON.stringify({ error: "Folosește multipart (zip sau .p7b) sau application/zip." }));
-      return;
+      throw new ClientError(
+        415,
+        "Format de cerere neacceptat.",
+        "Folosește multipart (câmp zip sau fișiere .p7b) sau trimite application/zip.",
+        "UNSUPPORTED_MEDIA",
+      );
     }
 
-    const names = await fs.readdir(workDir);
-    if (!names.some((n) => n.toLowerCase().endsWith(".p7b"))) {
-      res.writeHead(400, { ...corsHeaders(origin), "Content-Type": "text/plain; charset=utf-8" });
-      res.end("Nu am găsit fișiere .p7b în cerere.");
-      return;
+    const dirNames = await fs.readdir(workDir);
+    if (!dirNames.some((n) => n.toLowerCase().endsWith(".p7b"))) {
+      throw new ClientError(
+        400,
+        "Nu am găsit fișiere .p7b în cerere.",
+        "Include Perioada_raportare.p7b și zilele NUI_Zxxxx.p7b.",
+        "NO_P7B",
+      );
     }
 
     const result = await generatePdf(workDir);
     if (result.ok) {
-      res.writeHead(200, {
+      safeEnd(res, 200, {
         ...corsHeaders(origin),
         "Content-Type": "application/pdf",
-        "Content-Disposition": 'attachment; filename="Perioada_raportare.p7b.pdf"',
-      });
-      res.end(result.pdf);
+        "Content-Disposition": `attachment; filename="${result.downloadName}"`,
+      }, result.pdf);
     } else {
-      res.writeHead(422, { ...corsHeaders(origin), "Content-Type": "text/plain; charset=utf-8" });
-      res.end(result.errText);
+      sendDukValidationError(res, origin, corsHeaders, result.payload);
     }
   } finally {
     await fs.rm(workDir, { recursive: true, force: true }).catch(() => {});
   }
+}
+
+export function handleRouteError(res, origin, e) {
+  if (e instanceof ClientError) {
+    sendClientError(res, origin, corsHeaders, e);
+    return;
+  }
+  if (e instanceof JavaTimeoutError) {
+    safeEnd(res, 504, {
+      ...corsHeaders(origin),
+      "Content-Type": "text/plain; charset=utf-8",
+    }, "Timpul alocat generării PDF a expirat.");
+    return;
+  }
+  const msg = e instanceof Error ? e.message : String(e);
+  log(`request_error:${msg}`);
+  safeEnd(res, 500, {
+    ...corsHeaders(origin),
+    "Content-Type": "text/plain; charset=utf-8",
+  }, "Eroare internă la generarea PDF.");
 }
 
 const server = http.createServer(async (req, res) => {
@@ -221,54 +233,56 @@ const server = http.createServer(async (req, res) => {
   const ip = clientIp(req);
 
   if (req.method === "OPTIONS") {
-    res.writeHead(204, corsHeaders(origin));
-    res.end();
+    safeEnd(res, 204, corsHeaders(origin), "");
     return;
   }
 
   if (req.method === "GET" && req.url === "/health") {
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ ok: true }));
+    safeEnd(res, 200, { "Content-Type": "application/json" }, JSON.stringify({ ok: true }));
     return;
   }
 
   if (req.method === "POST" && (req.url === "/a4200" || req.url === "/a4200/")) {
     if (!checkRate(ip)) {
-      res.writeHead(429, { ...corsHeaders(origin), "Content-Type": "text/plain; charset=utf-8" });
-      res.end("Prea multe cereri. Încearcă din nou în câteva minute.");
+      safeEnd(res, 429, {
+        ...corsHeaders(origin),
+        "Content-Type": "text/plain; charset=utf-8",
+      }, "Prea multe cereri. Încearcă din nou în câteva minute.");
       return;
     }
 
+    let finished = false;
     const timer = setTimeout(() => {
-      if (!res.writableEnded) {
-        res.writeHead(504, { ...corsHeaders(origin), "Content-Type": "text/plain; charset=utf-8" });
-        res.end("Timpul alocat generării PDF a expirat.");
-        req.destroy();
-      }
+      if (finished) return;
+      finished = true;
+      safeEnd(res, 504, {
+        ...corsHeaders(origin),
+        "Content-Type": "text/plain; charset=utf-8",
+      }, "Timpul alocat generării PDF a expirat.");
+      req.destroy();
     }, REQUEST_TIMEOUT_MS);
 
     try {
       await handleA4200(req, res, origin);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      if (msg === "PAYLOAD_TOO_LARGE") {
-        res.writeHead(413, { ...corsHeaders(origin), "Content-Type": "text/plain; charset=utf-8" });
-        res.end("Arhiva sau fișierele depășesc limita permisă.");
-      } else {
-        log(`request_error:${msg}`);
-        res.writeHead(500, { ...corsHeaders(origin), "Content-Type": "text/plain; charset=utf-8" });
-        res.end("Eroare internă la generarea PDF.");
+      if (!res.headersSent && !res.writableEnded) {
+        handleRouteError(res, origin, e);
       }
     } finally {
+      finished = true;
       clearTimeout(timer);
     }
     return;
   }
 
-  res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-  res.end("Not found");
+  safeEnd(res, 404, { "Content-Type": "text/plain; charset=utf-8" }, "Not found");
 });
 
-server.listen(PORT, () => {
-  log(`listening on ${PORT}`);
-});
+const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+if (isMain) {
+  server.listen(PORT, () => {
+    log(`listening on ${PORT}`);
+  });
+}
+
+export { server, MAX_BODY_BYTES, JAVA_TIMEOUT_MS };
