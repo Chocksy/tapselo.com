@@ -11,7 +11,7 @@ interface Props {
 
 const {
   title = "Tapselo POS — Casa de marcat pentru magazine alimentare",
-  description = "Casa de marcat care merge si fara internet. Cu bon fiscal, cantar integrat si rapoarte inteligente. Gata in 20 de minute, pe orice calculator.",
+  description = "Casa de marcat care merge și fără internet. Cu bon fiscal, cântar integrat și rapoarte inteligente. Gata în 20 de minute, pe orice calculator.",
   noindex = false,
   jsonLd = [],
 } = Astro.props;
@@ -147,11 +147,11 @@ const ogImageUrl = `${siteUrl}/og-image.jpg`;
             if (window.turnstile) window.turnstile.reset();
           } else {
             status.className = "rounded-md p-3 text-sm font-medium bg-red-50 text-red-700 border border-red-200";
-            status.textContent = data.error || "Eroare. Incearca din nou.";
+            status.textContent = data.error || "Eroare. Încearcă din nou.";
           }
         } catch {
           status.className = "rounded-md p-3 text-sm font-medium bg-red-50 text-red-700 border border-red-200";
-          status.textContent = "Eroare de retea. Incearca din nou.";
+          status.textContent = "Eroare de rețea. Încearcă din nou.";
         }
 
         btn.disabled = false;
