@@ -1,0 +1,42 @@
+---
+import ToolShell from "../../components/ToolShell.astro";
+import VatCalculatorTool from "../../components/unelte/VatCalculatorTool.astro";
+import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
+
+const path = "/unelte/calculator-tva";
+const faq = [
+  {
+    q: "Cum calculez TVA 21% din preț?",
+    a: "În modul „Scoat TVA”, introdu prețul cu TVA inclus și cota 21%. Obții baza (preț fără TVA) și suma de TVA.",
+  },
+  {
+    q: "Care este diferența între TVA 21% și 11%?",
+    a: "Din 1 august 2025, 21% este cota standard; 11% este cota redusă pentru alimente și alte categorii din Codul fiscal. Verifică încadrarea produsului.",
+  },
+  {
+    q: "De unde vine cota TVA la codul de bare?",
+    a: "Dacă serviciul este activ, căutăm în nomenclatorul Tapselo (denumire și cotă TVA). Nu afișăm prețuri sau date de magazin.",
+  },
+];
+
+const jsonLd = toolJsonLd(
+  path,
+  "Calculator TVA Tapselo",
+  "Calculator TVA online: adaugă sau scoate TVA la 21% și 11%, calcul din preț cu sau fără TVA.",
+  faq,
+);
+---
+
+<ToolShell
+  title="Calculator TVA online — calcul TVA 21% și 11% | Tapselo"
+  description="Calculator TVA gratuit: adaugă sau scoate TVA la cotele 21% și 11% (2025). Calculează preț cu TVA, preț fără TVA și suma TVA din preț."
+  heading="Calculator TVA"
+  lead="Calculează rapid TVA 21% sau 11%: adaugă TVA la prețul net sau extrage TVA din prețul cu TVA inclus. Rulează în browser, fără cont."
+  campaign="calculator-tva"
+  ctaTitle="Cote TVA corecte pe bon, automat"
+  ctaBody="Tapselo pune fiecare produs pe grupa fiscală corectă la casa de marcat — fără bonuri cu TVA greșit."
+  jsonLd={jsonLd}
+  faq={faq}
+>
+  <VatCalculatorTool />
+</ToolShell>

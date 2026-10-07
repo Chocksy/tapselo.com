@@ -1,0 +1,132 @@
+---
+---
+
+<section class="ut-card" aria-labelledby="cashbook-title">
+  <h2 id="cashbook-title" class="font-display text-2xl italic text-primary">Generator registru de casă</h2>
+  <p class="mt-2 text-sm text-text-secondary">
+    Completează soldul inițial și mișcările zilei. Exportă PDF (print) sau Excel, în formatul uzual pentru registru de casă.
+  </p>
+
+  <div id="cashbook-tool" class="mt-6 space-y-4">
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="cb-company">Unitatea (firmă)</label>
+        <input class="ut-input" id="cb-company" type="text" maxlength="80" autocomplete="organization" />
+      </div>
+      <div>
+        <label class="ut-label" for="cb-date">Data</label>
+        <input class="ut-input" id="cb-date" type="date" />
+      </div>
+    </div>
+    <div>
+      <label class="ut-label" for="cb-opening">Sold din ziua precedentă (lei)</label>
+      <input class="ut-input" id="cb-opening" type="text" inputmode="decimal" value="0" />
+    </div>
+
+    <div class="ut-table-wrap">
+      <table class="ut-table" id="cb-table">
+        <thead>
+          <tr>
+            <th>Nr. act</th>
+            <th>Explicații</th>
+            <th>Încasări</th>
+            <th>Plăți</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="cb-rows" />
+      </table>
+    </div>
+    <button type="button" class="ut-btn ut-btn-secondary" id="cb-add-row">+ Rând</button>
+
+    <p class="ut-err hidden" id="cb-err" role="alert" />
+
+    <div class="flex flex-wrap gap-3">
+      <button type="button" class="ut-btn ut-btn-primary" id="cb-pdf">Salvează PDF</button>
+      <button type="button" class="ut-btn ut-btn-secondary" id="cb-xls">Descarcă Excel</button>
+    </div>
+  </div>
+</section>
+
+<script>
+  import type { CashbookEntry, CashbookPayload } from "../../lib/generators/types.ts";
+  import { downloadCashbookExcel, downloadCashbookPdfViaPrint } from "../../lib/unelte/document-export.ts";
+
+  const tbody = document.getElementById("cb-rows");
+  const errEl = document.getElementById("cb-err");
+  const dateInput = document.getElementById("cb-date") as HTMLInputElement | null;
+  if (dateInput && !dateInput.value) {
+    dateInput.value = new Date().toISOString().slice(0, 10);
+  }
+
+  function rowHtml(i: number): string {
+    return `<tr data-i="${i}">
+      <td><input data-f="doc" placeholder="Raport Z" maxlength="80" /></td>
+      <td><input data-f="desc" placeholder="Vânzări numerar" maxlength="200" /></td>
+      <td><input data-f="rec" inputmode="decimal" placeholder="0" /></td>
+      <td><input data-f="pay" inputmode="decimal" placeholder="0" /></td>
+      <td><button type="button" class="text-sm text-accent" data-del>Șterge</button></td>
+    </tr>`;
+  }
+
+  let rowCount = 0;
+  function addRow() {
+    if (!tbody) return;
+    tbody.insertAdjacentHTML("beforeend", rowHtml(rowCount++));
+    const tr = tbody.lastElementChild as HTMLTableRowElement;
+    tr.querySelector("[data-del]")?.addEventListener("click", () => tr.remove());
+  }
+
+  addRow();
+  addRow();
+  document.getElementById("cb-add-row")?.addEventListener("click", addRow);
+
+  function money(raw: string): number | undefined {
+    const s = raw.trim().replace(/\s/g, "").replace(",", ".");
+    if (!s) return undefined;
+    const n = Number(s);
+    return Number.isFinite(n) && n >= 0 ? Math.round(n * 100) / 100 : undefined;
+  }
+
+  function collect(): CashbookPayload | null {
+    const company = (document.getElementById("cb-company") as HTMLInputElement).value.trim();
+    const date = dateInput?.value ?? "";
+    const opening = money((document.getElementById("cb-opening") as HTMLInputElement).value);
+    const entries: CashbookEntry[] = [];
+    tbody?.querySelectorAll("tr").forEach((tr) => {
+      const doc = (tr.querySelector('[data-f="doc"]') as HTMLInputElement).value.trim();
+      const description = (tr.querySelector('[data-f="desc"]') as HTMLInputElement).value.trim();
+      const receipt = money((tr.querySelector('[data-f="rec"]') as HTMLInputElement).value);
+      const payment = money((tr.querySelector('[data-f="pay"]') as HTMLInputElement).value);
+      if (!doc && !description && receipt === undefined && payment === undefined) return;
+      entries.push({ doc: doc || "-", description: description || "-", receipt, payment });
+    });
+    if (!company || !date || opening === undefined) {
+      errEl!.textContent = "Completează firma, data și soldul inițial.";
+      errEl!.classList.remove("hidden");
+      return null;
+    }
+    if (!entries.length) {
+      errEl!.textContent = "Adaugă cel puțin o încasare sau o plată.";
+      errEl!.classList.remove("hidden");
+      return null;
+    }
+    errEl!.classList.add("hidden");
+    return { company, date, opening_balance: opening, entries };
+  }
+
+  document.getElementById("cb-pdf")?.addEventListener("click", () => {
+    const p = collect();
+    if (!p) return;
+    if (!downloadCashbookPdfViaPrint(p)) {
+      errEl!.textContent = "Permite ferestrele pop-up pentru a deschide PDF-ul.";
+      errEl!.classList.remove("hidden");
+    }
+  });
+
+  document.getElementById("cb-xls")?.addEventListener("click", () => {
+    const p = collect();
+    if (!p) return;
+    downloadCashbookExcel(p);
+  });
+</script>

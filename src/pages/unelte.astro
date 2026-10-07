@@ -3,20 +3,44 @@ import GuideShell from "../components/GuideShell.astro";
 
 const tools = [
   {
+    href: "/unelte/calculator-tva",
+    title: "Calculator TVA",
+    description:
+      "Adaugă sau scoate TVA la 21% și 11%. Calculează preț cu TVA, preț fără TVA și suma TVA. Opțional: cotă TVA după cod de bare EAN.",
+  },
+  {
+    href: "/unelte/registru-de-casa",
+    title: "Registru de casă",
+    description:
+      "Generator zilnic: sold inițial, încasări, plăți, sold final. Export PDF și Excel, cu avertizare la plafonul de 50.000 lei.",
+  },
+  {
+    href: "/unelte/generator-nir",
+    title: "Generator NIR",
+    description:
+      "Notă de intrare-recepție din datele facturii: linii marfă, TVA, adaos, PDF printabil pentru semnături.",
+  },
+  {
+    href: "/unelte/calculator-adaos-comercial",
+    title: "Calculator adaos comercial",
+    description:
+      "De la cost fără TVA la preț de vânzare cu TVA, rotunjire la raft și afiș informativ. Notă despre plafonarea alimentelor.",
+  },
+  {
     href: "/ghid/verificare-a4200",
     title: "Verificare A4200",
     description:
-      "Asistent în 4 pași: verifică exportul lunar de la casă, obții PDF-ul, semnezi și încarci la ANAF — verificarea inițială în browser, fără încărcare pe server.",
+      "Asistent în 4 pași: verifică exportul lunar de la casă, obții PDF-ul, semnezi și încarci la ANAF — verificarea inițială în browser.",
   },
 ];
 ---
 
 <GuideShell
   title="Unelte gratuite pentru comercianți | Tapselo"
-  description="Unelte gratuite Tapselo: asistent A4200 în browser pentru verificarea exportului de la casă."
+  description="Unelte gratuite Tapselo: calculator TVA, registru de casă, generator NIR, adaos comercial și verificare A4200 — în browser, în română."
   heading="Unelte gratuite"
-  lead="Instrumente care rulează în browserul tău. La verificare, nu colectăm conținutul fișierelor fiscale."
-  ctaTitle="Vrei export A4200 direct din casă?"
+  lead="Instrumente care rulează în browserul tău. Nu colectăm conținutul documentelor pe care le generezi local."
+  ctaTitle="Vrei mai puțină muncă manuală la casă?"
   campaign="unelte"
 >
   <ul class="space-y-4">

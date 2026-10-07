@@ -1,0 +1,158 @@
+---
+const barcodeApi = import.meta.env.PUBLIC_BARCODE_API_URL?.replace(/\/$/, "") ?? "";
+---
+
+<section class="ut-card" aria-labelledby="vat-calc-title">
+  <h2 id="vat-calc-title" class="font-display text-2xl italic text-primary">Calculator TVA online</h2>
+  <p class="mt-2 text-sm text-text-secondary">
+    Adaugă sau scoate TVA la cotele din 2025: <strong>21%</strong> (standard) și <strong>11%</strong> (redusă). Sumele sunt în lei.
+  </p>
+
+  <div class="mt-6 space-y-4" id="vat-tool" data-barcode-api={barcodeApi || undefined}>
+    <div class="ut-seg" role="group" aria-label="Operație TVA">
+      <button type="button" data-vat-mode="add" aria-pressed="true">Adaug TVA</button>
+      <button type="button" data-vat-mode="remove" aria-pressed="false">Scoat TVA</button>
+    </div>
+
+    <div class="ut-seg" role="group" aria-label="Cotă TVA">
+      <button type="button" data-vat-rate="21" aria-pressed="true">TVA 21%</button>
+      <button type="button" data-vat-rate="11" aria-pressed="false">TVA 11%</button>
+      <button type="button" data-vat-rate="0" aria-pressed="false">TVA 0%</button>
+    </div>
+
+    <div>
+      <label class="ut-label" for="vat-amount">Sumă (lei)</label>
+      <input class="ut-input" id="vat-amount" type="text" inputmode="decimal" autocomplete="off" placeholder="ex. 100 sau 121,50" />
+      <p class="ut-hint" id="vat-amount-hint">La „Adaug TVA” introdu prețul fără TVA; la „Scoat TVA” prețul cu TVA inclus.</p>
+    </div>
+
+    <dl class="ut-result" id="vat-result" aria-live="polite" />
+  </div>
+
+  {barcodeApi && (
+    <div class="mt-10 border-t border-border-light pt-8" id="vat-barcode-block">
+      <h3 class="text-lg font-semibold text-primary">Cota TVA după cod de bare (EAN)</h3>
+      <p class="mt-2 text-sm text-text-secondary">
+        Scanează sau tastează codul de bare. Primești doar denumirea și cota TVA din nomenclatorul Tapselo — fără prețuri sau date de magazin.
+      </p>
+      <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
+        <div class="flex-1">
+          <label class="ut-label" for="vat-ean">Cod EAN</label>
+          <input class="ut-input" id="vat-ean" type="text" inputmode="numeric" autocomplete="off" placeholder="ex. 5901234123457" />
+        </div>
+        <button type="button" class="ut-btn ut-btn-primary" id="vat-ean-search">Caută</button>
+      </div>
+      <p class="ut-err hidden" id="vat-ean-err" role="alert" />
+      <div class="ut-result hidden" id="vat-ean-result" />
+    </div>
+  )}
+</section>
+
+<script>
+  import { calculateVat, type VatMode, type VatRateRo } from "../../lib/unelte/vat.ts";
+  import { lookupBarcode } from "../../lib/unelte/barcode.ts";
+  import { isValidEan } from "../../lib/ean13.ts";
+  import { fmtLei } from "../../lib/generators/page.ts";
+
+  const root = document.getElementById("vat-tool");
+  if (!root) throw new Error("vat-tool missing");
+
+  let mode: VatMode = "add";
+  let rate: VatRateRo = 21;
+
+  function parseAmount(raw: string): number | null {
+    const s = raw.trim().replace(/\s/g, "").replace(",", ".");
+    if (!s) return null;
+    const n = Number(s);
+    return Number.isFinite(n) && n >= 0 ? n : null;
+  }
+
+  function renderVat() {
+    const input = document.getElementById("vat-amount") as HTMLInputElement | null;
+    const out = document.getElementById("vat-result");
+    const hint = document.getElementById("vat-amount-hint");
+    if (!input || !out || !hint) return;
+    hint.textContent =
+      mode === "add"
+        ? "La „Adaug TVA” introdu prețul fără TVA; la „Scoat TVA” prețul cu TVA inclus."
+        : "Introdu prețul cu TVA inclus — calculezi baza și TVA din preț.";
+    const amount = parseAmount(input.value);
+    if (amount === null) {
+      out.innerHTML = "<p class=\"text-sm text-text-muted\">Introdu o sumă pentru a vedea rezultatul.</p>";
+      return;
+    }
+    try {
+      const r = calculateVat({ amount, rate, mode });
+      out.innerHTML = `
+        <dt>Preț fără TVA</dt><dd>${fmtLei(r.net)}</dd>
+        <dt>TVA ${r.rate}%</dt><dd>${fmtLei(r.vat)}</dd>
+        <dt>Preț cu TVA</dt><dd>${fmtLei(r.gross)}</dd>`;
+    } catch {
+      out.innerHTML = "<p class=\"ut-err\">Sumă invalidă.</p>";
+    }
+  }
+
+  root.querySelectorAll<HTMLButtonElement>("[data-vat-mode]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      mode = btn.dataset.vatMode === "remove" ? "remove" : "add";
+      root.querySelectorAll("[data-vat-mode]").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+      renderVat();
+    });
+  });
+
+  root.querySelectorAll<HTMLButtonElement>("[data-vat-rate]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const v = Number(btn.dataset.vatRate);
+      if (v === 11 || v === 21 || v === 0) rate = v;
+      root.querySelectorAll("[data-vat-rate]").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+      renderVat();
+    });
+  });
+
+  document.getElementById("vat-amount")?.addEventListener("input", renderVat);
+  renderVat();
+
+  const apiBase = root.dataset.barcodeApi;
+  if (apiBase) {
+    const errEl = document.getElementById("vat-ean-err");
+    const resEl = document.getElementById("vat-ean-result");
+    const run = async () => {
+      errEl?.classList.add("hidden");
+      resEl?.classList.add("hidden");
+      const raw = (document.getElementById("vat-ean") as HTMLInputElement | null)?.value ?? "";
+      const ean = raw.replace(/[\s-]/g, "");
+      if (!isValidEan(ean)) {
+        if (errEl) {
+          errEl.textContent = "Cod EAN invalid. Folosește 8 sau 13 cifre, cu cifra de control corectă.";
+          errEl.classList.remove("hidden");
+        }
+        return;
+      }
+      const r = await lookupBarcode(apiBase, ean);
+      if (!r.ok) {
+        if (errEl) {
+          errEl.textContent = r.message;
+          errEl.classList.remove("hidden");
+        }
+        return;
+      }
+      if (resEl) {
+        const p = r.product;
+        const extra = [p.brand, p.category].filter(Boolean).join(" · ");
+        resEl.innerHTML = `
+          <p class="font-semibold text-primary">${p.name}</p>
+          ${extra ? `<p class="text-sm text-text-secondary">${extra}</p>` : ""}
+          <p class="mt-2"><span class="text-text-muted">Cotă TVA recomandată:</span> <strong>${p.vat_rate}%</strong></p>
+          <p class="ut-hint">Verifică încadrarea pe factură și în nomenclatorul casei de marcat.</p>`;
+        resEl.classList.remove("hidden");
+      }
+    };
+    document.getElementById("vat-ean-search")?.addEventListener("click", () => void run());
+    document.getElementById("vat-ean")?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        void run();
+      }
+    });
+  }
+</script>

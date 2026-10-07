@@ -1,0 +1,42 @@
+---
+import ToolShell from "../../components/ToolShell.astro";
+import MarkupCalculatorTool from "../../components/unelte/MarkupCalculatorTool.astro";
+import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
+
+const path = "/unelte/calculator-adaos-comercial";
+const faq = [
+  {
+    q: "Cum calculez adaosul comercial?",
+    a: "Adaosul % se aplică la costul fără TVA; apoi se adaugă TVA la vânzare. Calculatorul arată prețul final cu TVA și adaosul real după rotunjire.",
+  },
+  {
+    q: "Ce înseamnă plafonarea adaosului 0–300%?",
+    a: "Pentru anumite produse alimentare de bază, legea limitează adaosul comercial (de regulă până la 300%). Verifică lista oficială și încadrarea produsului.",
+  },
+  {
+    q: "Pot printa un afiș cu adaosul?",
+    a: "Da — completează magazinul și produsul, apoi „Printează afiș adaos” pentru un document informativ la raft.",
+  },
+];
+
+const jsonLd = toolJsonLd(
+  path,
+  "Calculator adaos comercial Tapselo",
+  "Calculator adaos comercial: preț de vânzare cu TVA din cost, rotunjire la raft, afiș adaos.",
+  faq,
+);
+---
+
+<ToolShell
+  title="Calculator adaos comercial — preț vânzare cu TVA | Tapselo"
+  description="Calculator adaos comercial gratuit: cost fără TVA, adaos %, preț la raft cu TVA 21% sau 11%. Afiș adaos și notă despre plafonarea alimentelor."
+  heading="Calculator adaos comercial"
+  lead="De la costul de achiziție fără TVA la prețul de vânzare cu TVA — cu rotunjire la ,49 sau ,99 și afiș printabil pentru consumatori."
+  campaign="calculator-adaos"
+  ctaTitle="Prețuri și etichete la raft din Tapselo"
+  ctaBody="Calculezi adaosul o dată; casa de marcat și etichetele folosesc același preț cu TVA corect."
+  jsonLd={jsonLd}
+  faq={faq}
+>
+  <MarkupCalculatorTool />
+</ToolShell>

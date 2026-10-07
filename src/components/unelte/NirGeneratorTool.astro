@@ -1,0 +1,148 @@
+---
+---
+
+<section class="ut-card" aria-labelledby="nir-title">
+  <h2 id="nir-title" class="font-display text-2xl italic text-primary">Model NIR — notă de intrare-recepție</h2>
+  <p class="mt-2 text-sm text-text-secondary">
+    Completează datele facturii și liniile de marfă. Generează un PDF printabil al NIR-ului, cu adaos și TVA neexigibil.
+  </p>
+
+  <div id="nir-tool" class="mt-6 space-y-4">
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="nir-company">Unitatea (cumpărător)</label>
+        <input class="ut-input" id="nir-company" type="text" maxlength="80" />
+      </div>
+      <div>
+        <label class="ut-label" for="nir-supplier">Furnizor</label>
+        <input class="ut-input" id="nir-supplier" type="text" maxlength="80" />
+      </div>
+      <div>
+        <label class="ut-label" for="nir-inv">Factură nr.</label>
+        <input class="ut-input" id="nir-inv" type="text" maxlength="80" />
+      </div>
+      <div>
+        <label class="ut-label" for="nir-date">Data facturii</label>
+        <input class="ut-input" id="nir-date" type="date" />
+      </div>
+    </div>
+    <div class="sm:max-w-xs">
+      <label class="ut-label" for="nir-markup">Adaos comercial % (opțional)</label>
+      <input class="ut-input" id="nir-markup" type="text" inputmode="decimal" placeholder="ex. 25" />
+    </div>
+
+    <div class="ut-table-wrap">
+      <table class="ut-table" id="nir-table">
+        <thead>
+          <tr>
+            <th>Produs</th>
+            <th>UM</th>
+            <th>Cant.</th>
+            <th>Preț achiziție fără TVA</th>
+            <th>TVA %</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="nir-rows" />
+      </table>
+    </div>
+    <button type="button" class="ut-btn ut-btn-secondary" id="nir-add-row">+ Linie</button>
+    <p class="ut-err hidden" id="nir-err" role="alert" />
+    <button type="button" class="ut-btn ut-btn-primary" id="nir-pdf">Generează PDF NIR</button>
+  </div>
+</section>
+
+<script>
+  import type { NirLine, NirPayload } from "../../lib/generators/types.ts";
+  import { VAT_RATES } from "../../lib/generators/validate.ts";
+  import { downloadNirPdfViaPrint } from "../../lib/unelte/document-export.ts";
+
+  const tbody = document.getElementById("nir-rows");
+  const errEl = document.getElementById("nir-err");
+  const dateInput = document.getElementById("nir-date") as HTMLInputElement | null;
+  if (dateInput && !dateInput.value) dateInput.value = new Date().toISOString().slice(0, 10);
+
+  function rowHtml(i: number): string {
+    const opts = VAT_RATES.map((r) => `<option value="${r}">${r}%</option>`).join("");
+    return `<tr data-i="${i}">
+      <td><input data-f="name" maxlength="80" placeholder="Denumire" /></td>
+      <td><input data-f="unit" maxlength="20" placeholder="buc" style="max-width:4rem" /></td>
+      <td><input data-f="qty" inputmode="decimal" placeholder="1" style="max-width:5rem" /></td>
+      <td><input data-f="cost" inputmode="decimal" placeholder="0" /></td>
+      <td><select data-f="vat">${opts}</select></td>
+      <td><button type="button" class="text-sm text-accent" data-del>Șterge</button></td>
+    </tr>`;
+  }
+
+  let n = 0;
+  function addRow() {
+    tbody?.insertAdjacentHTML("beforeend", rowHtml(n++));
+    const tr = tbody!.lastElementChild as HTMLTableRowElement;
+    tr.querySelector("[data-del]")?.addEventListener("click", () => tr.remove());
+  }
+  addRow();
+  document.getElementById("nir-add-row")?.addEventListener("click", addRow);
+
+  function num(raw: string): number | null {
+    const s = raw.trim().replace(",", ".");
+    if (!s) return null;
+    const v = Number(s);
+    return Number.isFinite(v) ? v : null;
+  }
+
+  function collect(): NirPayload | null {
+    const company = (document.getElementById("nir-company") as HTMLInputElement).value.trim();
+    const supplier = (document.getElementById("nir-supplier") as HTMLInputElement).value.trim();
+    const invoice_number = (document.getElementById("nir-inv") as HTMLInputElement).value.trim();
+    const invoice_date = dateInput?.value ?? "";
+    const markupRaw = (document.getElementById("nir-markup") as HTMLInputElement).value;
+    const markup = num(markupRaw);
+    const lines: NirLine[] = [];
+    let lineErr: string | null = null;
+    tbody?.querySelectorAll("tr").forEach((tr) => {
+      const name = (tr.querySelector('[data-f="name"]') as HTMLInputElement).value.trim();
+      const unit = (tr.querySelector('[data-f="unit"]') as HTMLInputElement).value.trim() || "buc";
+      const quantity = num((tr.querySelector('[data-f="qty"]') as HTMLInputElement).value);
+      const unit_cost = num((tr.querySelector('[data-f="cost"]') as HTMLInputElement).value);
+      const vat_rate = Number((tr.querySelector('[data-f="vat"]') as HTMLSelectElement).value);
+      if (!name && quantity === null && unit_cost === null) return;
+      if (!name || quantity === null || unit_cost === null || !(quantity > 0) || !(unit_cost >= 0)) {
+        lineErr = "Verifică denumirea, cantitatea și prețul pe fiecare linie.";
+        return;
+      }
+      if (!VAT_RATES.includes(vat_rate as (typeof VAT_RATES)[number])) {
+        lineErr = "Cota TVA trebuie să fie 21%, 11% sau 0%.";
+        return;
+      }
+      lines.push({ name, unit, quantity, unit_cost, vat_rate });
+    });
+    if (lineErr) {
+      errEl!.textContent = lineErr;
+      errEl!.classList.remove("hidden");
+      return null;
+    }
+    if (!company || !supplier || !invoice_number || !invoice_date) {
+      errEl!.textContent = "Completează firma, furnizorul și datele facturii.";
+      errEl!.classList.remove("hidden");
+      return null;
+    }
+    if (!lines.length) {
+      errEl!.textContent = "Adaugă cel puțin o linie de marfă.";
+      errEl!.classList.remove("hidden");
+      return null;
+    }
+    errEl!.classList.add("hidden");
+    const payload: NirPayload = { company, supplier, invoice_number, invoice_date, lines };
+    if (markup !== null && markup >= 0) payload.markup_percent = markup;
+    return payload;
+  }
+
+  document.getElementById("nir-pdf")?.addEventListener("click", () => {
+    const p = collect();
+    if (!p) return;
+    if (!downloadNirPdfViaPrint(p)) {
+      errEl!.textContent = "Permite ferestrele pop-up pentru PDF.";
+      errEl!.classList.remove("hidden");
+    }
+  });
+</script>
