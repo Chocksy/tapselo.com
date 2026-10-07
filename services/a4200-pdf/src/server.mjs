@@ -4,9 +4,13 @@ import fs from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, basename, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { Readable } from "node:stream";
-import Busboy from "busboy";
 import { ClientError, JavaTimeoutError } from "./lib/client-error.mjs";
+import { parseMultipartBody } from "./lib/multipart.mjs";
+import {
+  JAVA_TIMEOUT_RESPONSE,
+  RATE_LIMIT_RESPONSE,
+  REQUEST_TIMEOUT_RESPONSE,
+} from "./lib/api-errors.mjs";
 import { clientIp } from "./lib/client-ip.mjs";
 import { checkRate } from "./lib/rate-limit.mjs";
 import { opisPathInDir } from "./lib/opis-resolve.mjs";
@@ -21,6 +25,7 @@ import {
   safeEnd,
   sendClientError,
   sendDukValidationError,
+  sendApiError,
 } from "./lib/respond.mjs";
 
 const PORT = Number(process.env.PORT ?? 8787);
@@ -65,45 +70,6 @@ async function readBodyLimited(req, maxBytes) {
     chunks.push(chunk);
   }
   return Buffer.concat(chunks);
-}
-
-async function parseMultipartBody(body, contentType) {
-  return new Promise((resolve, reject) => {
-    const busboy = Busboy({
-      headers: { "content-type": contentType },
-      limits: { fileSize: MAX_BODY_BYTES, files: 64, parts: 32 },
-    });
-    const files = [];
-    let zipBuf = null;
-
-    busboy.on("file", (fieldname, file, info) => {
-      const chunks = [];
-      file.on("data", (d) => chunks.push(d));
-      file.on("limit", () =>
-        reject(
-          new ClientError(
-            413,
-            "Un fișier din cerere depășește limita permisă.",
-            "Reduce dimensiunea arhivei sau încarcă zilele în mai multe trimiteri.",
-            "FILE_TOO_LARGE",
-          ),
-        ),
-      );
-      file.on("end", () => {
-        const buf = Buffer.concat(chunks);
-        const name = info.filename || fieldname;
-        if (fieldname === "zip" || name.toLowerCase().endsWith(".zip")) {
-          zipBuf = buf;
-        } else if (name.toLowerCase().endsWith(".p7b")) {
-          files.push({ name: basename(name), data: buf });
-        }
-      });
-    });
-
-    busboy.on("error", (e) => reject(e));
-    busboy.on("finish", () => resolve({ files, zipBuf }));
-    Readable.from(body).pipe(busboy);
-  });
 }
 
 function runDuk(opisPath) {
@@ -164,7 +130,7 @@ export async function handleA4200(req, res, origin) {
     const ct = req.headers["content-type"] ?? "";
     if (ct.includes("multipart/form-data")) {
       const body = await readBodyLimited(req, MAX_BODY_BYTES);
-      const parsed = await parseMultipartBody(body, ct);
+      const parsed = await parseMultipartBody(body, ct, MAX_BODY_BYTES);
       if (parsed.zipBuf) {
         const map = parseZipP7bEntries(parsed.zipBuf);
         await writeP7bMapToDir(workDir, map);
@@ -214,10 +180,7 @@ export function handleRouteError(res, origin, e) {
     return;
   }
   if (e instanceof JavaTimeoutError) {
-    safeEnd(res, 504, {
-      ...corsHeaders(origin),
-      "Content-Type": "text/plain; charset=utf-8",
-    }, "Timpul alocat generării PDF a expirat.");
+    sendApiError(res, origin, corsHeaders, 504, JAVA_TIMEOUT_RESPONSE);
     return;
   }
   const msg = e instanceof Error ? e.message : String(e);
@@ -244,10 +207,7 @@ const server = http.createServer(async (req, res) => {
 
   if (req.method === "POST" && (req.url === "/a4200" || req.url === "/a4200/")) {
     if (!checkRate(ip)) {
-      safeEnd(res, 429, {
-        ...corsHeaders(origin),
-        "Content-Type": "text/plain; charset=utf-8",
-      }, "Prea multe cereri. Încearcă din nou în câteva minute.");
+      sendApiError(res, origin, corsHeaders, 429, RATE_LIMIT_RESPONSE);
       return;
     }
 
@@ -255,10 +215,7 @@ const server = http.createServer(async (req, res) => {
     const timer = setTimeout(() => {
       if (finished) return;
       finished = true;
-      safeEnd(res, 504, {
-        ...corsHeaders(origin),
-        "Content-Type": "text/plain; charset=utf-8",
-      }, "Timpul alocat generării PDF a expirat.");
+      sendApiError(res, origin, corsHeaders, 504, REQUEST_TIMEOUT_RESPONSE);
       req.destroy();
     }, REQUEST_TIMEOUT_MS);
 

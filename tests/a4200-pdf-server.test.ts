@@ -7,7 +7,6 @@ import { zipSync } from "fflate";
 import { resolveOpisBasename } from "../services/a4200-pdf/src/lib/opis-resolve.mjs";
 import { ClientError } from "../services/a4200-pdf/src/lib/client-error.mjs";
 import { parseZipP7bEntries, MAX_ZIP_ENTRIES } from "../services/a4200-pdf/src/lib/zip-ingest.mjs";
-import { formatDuk422Payload } from "../services/a4200-pdf/src/lib/duk-format.mjs";
 import { buildPdfDownloadName } from "../services/a4200-pdf/src/lib/pdf-filename.mjs";
 import { clientIp, trustProxyEnabled } from "../services/a4200-pdf/src/lib/client-ip.mjs";
 import {
@@ -19,9 +18,31 @@ import { handleRouteError } from "../services/a4200-pdf/src/server.mjs";
 import { JavaTimeoutError } from "../services/a4200-pdf/src/lib/client-error.mjs";
 import { toHttps } from "../services/a4200-pdf/scripts/download-duk.mjs";
 import { safeEnd } from "../services/a4200-pdf/src/lib/respond.mjs";
+import { parseMultipartBody, MULTIPART_MAX_FILES } from "../services/a4200-pdf/src/lib/multipart.mjs";
+import { isDukValidationSectionHeader, formatDuk422Payload } from "../services/a4200-pdf/src/lib/duk-format.mjs";
+import { REQUEST_TIMEOUT_RESPONSE } from "../services/a4200-pdf/src/lib/api-errors.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FIX_DIR = path.join(__dirname, "fixtures/a4200/datecs-anon");
+
+function buildMultipartP7b(filenames: string[]) {
+  const boundary = "----TapseloTestBoundary";
+  const chunks: Buffer[] = [];
+  for (const name of filenames) {
+    chunks.push(
+      Buffer.from(
+        `--${boundary}\r\nContent-Disposition: form-data; name="files"; filename="${name}"\r\nContent-Type: application/octet-stream\r\n\r\n`,
+      ),
+    );
+    chunks.push(Buffer.from([0x30, 0x01]));
+    chunks.push(Buffer.from("\r\n"));
+  }
+  chunks.push(Buffer.from(`--${boundary}--\r\n`));
+  return {
+    body: Buffer.concat(chunks),
+    contentType: `multipart/form-data; boundary=${boundary}`,
+  };
+}
 
 function mockRes() {
   let status = 0;
@@ -142,6 +163,40 @@ test("formatDuk422Payload maps R1.1 and extragere XML with details", () => {
   assert.ok(p.message.length > 0);
   assert.ok(p.nextStep.length > 0);
   assert.ok(p.lines.some((l) => /R1\.1|zile/i.test(l.raw)));
+  assert.ok(isDukValidationSectionHeader("E: validari globale"));
+  const section = p.lines.find((l) => l.kind === "section");
+  assert.ok(section);
+  assert.match(section!.title!, /Antet validare/);
+});
+
+test("parseMultipartBody: 32 zile plus opis (33 parts) keeps all files", async () => {
+  const names = ["Perioada_raportare.p7b"];
+  for (let z = 1; z <= 32; z++) {
+    names.push(`9999999901_Z${String(z).padStart(4, "0")}.p7b`);
+  }
+  assert.equal(names.length, 33);
+  const { body, contentType } = buildMultipartP7b(names);
+  const parsed = await parseMultipartBody(body, contentType, 25 * 1024 * 1024);
+  assert.equal(parsed.files.length, 33);
+  resolveOpisBasename(parsed.files.map((f) => f.name));
+});
+
+test("parseMultipartBody: more than 64 files → 413 JSON ClientError", async () => {
+  const names: string[] = ["Perioada_raportare.p7b"];
+  for (let i = 0; i < MULTIPART_MAX_FILES; i++) {
+    names.push(`9999999901_Z${String(i + 1).padStart(4, "0")}.p7b`);
+  }
+  assert.equal(names.length, MULTIPART_MAX_FILES + 1);
+  const { body, contentType } = buildMultipartP7b(names);
+  await assert.rejects(
+    () => parseMultipartBody(body, contentType, 25 * 1024 * 1024),
+    (e: unknown) => {
+      assert.ok(e instanceof ClientError);
+      assert.equal((e as ClientError).status, 413);
+      assert.ok(["MULTIPART_FILES_LIMIT", "MULTIPART_PARTS_LIMIT"].includes((e as ClientError).code));
+      return true;
+    },
+  );
 });
 
 test("buildPdfDownloadName from anonymized opis", () => {
@@ -164,6 +219,20 @@ test("clientIp: ignores X-Forwarded-For unless TRUST_PROXY", () => {
   process.env.TRUST_PROXY = prev;
 });
 
+test("clientIp: TRUST_PROXY prefers CF-Connecting-IP (Coolify + Cloudflare)", () => {
+  const prev = process.env.TRUST_PROXY;
+  process.env.TRUST_PROXY = "1";
+  const req = {
+    headers: {
+      "cf-connecting-ip": "198.51.100.44",
+      "x-forwarded-for": "198.51.100.44, 172.16.0.1",
+    },
+    socket: { remoteAddress: "10.0.0.99" },
+  };
+  assert.equal(clientIp(req), "198.51.100.44");
+  process.env.TRUST_PROXY = prev;
+});
+
 test("rate limiter evicts expired buckets", () => {
   resetRateLimitForTests();
   const { max } = rateLimitConfig();
@@ -177,11 +246,14 @@ test("rate limiter evicts expired buckets", () => {
   resetRateLimitForTests();
 });
 
-test("handleRouteError: Java timeout → 504", () => {
+test("handleRouteError: Java timeout → 504 JSON", () => {
   const res = mockRes();
   handleRouteError(res, "https://tapselo.com", new JavaTimeoutError());
   assert.equal(res.status, 504);
-  assert.match(res.body, /Timpul alocat/);
+  const j = JSON.parse(res.body);
+  assert.equal(j.code, REQUEST_TIMEOUT_RESPONSE.code);
+  assert.match(j.message, /Timpul alocat/);
+  assert.ok(j.nextStep);
 });
 
 test("safeEnd does not send twice", () => {

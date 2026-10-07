@@ -4,6 +4,10 @@ export function trustProxyEnabled() {
 
 export function clientIp(req) {
   if (trustProxyEnabled()) {
+    const cf = req.headers["cf-connecting-ip"];
+    if (typeof cf === "string" && cf.trim()) {
+      return cf.trim();
+    }
     const fwd = req.headers["x-forwarded-for"];
     if (typeof fwd === "string" && fwd.length) {
       const parts = fwd.split(",").map((s) => s.trim()).filter(Boolean);

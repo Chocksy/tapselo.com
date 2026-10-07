@@ -27,7 +27,7 @@ Success: `200` + `application/pdf` (`Content-Disposition`: `A4200_<NUI>_Z<start>
 | `RATE_LIMIT_MAX` | 20 per window |
 | `RATE_LIMIT_WINDOW_MS` | 60000 |
 | `CORS_ORIGINS` | `https://tapselo.com,https://www.tapselo.com` |
-| `TRUST_PROXY` | unset — ignore `X-Forwarded-For`; set `1` behind Coolify to rate-limit by the last proxy hop |
+| `TRUST_PROXY` | unset — rate-limit by socket IP. Set `1` behind Coolify/Cloudflare: use `CF-Connecting-IP` when present, else the last hop in `X-Forwarded-For` (without this, all users share one bucket behind the proxy) |
 | `MAX_ZIP_ENTRIES` | 64 |
 | `MAX_UNZIPPED_BYTES` | 83886080 (80 MiB) |
 

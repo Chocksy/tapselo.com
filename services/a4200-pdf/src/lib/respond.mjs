@@ -20,3 +20,11 @@ export function sendDukValidationError(res, origin, corsHeaders, payload) {
   };
   safeEnd(res, 422, h, JSON.stringify(payload));
 }
+
+export function sendApiError(res, origin, corsHeaders, status, body) {
+  const h = {
+    ...corsHeaders(origin),
+    "Content-Type": "application/json; charset=utf-8",
+  };
+  safeEnd(res, status, h, JSON.stringify(body));
+}
