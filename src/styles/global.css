@@ -48,10 +48,19 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Sticky footer: short pages stretch <main> so the footer ends at the viewport bottom. */
   body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
     color: var(--color-text);
     background: var(--color-surface);
     line-height: 1.6;
+  }
+
+  body > main {
+    flex: 1 0 auto;
   }
 
   h1, h2 {
