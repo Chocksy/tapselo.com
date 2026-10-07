@@ -4,7 +4,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { ingestBuffers } from "../src/lib/a4200/ingest.ts";
 import { runLocalChecks } from "../src/lib/a4200/pipeline.ts";
-import { collapseVatXsdWarnings } from "../src/lib/a4200/validate-xsd.ts";
+import { extractXmlPayload } from "../src/lib/a4200/unwrap.ts";
+import { collapseVatXsdWarnings, validateAgainstXsd } from "../src/lib/a4200/validate-xsd.ts";
+import { validateXML } from "xmllint-wasm";
 import type { CheckerIssue } from "../src/lib/a4200/types.ts";
 
 const FIX = path.join(import.meta.dirname, "fixtures/a4200");
@@ -56,4 +58,28 @@ test("collapseVatXsdWarnings merges cota errors into one warning", () => {
   assert.equal(out[0].severity, "warning");
   assert.equal(out[0].code, "XSD_COTA_NEW_VAT");
   assert.match(out[0].ceInseamna, /50/);
+  assert.match(out[0].ceFaci, /Avertismentul XSD/);
+});
+
+function vatMentionCount(issues: CheckerIssue[]): number {
+  const w = issues.find((i) => i.code === "XSD_COTA_NEW_VAT");
+  assert.ok(w);
+  const m = w!.ceInseamna.match(/(\d+)/);
+  assert.ok(m);
+  return Number.parseInt(m[1], 10);
+}
+
+test("VAT XSD mention count is not doubled for p7b+xml pair on same Z", async () => {
+  const xsd4203 = fs.readFileSync(
+    path.join(import.meta.dirname, "../public/a4200/a4203_20180927.xsd"),
+    "utf8",
+  );
+  const p7bPath = path.join(DATECS, "9999999901_Z0011.p7b");
+  const xml = extractXmlPayload(new Uint8Array(fs.readFileSync(p7bPath)))!.xml;
+  const single = await validateAgainstXsd(validateXML, [{ name: "9999999901_Z0011.p7b", xml, schema: xsd4203 }]);
+  const paired = await validateAgainstXsd(validateXML, [
+    { name: "9999999901_Z0011.p7b", xml, schema: xsd4203 },
+    { name: "9999999901_Z0011.xml", xml, schema: xsd4203 },
+  ]);
+  assert.equal(vatMentionCount(paired), vatMentionCount(single));
 });

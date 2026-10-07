@@ -99,7 +99,7 @@
     "XSD_COTA_NEW_VAT": {
       "title": "Cotă TVA 11% sau 21%",
       "ce_inseamna": "Bonul folosește cote introduse după publicarea XSD-ului din 2018.",
-      "ce_faci": "Actualizează A4203Validator în DUKIntegrator. Eroarea XSD aici nu înseamnă neapărat că depunerea va fi respinsă."
+      "ce_faci": "Actualizează A4203Validator în DUKIntegrator. Avertismentul XSD aici nu înseamnă neapărat că depunerea va fi respinsă."
     },
     "XSD_MISSING_ATTR": {
       "title": "Atribut obligatoriu lipsă",
