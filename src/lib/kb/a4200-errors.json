@@ -19,7 +19,7 @@
     "NO_DAYS": {
       "title": "Lipsesc zilele fiscale",
       "ce_inseamna": "Opisul listează rapoarte Z, dar nu ai încărcat fișiere zi (A4203).",
-      "ce_faci": "Adaugă toate fișierele NUI_Zxxxx.p7b din intervalul nrRapI–nrRapF."
+      "ce_faci": "Adaugă toate fișierele zilnice exportate din casă, pentru fiecare raport Z din intervalul declarat în opis."
     },
     "NUI_MISMATCH": {
       "title": "NUI diferit",
@@ -39,7 +39,7 @@
     "MISSING_Z": {
       "title": "Zile lipsă",
       "ce_inseamna": "Opisul acoperă mai multe rapoarte Z decât fișiere încărcate.",
-      "ce_faci": "Reexportă rapoartele Z lipsă sau corectează nrRapI/nrRapF în opis."
+      "ce_faci": "Reexportă rapoartele Z lipsă din memoria fiscală sau regenerează opisul perioadei din casă."
     },
     "DUPLICATE_Z": {
       "title": "Raport Z duplicat",
@@ -54,11 +54,11 @@
     "Z_COUNT_MISMATCH": {
       "title": "Număr de zile greșit",
       "ce_inseamna": "Numărul de fișiere zi nu corespunde cu nrRapF − nrRapI + 1.",
-      "ce_faci": "Numără fișierele Z și compară cu opisul."
+      "ce_faci": "Numără fișierele zilnice și compară cu numărul de zile cerut în opis."
     },
     "Z_RANGE_INVALID": {
       "title": "Interval Z invalid",
-      "ce_inseamna": "nrRapI este mai mare decât nrRapF în opis.",
+      "ce_inseamna": "Intervalul de rapoarte Z din opis este invalid (începutul este după sfârșit).",
       "ce_faci": "Regenerează opisul din casa de marcat."
     },
     "TIP_AMEF_ST": {
@@ -163,8 +163,6 @@
     { "pattern": "spati|spaț|space.*cale|path", "code": "DUK_FOLDER_SPACES" },
     { "pattern": "select.*opis|doar.*opis|registru", "code": "DUK_SELECT_OPIS" },
     { "pattern": "ZIP corupt|zip corupt|corupt", "code": "DUK_ZIP_CORRUPT" },
-    { "pattern": "Eroare extragere XML|extragere XML", "code": "P7B_EXTRACT_FAILED" },
-    { "pattern": "R1\\.1|numar.*zile|număr.*zile", "code": "Z_COUNT_MISMATCH" },
     { "pattern": "semnatur|semnătur|certificat|p7b", "code": "DUK_SIGNATURE" },
     { "pattern": "NUI|idM", "code": "NUI_MISMATCH" },
     { "pattern": "nrRap|raport.*Z", "code": "MISSING_Z" }
