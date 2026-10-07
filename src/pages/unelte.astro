@@ -1,30 +1,33 @@
 ---
 import GuideShell from "../components/GuideShell.astro";
 
+const barcodeEnabled = Boolean(import.meta.env.PUBLIC_BARCODE_API_URL);
+
 const tools = [
   {
     href: "/unelte/calculator-tva",
     title: "Calculator TVA",
     description:
-      "Adaugă sau scoate TVA la 21% și 11%. Calculează preț cu TVA, preț fără TVA și suma TVA. Opțional: cotă TVA după cod de bare EAN.",
+      "Adaugă sau scoate TVA la 21% și 11%. Calculează preț cu TVA, preț fără TVA și suma TVA." +
+      (barcodeEnabled ? " Opțional: cota TVA după codul de bare EAN." : ""),
   },
   {
     href: "/unelte/registru-de-casa",
     title: "Registru de casă",
     description:
-      "Generator zilnic: sold inițial, încasări, plăți, sold final. Export PDF și Excel, cu avertizare la plafonul de 50.000 lei.",
+      "Generator zilnic: sold din ziua precedentă, încasări, plăți, sold final. Export PDF și Excel, cu avertizare la plafonul de 50.000 lei.",
   },
   {
     href: "/unelte/generator-nir",
     title: "Generator NIR",
     description:
-      "Notă de intrare-recepție din datele facturii: linii marfă, TVA, adaos, PDF printabil pentru semnături.",
+      "Notă de recepție și constatare de diferențe din datele facturii: liniile de marfă, TVA, adaos, PDF printabil pentru semnături.",
   },
   {
     href: "/unelte/calculator-adaos-comercial",
     title: "Calculator adaos comercial",
     description:
-      "De la cost fără TVA la preț de vânzare cu TVA, rotunjire la raft și afiș informativ. Notă despre plafonarea alimentelor.",
+      "De la cost fără TVA la preț de vânzare cu TVA și invers, rotunjire la raft și afiș de preț. Verifică plafonul de 20% pentru alimentele de bază.",
   },
   {
     href: "/ghid/verificare-a4200",
