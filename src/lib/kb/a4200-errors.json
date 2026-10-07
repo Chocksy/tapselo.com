@@ -137,6 +137,14 @@
       "ce_faci": "Nu deschide .p7b în editor text. Reexportă din casă și validează imediat."
     }
   },
+  "parse_rules": [
+    { "pattern": "rădăcina nu este opis|mReg", "code": "PARSE_ERROR" },
+    { "pattern": "rădăcina nu este zi|msj", "code": "PARSE_ERROR" },
+    { "pattern": "raportul Z|rB", "code": "PARSE_ERROR" },
+    { "pattern": "idM trebuie", "code": "XSD_IDM_LEN" },
+    { "pattern": "nrRapI|nrRapF", "code": "Z_RANGE_INVALID" },
+    { "pattern": "lipsește atributul", "code": "XSD_MISSING_ATTR" }
+  ],
   "xsd_rules": [
     { "pattern": "attribute 'cif'.*pattern", "code": "XSD_CIF" },
     { "pattern": "attribute 'idM'.*maxLength", "code": "XSD_IDM_LEN" },

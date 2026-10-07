@@ -95,8 +95,7 @@ export function parseDayXml(xml: string, fileName = ""): ParsedDay {
   }
 
   const rBAttrs = firstOpenTag(xml, "rB");
-  if (!rBAttrs) throw new Error("Lipsește raportul Z (element rB).");
-  const idR = requireAttr(rBAttrs, "idR", "Raport Z");
+  const idR = rBAttrs ? requireAttr(rBAttrs, "idR", "Raport Z") : idM;
 
   const zReport = resolveZReport(idM, idR, fileName);
   if (zReport === null) {

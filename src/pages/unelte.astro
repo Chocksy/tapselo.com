@@ -1,0 +1,32 @@
+---
+import GuideShell from "../components/GuideShell.astro";
+
+const tools = [
+  {
+    href: "/ghid/verificare-a4200",
+    title: "Verificare A4200",
+    description:
+      "Verifică opisul și zilele fiscale .p7b înainte de DUKIntegrator: interval Z, consistență și XSD în browser, fără upload.",
+  },
+];
+---
+
+<GuideShell
+  title="Unelte gratuite pentru comercianți | Tapselo"
+  description="Unelte gratuite Tapselo: verificare A4200 în browser, fără trimiterea fișierelor pe server."
+  heading="Unelte gratuite"
+  lead="Instrumente care rulează în browserul tău. Nu colectăm conținutul fișierelor fiscale."
+  ctaTitle="Vrei export A4200 direct din casă?"
+  campaign="unelte"
+>
+  <ul class="space-y-4">
+    {tools.map((t) => (
+      <li class="rounded-xl border border-border-light p-5 transition-colors hover:border-accent">
+        <a href={t.href} class="block">
+          <h2 class="text-lg font-semibold text-primary">{t.title}</h2>
+          <p class="mt-2 text-sm text-text-secondary">{t.description}</p>
+        </a>
+      </li>
+    ))}
+  </ul>
+</GuideShell>

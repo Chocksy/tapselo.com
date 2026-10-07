@@ -7,6 +7,7 @@ type Kb = {
   crosscheck: Record<string, KbEntry>;
   xsd_rules: XsdRule[];
   xsd_fallback: KbEntry;
+  parse_rules?: { pattern: string; code: string }[];
   duk_rules: { pattern: string; code: string }[];
   duk_fallback: KbEntry;
 };
@@ -51,7 +52,7 @@ export function explainXsdMessage(raw: string, file?: string, line?: number): Ch
     severity: "error",
     code: "XSD_OTHER",
     title: e.title,
-    ceInseamna: raw,
+    ceInseamna: e.ce_inseamna,
     ceFaci: e.ce_faci,
     file,
     line,
@@ -59,13 +60,38 @@ export function explainXsdMessage(raw: string, file?: string, line?: number): Ch
 }
 
 export function explainParseError(message: string, file: string): CheckerIssue {
+  for (const rule of kb.parse_rules ?? []) {
+    if (new RegExp(rule.pattern, "i").test(message)) {
+      const e = kb.crosscheck[rule.code] ?? kb.crosscheck.PARSE_ERROR;
+      return {
+        severity: "error",
+        code: rule.code,
+        title: e.title,
+        ceInseamna: e.ce_inseamna,
+        ceFaci: e.ce_faci,
+        file,
+      };
+    }
+  }
   const e = kb.crosscheck.PARSE_ERROR;
   return {
     severity: "error",
     code: "PARSE_ERROR",
-    title: e?.title ?? "Fișier XML de citit",
-    ceInseamna: message,
-    ceFaci: e?.ce_faci ?? "Reexportă fișierul din casa de marcat.",
+    title: e.title,
+    ceInseamna: e.ce_inseamna,
+    ceFaci: e.ce_faci,
+    file,
+  };
+}
+
+export function explainP7bExtractFailed(file: string): CheckerIssue {
+  const e = kb.crosscheck.P7B_EXTRACT_FAILED;
+  return {
+    severity: "error",
+    code: "P7B_EXTRACT_FAILED",
+    title: e.title,
+    ceInseamna: e.ce_inseamna,
+    ceFaci: e.ce_faci,
     file,
   };
 }
