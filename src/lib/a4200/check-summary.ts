@@ -1,3 +1,4 @@
+import { groupDaysByZ } from "./day-groups.ts";
 import type { CrossCheckInput, ParsedOpis } from "./types.ts";
 
 export type ZRowStatus = "present" | "missing" | "duplicate" | "extra";
@@ -31,19 +32,14 @@ export function buildOpisCheckSummary(input: CrossCheckInput): OpisCheckSummary 
   const { opis, days, opisFiles } = input;
   if (!opis) return null;
 
-  const zSeen = new Map<number, string>();
-  for (const d of days) {
-    const prev = zSeen.get(d.parsed.zReport);
-    if (prev) zSeen.set(d.parsed.zReport, `${prev}, ${d.file}`);
-    else zSeen.set(d.parsed.zReport, d.file);
-  }
+  const grouped = groupDaysByZ(days);
 
   const rows: ZCheckRow[] = [];
   for (let z = opis.nrRapI; z <= opis.nrRapF; z++) {
-    const file = zSeen.get(z);
+    const file = grouped.labelByZ.get(z);
     if (!file) {
       rows.push({ z, status: "missing" });
-    } else if (file.includes(",")) {
+    } else if (grouped.duplicateZ.some((d) => d.z === z)) {
       rows.push({ z, status: "duplicate", file });
     } else {
       rows.push({ z, status: "present", file });
@@ -58,7 +54,7 @@ export function buildOpisCheckSummary(input: CrossCheckInput): OpisCheckSummary 
 
   rows.sort((a, b) => a.z - b.z);
 
-  const presentCount = rows.filter((r) => r.status === "present").length;
+  const presentCount = grouped.uniqueZ.size;
 
   return {
     opis,

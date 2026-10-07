@@ -1,5 +1,27 @@
-import { explainXsdMessage } from "./explain.ts";
+import { explainXsdMessage, a4200Kb } from "./explain.ts";
 import type { CheckerIssue } from "./types.ts";
+
+const VAT_XSD_CODES = new Set(["XSD_COTA_NEW_VAT", "XSD_COTA_ENUM"]);
+
+/** Collapse thousands of 11%/21% cota enumeration errors into one warning. */
+export function collapseVatXsdWarnings(issues: CheckerIssue[]): CheckerIssue[] {
+  let vatHits = 0;
+  const rest: CheckerIssue[] = [];
+  for (const i of issues) {
+    if (VAT_XSD_CODES.has(i.code)) vatHits++;
+    else rest.push(i);
+  }
+  if (vatHits === 0) return rest;
+  const e = a4200Kb.crosscheck.XSD_COTA_NEW_VAT;
+  rest.push({
+    severity: "warning",
+    code: "XSD_COTA_NEW_VAT",
+    title: e.title,
+    ceInseamna: `Am găsit ${vatHits} mențiuni de cote TVA 11% sau 21% în bonuri. Schema XSD publică din 2018 nu le include; validatorul ANAF actualizat le acceptă de obicei la depunere.`,
+    ceFaci: e.ce_faci,
+  });
+  return rest;
+}
 
 export type XsdValidateFn = (opts: {
   xml: { fileName: string; contents: string }[];
@@ -23,5 +45,5 @@ export async function validateAgainstXsd(
       issues.push(explainXsdMessage(msg, f.name, line));
     }
   }
-  return issues;
+  return collapseVatXsdWarnings(issues);
 }
