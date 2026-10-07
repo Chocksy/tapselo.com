@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { canonicalUrl, toolBreadcrumbs, toolJsonLd } from "../src/lib/unelte/jsonld.ts";
+import { breadcrumbLinks, canonicalUrl, toolBreadcrumbs, toolJsonLd } from "../src/lib/unelte/jsonld.ts";
 
 test("canonicalUrl matches the site's trailing-slash canonicals", () => {
   assert.equal(canonicalUrl("/unelte/calculator-tva"), "https://tapselo.com/unelte/calculator-tva/");
@@ -32,4 +32,12 @@ test("toolJsonLd: WebApplication, FAQPage and a breadcrumb from Acasă", () => {
     ],
   );
   assert.deepEqual(toolBreadcrumbs("H", "/unelte/x").map((c) => c.name), ["Acasă", "Unelte gratuite", "H"]);
+});
+
+test("breadcrumbLinks: every crumb links except the current page", () => {
+  assert.deepEqual(breadcrumbLinks(toolBreadcrumbs("Verificare A4200", "/ghid/verificare-a4200")), [
+    { label: "Acasă", href: "/" },
+    { label: "Unelte gratuite", href: "/unelte" },
+    { label: "Verificare A4200", href: undefined },
+  ]);
 });

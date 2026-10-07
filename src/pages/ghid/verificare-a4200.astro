@@ -2,9 +2,11 @@
 import GuideShell from "../../components/GuideShell.astro";
 import A4200Checker from "../../components/A4200Checker.astro";
 import { VERIFIED_ON } from "../../lib/a4200/constants.ts";
+import { A4200_CHECKER_PATH } from "../../lib/articles/schema.ts";
+import { breadcrumbLinks, toolBreadcrumbs, toolJsonLd } from "../../lib/unelte/jsonld.ts";
 
-const siteUrl = "https://tapselo.com";
-const pageUrl = `${siteUrl}/ghid/verificare-a4200`;
+const path = A4200_CHECKER_PATH;
+const heading = "Depune A4200 fără să te pierzi în fișiere";
 
 const faq = [
   {
@@ -33,36 +35,21 @@ const faq = [
   },
 ];
 
-const jsonLd = [
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: "Verificare A4200 Tapselo",
-    url: pageUrl,
-    applicationCategory: "BusinessApplication",
-    operatingSystem: "Web",
-    inLanguage: "ro",
-    isAccessibleForFree: true,
-    offers: { "@type": "Offer", price: "0", priceCurrency: "RON" },
-    description:
-      "Asistent pas cu pas pentru verificarea și depunerea declarației A4200: export de la casă, PDF, semnare și încărcare ANAF.",
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faq.map((item) => ({
-      "@type": "Question",
-      name: item.q,
-      acceptedAnswer: { "@type": "Answer", text: item.a },
-    })),
-  },
-];
+const jsonLd = toolJsonLd({
+  path,
+  heading,
+  appName: "Verificare A4200 Tapselo",
+  description:
+    "Asistent pas cu pas pentru verificarea și depunerea declarației A4200: export de la casă, PDF, semnare și încărcare ANAF.",
+  faq,
+});
 ---
 
 <GuideShell
   title="Verificare A4200 gratuită: ghid pas cu pas | Tapselo"
   description="Verifică exportul lunar de la casă, generează PDF-ul, semnează și încarcă la ANAF — asistent în 4 pași, în română, fără jargon."
-  heading="Depune A4200 fără să te pierzi în fișiere"
+  heading={heading}
+  breadcrumbs={breadcrumbLinks(toolBreadcrumbs(heading, path))}
   lead="Asistent în patru pași pentru magazine: încarcă arhiva de la service, verificăm zilele, obții PDF-ul semnat și știi cum verifici recipisa ANAF."
   sources={[
     { title: "ANAF — Formular A4200", url: "https://static.anaf.ro/static/10/Anaf/Declaratii_R/4200.html" },
