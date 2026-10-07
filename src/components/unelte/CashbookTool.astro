@@ -57,6 +57,7 @@
   import { escapeHtml, fmtLei } from "../../lib/generators/page.ts";
   import { parseRoNumber } from "../../lib/unelte/parse.ts";
   import { localIsoDate } from "../../lib/unelte/dates.ts";
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
   import { downloadCashbookExcel, downloadCashbookPdfViaPrint } from "../../lib/unelte/document-export.ts";
 
   const tbody = document.getElementById("cb-rows") as HTMLTableSectionElement;
@@ -187,11 +188,13 @@
     const p = collect();
     if (!p) return;
     if (!downloadCashbookPdfViaPrint(p)) showError("Permite ferestrele pop-up pentru a deschide PDF-ul.");
+    else trackToolUsed("registru_casa", "print");
   });
 
   document.getElementById("cb-xls")?.addEventListener("click", () => {
     const p = collect();
     if (!p) return;
     downloadCashbookExcel(p);
+    trackToolUsed("registru_casa", "download");
   });
 </script>

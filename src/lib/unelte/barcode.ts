@@ -55,6 +55,13 @@ export function checkEan(raw: string): EanCheck {
   return { ok: true, ean };
 }
 
+export const BARCODE_TOOL_PATH = "/unelte/verificare-cod-de-bare/";
+
+/** Deep link into the barcode tool, which reads ?ean= on load and searches right away. */
+export function productDetailsHref(ean: string): string {
+  return `${BARCODE_TOOL_PATH}?ean=${encodeURIComponent(ean)}`;
+}
+
 export function barcodeEndpoint(baseUrl: string, ean: string): string {
   const base = baseUrl.replace(/\/$/, "");
   return `${base}/barcodes/${encodeURIComponent(ean)}`;

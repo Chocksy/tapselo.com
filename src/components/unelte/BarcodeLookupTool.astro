@@ -1,0 +1,297 @@
+---
+interface Props {
+  /** Base of GET {base}/barcodes/{ean}; empty hides the Tapselo section. */
+  barcodeApi: string;
+}
+
+const { barcodeApi } = Astro.props;
+---
+
+<section class="ut-card" aria-labelledby="bc-title">
+  <h2 id="bc-title" class="font-display text-2xl italic text-primary">Caută produsul după codul EAN</h2>
+  <p class="mt-2 text-sm text-text-secondary">
+    Tastează cele 13 cifre de sub bare sau scanează codul. Afli țara prefixului GS1, dacă cifra de control e corectă, denumirea și cota TVA din
+    nomenclatorul Tapselo, plus imaginea și marca din Open Food Facts. Fără prețuri.
+  </p>
+
+  <form id="bc-form" class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end" data-barcode-api={barcodeApi || undefined} novalidate>
+    <div class="flex-1">
+      <label class="ut-label" for="bc-ean">Cod de bare (EAN-13)</label>
+      <input
+        class="ut-input font-mono"
+        id="bc-ean"
+        name="ean"
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        enterkeyhint="search"
+        maxlength="20"
+        placeholder="ex. 5941234000013"
+        aria-describedby="bc-ean-hint"
+        autofocus
+      />
+    </div>
+    <button type="submit" class="ut-btn ut-btn-primary" id="bc-search">Caută</button>
+    <div class="hidden" id="bc-camera-wrap">
+      <button type="button" class="ut-btn ut-btn-secondary w-full" id="bc-camera">Scanează cu camera</button>
+    </div>
+  </form>
+  <p class="ut-hint" id="bc-ean-hint">
+    Merge și cu un cititor de coduri de bare USB: scanează produsul, iar căutarea pornește singură.
+  </p>
+
+  <div id="bc-scanner" class="mt-4 hidden">
+    <video id="bc-video" class="aspect-[4/3] w-full rounded-lg bg-black object-cover" playsinline muted></video>
+    <p class="ut-hint">Ține codul de bare în cadru, la 10–20 cm de cameră.</p>
+    <button type="button" class="ut-btn ut-btn-secondary mt-2" id="bc-camera-stop">Oprește camera</button>
+  </div>
+
+  <p class="ut-err hidden" id="bc-err" role="alert"></p>
+
+  <div id="bc-results" class="mt-6 hidden space-y-6" aria-live="polite">
+    <section aria-labelledby="bc-code-title">
+      <h3 id="bc-code-title" class="text-lg font-semibold text-primary">Codul de bare</h3>
+      <div class="ut-result" id="bc-code"></div>
+    </section>
+    {barcodeApi && (
+      <section aria-labelledby="bc-tapselo-title" id="bc-tapselo-wrap">
+        <h3 id="bc-tapselo-title" class="text-lg font-semibold text-primary">Nomenclatorul Tapselo</h3>
+        <div class="ut-result" id="bc-tapselo"></div>
+      </section>
+    )}
+    <section aria-labelledby="bc-off-title" id="bc-off-wrap">
+      <h3 id="bc-off-title" class="text-lg font-semibold text-primary">Open Food Facts</h3>
+      <div class="ut-result" id="bc-off"></div>
+    </section>
+  </div>
+</section>
+
+<style is:global>
+  .off-card {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .off-img {
+    width: 7rem;
+    height: 7rem;
+    flex-shrink: 0;
+    object-fit: contain;
+    border-radius: 0.375rem;
+    border: 1px solid var(--color-border-light);
+    background: #fff;
+  }
+  .off-dl {
+    flex: 1;
+    min-width: 0;
+  }
+  .off-dl dd,
+  #bc-tapselo p {
+    overflow-wrap: anywhere;
+  }
+  .off-dl dd {
+    font-size: 1rem;
+  }
+</style>
+
+<script>
+  import { trackBarcodeLookup, trackToolUsed } from "../../lib/analytics-client.ts";
+  import { barcodeResultHtml, lookupBarcode, MESSAGES } from "../../lib/unelte/barcode.ts";
+  import { analyzeEan, codeInfoHtml } from "../../lib/unelte/gs1.ts";
+  import { lookupOff, MSG_OFF_NOT_FOUND, MSG_OFF_UNAVAILABLE, offProductHtml } from "../../lib/unelte/off.ts";
+  import { escapeHtml } from "../../lib/generators/page.ts";
+
+  interface DetectedBarcode {
+    rawValue: string;
+  }
+  interface BarcodeDetectorLike {
+    detect(source: HTMLVideoElement): Promise<DetectedBarcode[]>;
+  }
+  interface BarcodeDetectorCtor {
+    new (opts: { formats: string[] }): BarcodeDetectorLike;
+    getSupportedFormats?: () => Promise<string[]>;
+  }
+
+  const $ = <T extends HTMLElement>(id: string) => {
+    const el = document.getElementById(id);
+    if (!el) throw new Error(`#${id} missing`);
+    return el as T;
+  };
+
+  const form = $<HTMLFormElement>("bc-form");
+  const input = $<HTMLInputElement>("bc-ean");
+  const searchBtn = $<HTMLButtonElement>("bc-search");
+  const errEl = $("bc-err");
+  const results = $("bc-results");
+  const codeEl = $("bc-code");
+  const offEl = $("bc-off");
+  const tapseloEl = document.getElementById("bc-tapselo");
+  const apiBase = form.dataset.barcodeApi ?? "";
+
+  const LOADING = '<p class="text-sm text-text-secondary">Se caută…</p>';
+  const muted = (html: string) => `<p class="text-sm text-text-secondary">${html}</p>`;
+  const SKIPPED = muted("Nu căutăm produsul: codul nu trece verificarea de mai sus.");
+
+  let runId = 0;
+
+  function showError(msg: string) {
+    errEl.textContent = msg;
+    errEl.classList.remove("hidden");
+  }
+
+  async function run(via: "lookup" | "camera_scan" = "lookup") {
+    const id = ++runId;
+    errEl.classList.add("hidden");
+    const a = analyzeEan(input.value);
+    if (!a.ok) {
+      results.classList.add("hidden");
+      input.setAttribute("aria-invalid", "true");
+      showError(MESSAGES.invalid);
+      return;
+    }
+    input.removeAttribute("aria-invalid");
+    input.value = a.ean;
+    history.replaceState(null, "", `?ean=${a.ean}`);
+    codeEl.innerHTML = codeInfoHtml(a);
+    results.classList.remove("hidden");
+
+    if (!a.searchable) {
+      showError(a.check.valid ? MESSAGES.in_store : "Cifra de control nu se potrivește. Verifică dacă ai tastat corect codul.");
+      if (tapseloEl) tapseloEl.innerHTML = SKIPPED;
+      offEl.innerHTML = SKIPPED;
+      input.select();
+      return;
+    }
+
+    if (tapseloEl) tapseloEl.innerHTML = LOADING;
+    offEl.innerHTML = LOADING;
+    searchBtn.disabled = true;
+    searchBtn.textContent = "Se caută…";
+
+    trackToolUsed("verificare_cod_de_bare", via === "camera_scan" ? "camera_scan" : "lookup");
+
+    let foundTapselo = false;
+    let foundOff = false;
+
+    const tapselo = apiBase
+      ? lookupBarcode(apiBase, a.ean).then((r) => {
+          if (id !== runId || !tapseloEl) return;
+          foundTapselo = r.ok;
+          if (r.ok) tapseloEl.innerHTML = barcodeResultHtml(r.product);
+          else if (r.code === "not_found") tapseloEl.innerHTML = muted("Nu avem acest cod în nomenclatorul Tapselo.");
+          else tapseloEl.innerHTML = muted(escapeHtml(r.message));
+        })
+      : Promise.resolve();
+
+    const off = lookupOff(a.ean).then((r) => {
+      if (id !== runId) return;
+      foundOff = r.ok;
+      if (r.ok) {
+        offEl.innerHTML = offProductHtml(r.product);
+        return;
+      }
+      switch (r.code) {
+        case "not_found":
+          offEl.innerHTML = muted(
+            `${MSG_OFF_NOT_FOUND} Îl poți adăuga pe <a href="https://world.openfoodfacts.org/" target="_blank" rel="noopener" class="font-semibold text-accent underline-offset-2 hover:underline">openfoodfacts.org</a>.`,
+          );
+          return;
+        case "unavailable":
+          offEl.innerHTML = muted(MSG_OFF_UNAVAILABLE);
+          return;
+        default: {
+          const never: never = r.code;
+          throw new Error(`unexpected ${String(never)}`);
+        }
+      }
+    });
+
+    try {
+      await Promise.all([tapselo, off]);
+      if (id === runId) trackBarcodeLookup(foundTapselo, foundOff);
+    } finally {
+      if (id === runId) {
+        searchBtn.disabled = false;
+        searchBtn.textContent = "Caută";
+        // The next scan from a USB reader replaces the code instead of appending to it.
+        input.select();
+      }
+    }
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    void run();
+  });
+
+  const initial = new URLSearchParams(location.search).get("ean");
+  if (initial) {
+    input.value = initial;
+    void run();
+  }
+
+  // Camera scan: only where BarcodeDetector reads EAN-13 (Chrome on Android, Safari 17+ on some devices).
+  const Detector = (window as unknown as { BarcodeDetector?: BarcodeDetectorCtor }).BarcodeDetector;
+  const cameraBtn = $<HTMLButtonElement>("bc-camera");
+  const scanner = $("bc-scanner");
+  const video = $<HTMLVideoElement>("bc-video");
+  let stream: MediaStream | null = null;
+  let timer = 0;
+
+  function stopCamera() {
+    window.clearTimeout(timer);
+    stream?.getTracks().forEach((t) => t.stop());
+    stream = null;
+    video.srcObject = null;
+    scanner.classList.add("hidden");
+    cameraBtn.disabled = false;
+  }
+
+  async function startCamera(detector: BarcodeDetectorLike) {
+    errEl.classList.add("hidden");
+    cameraBtn.disabled = true;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } }, audio: false });
+    } catch {
+      cameraBtn.disabled = false;
+      showError("Nu am putut porni camera. Permite accesul la cameră sau tastează codul.");
+      return;
+    }
+    video.srcObject = stream;
+    scanner.classList.remove("hidden");
+    await video.play();
+    const tick = async () => {
+      if (!stream) return;
+      let codes: DetectedBarcode[] = [];
+      try {
+        codes = await detector.detect(video);
+      } catch {
+        codes = [];
+      }
+      const hit = codes.find((c) => analyzeEan(c.rawValue).ok);
+      if (hit) {
+        stopCamera();
+        input.value = hit.rawValue;
+        void run("camera_scan");
+        return;
+      }
+      timer = window.setTimeout(() => void tick(), 250);
+    };
+    void tick();
+  }
+
+  async function setupCamera() {
+    if (!Detector || !navigator.mediaDevices?.getUserMedia) return;
+    const formats = (await Detector.getSupportedFormats?.().catch(() => [])) ?? [];
+    if (!formats.includes("ean_13")) return;
+    const detector = new Detector({ formats: formats.filter((f) => f === "ean_13" || f === "upc_a") });
+    $("bc-camera-wrap").classList.remove("hidden");
+    cameraBtn.addEventListener("click", () => void startCamera(detector));
+    $("bc-camera-stop").addEventListener("click", stopCamera);
+    window.addEventListener("pagehide", stopCamera);
+  }
+
+  void setupCamera();
+</script>

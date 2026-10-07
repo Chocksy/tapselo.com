@@ -75,6 +75,7 @@
     resolveBarcodeInput,
   } from "../../lib/unelte/barcode-generator.ts";
   import { openPrintHtml } from "../../lib/unelte/document-export.ts";
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
 
   const root = document.getElementById("bc-tool");
   if (!root) throw new Error("bc-tool missing");
@@ -221,6 +222,7 @@
     a.href = url;
     a.download = `cod-de-bare-${format}.png`;
     a.click();
+    trackToolUsed("generator_cod_de_bare", "download_png");
   });
 
   btnSvg.addEventListener("click", () => {
@@ -232,6 +234,7 @@
     a.download = `cod-de-bare-${format}.svg`;
     a.click();
     URL.revokeObjectURL(a.href);
+    trackToolUsed("generator_cod_de_bare", "download_svg");
   });
 
   btnPrint.addEventListener("click", () => {
@@ -250,7 +253,9 @@
     if (!openPrintHtml(html)) {
       valueErr.textContent = "Browserul a blocat fereastra de printare. Permite popup-urile pentru tapselo.com și încearcă din nou.";
       valueErr.classList.remove("hidden");
+      return;
     }
+    trackToolUsed("generator_cod_de_bare", "print_sheet");
   });
 
   applyFormatUi();

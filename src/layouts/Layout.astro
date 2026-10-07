@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import PostHog from "../components/PostHog.astro";
 
 interface Props {
   title?: string;
@@ -92,6 +93,7 @@ const ogImageUrl = `${siteUrl}/og-image.jpg`;
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   </head>
   <body class="font-sans antialiased">
+    <PostHog />
     <slot />
 
     <script is:inline>

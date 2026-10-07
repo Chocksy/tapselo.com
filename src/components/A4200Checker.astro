@@ -222,6 +222,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   import { stripPdfLtvIncrement } from "../lib/a4200/strip-pdf-ltv.ts";
   import type { CheckerIssue, ClassifiedFile } from "../lib/a4200/types.ts";
   import { collectP7bFromFiles, p7bPayloadsToZip } from "../lib/a4200/collect-p7b.ts";
+  import { trackToolUsed } from "../lib/analytics-client.ts";
   import {
     WIZARD_STEP_COUNT,
     buildVerificationPlainSummary,
@@ -495,6 +496,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     renderTechnicalSummary(files, lastIssues);
     renderZTable(files);
     renderTechnicalIssues(lastIssues);
+    trackToolUsed("a4200", "check", { result: lastPlainOk ? "ok" : "errors" });
   }
 
   function onFilesSelected(fileList: FileList | File[]) {
@@ -540,6 +542,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
           pdfStatus.textContent = "PDF generat. Descarcă-l, semnează-l, apoi încarcă PDF-ul semnat mai jos.";
           pdfStatus.className = "text-sm text-green-700";
         }
+        trackToolUsed("a4200", "generate_pdf", { result: "ok" });
       } else {
         const ct = res.headers.get("content-type") ?? "";
         let msg = "";
@@ -553,6 +556,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
           pdfStatus.textContent = msg || `Eroare ${res.status} de la server.`;
           pdfStatus.className = "text-sm text-red-700";
         }
+        trackToolUsed("a4200", "generate_pdf", { result: "errors" });
       }
     } catch {
       if (pdfStatus) {
@@ -595,6 +599,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     anafReadyMsg.textContent = "Fișierul este gata pentru încărcarea la ANAF. Descarcă-l și continuă la pasul următor.";
     anafReadyMsg.className = "text-sm text-green-700";
     step3AnafReady = true;
+    trackToolUsed("a4200", "check", { result: "ok" });
     updatePrimaryButton();
     updateStep3Ui();
   });

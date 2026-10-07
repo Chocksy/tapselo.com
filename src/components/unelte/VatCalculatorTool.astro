@@ -1,4 +1,6 @@
 ---
+import { BARCODE_TOOL_PATH } from "../../lib/unelte/barcode.ts";
+
 interface Props {
   barcodeApi: string;
 }
@@ -45,6 +47,8 @@ const { barcodeApi } = Astro.props;
       <h3 class="text-lg font-semibold text-primary">Cota TVA după cod de bare (EAN)</h3>
       <p class="mt-2 text-sm text-text-secondary">
         Scanează sau tastează codul de bare. Primești doar denumirea și cota TVA din nomenclatorul Tapselo — fără prețuri sau date de magazin.
+        Pentru imagine, marcă și țara codului, folosește
+        <a href={BARCODE_TOOL_PATH} class="font-semibold text-accent underline-offset-2 hover:underline">verificarea codului de bare</a>.
       </p>
       <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
         <div class="flex-1">
@@ -60,16 +64,18 @@ const { barcodeApi } = Astro.props;
 </section>
 
 <script>
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
   import { calculateVat, isVatRateRo, type VatMode, type VatRateRo } from "../../lib/unelte/vat.ts";
-  import { barcodeResultHtml, checkEan, lookupBarcode } from "../../lib/unelte/barcode.ts";
+  import { barcodeResultHtml, checkEan, lookupBarcode, productDetailsHref } from "../../lib/unelte/barcode.ts";
   import { parseRoNumber } from "../../lib/unelte/parse.ts";
-  import { fmtLei } from "../../lib/generators/page.ts";
+  import { escapeHtml, fmtLei } from "../../lib/generators/page.ts";
 
   const root = document.getElementById("vat-tool");
   if (!root) throw new Error("vat-tool missing");
 
   let mode: VatMode = "add";
   let rate: VatRateRo = 21;
+  let lastCalcKey = "";
 
   const HINTS: Record<VatMode, string> = {
     add: "La „Adaugă TVA” introdu prețul fără TVA; la „Scoate TVA”, prețul cu TVA inclus.",
@@ -99,6 +105,11 @@ const { barcodeApi } = Astro.props;
           <dt>Preț fără TVA</dt><dd>${fmtLei(r.net)}</dd>
           <dt>TVA ${r.rate}%</dt><dd>${fmtLei(r.vat)}</dd>
           <dt>Preț cu TVA</dt><dd>${fmtLei(r.gross)}</dd>`;
+        const calcKey = `${mode}:${rate}:${parsed.value}`;
+        if (calcKey !== lastCalcKey) {
+          lastCalcKey = calcKey;
+          trackToolUsed("calculator_tva", "calculate");
+        }
         return;
       }
       default: {
@@ -151,11 +162,13 @@ const { barcodeApi } = Astro.props;
       searchBtn.textContent = "Se caută…";
       try {
         const r = await lookupBarcode(apiBase, check.ean);
+        trackToolUsed("calculator_tva", "ean_lookup");
         if (!r.ok) {
           showError(r.message);
           return;
         }
-        resEl.innerHTML = barcodeResultHtml(r.product);
+        resEl.innerHTML = `${barcodeResultHtml(r.product)}
+<a href="${escapeHtml(productDetailsHref(check.ean))}" id="vat-ean-details" class="mt-3 inline-block text-sm font-bold text-accent underline-offset-2 hover:underline">Vezi detalii produs →</a>`;
         resEl.classList.remove("hidden");
       } finally {
         searchBtn.disabled = false;
