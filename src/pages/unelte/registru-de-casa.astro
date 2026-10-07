@@ -4,6 +4,7 @@ import CashbookTool from "../../components/unelte/CashbookTool.astro";
 import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
 
 const path = "/unelte/registru-de-casa";
+const heading = "Registru de casă";
 const faq = [
   {
     q: "Ce este registrul de casă?",
@@ -11,34 +12,40 @@ const faq = [
   },
   {
     q: "Pot descărca model registru de casă Excel?",
-    a: "Da — completezi formularul și descarci fișier Excel (.xls) sau salvezi PDF prin print, în formatul tabelului uzual.",
+    a: "Da — completezi formularul și descarci un fișier Excel (.xlsx) sau salvezi PDF-ul din fereastra de printare.",
   },
   {
     q: "Care este plafonul de numerar în casă?",
-    a: "La sfârșitul zilei, soldul casieriei nu trebuie să depășească 50.000 lei (cu excepții pentru anumite formate de magazine). Instrumentul te avertizează dacă soldul final e peste plafon.",
+    a: "La sfârșitul zilei, numerarul din casierie nu poate depăși 50.000 lei (500.000 lei pentru cash & carry, supermarketuri și hipermarketuri), conform Legii nr. 70/2015. Suma peste plafon se depune la bancă în cel mult două zile lucrătoare.",
   },
   {
     q: "Tapselo ține registrul automat?",
-    a: "Da — încasările din casa de marcat și rapoartele Z alimentează evidența; poți genera registrul zilnic fără rescriere manuală.",
+    a: "Tapselo poate genera registrul zilnic din încasările de la casa de marcat și din raportul Z.",
   },
 ];
 
-const jsonLd = toolJsonLd(
+const jsonLd = toolJsonLd({
   path,
-  "Generator registru de casă Tapselo",
-  "Generator gratuit registru de casă: PDF și Excel, sold inițial, încasări, plăți și sold final.",
+  heading,
+  appName: "Generator registru de casă Tapselo",
+  description: "Generator gratuit registru de casă: PDF și Excel, sold inițial, încasări, plăți și sold final.",
   faq,
-);
+});
 ---
 
 <ToolShell
   title="Registru de casă — model PDF și Excel gratuit | Tapselo"
   description="Generator registru de casă gratuit: completează încasări și plăți, export PDF sau Excel. Model registru de casă pentru magazine cu casă de marcat."
-  heading="Registru de casă"
+  heading={heading}
+  path={path}
   lead="Generează registrul de casă pentru o zi: sold din ziua precedentă, încasări, plăți, totaluri și semnături. Export PDF sau Excel, direct din browser."
   campaign="registru-de-casa"
   ctaTitle="Registru de casă generat din vânzări"
   ctaBody="Cu Tapselo, mișcările din casă și raportul Z se pot transforma în registru zilnic — fără dublarea muncii."
+  related={[
+    { href: "/ghid/registrul-de-casa", label: "Registrul de casă" },
+    { href: "/ghid/plafoane-numerar", label: "Plafoanele de numerar: 5.000 lei pe zi și 50.000 lei în casă" },
+  ]}
   jsonLd={jsonLd}
   faq={faq}
 >

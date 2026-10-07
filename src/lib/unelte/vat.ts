@@ -1,7 +1,12 @@
 import { roundMoney } from "../generators/validate.ts";
 
-export const VAT_RATES_RO = [21, 11, 0] as const;
+/** Romanian VAT rates from 1 August 2025 (Legea 141/2025): 21% standard, 11% reduced. */
+export const VAT_RATES_RO = [21, 11] as const;
 export type VatRateRo = (typeof VAT_RATES_RO)[number];
+
+export function isVatRateRo(n: unknown): n is VatRateRo {
+  return (VAT_RATES_RO as readonly unknown[]).includes(n);
+}
 
 export type VatMode = "add" | "remove";
 
@@ -23,14 +28,18 @@ export function calculateVat(i: VatCalcInput): VatCalcResult {
   const amount = roundMoney(i.amount);
   if (!(amount >= 0)) throw new RangeError("Introdu o sumă validă (≥ 0).");
   const r = i.rate / 100;
-  if (i.mode === "add") {
-    const net = amount;
-    const vat = roundMoney(net * r);
-    const gross = roundMoney(net + vat);
-    return { net, vat, gross, rate: i.rate };
+  switch (i.mode) {
+    case "add": {
+      const vat = roundMoney(amount * r);
+      return { net: amount, vat, gross: roundMoney(amount + vat), rate: i.rate };
+    }
+    case "remove": {
+      const net = roundMoney(amount / (1 + r));
+      return { net, vat: roundMoney(amount - net), gross: amount, rate: i.rate };
+    }
+    default: {
+      const never: never = i.mode;
+      throw new RangeError(`Mod TVA necunoscut: ${String(never)}`);
+    }
   }
-  const gross = amount;
-  const net = r === 0 ? gross : roundMoney(gross / (1 + r));
-  const vat = roundMoney(gross - net);
-  return { net, vat, gross, rate: i.rate };
 }

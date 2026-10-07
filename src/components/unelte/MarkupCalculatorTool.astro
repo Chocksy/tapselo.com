@@ -1,25 +1,28 @@
 ---
+import { foodCapActive, FOOD_MARKUP_CAP } from "../../lib/unelte/markup.ts";
+
+const showFoodCap = foodCapActive();
 ---
 
 <section class="ut-card" aria-labelledby="markup-title">
   <h2 id="markup-title" class="font-display text-2xl italic text-primary">Calculator adaos comercial</h2>
   <p class="mt-2 text-sm text-text-secondary">
-    Calculează prețul de vânzare cu TVA din costul de achiziție fără TVA, sau invers. Poți rotunji la ,49 / ,99 ca la raft.
+    Calculează prețul de vânzare cu TVA din costul de achiziție fără TVA sau invers. Poți rotunji la ,49 / ,99, ca la raft.
   </p>
 
   <div id="markup-tool" class="mt-6 space-y-4">
     <div class="ut-seg" role="group" aria-label="Direcție calcul">
-      <button type="button" data-dir="forward" aria-pressed="true">Cost → preț vânzare</button>
+      <button type="button" data-dir="forward" aria-pressed="true">Cost → preț de vânzare</button>
       <button type="button" data-dir="reverse" aria-pressed="false">Preț → adaos</button>
     </div>
 
     <div class="grid gap-4 sm:grid-cols-2">
       <div>
-        <label class="ut-label" for="mk-cost" id="mk-cost-label">Cost achiziție fără TVA (lei)</label>
+        <label class="ut-label" for="mk-cost">Cost de achiziție fără TVA (lei)</label>
         <input class="ut-input" id="mk-cost" type="text" inputmode="decimal" />
       </div>
       <div id="mk-sale-wrap" class="hidden">
-        <label class="ut-label" for="mk-sale">Preț vânzare cu TVA (lei)</label>
+        <label class="ut-label" for="mk-sale">Preț de vânzare cu TVA (lei)</label>
         <input class="ut-input" id="mk-sale" type="text" inputmode="decimal" />
       </div>
       <div id="mk-markup-wrap">
@@ -34,7 +37,6 @@
         <select class="ut-select" id="mk-vat">
           <option value="21">21%</option>
           <option value="11" selected>11%</option>
-          <option value="0">0%</option>
         </select>
       </div>
       <div>
@@ -47,97 +49,112 @@
       </div>
     </div>
 
-    <label class="flex items-center gap-2 text-sm text-text-secondary">
-      <input type="checkbox" id="mk-food" />
-      Produs alimentar de bază (verificare plafon adaos 300%)
-    </label>
+    {showFoodCap && (
+      <label class="flex items-center gap-2 text-sm text-text-secondary">
+        <input type="checkbox" id="mk-food" />
+        Produs alimentar de bază (adaos plafonat la {FOOD_MARKUP_CAP}%, OUG 67/2023)
+      </label>
+    )}
 
-    <dl class="ut-result" id="mk-result" aria-live="polite" />
+    <dl class="ut-result" id="mk-result" aria-live="polite"></dl>
 
-    <div class="grid gap-4 sm:grid-cols-2">
-      <div>
-        <label class="ut-label" for="mk-store">Magazin (pentru afiș)</label>
-        <input class="ut-input" id="mk-store" type="text" maxlength="80" placeholder="Numele magazinului" />
+    <fieldset class="space-y-4 rounded-lg border border-border-light p-4">
+      <legend class="px-1 text-sm font-semibold text-primary">Afiș de preț pentru raft</legend>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label class="ut-label" for="mk-store">Magazin (pentru afiș)</label>
+          <input class="ut-input" id="mk-store" type="text" maxlength="80" placeholder="Numele magazinului" />
+        </div>
+        <div>
+          <label class="ut-label" for="mk-product">Produs (pentru afiș)</label>
+          <input class="ut-input" id="mk-product" type="text" maxlength="80" placeholder="Denumire produs" />
+        </div>
       </div>
-      <div>
-        <label class="ut-label" for="mk-product">Produs (pentru afiș)</label>
-        <input class="ut-input" id="mk-product" type="text" maxlength="80" placeholder="Denumire produs" />
-      </div>
-    </div>
-    <button type="button" class="ut-btn ut-btn-secondary" id="mk-afis">Printează afiș adaos</button>
+      <label class="flex items-center gap-2 text-sm text-text-secondary">
+        <input type="checkbox" id="mk-show-cost" />
+        Arată pe afiș costul de achiziție
+      </label>
+      <label class="flex items-center gap-2 text-sm text-text-secondary">
+        <input type="checkbox" id="mk-show-markup" />
+        Arată pe afiș adaosul comercial
+      </label>
+      <button type="button" class="ut-btn ut-btn-secondary" id="mk-afis">Printează afiș</button>
+      <p class="ut-err hidden" id="mk-afis-err" role="alert"></p>
+    </fieldset>
   </div>
 </section>
 
 <script>
   import { calculateShelfPrice, type Rounding } from "../../lib/mcp/answers/shelf-price.ts";
-  import { fmtLei } from "../../lib/generators/page.ts";
-  import { foodMarkupWarning, renderAfisHtml } from "../../lib/unelte/markup-afis.ts";
+  import { escapeHtml, fmtLei, fmtMoney } from "../../lib/generators/page.ts";
+  import { foodCapCheck, foodMarkupWarning, markupFromPrice } from "../../lib/unelte/markup.ts";
+  import { renderAfisHtml } from "../../lib/unelte/markup-afis.ts";
   import { openPrintHtml } from "../../lib/unelte/document-export.ts";
+  import { parseRoNumber } from "../../lib/unelte/parse.ts";
 
   let direction: "forward" | "reverse" = "forward";
 
-  function num(raw: string): number | null {
-    const s = raw.trim().replace(/\s/g, "").replace(",", ".");
-    if (!s) return null;
-    const n = Number(s);
-    return Number.isFinite(n) ? n : null;
+  const el = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const out = el<HTMLElement>("mk-result");
+  const afisErr = el<HTMLElement>("mk-afis-err");
+
+  function num(id: string): number | null | "invalid" {
+    const p = parseRoNumber(el<HTMLInputElement>(id).value);
+    return p.kind === "ok" ? p.value : p.kind === "empty" ? null : "invalid";
+  }
+
+  const isFood = () => el<HTMLInputElement | null>("mk-food")?.checked ?? false;
+  const vatRate = () => Number(el<HTMLSelectElement>("mk-vat").value);
+  const rounding = () => el<HTMLSelectElement>("mk-round").value as Rounding;
+  const hint = (msg: string) => `<p class="text-sm text-text-secondary">${escapeHtml(msg)}</p>`;
+  const warnHtml = (msg: string | null) => (msg ? `<p class="ut-warn">${escapeHtml(msg)}</p>` : "");
+
+  function renderForward(cost: number) {
+    const markup = num("mk-markup");
+    if (markup === null) return hint("Introdu adaosul comercial.");
+    if (markup === "invalid") return '<p class="ut-err">Adaosul nu este valid (ex. 25).</p>';
+    const p = calculateShelfPrice({ cost, markup_percent: markup, vat_rate: vatRate(), rounding: rounding() });
+    const cap = isFood() ? foodCapCheck(cost, markup, vatRate(), rounding()) : null;
+    return `
+      <dt>Preț de vânzare cu TVA</dt><dd>${fmtLei(p.price_with_vat)}</dd>
+      <dt>TVA</dt><dd>${fmtLei(p.vat_amount)}</dd>
+      <dt>Preț fără TVA</dt><dd>${fmtLei(p.price_without_vat)}</dd>
+      <dt>Adaos real</dt><dd>${fmtMoney(p.markup_percent)}%</dd>
+      <dt>Câștig / bucată</dt><dd>${fmtLei(p.profit)}</dd>
+      ${warnHtml(cap?.message ?? null)}`;
+  }
+
+  function renderReverse(cost: number) {
+    const sale = num("mk-sale");
+    if (sale === null) return hint("Introdu prețul de vânzare cu TVA.");
+    if (sale === "invalid" || !(sale > 0)) return '<p class="ut-err">Prețul de vânzare nu este valid (ex. 14,49).</p>';
+    const r = markupFromPrice(cost, sale, vatRate());
+    return `
+      <dt>Adaos din cost</dt><dd>${fmtMoney(r.markup_percent)}%</dd>
+      <dt>Marjă din prețul fără TVA</dt><dd>${fmtMoney(r.margin_percent)}%</dd>
+      <dt>Câștig / bucată (fără TVA)</dt><dd>${fmtLei(r.profit)}</dd>
+      ${warnHtml(isFood() ? foodMarkupWarning(r.markup_percent) : null)}`;
   }
 
   function render() {
-    const out = document.getElementById("mk-result");
-    const food = (document.getElementById("mk-food") as HTMLInputElement).checked;
-    const vat = Number((document.getElementById("mk-vat") as HTMLSelectElement).value);
-    const rounding = (document.getElementById("mk-round") as HTMLSelectElement).value as Rounding;
-    const cost = num((document.getElementById("mk-cost") as HTMLInputElement).value);
-    if (cost === null || !(cost > 0)) {
-      out!.innerHTML = "<p class=\"text-sm text-text-muted\">Introdu costul pentru rezultat.</p>";
+    const cost = num("mk-cost");
+    if (cost === null) {
+      out.innerHTML = hint("Introdu costul de achiziție pentru rezultat.");
       return;
     }
-    try {
-      if (direction === "forward") {
-        const markup = num((document.getElementById("mk-markup") as HTMLInputElement).value);
-        if (markup === null || markup < 0) {
-          out!.innerHTML = "<p class=\"ut-err\">Adaos invalid.</p>";
-          return;
-        }
-        const p = calculateShelfPrice({ cost, markup_percent: markup, vat_rate: vat, rounding });
-        const warn = food ? foodMarkupWarning(p.markup_percent) : null;
-        out!.innerHTML = `
-          <dt>Preț vânzare cu TVA</dt><dd>${fmtLei(p.price_with_vat)}</dd>
-          <dt>TVA</dt><dd>${fmtLei(p.vat_amount)}</dd>
-          <dt>Preț fără TVA</dt><dd>${fmtLei(p.price_without_vat)}</dd>
-          <dt>Adaos real</dt><dd>${p.markup_percent.toFixed(2).replace(".", ",")}%</dd>
-          <dt>Câștig / bucată</dt><dd>${fmtLei(p.profit)}</dd>
-          ${warn ? `<p class="ut-err mt-2">${warn}</p>` : ""}`;
-      } else {
-        const sale = num((document.getElementById("mk-sale") as HTMLInputElement).value);
-        if (sale === null || !(sale > 0)) {
-          out!.innerHTML = "<p class=\"text-sm text-text-muted\">Introdu prețul de vânzare cu TVA.</p>";
-          return;
-        }
-        const netSale = sale / (1 + vat / 100);
-        const profit = netSale - cost;
-        const markup = cost > 0 ? (profit / cost) * 100 : 0;
-        const warn = food ? foodMarkupWarning(markup) : null;
-        out!.innerHTML = `
-          <dt>Adaos din cost</dt><dd>${markup.toFixed(2).replace(".", ",")}%</dd>
-          <dt>Marjă din preț fără TVA</dt><dd>${netSale > 0 ? ((profit / netSale) * 100).toFixed(2).replace(".", ",") : "0"}%</dd>
-          <dt>Câștig / bucată (fără TVA)</dt><dd>${fmtLei(profit)}</dd>
-          ${warn ? `<p class="ut-err mt-2">${warn}</p>` : ""}`;
-      }
-    } catch (e) {
-      out!.innerHTML = `<p class="ut-err">${e instanceof Error ? e.message : "Date invalide."}</p>`;
+    if (cost === "invalid" || !(cost > 0)) {
+      out.innerHTML = '<p class="ut-err">Costul nu este valid (ex. 4,50).</p>';
+      return;
     }
+    out.innerHTML = direction === "forward" ? renderForward(cost) : renderReverse(cost);
   }
 
   document.querySelectorAll<HTMLButtonElement>("[data-dir]").forEach((btn) => {
     btn.addEventListener("click", () => {
       direction = btn.dataset.dir === "reverse" ? "reverse" : "forward";
       document.querySelectorAll("[data-dir]").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
-      document.getElementById("mk-sale-wrap")?.classList.toggle("hidden", direction === "forward");
-      document.getElementById("mk-markup-wrap")?.classList.toggle("hidden", direction === "reverse");
-      document.getElementById("mk-cost-label")!.textContent =
-        direction === "forward" ? "Cost achiziție fără TVA (lei)" : "Cost achiziție fără TVA (lei)";
+      el("mk-sale-wrap").classList.toggle("hidden", direction === "forward");
+      el("mk-markup-wrap").classList.toggle("hidden", direction === "reverse");
       render();
     });
   });
@@ -148,23 +165,27 @@
   });
   render();
 
-  document.getElementById("mk-afis")?.addEventListener("click", () => {
-    const store = (document.getElementById("mk-store") as HTMLInputElement).value.trim() || "Magazin";
-    const product = (document.getElementById("mk-product") as HTMLInputElement).value.trim() || "Produs";
-    const vat = Number((document.getElementById("mk-vat") as HTMLSelectElement).value);
-    const rounding = (document.getElementById("mk-round") as HTMLSelectElement).value as Rounding;
-    const cost = num((document.getElementById("mk-cost") as HTMLInputElement).value);
-    const markup = num((document.getElementById("mk-markup") as HTMLInputElement).value);
-    const food = (document.getElementById("mk-food") as HTMLInputElement).checked;
-    if (cost === null || markup === null || direction !== "forward") {
-      alert("Pentru afiș, folosește modul Cost → preț vânzare cu adaos completat.");
+  function showAfisError(msg: string) {
+    afisErr.textContent = msg;
+    afisErr.classList.remove("hidden");
+  }
+
+  el("mk-afis").addEventListener("click", () => {
+    afisErr.classList.add("hidden");
+    const cost = num("mk-cost");
+    const markup = num("mk-markup");
+    if (direction !== "forward" || typeof cost !== "number" || !(cost > 0) || typeof markup !== "number") {
+      showAfisError("Pentru afiș, folosește modul „Cost → preț de vânzare” și completează costul și adaosul.");
       return;
     }
-    try {
-      const price = calculateShelfPrice({ cost, markup_percent: markup, vat_rate: vat, rounding });
-      openPrintHtml(renderAfisHtml({ productName: product, storeName: store, price, foodRetail: food }));
-    } catch {
-      alert("Completează costul și adaosul.");
-    }
+    const price = calculateShelfPrice({ cost, markup_percent: markup, vat_rate: vatRate(), rounding: rounding() });
+    const html = renderAfisHtml({
+      productName: el<HTMLInputElement>("mk-product").value.trim() || "Produs",
+      storeName: el<HTMLInputElement>("mk-store").value.trim() || "Magazin",
+      price,
+      showCost: el<HTMLInputElement>("mk-show-cost").checked,
+      showMarkup: el<HTMLInputElement>("mk-show-markup").checked,
+    });
+    if (!openPrintHtml(html)) showAfisError("Permite ferestrele pop-up pentru a deschide afișul.");
   });
 </script>

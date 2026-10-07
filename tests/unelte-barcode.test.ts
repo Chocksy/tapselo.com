@@ -1,39 +1,114 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { barcodeEndpoint, lookupBarcode } from "../src/lib/unelte/barcode.ts";
+import { barcodeEndpoint, barcodeResultHtml, lookupBarcode, MESSAGES, normalizeEan } from "../src/lib/unelte/barcode.ts";
+
+const BASE = "https://x.test/v1";
+const EAN = "5901234123457";
+const json = (body: unknown, status = 200) => async () =>
+  new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
+const status = (s: number) => async () => new Response("", { status: s });
 
 test("barcodeEndpoint joins base and ean", () => {
   assert.equal(
-    barcodeEndpoint("https://api.example.com/api/public/v1/", "5901234123457"),
+    barcodeEndpoint("https://api.example.com/api/public/v1/", EAN),
     "https://api.example.com/api/public/v1/barcodes/5901234123457",
   );
 });
 
-test("lookupBarcode: 404 and 429 messages in Romanian", async () => {
-  const fetch404 = async () => new Response("", { status: 404 });
-  const r404 = await lookupBarcode("https://x.test/v1", "5901234123457", fetch404);
-  assert.equal(r404.ok, false);
-  if (!r404.ok) assert.equal(r404.code, "not_found");
-
-  const fetch429 = async () => new Response("", { status: 429 });
-  const r429 = await lookupBarcode("https://x.test/v1", "5901234123457", fetch429);
-  assert.equal(r429.ok, false);
-  if (!r429.ok) assert.equal(r429.code, "rate_limit");
+test("normalizeEan: validates the check digit, strips separators, pads UPC-A", () => {
+  assert.equal(normalizeEan(" 5901234 123457 "), EAN);
+  assert.equal(normalizeEan("590-1234-123457"), EAN);
+  assert.equal(normalizeEan("96385074"), "96385074");
+  assert.equal(normalizeEan("036000291452"), "0036000291452");
+  assert.equal(normalizeEan("5901234123458"), null);
+  assert.equal(normalizeEan("12345"), null);
+  assert.equal(normalizeEan("abc"), null);
 });
 
-test("lookupBarcode: parses product without prices", async () => {
-  const body = JSON.stringify({
-    ean: "5901234123457",
-    name: "Telemea",
-    brand: "Local",
-    category: "Lactate",
-    vat_rate: 11,
-  });
-  const fetchOk = async () => new Response(body, { status: 200, headers: { "Content-Type": "application/json" } });
-  const r = await lookupBarcode("https://x.test/v1", "5901234123457", fetchOk);
-  assert.equal(r.ok, true);
-  if (r.ok) {
-    assert.equal(r.product.name, "Telemea");
-    assert.equal(r.product.vat_rate, 11);
+test("lookupBarcode: 400 / 404 / 429 / 5xx map to Romanian messages", async () => {
+  const cases: [number, keyof typeof MESSAGES][] = [
+    [400, "invalid"],
+    [404, "not_found"],
+    [429, "rate_limit"],
+    [500, "bad_response"],
+    [503, "bad_response"],
+  ];
+  for (const [s, code] of cases) {
+    const r = await lookupBarcode(BASE, EAN, status(s));
+    assert.equal(r.ok, false, String(s));
+    if (!r.ok) {
+      assert.equal(r.code, code, String(s));
+      assert.equal(r.message, MESSAGES[code]);
+    }
   }
+  assert.match(MESSAGES.not_found, /^Nu am găsit produsul în baza de date Tapselo\./);
+  assert.match(MESSAGES.invalid, /8 sau 13 cifre/);
+});
+
+test("lookupBarcode: network error, timeout and invalid JSON", async () => {
+  const net = await lookupBarcode(BASE, EAN, async () => {
+    throw new TypeError("Failed to fetch");
+  });
+  assert.equal(!net.ok && net.code, "network");
+
+  const hang: typeof fetch = (_url, init) =>
+    new Promise((_resolve, reject) => {
+      // AbortSignal.timeout timers are unref'd; keep the event loop alive until the abort fires.
+      const keepAlive = setTimeout(() => reject(new Error("timeout signal never fired")), 2000);
+      init?.signal?.addEventListener("abort", () => {
+        clearTimeout(keepAlive);
+        reject(init.signal?.reason);
+      });
+    });
+  const slow = await lookupBarcode(BASE, EAN, hang, 20);
+  assert.equal(!slow.ok && slow.code, "network");
+
+  const bad = await lookupBarcode(BASE, EAN, async () => new Response("<html>", { status: 200 }));
+  assert.equal(!bad.ok && bad.code, "bad_response");
+});
+
+test("lookupBarcode: sends a credential-less GET", async () => {
+  let seen: RequestInit | undefined;
+  let seenUrl = "";
+  await lookupBarcode(BASE, EAN, async (url, init) => {
+    seenUrl = String(url);
+    seen = init;
+    return new Response("", { status: 404 });
+  });
+  assert.equal(seenUrl, `${BASE}/barcodes/${EAN}`);
+  assert.equal(seen?.method, "GET");
+  assert.equal(seen?.credentials, "omit");
+});
+
+test("lookupBarcode: keeps only ean, name, brand, category and vat_rate", async () => {
+  const r = await lookupBarcode(
+    BASE,
+    EAN,
+    json({ ean: EAN, name: " Telemea ", brand: "Local", category: "Lactate", vat_rate: 11, price: 24.8, shop_id: 7, stock: 3 }),
+  );
+  assert.equal(r.ok, true);
+  if (r.ok) assert.deepEqual(r.product, { ean: EAN, name: "Telemea", brand: "Local", category: "Lactate", vat_rate: 11 });
+});
+
+test("lookupBarcode: rejects rates that are not 21% or 11% and missing fields", async () => {
+  for (const body of [
+    { ean: EAN, name: "Carte", vat_rate: 0 },
+    { ean: EAN, name: "Vechi", vat_rate: 19 },
+    { ean: EAN, name: "Text", vat_rate: "21" },
+    { ean: EAN, vat_rate: 21 },
+    { name: "Fără EAN", vat_rate: 21 },
+    null,
+  ]) {
+    const r = await lookupBarcode(BASE, EAN, json(body));
+    assert.equal(!r.ok && r.code, "bad_response", JSON.stringify(body));
+  }
+});
+
+test("barcodeResultHtml escapes every field from the API", () => {
+  const evil = `<img src=x onerror="window.__xss=1">`;
+  const html = barcodeResultHtml({ ean: EAN, name: evil, brand: evil, category: "<script>x</script>", vat_rate: 21 });
+  assert.doesNotMatch(html, /<img|<script/);
+  assert.match(html, /&lt;img src=x onerror=&quot;window\.__xss=1&quot;&gt;/);
+  assert.match(html, /<strong>21%<\/strong>/);
+  assert.doesNotMatch(html, /pre[țt]|lei/i);
 });
