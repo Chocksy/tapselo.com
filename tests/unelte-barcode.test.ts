@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { barcodeApiBase, barcodeEndpoint, barcodeResultHtml, checkEan, DEFAULT_BARCODE_API, lookupBarcode, MESSAGES } from "../src/lib/unelte/barcode.ts";
+import { barcodeApiBase, barcodeEndpoint, barcodeResultHtml, checkEan, DEFAULT_BARCODE_API, lookupBarcode, MESSAGES, stripPriceText } from "../src/lib/unelte/barcode.ts";
 
 const BASE = "https://x.test/v1";
 const EAN = "5901234123457";
@@ -125,4 +125,23 @@ test("barcodeResultHtml escapes every field from the API", () => {
   assert.match(html, /&lt;img src=x onerror=&quot;window\.__xss=1&quot;&gt;/);
   assert.match(html, /<strong>21%<\/strong>/);
   assert.doesNotMatch(html, /pre[țt]|lei/i);
+});
+
+test("stripPriceText: shelf prices typed into catalog names are cut, sizes stay", () => {
+  assert.equal(stripPriceText("COCA COLA 330ML 1L=9.39LEI"), "COCA COLA 330ML");
+  assert.equal(stripPriceText("COCA COLA 1.25L 1L=4.72LEI"), "COCA COLA 1.25L");
+  assert.equal(stripPriceText("SPRITE 2L 1L=3.40LEI"), "SPRITE 2L");
+  assert.equal(stripPriceText("TELEMEA 400G 1KG = 32,50 LEI"), "TELEMEA 400G");
+  assert.equal(stripPriceText("PAINE ALBA 500G - 4,99 lei"), "PAINE ALBA 500G");
+  assert.equal(stripPriceText("APA 0,5L 2 RON"), "APA 0,5L");
+  assert.equal(stripPriceText("FANTA 1,5L"), "FANTA 1,5L");
+  assert.equal(stripPriceText("FANTA PORTOCALE DOZA 330ML"), "FANTA PORTOCALE DOZA 330ML");
+  assert.equal(stripPriceText("LEIBNIZ BISCUITI 200G"), "LEIBNIZ BISCUITI 200G");
+});
+
+test("lookupBarcode: the live catalog name comes back without its price", async () => {
+  const r = await lookupBarcode(BASE, "5449000000996", json({ ean: "5449000000996", name: "COCA COLA 330ML 1L=9.39LEI", vat_rate: 21 }));
+  assert.equal(r.ok && r.product.name, "COCA COLA 330ML");
+  const only = await lookupBarcode(BASE, EAN, json({ ean: EAN, name: "9.99 LEI", vat_rate: 21 }));
+  assert.equal(only.ok && only.product.name, "Produs fără denumire");
 });

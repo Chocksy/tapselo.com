@@ -60,11 +60,28 @@ export function barcodeEndpoint(baseUrl: string, ean: string): string {
   return `${base}/barcodes/${encodeURIComponent(ean)}`;
 }
 
+const UNIT_PRICE_TAG = /\b\d*(?:[.,]\d+)?\s*(?:KG|G|L|ML|CL|BUC|M|MP)\s*=\s*\d+(?:[.,]\d+)?\s*(?:LEI|RON)\b/giu;
+const PRICE = /\b\d+(?:[.,]\d+)?\s*(?:LEI|RON)\b/giu;
+
+/**
+ * Catalog names are typed at the till and often end in a shelf price ("COCA COLA 330ML 1L=9.39LEI").
+ * The tool never shows prices, so those fragments are cut; sizes like "330ML" or "1,5L" stay.
+ */
+export function stripPriceText(name: string): string {
+  return name
+    .replace(UNIT_PRICE_TAG, " ")
+    .replace(PRICE, " ")
+    .replace(/\s+/g, " ")
+    .replace(/[\s,;:/=-]+$/u, "")
+    .trim();
+}
+
 function parseProduct(body: unknown): BarcodeProduct | null {
   if (!body || typeof body !== "object") return null;
   const o = body as Record<string, unknown>;
   const ean = typeof o.ean === "string" ? o.ean : null;
-  const name = typeof o.name === "string" ? o.name.trim() : null;
+  const rawName = typeof o.name === "string" ? o.name.trim() : null;
+  const name = rawName ? stripPriceText(rawName) || "Produs fără denumire" : null;
   if (!ean || !name || !isVatRateRo(o.vat_rate)) return null;
   const brand = typeof o.brand === "string" ? o.brand.trim() || null : null;
   const category = typeof o.category === "string" ? o.category.trim() || null : null;

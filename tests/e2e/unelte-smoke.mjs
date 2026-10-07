@@ -40,7 +40,7 @@ function serve(root) {
 }
 
 const BARCODES = {
-  "5941234000013": { status: 200, body: { ean: "5941234000013", name: `Telemea ${EVIL}`, brand: "Local", category: "Lactate", vat_rate: 11, price: 24.8, shop: "X" } },
+  "5941234000013": { status: 200, body: { ean: "5941234000013", name: `Telemea ${EVIL} 1KG=62,00LEI`, brand: "Local", category: "Lactate", vat_rate: 11, price: 24.8, shop: "X" } },
   "5941234000020": { status: 404 },
   "5941234000037": { status: 429 },
   "5941234000044": { status: 400 },
@@ -156,7 +156,8 @@ test("calculator TVA: barcode lookup validates, escapes and maps errors", async 
   const card = await page.textContent("#vat-ean-result");
   assert.match(card, /Telemea <img src=x onerror="window.__xss=1">/);
   assert.match(card, /11%/);
-  assert.doesNotMatch(card, /24,8|lei|X\b/);
+  assert.doesNotMatch(card, /24,8|62,00|lei/i);
+  assert.doesNotMatch(card, /\bX\b/);
   assert.equal(await page.evaluate(() => window.__xss), undefined);
 
   const expect = [
