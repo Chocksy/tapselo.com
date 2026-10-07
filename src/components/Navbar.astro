@@ -20,9 +20,13 @@ const links = [
 
     <div class="hidden items-center gap-6 lg:flex xl:gap-8">
       {links.map(([href, label]) => (
-        <a href={href} class="text-sm font-medium text-text-on-primary transition-colors hover:text-white">{label}</a>
+        <a
+          href={href}
+          class="text-sm font-medium text-text-on-primary transition-colors hover:text-white"
+          {...(href === "https://app.tapselo.com" ? { "data-tapselo-cta": "header" } : {})}
+        >{label}</a>
       ))}
-      <a href="https://app.tapselo.com/?demo=1" class="rounded-md bg-accent px-5 py-2 text-sm font-bold text-white transition-all hover:bg-accent-hover active:scale-[0.97]">Încearcă demo</a>
+      <a href="https://app.tapselo.com/?demo=1" data-tapselo-cta="header" class="rounded-md bg-accent px-5 py-2 text-sm font-bold text-white transition-all hover:bg-accent-hover active:scale-[0.97]">Încearcă demo</a>
     </div>
 
     <button id="mobile-menu-btn" class="text-white lg:hidden" aria-label="Toggle menu">
@@ -34,9 +38,13 @@ const links = [
   <div id="mobile-menu" class="hidden border-t border-white/10 bg-primary lg:hidden">
     <div class="flex flex-col gap-4 px-6 py-6">
       {links.map(([href, label]) => (
-        <a href={href} class="text-sm font-medium text-text-on-primary hover:text-white">{label}</a>
+        <a
+          href={href}
+          class="text-sm font-medium text-text-on-primary hover:text-white"
+          {...(href === "https://app.tapselo.com" ? { "data-tapselo-cta": "header" } : {})}
+        >{label}</a>
       ))}
-      <a href="https://app.tapselo.com/?demo=1" class="rounded-md bg-accent px-5 py-2 text-center text-sm font-bold text-white hover:bg-accent-hover">Încearcă demo</a>
+      <a href="https://app.tapselo.com/?demo=1" data-tapselo-cta="header" class="rounded-md bg-accent px-5 py-2 text-center text-sm font-bold text-white hover:bg-accent-hover">Încearcă demo</a>
     </div>
   </div>
 </nav>

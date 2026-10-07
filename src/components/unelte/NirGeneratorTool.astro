@@ -84,6 +84,7 @@
   import { isVatRateRo, VAT_RATES_RO } from "../../lib/unelte/vat.ts";
   import { parseRoNumber } from "../../lib/unelte/parse.ts";
   import { localIsoDate } from "../../lib/unelte/dates.ts";
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
   import { downloadNirPdfViaPrint } from "../../lib/unelte/document-export.ts";
 
   const DEFAULT_VAT = 11;
@@ -236,5 +237,6 @@
     const p = collect();
     if (!p) return;
     if (!downloadNirPdfViaPrint(p)) showError("Permite ferestrele pop-up pentru PDF.");
+    else trackToolUsed("generator_nir", "print");
   });
 </script>

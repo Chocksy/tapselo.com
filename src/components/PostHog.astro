@@ -1,0 +1,10 @@
+---
+---
+
+<script>
+  import { resolvePostHogConfig } from "../lib/analytics.ts";
+  import { bindCtaClickTracking, initSiteAnalytics } from "../lib/analytics-client.ts";
+
+  initSiteAnalytics(resolvePostHogConfig(import.meta.env), import.meta.env.DEV);
+  bindCtaClickTracking();
+</script>

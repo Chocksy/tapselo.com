@@ -57,6 +57,7 @@ const extras = [
           <p class="mt-2 text-sm font-bold text-text">{plan.tills}</p>
           <a
             href="https://app.tapselo.com"
+            data-tapselo-cta="pricing"
             class:list={[
               "group mt-8 flex w-full items-center justify-center gap-2 rounded-md py-3.5 text-base font-bold transition-all active:scale-[0.98]",
               plan.featured ? "bg-accent text-white hover:bg-accent-hover hover:shadow-lg" : "bg-primary text-white hover:bg-primary-light hover:shadow-lg",
@@ -65,7 +66,7 @@ const extras = [
             Începe gratuit
             <ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </a>
-          <a href="https://app.tapselo.com/?demo=1" class="mt-3 text-center text-sm font-medium text-text-secondary underline-offset-4 hover:text-primary hover:underline">
+          <a href="https://app.tapselo.com/?demo=1" data-tapselo-cta="pricing" class="mt-3 text-center text-sm font-medium text-text-secondary underline-offset-4 hover:text-primary hover:underline">
             sau încearcă demo-ul
           </a>
         </div>

@@ -1,9 +1,10 @@
 // Anonymous usage events for the AI plugin, sent to PostHog (EU project 116119).
 // No user text, no IP, no person profiles: only which client, which tool, ok or not.
 
+import { DEFAULT_POSTHOG_KEY } from "../analytics.ts";
+
 const POSTHOG_URL = "https://eu.i.posthog.com/batch/";
-// Public project key (write-only ingestion key, same one the admin app ships to browsers).
-const POSTHOG_KEY = "phc_OOLSIySyCe9V37b0M2M40s8riA38SDYJ7zEhsiMAtyn"; // gitleaks:allow (public ingestion key)
+const POSTHOG_KEY = DEFAULT_POSTHOG_KEY;
 
 export interface McpEvent {
   event: string;
