@@ -52,6 +52,7 @@ export interface CrossCheckInput {
 export interface ErrTxtLine {
   raw: string;
   explained: boolean;
+  code?: string;
   title?: string;
   ceInseamna?: string;
   ceFaci?: string;

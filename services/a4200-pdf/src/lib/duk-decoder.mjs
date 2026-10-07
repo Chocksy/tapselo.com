@@ -16,6 +16,7 @@ export function decodeDukErrTxt(text) {
           return {
             raw,
             explained: true,
+            code: rule.code,
             title: e.title,
             ceInseamna: e.ce_inseamna,
             ceFaci: e.ce_faci,

@@ -14,7 +14,8 @@ import {
   resetRateLimitForTests,
   rateLimitConfig,
 } from "../services/a4200-pdf/src/lib/rate-limit.mjs";
-import { handleRouteError } from "../services/a4200-pdf/src/server.mjs";
+import { handleRouteError, server } from "../services/a4200-pdf/src/server.mjs";
+import http from "node:http";
 import { JavaTimeoutError } from "../services/a4200-pdf/src/lib/client-error.mjs";
 import { toHttps } from "../services/a4200-pdf/scripts/download-duk.mjs";
 import { safeEnd } from "../services/a4200-pdf/src/lib/respond.mjs";
@@ -154,6 +155,43 @@ test("parseZipP7bEntries: unzipped size cap", () => {
       return true;
     },
   );
+});
+
+test("formatDuk422Payload prefers DUK_NUI_CHECK over broad NUI_MISMATCH", () => {
+  const raw =
+    "eroare regula: R1: NUI (9999999901) este nenumeric sau are cifra de control eronata\nCUI invalid in opis";
+  const p = formatDuk422Payload(raw);
+  assert.equal(p.message, "NUI invalid (cifră de control)");
+  assert.match(p.nextStep, /Reexportă|certificat/i);
+});
+
+test("formatDuk422Payload maps CUI invalid to dedicated entry", () => {
+  const p = formatDuk422Payload("Eroare: CUI invalid la validare");
+  assert.equal(p.message, "CUI invalid pentru ANAF");
+});
+
+test("HEAD /health returns 200 with empty body", async () => {
+  await new Promise<void>((resolve, reject) => {
+    server.listen(0, "127.0.0.1", () => {
+      const { port } = server.address() as { port: number };
+      const req = http.request(
+        { host: "127.0.0.1", port, method: "HEAD", path: "/health" },
+        (res) => {
+          assert.equal(res.statusCode, 200);
+          let body = "";
+          res.on("data", (c) => {
+            body += c;
+          });
+          res.on("end", () => {
+            assert.equal(body, "");
+            server.close((err) => (err ? reject(err) : resolve()));
+          });
+        },
+      );
+      req.on("error", reject);
+      req.end();
+    });
+  });
 });
 
 test("formatDuk422Payload maps R1.1 and extragere XML with details", () => {

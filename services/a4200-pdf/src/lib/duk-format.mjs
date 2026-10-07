@@ -2,6 +2,18 @@ import { decodeDukErrTxt } from "./duk-decoder.mjs";
 
 const DUK_SECTION_HEADER_RE = /^[EF]:\s*validari globale/i;
 
+/** Prefer specific DUK KB codes over broad NUI / Z matches when picking the 422 headline. */
+const DUK_PRIMARY_CODE_PRIORITY = [
+  "DUK_NUI_CHECK",
+  "DUK_CUI_INVALID",
+  "DUK_SIGNATURE",
+  "P7B_EXTRACT_FAILED",
+  "DUK_ZIP_CORRUPT",
+  "Z_COUNT_MISMATCH",
+  "MISSING_Z",
+  "NUI_MISMATCH",
+];
+
 export function isDukValidationSectionHeader(raw) {
   return DUK_SECTION_HEADER_RE.test(raw.trim());
 }
@@ -20,6 +32,7 @@ function mapLineForResponse(l) {
   }
   return {
     raw: l.raw,
+    code: l.code,
     title: l.title,
     ceInseamna: l.ceInseamna,
     ceFaci: l.ceFaci,
@@ -28,13 +41,22 @@ function mapLineForResponse(l) {
   };
 }
 
+function pickPrimaryLine(lines) {
+  for (const code of DUK_PRIMARY_CODE_PRIORITY) {
+    const hit = lines.find((l) => l.kind === "error" && l.code === code && l.explained);
+    if (hit) return hit;
+  }
+  return (
+    lines.find((l) => l.kind === "error" && l.explained) ??
+    lines.find((l) => l.kind === "error") ??
+    lines[0]
+  );
+}
+
 export function formatDuk422Payload(errText) {
   const decoded = decodeDukErrTxt(errText);
   const lines = decoded.map(mapLineForResponse);
-  const primary =
-    lines.find((l) => l.kind === "error" && l.explained) ??
-    lines.find((l) => l.kind === "error") ??
-    lines[0];
+  const primary = pickPrimaryLine(lines);
   const message = primary?.title ?? "Validarea ANAF a eșuat.";
   const nextStep =
     primary?.ceFaci ??

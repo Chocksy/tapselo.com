@@ -26,6 +26,26 @@
       "ce_inseamna": "Numărul unic de identificare al AMEF (primele 10 caractere din idM) nu coincide între opis și o zi.",
       "ce_faci": "Nu amesteca exporturi de la două case. Refă folderul doar cu fișierele aceluiași aparat."
     },
+    "CUI_CHECK_DIGIT": {
+      "title": "CUI cu cifră de control greșită",
+      "ce_inseamna": "Codul fiscal din fișier nu trece verificarea cifrei de control (cheia 753217532).",
+      "ce_faci": "Verifică CUI-ul în casa de marcat și reexportă. Nu tasta manual CIF-ul în alte programe."
+    },
+    "NUI_CHECK_DIGIT": {
+      "title": "NUI cu cifră de control greșită",
+      "ce_inseamna": "Primele 10 cifre din idM (NUI-ul AMEF) nu trec verificarea cifrei de control din validatorul A4200.",
+      "ce_faci": "Reexportă din memoria fiscală. Dacă mesajul persistă, contactează service-ul AMEF."
+    },
+    "DUK_CUI_INVALID": {
+      "title": "CUI invalid pentru ANAF",
+      "ce_inseamna": "DUKIntegrator respinge CIF-ul din opis sau din zile — format sau cifră de control incorectă.",
+      "ce_faci": "Corectează datele firmei în programul de casă, reexportă perioada și rulează din nou validarea."
+    },
+    "DUK_NUI_CHECK": {
+      "title": "NUI invalid (cifră de control)",
+      "ce_inseamna": "Numărul unic al AMEF din identificatorul mesajului (idM) este respins de regula R1: nu este numeric sau cifra de control nu se potrivește.",
+      "ce_faci": "Nu edita manual fișierele. Reexportă din casă sau verifică NUI-ul pe certificatul AMEF."
+    },
     "CIF_MISMATCH": {
       "title": "CIF diferit",
       "ce_inseamna": "Codul fiscal din zi nu este același cu cel din opis.",
@@ -160,6 +180,8 @@
     "ce_faci": "Corectează în casa de marcat și reexportă, sau urmează pașii din DUKIntegrator."
   },
   "duk_rules": [
+    { "pattern": "R1:.*NUI.*cifra de control|NUI \\([^)]+\\).*cifra de control", "code": "DUK_NUI_CHECK" },
+    { "pattern": "CUI invalid", "code": "DUK_CUI_INVALID" },
     { "pattern": "spati|spaț|space.*cale|path", "code": "DUK_FOLDER_SPACES" },
     { "pattern": "select.*opis|doar.*opis|registru", "code": "DUK_SELECT_OPIS" },
     { "pattern": "ZIP corupt|zip corupt|corupt", "code": "DUK_ZIP_CORRUPT" },
