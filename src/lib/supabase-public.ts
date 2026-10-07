@@ -9,8 +9,8 @@ export type RpcResult<T> =
   | { ok: true; data: T }
   | { ok: false; kind: "network" | "missing" | "rejected"; message: string };
 
-export const MSG_NETWORK = "Nu avem legatura la internet. Verifica conexiunea si incearca din nou.";
-export const MSG_MISSING = "Serviciul nu este disponibil acum. Incearca din nou mai tarziu.";
+export const MSG_NETWORK = "Nu avem legătură la internet. Verifică conexiunea și încearcă din nou.";
+export const MSG_MISSING = "Serviciul nu este disponibil acum. Încearcă din nou mai târziu.";
 
 // POST {url}/rest/v1/rpc/<fn> with the anon key.
 // kind "missing": function not found (404 / PGRST202) or server error.

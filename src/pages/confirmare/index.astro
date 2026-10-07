@@ -6,17 +6,17 @@ import PublicShell from "../../components/PublicShell.astro";
 
 <PublicShell title="Confirmare email">
   <div class="pub-card space-y-6">
-    <h1 class="pub-title">Confirma adresa de email</h1>
+    <h1 class="pub-title">Confirmă adresa de email</h1>
 
     <div id="ask" class="hidden space-y-6">
-      <p class="pub-text">Apasa butonul ca sa confirmi ca vrei sa primesti oferte pe email de la magazin.</p>
+      <p class="pub-text">Apasă butonul ca să confirmi că vrei să primești oferte pe email de la magazin.</p>
       <p id="error" class="pub-error hidden" role="alert"></p>
       <button type="button" id="go" class="pub-btn">Confirm</button>
     </div>
 
     <p id="ok" class="pub-ok hidden" role="status">
-      Gata! Adresa ta de email este confirmata. Vei primi ofertele magazinului pe email.
-      Te poti dezabona oricand, din orice mesaj.
+      Gata! Adresa ta de email este confirmată. Vei primi ofertele magazinului pe email.
+      Te poți dezabona oricând, din orice mesaj.
     </p>
 
     <p id="bad" class="pub-error hidden" role="alert">
@@ -53,7 +53,7 @@ import PublicShell from "../../components/PublicShell.astro";
       btn.textContent = "Confirm";
       if (res.ok && res.data === true) return show("ok");
       if (res.ok) {
-        $("bad").textContent = "Nu am putut confirma. Poate adresa este deja confirmata sau inscrierea a fost stearsa. Daca ai nevoie de ajutor, intreaba la casa magazinului.";
+        $("bad").textContent = "Nu am putut confirma. Poate adresa este deja confirmată sau înscrierea a fost ștearsă. Dacă ai nevoie de ajutor, întreabă la casa magazinului.";
         return show("bad");
       }
       if (res.kind === "rejected") return show("bad");

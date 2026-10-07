@@ -4,20 +4,20 @@
 import PublicShell from "../../components/PublicShell.astro";
 ---
 
-<PublicShell title="Inscriere client">
-  <p id="loading" class="pub-card pub-text">Se incarca...</p>
+<PublicShell title="Înscriere client">
+  <p id="loading" class="pub-card pub-text">Se încarcă...</p>
 
   <div id="inactive" class="pub-card hidden">
     <p class="pub-text text-xl font-semibold text-primary" id="inactive-msg">
-      Inscrierea nu este activa pentru acest magazin.
+      Înscrierea nu este activă pentru acest magazin.
     </p>
   </div>
 
   <form id="signup" class="pub-card hidden space-y-6" novalidate>
     <div>
-      <h1 class="pub-title">Inscrie-te la <span data-f="store_name"></span></h1>
+      <h1 class="pub-title">Înscrie-te la <span data-f="store_name"></span></h1>
       <p class="pub-text mt-3" id="discount-line" hidden>
-        Clientii inscrisi primesc <strong class="text-primary"><span data-f="discount"></span>% reducere</strong> la fiecare cumparare.
+        Clienții înscriși primesc <strong class="text-primary"><span data-f="discount"></span>% reducere</strong> la fiecare cumpărare.
       </p>
     </div>
 
@@ -34,17 +34,17 @@ import PublicShell from "../../components/PublicShell.astro";
     <div>
       <label for="email" class="pub-label">Email</label>
       <input id="email" name="email" type="email" class="pub-input" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" maxlength="200" />
-      <span class="pub-hint mt-2">Scrie telefonul sau emailul. Poti scrie si amandoua.</span>
+      <span class="pub-hint mt-2">Scrie telefonul sau emailul. Poți scrie și amândouă.</span>
     </div>
 
     <fieldset class="space-y-3">
-      <legend class="pub-label mb-3">Ce vrei sa primesti?</legend>
+      <legend class="pub-label mb-3">Ce vrei să primești?</legend>
 
       <label class="pub-tick">
         <input type="checkbox" id="t-member" />
         <span>
-          <span class="pub-label">Client inscris <span id="member-pct" hidden>(-<span data-f="discount"></span>% la fiecare cumparare)</span></span>
-          <span class="pub-hint">Magazinul te recunoaste la casa.</span>
+          <span class="pub-label">Client înscris <span id="member-pct" hidden>(-<span data-f="discount"></span>% la fiecare cumpărare)</span></span>
+          <span class="pub-hint">Magazinul te recunoaște la casă.</span>
         </span>
       </label>
 
@@ -52,7 +52,7 @@ import PublicShell from "../../components/PublicShell.astro";
         <input type="checkbox" id="t-email" />
         <span>
           <span class="pub-label">Oferte pe email</span>
-          <span class="pub-hint">Primesti un mesaj de confirmare.</span>
+          <span class="pub-hint">Primești un mesaj de confirmare.</span>
         </span>
       </label>
 
@@ -60,15 +60,15 @@ import PublicShell from "../../components/PublicShell.astro";
         <input type="checkbox" id="t-whatsapp" />
         <span>
           <span class="pub-label">Oferte pe WhatsApp</span>
-          <span class="pub-hint">Pe numarul de telefon de mai sus.</span>
+          <span class="pub-hint">Pe numărul de telefon de mai sus.</span>
         </span>
       </label>
 
       <label class="pub-tick">
         <input type="checkbox" id="t-personalized" />
         <span>
-          <span class="pub-label">Oferte pe baza cumparaturilor</span>
-          <span class="pub-hint">Magazinul alege ofertele dupa ce cumperi de obicei.</span>
+          <span class="pub-label">Oferte pe baza cumpărăturilor</span>
+          <span class="pub-hint">Magazinul alege ofertele după ce cumperi de obicei.</span>
         </span>
       </label>
 
@@ -82,21 +82,21 @@ import PublicShell from "../../components/PublicShell.astro";
         (CUI <span data-f="cui"></span>, <span data-f="address"></span>).
       </p>
       <p>
-        Le folosim ca sa te recunoastem la casa si, numai daca bifezi, ca sa iti trimitem oferte
-        pe email sau WhatsApp si oferte alese dupa cumparaturile tale.
+        Le folosim ca să te recunoaștem la casă și, numai dacă bifezi, ca să îți trimitem oferte
+        pe email sau WhatsApp și oferte alese după cumpărăturile tale.
       </p>
-      <p>Pastram datele 24 de luni de la ultima cumparare, apoi le stergem.</p>
+      <p>Păstrăm datele 24 de luni de la ultima cumpărare, apoi le ștergem.</p>
       <p>
-        Poti cere oricand sa vezi sau sa stergi datele si poti retrage orice acord.
+        Poți cere oricând să vezi sau să ștergi datele și poți retrage orice acord.
         <span id="contact-email-line">Scrie la <a data-f="privacy_email" id="contact-email" class="pub-link" href="#"></a>.</span>
         <span id="contact-store-line" hidden>Spune la casa magazinului.</span>
       </p>
-      <p><a id="privacy-link" class="pub-link" href="#">Citeste tot despre datele tale</a></p>
+      <p><a id="privacy-link" class="pub-link" href="#">Citește tot despre datele tale</a></p>
     </div>
 
     <p id="form-error" class="pub-error hidden" role="alert"></p>
 
-    <button type="submit" id="submit" class="pub-btn">Inscrie-ma</button>
+    <button type="submit" id="submit" class="pub-btn">Înscrie-mă</button>
   </form>
 
   <div id="done" class="pub-card hidden space-y-5" role="status">
@@ -104,7 +104,7 @@ import PublicShell from "../../components/PublicShell.astro";
       <p class="text-3xl font-bold" id="done-title"></p>
       <p class="mt-2 text-xl" data-f="store_name"></p>
     </div>
-    <p class="pub-text">Daca ai bifat ofertele pe email, confirma din mesajul primit.</p>
+    <p class="pub-text">Dacă ai bifat ofertele pe email, confirmă din mesajul primit.</p>
   </div>
 </PublicShell>
 
@@ -145,7 +145,7 @@ import PublicShell from "../../components/PublicShell.astro";
     const f = infoFields(info);
     fillFields(document, f);
     $("shell-store").textContent = f.store_name;
-    document.title = `Inscriere client - ${f.store_name}`;
+    document.title = `Înscriere client - ${f.store_name}`;
     $("discount-line").hidden = !f.discount;
     $("member-pct").hidden = !f.discount;
     $<HTMLAnchorElement>("privacy-link").href = `/p/${slug}`;
@@ -193,15 +193,15 @@ import PublicShell from "../../components/PublicShell.astro";
     const mWhatsapp = tick("t-whatsapp");
     const personalized = tick("t-personalized");
 
-    if (!name) return fail("Scrie numele tau.", nameEl);
-    if (!phoneRaw && !email) return fail("Scrie numarul de telefon sau adresa de email.", phoneEl);
+    if (!name) return fail("Scrie numele tău.", nameEl);
+    if (!phoneRaw && !email) return fail("Scrie numărul de telefon sau adresa de email.", phoneEl);
     const phone = phoneRaw ? normalizePhone(phoneRaw) : null;
-    if (phoneRaw && !phone) return fail("Numarul de telefon nu pare corect. Exemplu: 0722 123 456.", phoneEl);
-    if (email && !isEmail(email)) return fail("Adresa de email nu pare corecta. Exemplu: nume@gmail.com.", emailEl);
+    if (phoneRaw && !phone) return fail("Numărul de telefon nu pare corect. Exemplu: 0722 123 456.", phoneEl);
+    if (email && !isEmail(email)) return fail("Adresa de email nu pare corectă. Exemplu: nume@gmail.com.", emailEl);
     if (mEmail && !email) return fail("Pentru oferte pe email, scrie adresa de email.", emailEl);
-    if (mWhatsapp && !phone) return fail("Pentru oferte pe WhatsApp, scrie numarul de telefon.", phoneEl);
+    if (mWhatsapp && !phone) return fail("Pentru oferte pe WhatsApp, scrie numărul de telefon.", phoneEl);
     if (!member && !mEmail && !mWhatsapp && !personalized) {
-      return fail("Bifeaza cel putin o optiune de mai sus.");
+      return fail("Bifează cel puțin o opțiune de mai sus.");
     }
 
     const btn = $<HTMLButtonElement>("submit");
@@ -221,17 +221,17 @@ import PublicShell from "../../components/PublicShell.astro";
     });
 
     btn.disabled = false;
-    btn.textContent = "Inscrie-ma";
+    btn.textContent = "Înscrie-mă";
 
     if (!res.ok) {
       return fail(
         res.kind === "rejected"
-          ? "Nu am putut face inscrierea. Verifica datele si incearca din nou. Daca nu merge, spune la casa."
+          ? "Nu am putut face înscrierea. Verifică datele și încearcă din nou. Dacă nu merge, spune la casă."
           : res.message,
       );
     }
 
-    $("done-title").textContent = `Gata, ${name}! Arata acest ecran la casa.`;
+    $("done-title").textContent = `Gata, ${name}! Arată acest ecran la casă.`;
     show("done");
     window.scrollTo({ top: 0 });
   }

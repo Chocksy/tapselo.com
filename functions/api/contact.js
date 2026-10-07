@@ -25,7 +25,7 @@ export async function onRequestPost(context) {
     // Validate required fields
     if (!name || !email || !message) {
       return new Response(
-        JSON.stringify({ success: false, error: "Campuri obligatorii lipsa." }),
+        JSON.stringify({ success: false, error: "Câmpuri obligatorii lipsă." }),
         { status: 400, headers }
       );
     }
@@ -33,7 +33,7 @@ export async function onRequestPost(context) {
     // Validate Turnstile token
     if (!turnstileToken) {
       return new Response(
-        JSON.stringify({ success: false, error: "Verificare de securitate lipsa." }),
+        JSON.stringify({ success: false, error: "Verificare de securitate lipsă." }),
         { status: 400, headers }
       );
     }
@@ -54,7 +54,7 @@ export async function onRequestPost(context) {
     const turnstileData = await turnstileResult.json();
     if (!turnstileData.success) {
       return new Response(
-        JSON.stringify({ success: false, error: "Verificare de securitate esuata." }),
+        JSON.stringify({ success: false, error: "Verificare de securitate eșuată." }),
         { status: 403, headers }
       );
     }
@@ -71,19 +71,19 @@ export async function onRequestPost(context) {
     if (!emailResult.ok || !emailData.success) {
       console.error("Email relay error:", JSON.stringify(emailData));
       return new Response(
-        JSON.stringify({ success: false, error: "Nu am putut trimite mesajul. Incearca din nou." }),
+        JSON.stringify({ success: false, error: "Nu am putut trimite mesajul. Încearcă din nou." }),
         { status: 500, headers }
       );
     }
 
     return new Response(
-      JSON.stringify({ success: true, message: "Mesajul a fost trimis! Vom reveni in 24h." }),
+      JSON.stringify({ success: true, message: "Mesajul a fost trimis! Vom reveni în 24h." }),
       { status: 200, headers }
     );
   } catch (err) {
     console.error("Contact form error:", err.message);
     return new Response(
-      JSON.stringify({ success: false, error: "Eroare interna. Incearca din nou." }),
+      JSON.stringify({ success: false, error: "Eroare internă. Încearcă din nou." }),
       { status: 500, headers }
     );
   }

@@ -38,31 +38,31 @@ test("full page: title, og tags, promos, announcements, links", () => {
   assert.match(out, /<title>Oferte Panviro Hala<\/title>/);
   assert.match(out, /<meta property="og:title" content="Oferte Panviro Hala" \/>/);
   assert.match(out, /<meta property="og:image" content="https:\/\/tapselo.com\/og-image.jpg" \/>/);
-  assert.match(out, /<meta property="og:description" content="Oferte la Panviro Hala: Cascaval Dalia &lt;b&gt;afumat&lt;\/b&gt; 39,99 lei, Paine alba feliata 4,99 lei, Rosii romanesti 9,90 lei\." \/>/);
+  assert.match(out, /<meta property="og:description" content="Oferte la Panviro Hala: Cașcaval Dalia &lt;b&gt;afumat&lt;\/b&gt; 39,99 lei, Pâine albă feliată 4,99 lei, Roșii românești 9,90 lei\." \/>/);
   assert.match(out, /<link rel="canonical" href="https:\/\/tapselo.com\/o\/hala" \/>/);
   // promo card
   assert.match(out, /<p class="old"><s[^>]*>45,99 lei<\/s><\/p>/);
   // The struck price is the 30-day low (45,99), not the list price (49,99).
   assert.match(out, /<p class="tag"><span class="new">39,99<\/span><span class="unit">lei \/ kg<\/span><\/p>/);
-  assert.match(out, /Cel mai mic pret in ultimele 30 de zile: 45,99 lei/);
-  assert.match(out, /Cel mai mic pret in ultimele 10 zile: 6,50 lei/);
-  assert.match(out, /<p class="valid">Pana pe 05\.10\.2026<\/p>/);
+  assert.match(out, /Cel mai mic preț în ultimele 30 de zile: 45,99 lei/);
+  assert.match(out, /Cel mai mic preț în ultimele 10 zile: 6,50 lei/);
+  assert.match(out, /<p class="valid">Până pe 05\.10\.2026<\/p>/);
   // prior line hidden when prior_lowest_cents is null; default emoji
-  assert.doesNotMatch(out, /Cel mai mic pret in ultimele 10 zile: 12,00/);
+  assert.doesNotMatch(out, /Cel mai mic preț în ultimele 10 zile: 12,00/);
   assert.match(out, /🏷️/);
   // announcement with line break
-  assert.match(out, /Intre 10:00 si 13:00, la raionul de lactate\.<br \/>Va asteptam!/);
-  assert.match(out, /<span class="until">Pana pe 04\.10\.2026<\/span>/);
+  assert.match(out, /Între 10:00 și 13:00, la raionul de lactate\.<br \/>Vă așteptăm!/);
+  assert.match(out, /<span class="until">Până pe 04\.10\.2026<\/span>/);
   assert.match(out, /📣/);
   assert.match(out, /<p class="kicker">Ofertele de azi<\/p>/);
   assert.match(out, /<h1>Oferte<\/h1>/);
-  assert.match(out, /Preturi mici la produsele de mai jos, doar in magazin\./);
+  assert.match(out, /Prețuri mici la produsele de mai jos, doar în magazin\./);
   assert.match(out, /<meta name="theme-color" content="#14532d" \/>/);
   assert.match(out, /family=Geist:wght@400\.\.900/);
   // signup + privacy
   assert.match(out, /Vrei ofertele pe email sau WhatsApp\?/);
-  assert.match(out, /Te anuntam cand apar preturi noi\./);
-  assert.match(out, /<a class="btn" href="\/c\/hala">Inscrie-te<\/a>/);
+  assert.match(out, /Te anunțăm când apar prețuri noi\./);
+  assert.match(out, /<a class="btn" href="\/c\/hala">Înscrie-te<\/a>/);
   assert.match(out, /href="\/c\/hala"/);
   assert.match(out, /href="\/p\/hala"/);
   // footer company data
@@ -106,7 +106,7 @@ test("empty page and description fallbacks", () => {
   p.promos = [];
   p.announcements = [];
   const out = renderOffersPage(p, "hala");
-  assert.match(out, /Acum nu sunt oferte\. Revino in curand\./);
+  assert.match(out, /Acum nu sunt oferte\. Revino în curând\./);
   assert.equal(offersDescription(p), "Ofertele de azi la Panviro Hala.");
 
   p.announcements = [{ title: "Program nou", body: null, ends_on: null }];
@@ -114,7 +114,7 @@ test("empty page and description fallbacks", () => {
 
   const many = clone();
   many.promos = [...many.promos!, ...many.promos!];
-  assert.match(offersDescription(many), / si inca 3\.$/);
+  assert.match(offersDescription(many), / și încă 3\.$/);
 });
 
 test("no struck price when the promo is not lower", () => {
@@ -140,10 +140,10 @@ test("percent badge uses the prior lowest price, only with an old price", () => 
 
 test("not found page", () => {
   const out = renderNotFoundPage();
-  assert.match(out, /<title>Pagina nu a fost gasita - Tapselo<\/title>/);
+  assert.match(out, /<title>Pagina nu a fost găsită - Tapselo<\/title>/);
   assert.match(out, /<header class="hero">/);
-  assert.match(out, /<h1 class="h1-sm">Nu am gasit ofertele<\/h1>/);
-  assert.match(out, /Magazinul nu are o pagina de oferte activa/);
+  assert.match(out, /<h1 class="h1-sm">Nu am găsit ofertele<\/h1>/);
+  assert.match(out, /Magazinul nu are o pagină de oferte activă/);
 });
 
 test("theme: body data-theme, theme-color, fallback to piata", () => {
