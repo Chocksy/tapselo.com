@@ -1,0 +1,50 @@
+---
+import ToolShell from "../../components/ToolShell.astro";
+import MarkupCalculatorTool from "../../components/unelte/MarkupCalculatorTool.astro";
+import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
+
+const path = "/unelte/calculator-adaos-comercial";
+const heading = "Calculator adaos comercial";
+const faq = [
+  {
+    q: "Cum calculez adaosul comercial?",
+    a: "Adaosul % se aplică la costul fără TVA; apoi se adaugă TVA la vânzare. Calculatorul arată prețul final cu TVA și adaosul real după rotunjire.",
+  },
+  {
+    q: "Pot afla adaosul dintr-un preț de vânzare?",
+    a: "Da — în modul „Preț → adaos” introduci costul fără TVA și prețul de la raft cu TVA; calculatorul arată adaosul, marja și profitul pe bucată.",
+  },
+  {
+    q: "Există un adaos comercial maxim (0–300%)?",
+    a: "Nu există un plafon general: în rest, adaosul îl stabilește comerciantul. Excepție: pentru alimentele de bază din OUG nr. 67/2023 (pâine albă, lapte, telemea, iaurt, făină, mălai, ouă, ulei, carne de pui și porc, legume și fructe vrac, cartofi, zahăr, smântână, unt, magiun), adaosul la vânzarea cu amănuntul este de maximum 20%, până la 31 decembrie 2026. Verifică lista exactă și calculul cu contabilul.",
+  },
+  {
+    q: "Pot printa un afiș de preț?",
+    a: "Da — completează magazinul și produsul, apoi „Printează afiș”. Costul și adaosul apar pe afiș doar dacă bifezi opțiunile.",
+  },
+];
+
+const jsonLd = toolJsonLd({
+  path,
+  heading,
+  appName: "Calculator adaos comercial Tapselo",
+  description: "Calculator adaos comercial: preț de vânzare cu TVA din cost, adaos din preț, rotunjire la raft, afiș de preț.",
+  faq,
+});
+---
+
+<ToolShell
+  title="Calculator adaos comercial — preț de vânzare cu TVA | Tapselo"
+  description="Calculator adaos comercial gratuit: cost fără TVA, adaos %, preț la raft cu TVA 21% sau 11%, sau adaosul dintr-un preț. Plafonul de 20% pentru alimentele de bază."
+  heading={heading}
+  path={path}
+  lead="De la costul de achiziție fără TVA la prețul de vânzare cu TVA — sau invers — cu rotunjire la ,49 sau ,99 și afiș printabil pentru raft."
+  campaign="calculator-adaos"
+  ctaTitle="Prețuri și etichete la raft din Tapselo"
+  ctaBody="Calculezi adaosul o dată; casa de marcat și etichetele folosesc același preț cu TVA corect."
+  related={[{ href: "/ghid/pret-unitar-kg-litru", label: "Prețul unitar pe kg sau litru la raft" }]}
+  jsonLd={jsonLd}
+  faq={faq}
+>
+  <MarkupCalculatorTool />
+</ToolShell>

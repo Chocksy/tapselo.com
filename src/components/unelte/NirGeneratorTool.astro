@@ -1,0 +1,240 @@
+---
+---
+
+<section class="ut-card" aria-labelledby="nir-title">
+  <h2 id="nir-title" class="font-display text-2xl italic text-primary">Model NIR — notă de recepție și constatare de diferențe</h2>
+  <p class="mt-2 text-sm text-text-secondary">
+    Completează datele facturii și liniile de marfă. Generează un PDF printabil al NIR-ului, cu adaos comercial și TVA neexigibilă.
+  </p>
+
+  <div id="nir-tool" class="mt-6 space-y-4">
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="nir-company">Unitatea (cumpărător)</label>
+        <input class="ut-input" id="nir-company" type="text" maxlength="80" autocomplete="organization" />
+      </div>
+      <div>
+        <label class="ut-label" for="nir-company-cif">CIF cumpărător (opțional)</label>
+        <input class="ut-input" id="nir-company-cif" type="text" maxlength="20" />
+      </div>
+      <div>
+        <label class="ut-label" for="nir-supplier">Furnizor</label>
+        <input class="ut-input" id="nir-supplier" type="text" maxlength="80" />
+      </div>
+      <div>
+        <label class="ut-label" for="nir-supplier-cif">CIF furnizor (opțional)</label>
+        <input class="ut-input" id="nir-supplier-cif" type="text" maxlength="20" />
+      </div>
+      <div>
+        <label class="ut-label" for="nir-number">Nr. NIR</label>
+        <input class="ut-input" id="nir-number" type="text" maxlength="40" placeholder="ex. 125" />
+      </div>
+      <div>
+        <label class="ut-label" for="nir-date">Data NIR</label>
+        <input class="ut-input" id="nir-date" type="date" />
+      </div>
+      <div>
+        <label class="ut-label" for="nir-management">Gestiunea</label>
+        <input class="ut-input" id="nir-management" type="text" maxlength="80" placeholder="ex. Magazin" />
+      </div>
+      <div>
+        <label class="ut-label" for="nir-markup">Adaos comercial % (opțional)</label>
+        <input class="ut-input" id="nir-markup" type="text" inputmode="decimal" placeholder="ex. 25" />
+      </div>
+      <div>
+        <label class="ut-label" for="nir-inv">Factura / avizul nr.</label>
+        <input class="ut-input" id="nir-inv" type="text" maxlength="80" />
+      </div>
+      <div>
+        <label class="ut-label" for="nir-inv-date">Data facturii</label>
+        <input class="ut-input" id="nir-inv-date" type="date" />
+      </div>
+    </div>
+
+    <div class="ut-table-wrap">
+      <table class="ut-table ut-stack" id="nir-table">
+        <thead>
+          <tr>
+            <th scope="col">Produs</th>
+            <th scope="col">UM</th>
+            <th scope="col">Cant. pe document</th>
+            <th scope="col">Cant. recepționată</th>
+            <th scope="col">Preț achiziție fără TVA</th>
+            <th scope="col">TVA %</th>
+            <th scope="col"><span class="sr-only">Acțiuni</span></th>
+          </tr>
+        </thead>
+        <tbody id="nir-rows"></tbody>
+      </table>
+    </div>
+    <p class="ut-hint">Lasă „Cant. recepționată” goală dacă ai primit exact cantitatea de pe document. Diferențele apar separat pe NIR.</p>
+    <button type="button" class="ut-btn ut-btn-secondary" id="nir-add-row">+ Linie</button>
+
+    <div class="ut-result" id="nir-summary" aria-live="polite"></div>
+
+    <p class="ut-err hidden" id="nir-err" role="alert"></p>
+    <button type="button" class="ut-btn ut-btn-primary" id="nir-pdf">Generează PDF NIR</button>
+  </div>
+</section>
+
+<script>
+  import type { NirLine, NirPayload } from "../../lib/generators/types.ts";
+  import { nirTotals } from "../../lib/generators/nir.ts";
+  import { escapeHtml, fmtLei } from "../../lib/generators/page.ts";
+  import { isVatRateRo, VAT_RATES_RO } from "../../lib/unelte/vat.ts";
+  import { parseRoNumber } from "../../lib/unelte/parse.ts";
+  import { localIsoDate } from "../../lib/unelte/dates.ts";
+  import { downloadNirPdfViaPrint } from "../../lib/unelte/document-export.ts";
+
+  const DEFAULT_VAT = 11;
+  const tbody = document.getElementById("nir-rows") as HTMLTableSectionElement;
+  const errEl = document.getElementById("nir-err") as HTMLElement;
+  const summaryEl = document.getElementById("nir-summary") as HTMLElement;
+  const input = (id: string) => document.getElementById(id) as HTMLInputElement;
+  for (const id of ["nir-date", "nir-inv-date"]) if (!input(id).value) input(id).value = localIsoDate();
+
+  const FIELDS = [
+    { f: "name", label: "Produs", placeholder: "Denumire", maxlength: 80, mode: "text", wide: true },
+    { f: "unit", label: "UM", placeholder: "buc", maxlength: 20, mode: "text", wide: false },
+    { f: "qty", label: "Cant. pe document", placeholder: "1", maxlength: 20, mode: "decimal", wide: false },
+    { f: "rec", label: "Cant. recepționată", placeholder: "la fel", maxlength: 20, mode: "decimal", wide: false },
+    { f: "cost", label: "Preț achiziție fără TVA", placeholder: "0", maxlength: 20, mode: "decimal", wide: false },
+  ] as const;
+
+  function renumber() {
+    tbody.querySelectorAll("tr").forEach((tr, i) => {
+      FIELDS.forEach(({ f, label }) => tr.querySelector(`[data-f="${f}"]`)?.setAttribute("aria-label", `${label}, linia ${i + 1}`));
+      tr.querySelector('[data-f="vat"]')?.setAttribute("aria-label", `Cotă TVA, linia ${i + 1}`);
+      tr.querySelector("[data-del]")?.setAttribute("aria-label", `Șterge linia ${i + 1}`);
+    });
+  }
+
+  function addRow() {
+    const tr = document.createElement("tr");
+    for (const { f, label, placeholder, maxlength, mode, wide } of FIELDS) {
+      const td = document.createElement("td");
+      td.dataset.label = label;
+      if (wide) td.dataset.wide = "";
+      const el = document.createElement("input");
+      el.dataset.f = f;
+      el.placeholder = placeholder;
+      el.maxLength = maxlength;
+      el.inputMode = mode;
+      td.append(el);
+      tr.append(td);
+    }
+    const vatTd = document.createElement("td");
+    vatTd.dataset.label = "TVA %";
+    const sel = document.createElement("select");
+    sel.dataset.f = "vat";
+    for (const r of VAT_RATES_RO) sel.add(new Option(`${r}%`, String(r), r === DEFAULT_VAT, r === DEFAULT_VAT));
+    vatTd.append(sel);
+    tr.append(vatTd);
+    const delTd = document.createElement("td");
+    const del = document.createElement("button");
+    del.type = "button";
+    del.className = "ut-del";
+    del.dataset.del = "";
+    del.textContent = "Șterge";
+    del.addEventListener("click", () => {
+      tr.remove();
+      renumber();
+      renderSummary();
+    });
+    delTd.append(del);
+    tr.append(delTd);
+    tbody.append(tr);
+    renumber();
+  }
+  addRow();
+  document.getElementById("nir-add-row")?.addEventListener("click", addRow);
+
+  type Lines = { ok: true; lines: NirLine[]; markup?: number } | { ok: false; error: string };
+
+  function collectLines(): Lines {
+    const markup = parseRoNumber(input("nir-markup").value);
+    if (markup.kind === "invalid") return { ok: false, error: "Adaosul comercial nu este valid (ex. 25)." };
+    const lines: NirLine[] = [];
+    for (const [i, tr] of [...tbody.querySelectorAll("tr")].entries()) {
+      const v = (f: string) => (tr.querySelector(`[data-f="${f}"]`) as HTMLInputElement | HTMLSelectElement).value.trim();
+      const name = v("name");
+      const qty = parseRoNumber(v("qty"), 3);
+      const rec = parseRoNumber(v("rec"), 3);
+      const cost = parseRoNumber(v("cost"));
+      if (!name && qty.kind === "empty" && rec.kind === "empty" && cost.kind === "empty") continue;
+      if (!name) return { ok: false, error: `Linia ${i + 1} nu are denumire.` };
+      if (qty.kind !== "ok" || !(qty.value > 0)) return { ok: false, error: `Cantitatea de pe document de pe linia ${i + 1} nu este validă.` };
+      if (rec.kind === "invalid") return { ok: false, error: `Cantitatea recepționată de pe linia ${i + 1} nu este validă.` };
+      if (cost.kind !== "ok") return { ok: false, error: `Prețul de achiziție de pe linia ${i + 1} nu este valid (ex. 4,50).` };
+      const vat = Number(v("vat"));
+      if (!isVatRateRo(vat)) return { ok: false, error: "Cota TVA trebuie să fie 21% sau 11%." };
+      const line: NirLine = { name, unit: v("unit") || "buc", quantity: qty.value, unit_cost: cost.value, vat_rate: vat };
+      if (rec.kind === "ok" && rec.value !== qty.value) line.quantity_received = rec.value;
+      lines.push(line);
+    }
+    if (!lines.length) return { ok: false, error: "Adaugă cel puțin o linie de marfă." };
+    return { ok: true, lines, markup: markup.kind === "ok" ? markup.value : undefined };
+  }
+
+  function renderSummary() {
+    const r = collectLines();
+    if (!r.ok) {
+      summaryEl.innerHTML = `<p class="text-sm text-text-secondary">${escapeHtml(r.error)}</p>`;
+      return;
+    }
+    const t = nirTotals({ lines: r.lines, markup_percent: r.markup });
+    summaryEl.innerHTML = `<dl>
+      <dt>Valoare fără TVA</dt><dd>${fmtLei(t.cost_value)}</dd>
+      <dt>TVA</dt><dd>${fmtLei(t.cost_vat)}</dd>
+      <dt>Total factură cu TVA</dt><dd>${fmtLei(t.cost_total)}</dd>
+      ${t.complete_sale ? `<dt>Valoare la preț de vânzare</dt><dd>${fmtLei(t.sale_value)}</dd>` : ""}
+    </dl>`;
+  }
+  document.getElementById("nir-tool")?.addEventListener("input", renderSummary);
+  document.getElementById("nir-tool")?.addEventListener("change", renderSummary);
+  renderSummary();
+
+  function showError(msg: string) {
+    errEl.textContent = msg;
+    errEl.classList.remove("hidden");
+  }
+
+  function collect(): NirPayload | null {
+    const text = (id: string) => input(id).value.trim();
+    const company = text("nir-company");
+    const supplier = text("nir-supplier");
+    const invoice_number = text("nir-inv");
+    const invoice_date = input("nir-inv-date").value;
+    const nir_number = text("nir-number");
+    const nir_date = input("nir-date").value;
+    if (!company || !supplier || !invoice_number || !invoice_date) {
+      showError("Completează firma, furnizorul și datele facturii.");
+      return null;
+    }
+    if (!nir_number || !nir_date) {
+      showError("Completează numărul și data NIR-ului.");
+      return null;
+    }
+    const r = collectLines();
+    if (!r.ok) {
+      showError(r.error);
+      return null;
+    }
+    errEl.classList.add("hidden");
+    const payload: NirPayload = { company, supplier, invoice_number, invoice_date, nir_number, nir_date, lines: r.lines };
+    if (r.markup !== undefined) payload.markup_percent = r.markup;
+    const management = text("nir-management");
+    if (management) payload.management = management;
+    const companyCif = text("nir-company-cif");
+    if (companyCif) payload.company_tax_id = companyCif;
+    const supplierCif = text("nir-supplier-cif");
+    if (supplierCif) payload.supplier_tax_id = supplierCif;
+    return payload;
+  }
+
+  document.getElementById("nir-pdf")?.addEventListener("click", () => {
+    const p = collect();
+    if (!p) return;
+    if (!downloadNirPdfViaPrint(p)) showError("Permite ferestrele pop-up pentru PDF.");
+  });
+</script>

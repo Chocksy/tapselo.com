@@ -1,0 +1,173 @@
+---
+interface Props {
+  barcodeApi: string;
+}
+
+const { barcodeApi } = Astro.props;
+---
+
+<section class="ut-card" aria-labelledby="vat-calc-title">
+  <h2 id="vat-calc-title" class="font-display text-2xl italic text-primary">Calculator TVA online</h2>
+  <p class="mt-2 text-sm text-text-secondary">
+    Adaugă sau scoate TVA la cotele valabile din 1 august 2025: <strong>21%</strong> (standard) și <strong>11%</strong> (redusă). Sumele sunt în lei.
+  </p>
+
+  <div class="mt-6 space-y-4" id="vat-tool" data-barcode-api={barcodeApi || undefined}>
+    <div class="ut-seg" role="group" aria-label="Operație TVA">
+      <button type="button" data-vat-mode="add" aria-pressed="true">Adaugă TVA</button>
+      <button type="button" data-vat-mode="remove" aria-pressed="false">Scoate TVA</button>
+    </div>
+
+    <div class="ut-seg" role="group" aria-label="Cotă TVA">
+      <button type="button" data-vat-rate="21" aria-pressed="true">TVA 21%</button>
+      <button type="button" data-vat-rate="11" aria-pressed="false">TVA 11%</button>
+    </div>
+
+    <div>
+      <label class="ut-label" for="vat-amount">Sumă (lei)</label>
+      <input
+        class="ut-input"
+        id="vat-amount"
+        type="text"
+        inputmode="decimal"
+        autocomplete="off"
+        placeholder="ex. 100 sau 1.234,50"
+        aria-describedby="vat-amount-hint"
+      />
+      <p class="ut-hint" id="vat-amount-hint">La „Adaugă TVA” introdu prețul fără TVA; la „Scoate TVA”, prețul cu TVA inclus.</p>
+    </div>
+
+    <dl class="ut-result" id="vat-result" aria-live="polite"></dl>
+  </div>
+
+  {barcodeApi && (
+    <div class="mt-10 border-t border-border-light pt-8" id="vat-barcode-block">
+      <h3 class="text-lg font-semibold text-primary">Cota TVA după cod de bare (EAN)</h3>
+      <p class="mt-2 text-sm text-text-secondary">
+        Scanează sau tastează codul de bare. Primești doar denumirea și cota TVA din nomenclatorul Tapselo — fără prețuri sau date de magazin.
+      </p>
+      <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
+        <div class="flex-1">
+          <label class="ut-label" for="vat-ean">Cod EAN</label>
+          <input class="ut-input" id="vat-ean" type="text" inputmode="numeric" autocomplete="off" placeholder="ex. 5941234000013" />
+        </div>
+        <button type="button" class="ut-btn ut-btn-primary" id="vat-ean-search">Caută</button>
+      </div>
+      <p class="ut-err hidden" id="vat-ean-err" role="alert"></p>
+      <div class="ut-result hidden" id="vat-ean-result" aria-live="polite"></div>
+    </div>
+  )}
+</section>
+
+<script>
+  import { calculateVat, isVatRateRo, type VatMode, type VatRateRo } from "../../lib/unelte/vat.ts";
+  import { barcodeResultHtml, checkEan, lookupBarcode } from "../../lib/unelte/barcode.ts";
+  import { parseRoNumber } from "../../lib/unelte/parse.ts";
+  import { fmtLei } from "../../lib/generators/page.ts";
+
+  const root = document.getElementById("vat-tool");
+  if (!root) throw new Error("vat-tool missing");
+
+  let mode: VatMode = "add";
+  let rate: VatRateRo = 21;
+
+  const HINTS: Record<VatMode, string> = {
+    add: "La „Adaugă TVA” introdu prețul fără TVA; la „Scoate TVA”, prețul cu TVA inclus.",
+    remove: "Introdu prețul cu TVA inclus: afli prețul fără TVA și TVA-ul din preț.",
+  };
+
+  function renderVat() {
+    const input = document.getElementById("vat-amount") as HTMLInputElement | null;
+    const out = document.getElementById("vat-result");
+    const hint = document.getElementById("vat-amount-hint");
+    if (!input || !out || !hint) return;
+    hint.textContent = HINTS[mode];
+    const parsed = parseRoNumber(input.value);
+    switch (parsed.kind) {
+      case "empty":
+        input.removeAttribute("aria-invalid");
+        out.innerHTML = '<p class="text-sm text-text-secondary">Introdu o sumă pentru a vedea rezultatul.</p>';
+        return;
+      case "invalid":
+        input.setAttribute("aria-invalid", "true");
+        out.innerHTML = '<p class="ut-err">Suma nu este validă. Scrie, de exemplu, 100 sau 1.234,50.</p>';
+        return;
+      case "ok": {
+        input.removeAttribute("aria-invalid");
+        const r = calculateVat({ amount: parsed.value, rate, mode });
+        out.innerHTML = `
+          <dt>Preț fără TVA</dt><dd>${fmtLei(r.net)}</dd>
+          <dt>TVA ${r.rate}%</dt><dd>${fmtLei(r.vat)}</dd>
+          <dt>Preț cu TVA</dt><dd>${fmtLei(r.gross)}</dd>`;
+        return;
+      }
+      default: {
+        const never: never = parsed;
+        throw new Error(`unexpected ${String(never)}`);
+      }
+    }
+  }
+
+  root.querySelectorAll<HTMLButtonElement>("[data-vat-mode]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      mode = btn.dataset.vatMode === "remove" ? "remove" : "add";
+      root.querySelectorAll("[data-vat-mode]").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+      renderVat();
+    });
+  });
+
+  root.querySelectorAll<HTMLButtonElement>("[data-vat-rate]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const v = Number(btn.dataset.vatRate);
+      if (isVatRateRo(v)) rate = v;
+      root.querySelectorAll("[data-vat-rate]").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+      renderVat();
+    });
+  });
+
+  document.getElementById("vat-amount")?.addEventListener("input", renderVat);
+  renderVat();
+
+  const apiBase = root.dataset.barcodeApi;
+  const errEl = document.getElementById("vat-ean-err");
+  const resEl = document.getElementById("vat-ean-result");
+  const searchBtn = document.getElementById("vat-ean-search") as HTMLButtonElement | null;
+  const eanInput = document.getElementById("vat-ean") as HTMLInputElement | null;
+  if (apiBase && errEl && resEl && searchBtn && eanInput) {
+    const showError = (msg: string) => {
+      errEl.textContent = msg;
+      errEl.classList.remove("hidden");
+    };
+    const run = async () => {
+      if (searchBtn.disabled) return;
+      errEl.classList.add("hidden");
+      resEl.classList.add("hidden");
+      const check = checkEan(eanInput.value);
+      if (!check.ok) {
+        showError(check.message);
+        return;
+      }
+      searchBtn.disabled = true;
+      searchBtn.textContent = "Se caută…";
+      try {
+        const r = await lookupBarcode(apiBase, check.ean);
+        if (!r.ok) {
+          showError(r.message);
+          return;
+        }
+        resEl.innerHTML = barcodeResultHtml(r.product);
+        resEl.classList.remove("hidden");
+      } finally {
+        searchBtn.disabled = false;
+        searchBtn.textContent = "Caută";
+      }
+    };
+    searchBtn.addEventListener("click", () => void run());
+    eanInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        void run();
+      }
+    });
+  }
+</script>

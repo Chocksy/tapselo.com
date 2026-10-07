@@ -15,6 +15,7 @@ import {
   ValidationError,
   payloadBytes,
   MAX_PAYLOAD_BYTES,
+  VAT_RATES,
 } from "../src/lib/generators/validate.ts";
 import { MOCK_DRAFTS } from "../src/lib/generators/mock.ts";
 
@@ -40,7 +41,7 @@ test("URL text is rejected, normal shop text and phones are not", () => {
   assert.throws(() => validateFlyer({ store_name: "Magazin", phone: "suna pe www.x", products: [{ name: "Paine", price: 5, unit: "buc" }] }), ValidationError);
   assert.throws(
     () => validateFlyer({ store_name: "Magazin", products: [{ name: "Vezi http://x", price: 5, unit: "buc" }] }),
-    (e: unknown) => e instanceof ValidationError && e.field === "products[0].name" && /adresa web/.test(e.message),
+    (e: unknown) => e instanceof ValidationError && e.field === "products[0].name" && /adresă web/.test(e.message),
   );
 });
 
@@ -49,10 +50,10 @@ test("text: trim, control characters, length limits", () => {
   assert.equal(text("a​b", "x", 80, true), "a b");
   assert.equal(text(undefined, "x", 80), undefined);
   assert.equal(text("   ", "x", 80), undefined);
-  assert.throws(() => text("", "x", 80, true), /Lipseste campul "x"/);
+  assert.throws(() => text("", "x", 80, true), /Lipsește câmpul "x"/);
   assert.equal(text("a".repeat(80), "x", 80, true).length, 80);
   assert.throws(() => text("a".repeat(81), "x", 80, true), /maximul este 80/);
-  assert.throws(() => text({}, "x", 80, true), /trebuie sa fie text/);
+  assert.throws(() => text({}, "x", 80, true), /trebuie să fie text/);
   assert.equal(text(1234, "x", 80, true), "1234");
 });
 
@@ -89,7 +90,7 @@ test("list sizes per kind", () => {
   const p = { name: "Paine", price: 5, unit: "buc" };
   assert.equal(validateFlyer({ store_name: "M", products: Array(24).fill(p) }).products.length, 24);
   assert.throws(() => validateFlyer({ store_name: "M", products: Array(25).fill(p) }), /maximul este 24/);
-  assert.throws(() => validateFlyer({ store_name: "M", products: [] }), /cel putin un element/);
+  assert.throws(() => validateFlyer({ store_name: "M", products: [] }), /cel puțin un element/);
   assert.equal(validateLabels({ products: Array(60).fill(p) }).products.length, 60);
   assert.throws(() => validateLabels({ products: Array(61).fill(p) }), /maximul este 60/);
   const line = { name: "X", unit: "buc", quantity: 1, unit_cost: 1, vat_rate: 21 };
@@ -107,7 +108,7 @@ test("per kind rules", () => {
   assert.equal(validateLabels({ products: [{ name: "P", price: 1, unit: "buc", ean: "5901 2341 2345 7" }] }).products[0].ean, "5901234123457");
   assert.throws(() => validateLabels({ products: [{ name: "P", price: 1, unit: "buc", unit_label: "oz" }] }), /unit_label/);
   assert.throws(() => validateNir({ company: "A", supplier: "B", invoice_number: "1", invoice_date: "2026-01-01", lines: [{ name: "X", unit: "buc", quantity: 1, unit_cost: 1, vat_rate: 7 }] }), /Cota TVA/);
-  assert.throws(() => validateCashbook({ company: "A", date: "2026-01-01", opening_balance: 0, entries: [{ doc: "1", description: "x" }] }), /incasare sau o plata/);
+  assert.throws(() => validateCashbook({ company: "A", date: "2026-01-01", opening_balance: 0, entries: [{ doc: "1", description: "x" }] }), /o încasare sau o plată/);
   assert.throws(() => validateRecipe({ name: "R", portions: 0, ingredients: [{ name: "Faina", quantity: 1, unit: "kg" }] }), ValidationError);
   // optional fields stay out of the JSON
   const f = validateFlyer({ store_name: "M", products: [{ name: "P", price: 1, unit: "kg" }] });
@@ -128,5 +129,23 @@ test("mock payloads pass their validators unchanged (idempotent)", () => {
     const once = v[kind as keyof typeof v](d.payload);
     assert.deepEqual(v[kind as keyof typeof v](once), once, kind);
     assert.ok(payloadBytes(once) < MAX_PAYLOAD_BYTES);
+  }
+});
+
+test("NIR VAT: only the rates in force from 1 August 2025 (21% and 11%)", () => {
+  assert.deepEqual([...VAT_RATES], [21, 11]);
+  const nir = (vat_rate: unknown) =>
+    validateNir({ company: "A", supplier: "B", invoice_number: "1", invoice_date: "2026-01-01", lines: [{ name: "X", unit: "buc", quantity: 1, unit_cost: 1, vat_rate }] });
+  assert.equal(nir(21).lines[0].vat_rate, 21);
+  assert.equal(nir("11").lines[0].vat_rate, 11);
+  for (const old of [0, 5, 9, 19, 24]) {
+    assert.throws(
+      () => nir(old),
+      (e: unknown) =>
+        e instanceof ValidationError &&
+        e.field === "lines[0].vat_rate" &&
+        e.message === 'Cota TVA din "lines[0].vat_rate" trebuie să fie 21 sau 11 (cotele în vigoare din 1 august 2025).',
+      String(old),
+    );
   }
 });

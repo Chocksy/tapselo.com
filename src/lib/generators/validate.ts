@@ -81,22 +81,22 @@ export function text(v: unknown, field: string, max: number, required: true): st
 export function text(v: unknown, field: string, max: number, required?: false): string | undefined;
 export function text(v: unknown, field: string, max: number, required = false): string | undefined {
   if (isMissing(v)) {
-    if (required) throw new ValidationError(field, `Lipseste campul "${field}".`);
+    if (required) throw new ValidationError(field, `Lipsește câmpul "${field}".`);
     return undefined;
   }
   if (typeof v !== "string" && typeof v !== "number") {
-    throw new ValidationError(field, `Campul "${field}" trebuie sa fie text.`);
+    throw new ValidationError(field, `Câmpul "${field}" trebuie să fie text.`);
   }
   const s = stripControl(String(v)).replace(/\s+/g, " ").trim();
   if (s === "") {
-    if (required) throw new ValidationError(field, `Lipseste campul "${field}".`);
+    if (required) throw new ValidationError(field, `Lipsește câmpul "${field}".`);
     return undefined;
   }
   if (s.length > max) {
-    throw new ValidationError(field, `Campul "${field}" are ${s.length} caractere; maximul este ${max}.`);
+    throw new ValidationError(field, `Câmpul "${field}" are ${s.length} caractere; maximul este ${max}.`);
   }
   if (containsUrl(s)) {
-    throw new ValidationError(field, `Campul "${field}" contine o adresa web. Linkurile nu sunt permise in documente.`);
+    throw new ValidationError(field, `Câmpul "${field}" conține o adresă web. Linkurile nu sunt permise în documente.`);
   }
   return s;
 }
@@ -106,17 +106,17 @@ export function num(v: unknown, field: string, decimals: number, required: true,
 export function num(v: unknown, field: string, decimals: number, required?: false, min?: number): number | undefined;
 export function num(v: unknown, field: string, decimals: number, required = false, min = 0): number | undefined {
   if (isMissing(v)) {
-    if (required) throw new ValidationError(field, `Lipseste campul "${field}".`);
+    if (required) throw new ValidationError(field, `Lipsește câmpul "${field}".`);
     return undefined;
   }
   let n: number;
   if (typeof v === "number") n = v;
   else if (typeof v === "string" && /^\s*-?\d+([.,]\d+)?\s*$/.test(v)) n = Number(v.trim().replace(",", "."));
-  else throw new ValidationError(field, `Campul "${field}" trebuie sa fie un numar.`);
-  if (!Number.isFinite(n)) throw new ValidationError(field, `Campul "${field}" trebuie sa fie un numar.`);
+  else throw new ValidationError(field, `Câmpul "${field}" trebuie să fie un număr.`);
+  if (!Number.isFinite(n)) throw new ValidationError(field, `Câmpul "${field}" trebuie să fie un număr.`);
   const r = roundTo(n, decimals);
   if (r < min || r > MAX_NUMBER) {
-    throw new ValidationError(field, `Campul "${field}" trebuie sa fie intre ${min} si ${MAX_NUMBER.toLocaleString("ro-RO")}.`);
+    throw new ValidationError(field, `Câmpul "${field}" trebuie să fie între ${min} și ${MAX_NUMBER.toLocaleString("ro-RO")}.`);
   }
   return r;
 }
@@ -131,7 +131,7 @@ export function date(v: unknown, field: string, required: true): string;
 export function date(v: unknown, field: string, required?: false): string | undefined;
 export function date(v: unknown, field: string, required = false): string | undefined {
   if (isMissing(v)) {
-    if (required) throw new ValidationError(field, `Lipseste campul "${field}".`);
+    if (required) throw new ValidationError(field, `Lipsește câmpul "${field}".`);
     return undefined;
   }
   const s = String(v).trim();
@@ -139,10 +139,10 @@ export function date(v: unknown, field: string, required = false): string | unde
   let r = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
   if (r) [y, m, d] = [Number(r[1]), Number(r[2]), Number(r[3])];
   else if ((r = /^(\d{1,2})[./](\d{1,2})[./](\d{4})$/.exec(s))) [y, m, d] = [Number(r[3]), Number(r[2]), Number(r[1])];
-  else throw new ValidationError(field, `Campul "${field}" trebuie sa fie o data (AAAA-LL-ZZ sau ZZ.LL.AAAA).`);
+  else throw new ValidationError(field, `Câmpul "${field}" trebuie să fie o dată (AAAA-LL-ZZ sau ZZ.LL.AAAA).`);
   const dt = new Date(Date.UTC(y, m - 1, d));
   if (y < 2000 || y > 2100 || dt.getUTCMonth() !== m - 1 || dt.getUTCDate() !== d) {
-    throw new ValidationError(field, `Campul "${field}" nu este o data valida.`);
+    throw new ValidationError(field, `Câmpul "${field}" nu este o dată validă.`);
   }
   return `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 }
@@ -151,14 +151,14 @@ export function phone(v: unknown, field: string): string | undefined {
   if (isMissing(v)) return undefined;
   const s = stripControl(String(v)).replace(/\s+/g, " ").trim();
   if (!/^[0-9+()\-./ ]{6,30}$/.test(s) || (s.match(/\d/g) ?? []).length < 6) {
-    throw new ValidationError(field, `Campul "${field}" nu pare un numar de telefon.`);
+    throw new ValidationError(field, `Câmpul "${field}" nu pare un număr de telefon.`);
   }
   return s;
 }
 
 export function list(v: unknown, field: string, max: number): unknown[] {
   if (!Array.isArray(v) || v.length === 0) {
-    throw new ValidationError(field, `Campul "${field}" trebuie sa fie o lista cu cel putin un element.`);
+    throw new ValidationError(field, `Câmpul "${field}" trebuie să fie o listă cu cel puțin un element.`);
   }
   if (v.length > max) throw new ValidationError(field, `Lista "${field}" are ${v.length} elemente; maximul este ${max}.`);
   return v;
@@ -166,7 +166,7 @@ export function list(v: unknown, field: string, max: number): unknown[] {
 
 function obj(v: unknown, field: string): Record<string, unknown> {
   if (!v || typeof v !== "object" || Array.isArray(v)) {
-    throw new ValidationError(field, `Elementul "${field}" trebuie sa fie un obiect.`);
+    throw new ValidationError(field, `Elementul "${field}" trebuie să fie un obiect.`);
   }
   return v as Record<string, unknown>;
 }
@@ -184,7 +184,7 @@ export function payloadBytes(p: unknown): number {
 function checkSize<T>(p: T): T {
   const n = payloadBytes(p);
   if (n > MAX_PAYLOAD_BYTES) {
-    throw new ValidationError("payload", `Documentul este prea mare (${Math.ceil(n / 1024)} KB; maximul este 32 KB). Imparte-l in doua.`);
+    throw new ValidationError("payload", `Documentul este prea mare (${Math.ceil(n / 1024)} KB; maximul este 32 KB). Împarte-l în două.`);
   }
   return p;
 }
@@ -192,13 +192,14 @@ function checkSize<T>(p: T): T {
 // ---------- per kind ----------
 
 export const THEMES = ["piata", "promo", "minimal"] as const;
-export const VAT_RATES = [0, 5, 9, 11, 19, 21] as const;
+/** Romanian VAT rates from 1 August 2025 (Legea nr. 141/2025): 21% standard, 11% reduced. */
+export const VAT_RATES = [21, 11] as const;
 export const LABEL_UNITS = ["g", "kg", "ml", "cl", "l", "buc"] as const;
 
 function vatRate(v: unknown, field: string): number {
   const n = num(v, field, 2, true);
   if (!(VAT_RATES as readonly number[]).includes(n)) {
-    throw new ValidationError(field, `Cota TVA din "${field}" trebuie sa fie una dintre: ${VAT_RATES.join(", ")}.`);
+    throw new ValidationError(field, `Cota TVA din "${field}" trebuie să fie 21 sau 11 (cotele în vigoare din 1 august 2025).`);
   }
   return n;
 }
@@ -207,7 +208,7 @@ export function validateFlyer(raw: unknown): FlyerPayload {
   const a = obj(raw, "input");
   const theme = text(a.theme, "theme", MAX_UNIT) ?? "piata";
   if (!(THEMES as readonly string[]).includes(theme)) {
-    throw new ValidationError("theme", `Tema trebuie sa fie una dintre: ${THEMES.join(", ")}.`);
+    throw new ValidationError("theme", `Tema trebuie să fie una dintre: ${THEMES.join(", ")}.`);
   }
   const products = list(a.products, "products", MAX_ITEMS.flyer).map((p, i): FlyerProduct => {
     const o = obj(p, `products[${i}]`);
@@ -239,13 +240,13 @@ export function validateLabels(raw: unknown): LabelsPayload {
     const f = (k: string) => `products[${i}].${k}`;
     const unitLabel = text(o.unit_label, f("unit_label"), MAX_UNIT)?.toLowerCase();
     if (unitLabel !== undefined && !(LABEL_UNITS as readonly string[]).includes(unitLabel)) {
-      throw new ValidationError(f("unit_label"), `Campul "${f("unit_label")}" trebuie sa fie una dintre: ${LABEL_UNITS.join(", ")}.`);
+      throw new ValidationError(f("unit_label"), `Câmpul "${f("unit_label")}" trebuie să fie una dintre: ${LABEL_UNITS.join(", ")}.`);
     }
     let ean: string | undefined;
     if (!isMissing(o.ean)) {
       ean = String(o.ean).replace(/[\s-]/g, "");
       if (!/^(\d{8}|\d{13})$/.test(ean)) {
-        throw new ValidationError(f("ean"), `Codul EAN din "${f("ean")}" trebuie sa aiba 8 sau 13 cifre.`);
+        throw new ValidationError(f("ean"), `Codul EAN din "${f("ean")}" trebuie să aibă 8 sau 13 cifre.`);
       }
     }
     return compact({
@@ -294,7 +295,7 @@ export function validateRecipe(raw: unknown): RecipePayload {
     let allergens: string[] | undefined;
     if (!isMissing(o.allergens)) {
       if (!Array.isArray(o.allergens) || o.allergens.length > 14) {
-        throw new ValidationError(f("allergens"), `Campul "${f("allergens")}" trebuie sa fie o lista de cel mult 14 alergeni.`);
+        throw new ValidationError(f("allergens"), `Câmpul "${f("allergens")}" trebuie să fie o listă de cel mult 14 alergeni.`);
       }
       allergens = o.allergens
         .map((x, j) => text(x, `${f("allergens")}[${j}]`, 40))
@@ -325,7 +326,7 @@ export function validateCashbook(raw: unknown): CashbookPayload {
     const receipt = money(o.receipt, f("receipt"));
     const payment = money(o.payment, f("payment"));
     if (!receipt && !payment) {
-      throw new ValidationError(f("receipt"), `Inregistrarea ${i + 1} trebuie sa aiba o incasare sau o plata mai mare ca zero.`);
+      throw new ValidationError(f("receipt"), `Înregistrarea ${i + 1} trebuie să aibă o încasare sau o plată mai mare ca zero.`);
     }
     return compact({
       doc: text(o.doc, f("doc"), MAX_NAME, true),

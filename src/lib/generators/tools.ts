@@ -14,7 +14,7 @@ import { recipeCalc, recipeSummary } from "./recipe.ts";
 import { cashbookCalc, cashbookSummary } from "./cashbook.ts";
 import { isValidEan } from "../ean13.ts";
 
-export const MSG_SERVICE = "Serviciul de documente nu este disponibil acum. Incearca din nou peste cateva minute.";
+export const MSG_SERVICE = "Serviciul de documente nu este disponibil acum. Încearcă din nou peste câteva minute.";
 
 const ANNOTATIONS = { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true };
 
@@ -36,7 +36,7 @@ export async function createDraft<K extends DraftKind>(spec: Spec<K>, args: Reco
     payload = validatePayload(spec.kind, args);
   } catch (e) {
     if (e instanceof ValidationError) {
-      return { isError: true, text: `Datele nu sunt bune: ${e.message} Corecteaza si incearca din nou.`, structured: { field: e.field } };
+      return { isError: true, text: `Datele nu sunt bune: ${e.message} Corectează și încearcă din nou.`, structured: { field: e.field } };
     }
     throw e;
   }
@@ -56,7 +56,7 @@ export async function createDraft<K extends DraftKind>(spec: Spec<K>, args: Reco
     "",
     `Documentul: ${url}`,
     "",
-    `Pagina se printeaza sau se salveaza ca PDF cu butonul "Printeaza / Salveaza PDF". Linkul expira in 30 de zile.`,
+    "Pagina se printează sau se salvează ca PDF cu butonul „Printează / Salvează PDF”. Linkul expiră în 30 de zile.",
   ].join("\n");
   return { text, structured: { id, url, kind: spec.kind, ...(spec.structured?.(payload) ?? {}) } };
 }

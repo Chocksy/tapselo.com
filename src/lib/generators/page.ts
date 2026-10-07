@@ -1,5 +1,6 @@
 // Shared HTML shell for /g/{id} documents: screen-only banner with the print button,
-// A4 print CSS, printed "Generat cu tapselo.com" footer, screen-only expiry + abuse line.
+// A4 print CSS, printed "Generat cu tapselo.com" footer, screen-only expiry + abuse line
+// (omitted for documents built locally by the /unelte tools).
 // Pure (no DOM, no fetch). Every user text goes through escapeHtml.
 
 import { escapeHtml, formatDate } from "../offers-render.ts";
@@ -16,9 +17,9 @@ export const PRINT_SCRIPT_HASH = "sha256-i3/Q14N9wysjWJxoM138BNHrMkyP1j5Pdq3FAsy
 export const KIND_TITLES: Record<string, string> = {
   flyer: "Flyer cu oferte",
   labels: "Etichete de raft",
-  nir: "Nota de intrare-receptie",
-  recipe: "Fisa tehnica",
-  cashbook: "Registru de casa",
+  nir: "Notă de recepție și constatare de diferențe (NIR)",
+  recipe: "Fișă tehnică",
+  cashbook: "Registrul de casă",
 };
 
 // ---------- number formatting (Romanian: 1.234,56) ----------
@@ -47,20 +48,29 @@ export function fmtQty(n: number, decimals = 3): string {
 
 // ---------- shell pieces (also used by the flyer, which keeps the offers page look) ----------
 
-export function bannerHtml(kind: string): string {
-  const href = trackedUrl("/", `g_${kind}`);
+/** Documents generated in the visitor's browser (/unelte) instead of a stored /g/{id} draft. */
+function shellHref(kind: string, local: boolean): string {
+  return local
+    ? `https://tapselo.com/?utm_source=unelte&utm_medium=document&utm_campaign=g_${encodeURIComponent(kind)}`
+    : trackedUrl("/", `g_${kind}`);
+}
+
+export function bannerHtml(kind: string, local = false): string {
+  const href = shellHref(kind, local);
   return `<div class="g-banner no-print" role="note">
-<p>Document creat gratuit cu Tapselo, casa de marcat pentru magazine mici. <a href="${escapeHtml(href)}">Afla mai mult</a></p>
-<button type="button" id="print-btn" class="g-print">Printeaza / Salveaza PDF</button>
+<p>Document creat gratuit cu Tapselo, casa de marcat pentru magazine mici. <a href="${escapeHtml(href)}">Află mai mult</a></p>
+<button type="button" id="print-btn" class="g-print">Printează / Salvează PDF</button>
 </div>`;
 }
 
-export function footerHtml(kind: string, expiresAt: string | null | undefined): string {
-  const href = trackedUrl("/", `g_${kind}`);
+export function footerHtml(kind: string, expiresAt: string | null | undefined, local = false): string {
+  const href = shellHref(kind, local);
   const exp = formatDate(expiresAt);
+  const abuse = local
+    ? ""
+    : `\n<p class="g-abuse no-print">Pagină creată de un utilizator.${exp ? ` Expiră pe ${escapeHtml(exp)}.` : ""} Raportează abuz: <a href="mailto:${ABUSE_EMAIL}">${ABUSE_EMAIL}</a></p>`;
   return `<div class="g-footer">
-<p class="g-made">Generat cu <a href="${escapeHtml(href)}">tapselo.com</a></p>
-<p class="g-abuse no-print">Pagina creata de un utilizator.${exp ? ` Expira pe ${escapeHtml(exp)}.` : ""} Raporteaza abuz: <a href="mailto:${ABUSE_EMAIL}">${ABUSE_EMAIL}</a></p>
+<p class="g-made">Generat cu <a href="${escapeHtml(href)}">tapselo.com</a></p>${abuse}
 </div>`;
 }
 
@@ -118,6 +128,8 @@ export interface ShellOptions {
   landscape?: boolean;
   /** Page margin for @page, default 10mm. */
   margin?: string;
+  /** Built in the browser by /unelte: no abuse line, web-tool UTM tags. */
+  local?: boolean;
 }
 
 export function renderShell(o: ShellOptions): string {
@@ -134,10 +146,10 @@ export function renderShell(o: ShellOptions): string {
 <style>${pageRule}${DOC_CSS}${CHROME_CSS}${o.css ?? ""}</style>
 </head>
 <body data-kind="${escapeHtml(o.kind)}">
-${bannerHtml(o.kind)}
+${bannerHtml(o.kind, o.local)}
 <main class="sheet${o.landscape ? " landscape" : ""}">
 ${o.body}
-${footerHtml(o.kind, o.expiresAt)}
+${footerHtml(o.kind, o.expiresAt, o.local)}
 </main>
 ${SCRIPT_TAG}
 </body>
@@ -152,14 +164,14 @@ export function renderGeneratedNotFound(): string {
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Documentul nu a fost gasit - Tapselo</title>
+<title>Documentul nu a fost găsit - Tapselo</title>
 <meta name="robots" content="noindex, nofollow" />
 <style>${DOC_CSS}${CHROME_CSS}.sheet{text-align:center;font-size:12pt}</style>
 </head>
 <body>
 <main class="sheet">
-<h1 class="doc-title">Documentul nu a fost gasit</h1>
-<p>Linkul nu exista sau documentul a expirat (documentele se pastreaza 30 de zile).</p>
+<h1 class="doc-title">Documentul nu a fost găsit</h1>
+<p>Linkul nu există sau documentul a expirat (documentele se păstrează 30 de zile).</p>
 <p><a href="${escapeHtml(trackedUrl("/", "g_not_found"))}">Mergi pe tapselo.com</a></p>
 </main>
 </body>

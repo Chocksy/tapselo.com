@@ -54,7 +54,7 @@ function renderLabel(p: LabelProduct): string {
   return `<article class="lbl">
 <h2>${escapeHtml(p.name)}${content ? ` <small>${escapeHtml(content)}</small>` : ""}</h2>
 <p class="price"><b>${escapeHtml(lei)}</b><sup>,${escapeHtml(bani)}</sup><span>lei / ${escapeHtml(p.unit)}</span></p>
-<p class="up">${up ? `Pret unitar: <b>${escapeHtml(fmtMoney(up.value))} lei / ${escapeHtml(up.per)}</b>` : "Pret unitar: ............ lei / kg"}</p>
+<p class="up">${up ? `Preț unitar: <b>${escapeHtml(fmtMoney(up.value))} lei / ${escapeHtml(up.per)}</b>` : "Preț unitar: ............ lei / kg"}</p>
 ${svg ? `<div class="bc">${svg}</div>` : eanText ? `<p class="ean">EAN ${escapeHtml(eanText)}</p>` : ""}
 </article>`;
 }
@@ -77,7 +77,7 @@ const CSS = `
 `;
 
 export function renderLabels(p: LabelsPayload, draft: DraftRecord): string {
-  const body = `<p class="lbl-note no-print muted">Taie etichetele pe liniile punctate. ${p.products.length} etichete, 21 pe pagina A4.</p>
+  const body = `<p class="lbl-note no-print muted">Taie etichetele pe liniile punctate. ${p.products.length} etichete, 21 pe pagină A4.</p>
 <section class="labels">
 ${p.products.map(renderLabel).join("\n")}
 </section>`;
@@ -87,10 +87,10 @@ ${p.products.map(renderLabel).join("\n")}
 export function labelsSummary(p: LabelsPayload): string {
   const noUnit = p.products.filter((x) => !unitPrice(x)).map((x) => x.name);
   const badEan = p.products.filter((x) => x.ean && !isValidEan(x.ean)).map((x) => x.name);
-  const lines = [`${p.products.length} etichete de raft (21 pe pagina A4).`];
-  if (badEan.length) lines.push(`Cod EAN invalid (cifra de control gresita), afisat fara cod de bare: ${badEan.join(", ")}.`);
+  const lines = [`${p.products.length} etichete de raft (21 pe pagină A4).`];
+  if (badEan.length) lines.push(`Cod EAN invalid (cifră de control greșită), afișat fără cod de bare: ${badEan.join(", ")}.`);
   if (noUnit.length) {
-    lines.push(`Fara pret unitar (lipseste cantitatea, de ex. unit_quantity 250 + unit_label "g"): ${noUnit.join(", ")}.`);
+    lines.push(`Fără preț unitar (lipsește cantitatea, de ex. unit_quantity 250 + unit_label "g"): ${noUnit.join(", ")}.`);
   }
   return lines.join("\n");
 }

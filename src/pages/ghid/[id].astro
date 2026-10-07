@@ -8,7 +8,16 @@ export function getStaticPaths() {
   return rules.map((rule) => ({ params: { id: rule.page.replace(/^\/ghid\//, "") }, props: { rule } }));
 }
 
+const RELATED_TOOLS: Record<string, { href: string; label: string }> = {
+  "cote-tva-casa-de-marcat": { href: "/unelte/calculator-tva", label: "Calculator TVA 21% și 11%" },
+  "plafoane-numerar": { href: "/unelte/registru-de-casa", label: "Generator registru de casă" },
+  "registrul-de-casa": { href: "/unelte/registru-de-casa", label: "Generator registru de casă" },
+  "nir-nota-receptie": { href: "/unelte/generator-nir", label: "Generator NIR" },
+  "pret-unitar-kg-litru": { href: "/unelte/calculator-adaos-comercial", label: "Calculator adaos comercial" },
+};
+
 const { rule } = Astro.props;
+const tool = RELATED_TOOLS[rule.id];
 ---
 
 <GuideShell
@@ -21,4 +30,10 @@ const { rule } = Astro.props;
   campaign={rule.id}
 >
   <article class="kb-prose" set:html={markdownToHtml(rule.body)} />
+  {tool && (
+    <p class="rounded-xl border border-border-light p-5 text-sm text-text-secondary">
+      Unealtă gratuită:{" "}
+      <a href={tool.href} class="font-semibold text-primary underline underline-offset-2 hover:text-accent">{tool.label}</a>
+    </p>
+  )}
 </GuideShell>

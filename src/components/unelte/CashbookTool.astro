@@ -1,0 +1,197 @@
+---
+---
+
+<section class="ut-card" aria-labelledby="cashbook-title">
+  <h2 id="cashbook-title" class="font-display text-2xl italic text-primary">Generator registru de casă</h2>
+  <p class="mt-2 text-sm text-text-secondary">
+    Completează soldul din ziua precedentă și mișcările zilei. Exportă PDF (print) sau Excel, în formatul registrului de casă (cod 14-4-7A).
+  </p>
+
+  <div id="cashbook-tool" class="mt-6 space-y-4">
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="cb-company">Unitatea (firmă)</label>
+        <input class="ut-input" id="cb-company" type="text" maxlength="80" autocomplete="organization" />
+      </div>
+      <div>
+        <label class="ut-label" for="cb-date">Data</label>
+        <input class="ut-input" id="cb-date" type="date" />
+      </div>
+    </div>
+    <div>
+      <label class="ut-label" for="cb-opening">Sold din ziua precedentă (lei)</label>
+      <input class="ut-input" id="cb-opening" type="text" inputmode="decimal" value="0" />
+    </div>
+
+    <div class="ut-table-wrap">
+      <table class="ut-table ut-stack" id="cb-table">
+        <thead>
+          <tr>
+            <th scope="col">Nr. act casă</th>
+            <th scope="col">Nr. anexe</th>
+            <th scope="col">Explicații</th>
+            <th scope="col">Încasări</th>
+            <th scope="col">Plăți</th>
+            <th scope="col"><span class="sr-only">Acțiuni</span></th>
+          </tr>
+        </thead>
+        <tbody id="cb-rows"></tbody>
+      </table>
+    </div>
+    <button type="button" class="ut-btn ut-btn-secondary" id="cb-add-row">+ Rând</button>
+
+    <div class="ut-result" id="cb-summary" aria-live="polite"></div>
+
+    <p class="ut-err hidden" id="cb-err" role="alert"></p>
+
+    <div class="flex flex-wrap gap-3">
+      <button type="button" class="ut-btn ut-btn-primary" id="cb-pdf">Salvează PDF</button>
+      <button type="button" class="ut-btn ut-btn-secondary" id="cb-xls">Descarcă Excel (.xlsx)</button>
+    </div>
+  </div>
+</section>
+
+<script>
+  import type { CashbookEntry, CashbookPayload } from "../../lib/generators/types.ts";
+  import { cashbookCalc } from "../../lib/generators/cashbook.ts";
+  import { escapeHtml, fmtLei } from "../../lib/generators/page.ts";
+  import { parseRoNumber } from "../../lib/unelte/parse.ts";
+  import { localIsoDate } from "../../lib/unelte/dates.ts";
+  import { downloadCashbookExcel, downloadCashbookPdfViaPrint } from "../../lib/unelte/document-export.ts";
+
+  const tbody = document.getElementById("cb-rows") as HTMLTableSectionElement;
+  const errEl = document.getElementById("cb-err") as HTMLElement;
+  const summaryEl = document.getElementById("cb-summary") as HTMLElement;
+  const dateInput = document.getElementById("cb-date") as HTMLInputElement;
+  if (!dateInput.value) dateInput.value = localIsoDate();
+
+  const FIELDS = [
+    { f: "doc", label: "Nr. act casă", placeholder: "Raport Z", maxlength: 80, mode: "text" },
+    { f: "annexes", label: "Nr. anexe", placeholder: "1", maxlength: 20, mode: "text" },
+    { f: "desc", label: "Explicații", placeholder: "Vânzări numerar", maxlength: 200, mode: "text" },
+    { f: "rec", label: "Încasări", placeholder: "0", maxlength: 20, mode: "decimal" },
+    { f: "pay", label: "Plăți", placeholder: "0", maxlength: 20, mode: "decimal" },
+  ] as const;
+
+  function renumber() {
+    tbody.querySelectorAll("tr").forEach((tr, i) => {
+      FIELDS.forEach(({ f, label }) => tr.querySelector(`[data-f="${f}"]`)?.setAttribute("aria-label", `${label}, rândul ${i + 1}`));
+      tr.querySelector("[data-del]")?.setAttribute("aria-label", `Șterge rândul ${i + 1}`);
+    });
+  }
+
+  function addRow() {
+    const tr = document.createElement("tr");
+    for (const { f, label, placeholder, maxlength, mode } of FIELDS) {
+      const td = document.createElement("td");
+      td.dataset.label = label;
+      if (f === "desc") td.dataset.wide = "";
+      const input = document.createElement("input");
+      input.dataset.f = f;
+      input.placeholder = placeholder;
+      input.maxLength = maxlength;
+      input.inputMode = mode;
+      td.append(input);
+      tr.append(td);
+    }
+    const td = document.createElement("td");
+    const del = document.createElement("button");
+    del.type = "button";
+    del.className = "ut-del";
+    del.dataset.del = "";
+    del.textContent = "Șterge";
+    del.addEventListener("click", () => {
+      tr.remove();
+      renumber();
+      renderSummary();
+    });
+    td.append(del);
+    tr.append(td);
+    tbody.append(tr);
+    renumber();
+  }
+
+  addRow();
+  addRow();
+  document.getElementById("cb-add-row")?.addEventListener("click", addRow);
+
+  type Collected = { ok: true; payload: Omit<CashbookPayload, "company" | "date"> } | { ok: false; error: string };
+
+  const val = (tr: Element, f: string) => (tr.querySelector(`[data-f="${f}"]`) as HTMLInputElement).value.trim();
+
+  function collectMoney(): Collected {
+    const opening = parseRoNumber((document.getElementById("cb-opening") as HTMLInputElement).value);
+    if (opening.kind !== "ok") return { ok: false, error: "Soldul din ziua precedentă nu este valid (ex. 1.234,50)." };
+    const entries: CashbookEntry[] = [];
+    const rows = [...tbody.querySelectorAll("tr")];
+    for (const [i, tr] of rows.entries()) {
+      const doc = val(tr, "doc");
+      const annexes = val(tr, "annexes");
+      const description = val(tr, "desc");
+      const rec = parseRoNumber(val(tr, "rec"));
+      const pay = parseRoNumber(val(tr, "pay"));
+      if (!doc && !annexes && !description && rec.kind === "empty" && pay.kind === "empty") continue;
+      if (rec.kind === "invalid" || pay.kind === "invalid") {
+        return { ok: false, error: `Suma de pe rândul ${i + 1} nu este validă (ex. 1.234,50).` };
+      }
+      const receipt = rec.kind === "ok" && rec.value > 0 ? rec.value : undefined;
+      const payment = pay.kind === "ok" && pay.value > 0 ? pay.value : undefined;
+      if (receipt === undefined && payment === undefined) {
+        return { ok: false, error: `Rândul ${i + 1} nu are nicio sumă la încasări sau la plăți.` };
+      }
+      entries.push({ doc: doc || "-", annexes: annexes || undefined, description: description || "-", receipt, payment });
+    }
+    if (!entries.length) return { ok: false, error: "Adaugă cel puțin o încasare sau o plată." };
+    return { ok: true, payload: { opening_balance: opening.value, entries } };
+  }
+
+  function renderSummary() {
+    const r = collectMoney();
+    if (!r.ok) {
+      summaryEl.innerHTML = `<p class="text-sm text-text-secondary">${escapeHtml(r.error)}</p>`;
+      return;
+    }
+    const c = cashbookCalc(r.payload);
+    summaryEl.innerHTML = `<dl>
+      <dt>Total încasări</dt><dd>${fmtLei(c.total_receipts)}</dd>
+      <dt>Total plăți</dt><dd>${fmtLei(c.total_payments)}</dd>
+      <dt>Sold final</dt><dd>${fmtLei(c.closing_balance)}</dd>
+    </dl>${c.warnings.map((w) => `<p class="ut-warn">${escapeHtml(w)}</p>`).join("")}`;
+  }
+
+  document.getElementById("cashbook-tool")?.addEventListener("input", renderSummary);
+  renderSummary();
+
+  function showError(msg: string) {
+    errEl.textContent = msg;
+    errEl.classList.remove("hidden");
+  }
+
+  function collect(): CashbookPayload | null {
+    const company = (document.getElementById("cb-company") as HTMLInputElement).value.trim();
+    const date = dateInput.value;
+    if (!company || !date) {
+      showError("Completează firma și data.");
+      return null;
+    }
+    const r = collectMoney();
+    if (!r.ok) {
+      showError(r.error);
+      return null;
+    }
+    errEl.classList.add("hidden");
+    return { company, date, ...r.payload };
+  }
+
+  document.getElementById("cb-pdf")?.addEventListener("click", () => {
+    const p = collect();
+    if (!p) return;
+    if (!downloadCashbookPdfViaPrint(p)) showError("Permite ferestrele pop-up pentru a deschide PDF-ul.");
+  });
+
+  document.getElementById("cb-xls")?.addEventListener("click", () => {
+    const p = collect();
+    if (!p) return;
+    downloadCashbookExcel(p);
+  });
+</script>

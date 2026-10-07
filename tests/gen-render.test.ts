@@ -6,6 +6,7 @@ import { MOCK_DRAFTS } from "../src/lib/generators/mock.ts";
 import { PRINT_SCRIPT, PRINT_SCRIPT_HASH, renderGeneratedNotFound } from "../src/lib/generators/page.ts";
 import { emojiFor, flyerImageUrl, flyerToOffers, hasPendingImages } from "../src/lib/generators/flyer.ts";
 import { ALLERGEN_NOTE } from "../src/lib/generators/recipe.ts";
+import { renderNir } from "../src/lib/generators/nir.ts";
 import { IMAGE_URL_PREFIX } from "../src/lib/offers-render.ts";
 import type { DraftKind, DraftRecord } from "../src/lib/generators/types.ts";
 
@@ -26,12 +27,12 @@ test("every kind renders the shell: noindex, banner, print button, script, foote
     const out = r.html;
     assert.match(out, /<meta name="robots" content="noindex/, k);
     assert.match(out, /Document creat gratuit cu Tapselo, casa de marcat pentru magazine mici\./, k);
-    assert.match(out, new RegExp(`<a href="https://tapselo\\.com/\\?utm_source=ai-plugin&amp;utm_medium=mcp&amp;utm_campaign=g_${k}">Afla mai mult</a>`), k);
-    assert.match(out, /<button type="button" id="print-btn" class="g-print">Printeaza \/ Salveaza PDF<\/button>/, k);
+    assert.match(out, new RegExp(`<a href="https://tapselo\\.com/\\?utm_source=ai-plugin&amp;utm_medium=mcp&amp;utm_campaign=g_${k}">Află mai mult</a>`), k);
+    assert.match(out, /<button type="button" id="print-btn" class="g-print">Printează \/ Salvează PDF<\/button>/, k);
     assert.equal(out.split("<script>").length - 1, 1, k);
     assert.ok(out.includes(`<script>${PRINT_SCRIPT}</script>`), k);
     assert.match(out, /Generat cu <a [^>]*>tapselo\.com<\/a>/, k);
-    assert.match(out, /<p class="g-abuse no-print">Pagina creata de un utilizator\. Expira pe 31\.10\.2026\. Raporteaza abuz: <a href="mailto:contact@tapselo\.com">contact@tapselo\.com<\/a><\/p>/, k);
+    assert.match(out, /<p class="g-abuse no-print">Pagină creată de un utilizator\. Expiră pe 31\.10\.2026\. Raportează abuz: <a href="mailto:contact@tapselo\.com">contact@tapselo\.com<\/a><\/p>/, k);
     assert.match(out, /@page\{size:A4/, k);
     assert.match(out, /\.no-print\{display:none !important\}/, k);
     assert.doesNotMatch(out, /Inscrie-te|Cum folosim datele clientilor/, k);
@@ -89,7 +90,9 @@ test("payload with a URL or a bad kind renders the not-found page", () => {
   assert.equal(renderDraft({ ...clone("nir"), kind: "nope" }, ID).status, 404);
   assert.equal(renderDraft(null, ID).status, 404);
   assert.equal(renderDraft(MOCK_DRAFTS.nir, "short").status, 404);
-  assert.match(renderGeneratedNotFound(), /Documentul nu a fost gasit/);
+  assert.match(renderGeneratedNotFound(), /Documentul nu a fost găsit/);
+  assert.match(renderGeneratedNotFound(), /<title>Documentul nu a fost găsit - Tapselo<\/title>/);
+  assert.match(renderGeneratedNotFound(), /Linkul nu există sau documentul a expirat \(documentele se păstrează 30 de zile\)\./);
   assert.equal(renderDraft(null, ID).maxAge, 60);
 });
 
@@ -106,8 +109,8 @@ test("flyer: offers look, emoji only (no AI pictures), prices, cache", () => {
   assert.match(out, /🍞/);
   assert.match(out, /🍅/);
   assert.match(out, /🫒/);
-  // Telemea 32 -> 27, no 30-day low given: struck regular price labelled "Pret anterior", no 30-day line
-  assert.match(out, /<p class="old">Pret anterior: <s[^>]*>32,00 lei<\/s><\/p>/);
+  // Telemea 32 -> 27, no 30-day low given: struck regular price labelled "Preț anterior", no 30-day line
+  assert.match(out, /<p class="old">Preț anterior: <s[^>]*>32,00 lei<\/s><\/p>/);
   assert.match(out, /<span class="new">27,00<\/span><span class="unit">lei \/ kg<\/span>/);
   // Cafea: 30-day low given -> struck 21,50 and the legal line
   assert.match(out, /<p class="old"><s[^>]*>21,50 lei<\/s><\/p>/);
@@ -141,9 +144,9 @@ test("labels: big price, unit price, barcode only for a valid EAN-13", () => {
   const out = renderDraft(MOCK_DRAFTS.labels, ID).html;
   assert.equal((out.match(/<article class="lbl">/g) ?? []).length, 5);
   assert.match(out, /<b>11<\/b><sup>,99<\/sup><span>lei \/ buc<\/span>/);
-  assert.match(out, /Pret unitar: <b>88,00 lei \/ kg<\/b>/);
-  assert.match(out, /Pret unitar: <b>32,00 lei \/ kg<\/b>/);
-  assert.match(out, /Pret unitar: \.+ lei \/ kg/); // biscuiti, no quantity
+  assert.match(out, /Preț unitar: <b>88,00 lei \/ kg<\/b>/);
+  assert.match(out, /Preț unitar: <b>32,00 lei \/ kg<\/b>/);
+  assert.match(out, /Preț unitar: \.+ lei \/ kg/); // biscuiti, no quantity
   assert.equal((out.match(/<svg class="ean"/g) ?? []).length, 1); // only 5901234123457
   assert.match(out, /aria-label="Cod de bare 5901234123457"/);
   assert.match(out, /<p class="ean">EAN 5941234567890<\/p>/); // invalid: digits, no bars
@@ -151,31 +154,74 @@ test("labels: big price, unit price, barcode only for a valid EAN-13", () => {
   assert.equal(renderDraft(MOCK_DRAFTS.labels, ID).maxAge, 600);
 });
 
-test("NIR: landscape, totals, signatures", () => {
+test("NIR: landscape, form 14-3-1A columns, totals, signatures", () => {
   const out = renderDraft(MOCK_DRAFTS.nir, ID).html;
   assert.match(out, /@page\{size:A4 landscape/);
-  assert.match(out, /Nota de intrare-receptie/);
-  assert.match(out, /<td colspan="5">TOTAL<\/td><td class="num">482,20<\/td><td><\/td><td class="num">57,31<\/td>/);
+  assert.match(out, /<h1 class="doc-title">Notă de recepție și constatare de diferențe \(NIR\)<\/h1>/);
+  assert.match(out, /<th>Conform documentelor<\/th><th>Recepționată<\/th>/);
+  assert.match(out, /TVA neexigibilă/);
+  assert.match(out, /<td colspan="6">TOTAL<\/td><td class="num">482,20<\/td><td><\/td><td class="num">57,31<\/td>/);
   assert.match(out, /<td class="num">687,83<\/td><\/tr>\n<\/tfoot>/);
-  assert.match(out, /Comisia de receptie/);
-  assert.match(out, /Gestionar/);
+  assert.match(out, /<b>NIR nr\.:<\/b> ______________/);
+  assert.match(out, /Comisia de recepție/);
+  assert.match(out, /Primit în gestiune \(gestionar\)/);
+  assert.doesNotMatch(out, /Diferențe la recepție/);
+});
+
+test("NIR: received quantity drives the values and the differences note", () => {
+  const d = clone("nir");
+  d.payload.nir_number = "17";
+  d.payload.nir_date = "2026-10-01";
+  d.payload.management = "Magazin 1";
+  d.payload.company_tax_id = "RO123";
+  d.payload.supplier_tax_id = "RO456";
+  d.payload.lines[1].quantity_received = 20;
+  const out = renderNir(d.payload, d);
+  assert.match(out, /<b>NIR nr\.:<\/b> 17/);
+  assert.match(out, /<b>Data NIR:<\/b> 01\.10\.2026/);
+  assert.match(out, /<b>Gestiunea:<\/b> Magazin 1/);
+  assert.match(out, /CIF: RO123/);
+  assert.match(out, /CIF: RO456/);
+  assert.match(out, /<td class="num">24<\/td>\n<td class="num">20<\/td>\n<td class="num">5,40<\/td>\n<td class="num">108,00<\/td>/);
+  assert.match(out, /<p class="warn">Diferențe la recepție: [^<]*Lapte 3,5% 1L/);
 });
 
 test("recipe: cost per portion and the allergen note", () => {
   const out = renderDraft(MOCK_DRAFTS.recipe, ID).html;
-  assert.match(out, /Cost pe portie: <b>2,11 lei<\/b>/);
+  assert.match(out, /Cost pe porție: <b>2,11 lei<\/b>/);
   assert.ok(out.includes(ALLERGEN_NOTE));
-  assert.equal(ALLERGEN_NOTE, "Alergenii trebuie confirmati de operator.");
-  for (const a of ["Cereale care contin gluten", "Oua", "Lapte (inclusiv lactoza)", "Seminte de susan"]) assert.ok(out.includes(`<li>${a}</li>`), a);
+  assert.equal(ALLERGEN_NOTE, "Alergenii trebuie confirmați de operator.");
+  for (const a of ["Cereale care conțin gluten", "Ouă", "Lapte (inclusiv lactoză)", "Semințe de susan"]) assert.ok(out.includes(`<li>${a}</li>`), a);
 });
 
 test("cash book: balances and the 50,000 lei warning", () => {
   const out = renderDraft(MOCK_DRAFTS.cashbook, ID).html;
-  assert.match(out, /Sold din ziua precedenta/);
+  assert.match(out, /<h1 class="doc-title">Registrul de casă<\/h1>/);
+  assert.match(out, /<b>Contul:<\/b> 5311 Casa în lei/);
+  assert.match(out, /<th>Nr\. crt\.<\/th><th>Nr\. act casă<\/th><th>Nr\. anexe<\/th><th>Explicații<\/th><th>Încasări<\/th><th>Plăți<\/th><th>Sold<\/th>/);
+  assert.match(out, /Report\/Sold ziua precedentă/);
   assert.match(out, /<td class="num">6\.070,55<\/td>/);
-  assert.match(out, /Sold final<\/td><td><\/td><td><\/td><td class="num">1\.950,55<\/td>/);
+  assert.match(out, /<td colspan="4">TOTAL<\/td><td class="num">4\.820,15<\/td><td class="num">4\.120,00<\/td>/);
+  assert.match(out, /<td colspan="4">Sold final<\/td><td><\/td><td><\/td><td class="num">1\.950,55<\/td>/);
   assert.doesNotMatch(out, /class="warn"/);
   const d = clone("cashbook");
   d.payload.opening_balance = 60000;
-  assert.match(renderDraft(d, ID).html, /<p class="warn">Soldul final \(60\.700,15 lei\) depaseste plafonul de casa de 50\.000,00 lei/);
+  assert.match(renderDraft(d, ID).html, /<p class="warn">Soldul final \(60\.700,15 lei\) depășește plafonul de casă de 50\.000,00 lei\. Depune diferența la bancă în cel mult două zile lucrătoare\./);
+});
+
+test("a stored NIR with a VAT rate no longer in force renders the not-found page", () => {
+  for (const old of [0, 5, 9, 19]) {
+    const d = clone("nir");
+    d.payload.lines[0].vat_rate = old;
+    const r = renderDraft(d, ID);
+    assert.equal(r.status, 404, String(old));
+    assert.match(r.html, /Documentul nu a fost găsit/);
+  }
+});
+
+test("recipe sheet in Romanian with diacritics", () => {
+  const out = renderDraft(MOCK_DRAFTS.recipe, ID).html;
+  assert.match(out, /<h1 class="doc-title">Fișă tehnică<\/h1>/);
+  assert.match(out, /<b>Număr de porții:<\/b>/);
+  assert.match(out, /<div>Întocmit<span>Nume, prenume, semnătura<\/span><\/div>/);
 });

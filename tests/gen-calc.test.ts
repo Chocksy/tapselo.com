@@ -127,13 +127,13 @@ test("cash book running balance and the 50,000 lei warning", () => {
   assert.equal(CASH_LIMIT, 50_000);
   assert.equal(over.closing_balance, 50_000.01);
   assert.equal(over.over_limit, true);
-  assert.match(over.warnings[0], /depaseste plafonul de casa de 50\.000,00 lei/);
+  assert.match(over.warnings[0], /depășește plafonul de casă de 50\.000,00 lei/);
   assert.equal(cashbookCalc({ opening_balance: 49_000, entries: [{ doc: "Z", description: "x", receipt: 1000 }] }).over_limit, false);
 
   const neg = cashbookCalc({ opening_balance: 10, entries: [{ doc: "P", description: "x", payment: 20 }, { doc: "Z", description: "x", receipt: 50 }] });
   assert.deepEqual(neg.balances, [-10, 40]);
   assert.equal(neg.negative_at, 0);
-  assert.match(neg.warnings[0], /negativ dupa inregistrarea 1/);
+  assert.match(neg.warnings[0], /negativ după înregistrarea 1\. Casa nu poate avea sold negativ/);
 
   // float noise does not leak: 0.1 + 0.2
   assert.equal(cashbookCalc({ opening_balance: 0.1, entries: [{ doc: "Z", description: "x", receipt: 0.2 }] }).closing_balance, 0.3);

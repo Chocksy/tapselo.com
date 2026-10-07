@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "node --experimental-strip-types --test 'tests/*.test.ts'"
+    "test": "node --experimental-strip-types --test 'tests/*.test.ts'",
+    "test:e2e": "astro build --outDir dist-e2e && node --test tests/e2e/unelte-smoke.mjs"
   },
   "overrides": {
     "@lucide/astro": {
@@ -18,7 +19,8 @@
     }
   },
   "devDependencies": {
-    "busboy": "^1.6.0"
+    "busboy": "^1.6.0",
+    "playwright-core": "^1.63.0"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.1",

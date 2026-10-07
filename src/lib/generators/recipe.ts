@@ -7,25 +7,25 @@ import { roundMoney } from "./validate.ts";
 import { escapeHtml, fmtMoney, fmtQty, renderShell } from "./page.ts";
 
 export const ALLERGENS = [
-  { id: "gluten", name: "Cereale care contin gluten" },
+  { id: "gluten", name: "Cereale care conțin gluten" },
   { id: "crustacee", name: "Crustacee" },
-  { id: "oua", name: "Oua" },
-  { id: "peste", name: "Peste" },
+  { id: "oua", name: "Ouă" },
+  { id: "peste", name: "Pește" },
   { id: "arahide", name: "Arahide" },
   { id: "soia", name: "Soia" },
-  { id: "lapte", name: "Lapte (inclusiv lactoza)" },
-  { id: "fructe_coaja", name: "Fructe cu coaja lemnoasa" },
-  { id: "telina", name: "Telina" },
-  { id: "mustar", name: "Mustar" },
-  { id: "susan", name: "Seminte de susan" },
-  { id: "sulfiti", name: "Dioxid de sulf si sulfiti" },
+  { id: "lapte", name: "Lapte (inclusiv lactoză)" },
+  { id: "fructe_coaja", name: "Fructe cu coajă lemnoasă" },
+  { id: "telina", name: "Țelină" },
+  { id: "mustar", name: "Muștar" },
+  { id: "susan", name: "Semințe de susan" },
+  { id: "sulfiti", name: "Dioxid de sulf și sulfiți" },
   { id: "lupin", name: "Lupin" },
-  { id: "moluste", name: "Moluste" },
+  { id: "moluste", name: "Moluște" },
 ] as const;
 
 export type AllergenId = (typeof ALLERGENS)[number]["id"];
 
-export const ALLERGEN_NOTE = "Alergenii trebuie confirmati de operator.";
+export const ALLERGEN_NOTE = "Alergenii trebuie confirmați de operator.";
 
 // Words (no diacritics) -> allergen. Short words match whole tokens; longer ones match a token prefix.
 const KEYWORDS: Record<AllergenId, string[]> = {
@@ -150,10 +150,10 @@ export function renderRecipe(p: RecipePayload, draft: DraftRecord): string {
     })
     .join("\n");
   const list = [...c.allergens.map(allergenName), ...c.other_allergens];
-  const body = `<h1 class="doc-title">Fisa tehnica</h1>
+  const body = `<h1 class="doc-title">Fișă tehnică</h1>
 <div class="doc-meta">
 <span><b>Produs:</b> ${escapeHtml(p.name)}</span>
-<span><b>Numar de portii:</b> ${escapeHtml(String(p.portions))}</span>
+<span><b>Număr de porții:</b> ${escapeHtml(String(p.portions))}</span>
 </div>
 <table class="doc">
 <thead><tr><th>Nr.</th><th>Ingredient</th><th>Cantitate</th><th>UM</th><th>Cost / UM (lei)</th><th>Cost (lei)</th><th>Alergeni</th></tr></thead>
@@ -164,27 +164,27 @@ ${rows}
 </table>
 <div class="cost-box">
 <span>Cost total: <b>${fmtMoney(c.total_cost)} lei</b></span>
-<span>Cost pe portie: <b>${fmtMoney(c.cost_per_portion)} lei</b></span>
+<span>Cost pe porție: <b>${fmtMoney(c.cost_per_portion)} lei</b></span>
 </div>
-${c.complete_cost ? "" : `<p class="note muted">Unele ingrediente nu au cost; costul este partial.</p>`}
+${c.complete_cost ? "" : `<p class="note muted">Unele ingrediente nu au cost; costul este parțial.</p>`}
 <section class="allergens">
 <h2>Alergeni (Reg. UE 1169/2011)</h2>
-${list.length ? `<ul>${list.map((x) => `<li>${escapeHtml(x)}</li>`).join("")}</ul>` : `<p>Nu am gasit alergeni in lista de ingrediente.</p>`}
+${list.length ? `<ul>${list.map((x) => `<li>${escapeHtml(x)}</li>`).join("")}</ul>` : `<p>Nu am găsit alergeni în lista de ingrediente.</p>`}
 <p class="confirm">${ALLERGEN_NOTE}</p>
 </section>
 <div class="signs">
-<div>Intocmit<span>Nume, prenume, semnatura</span></div>
-<div>Aprobat<span>Nume, prenume, semnatura</span></div>
+<div>Întocmit<span>Nume, prenume, semnătura</span></div>
+<div>Aprobat<span>Nume, prenume, semnătura</span></div>
 </div>`;
-  return renderShell({ kind: "recipe", title: `Fisa tehnica ${p.name}`, expiresAt: draft.expires_at, body, css: CSS });
+  return renderShell({ kind: "recipe", title: `Fișă tehnică ${p.name}`, expiresAt: draft.expires_at, body, css: CSS });
 }
 
 export function recipeSummary(p: RecipePayload): string {
   const c = recipeCalc(p);
   const al = [...c.allergens.map(allergenName), ...c.other_allergens];
   return [
-    `Fisa tehnica "${p.name}": ${p.ingredients.length} ingrediente, ${p.portions} portii.`,
-    `Cost total ${fmtMoney(c.total_cost)} lei, cost pe portie ${fmtMoney(c.cost_per_portion)} lei${c.complete_cost ? "" : " (partial: unele ingrediente nu au cost)"}.`,
-    `Alergeni: ${al.length ? al.join(", ") : "niciunul gasit"}. ${ALLERGEN_NOTE}`,
+    `Fișă tehnică „${p.name}”: ${p.ingredients.length} ingrediente, ${p.portions} porții.`,
+    `Cost total ${fmtMoney(c.total_cost)} lei, cost pe porție ${fmtMoney(c.cost_per_portion)} lei${c.complete_cost ? "" : " (parțial: unele ingrediente nu au cost)"}.`,
+    `Alergeni: ${al.length ? al.join(", ") : "niciunul găsit"}. ${ALLERGEN_NOTE}`,
   ].join("\n");
 }
