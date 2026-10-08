@@ -45,7 +45,7 @@ const colLink = "text-sm text-text-on-primary/60 transition-colors hover:text-wh
         </div>
         <div>
           <p class={colTitle}>Ghid magazine</p>
-          <ul class="mt-3 max-h-64 space-y-2 overflow-y-auto pr-2">
+          <ul class="mt-3 space-y-2">
             {guideHubLinks.map((item) => (
               <li><a href={item.href} class={colLink}>{item.label}</a></li>
             ))}
