@@ -1,0 +1,198 @@
+---
+import GuideShell from "../components/GuideShell.astro";
+import { internalPath } from "../lib/internal-url.ts";
+import { toolJsonLd } from "../lib/unelte/jsonld.ts";
+
+const faq = [
+  {
+    q: "Ce înseamnă program de gestiune pentru magazin?",
+    a: "Este softul în care ții nomenclatorul, prețurile, stocurile, recepția de marfă și rapoartele — legate de vânzările din magazin. Tapselo combină gestiunea cu POS-ul și inventarul pe telefon, fără tabele separate pentru aceleași produse.",
+  },
+  {
+    q: "Tapselo este potrivit pentru magazine mici?",
+    a: "Da. Planurile Start și Magazin sunt gândite pentru un singur punct de lucru sau două case, cu prețuri publice pe site. În beta, aplicația este gratuită, fără card.",
+  },
+  {
+    q: "Pot importa produsele din programul vechi?",
+    a: "Da — pe pagina de prețuri promitem import din programul anterior; la onboarding echipa te ajută să muți catalogul (denumiri, coduri de bare, prețuri) ca să nu reintroduci manual mii de rânduri.",
+  },
+  {
+    q: "Cum intră marfa în stoc?",
+    a: "Poți recepționa din poză de factură sau aviz în admin: OCR-ul propune liniile, tu confirmi, iar stocul și NIR-ul se actualizează. Alternativ, completezi manual recepția.",
+  },
+  {
+    q: "Există inventar cu telefonul?",
+    a: "Da. Aplicația de inventar (PWA) se sincronizează cu catalogul magazinului și îți permite numărarea cu scanarea codului de bare de pe telefon.",
+  },
+  {
+    q: "Cât costă după beta?",
+    a: "Start: 79 lei/lună + TVA (o casă); Magazin: 129 lei/lună + TVA (două case). Casă suplimentară: +39 lei/lună + TVA. În perioada beta totul este gratuit, cu preaviz de 30 de zile înainte de tarif.",
+  },
+];
+
+const jsonLd = toolJsonLd({
+  path: "/program-gestiune-magazin/",
+  heading: "Program de gestiune pentru magazin",
+  appName: "Tapselo — program gestiune magazin",
+  description:
+    "Program de gestiune și stocuri pentru magazine alimentare, băcănii și brutării: recepție din poză, inventar pe telefon, rețete, rapoarte. Prețuri transparente.",
+  faq,
+});
+---
+
+<GuideShell
+  title="Program de gestiune pentru magazin — stocuri, NIR, inventar | Tapselo"
+  description="Program gestiune magazin pentru alimentare, băcănii și brutării: recepție marfă din poză, stocuri, inventar pe telefon, rețete, rapoarte. Soft gestiune cu prețuri clare."
+  heading="Program de gestiune pentru magazin"
+  lead="Tapselo este soft de gestiune și vânzare pentru magazine mici din România: stocuri, recepție, rețete și rapoarte în același loc cu vânzarea — fără să rescrii aceleași produse în Excel."
+  campaign="program-gestiune-magazin"
+  breadcrumb={false}
+  ctaTitle="Vezi Tapselo la lucru în magazinul tău"
+  ctaBody="Programează un demo scurt: îți arătăm recepția din poză, inventarul pe telefon și rapoartele — pe datele tale, nu pe slide-uri."
+  ctaHref={internalPath("/demo/")}
+  jsonLd={jsonLd}
+>
+  <article class="kb-prose space-y-10">
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Pentru cine este</h2>
+      <p>
+        Caută un <strong>program gestiune magazin</strong> dacă ai deja vânzări zilnice, dar pierzi timp cu stocuri care nu se leagă de
+        facturi, cu NIR-uri întârziate sau cu inventare de weekend făcute din memorie. Tapselo este construit pentru
+        <strong>magazine alimentare mici</strong>, băcănii de cartier, <strong>măcelării</strong>, <strong>brutării și patiserii</strong> care
+        vând la tejghea sau la casă și au nevoie de un singur adevăr despre ce au pe raft.
+      </p>
+      <p>
+        Nu trebuie să fii depozit sau lanț național ca să merită un <strong>soft gestiune</strong> serios. De multe ori, un singur punct de
+        lucru cu câteva mii de SKU-uri este suficient ca Excel-ul să crape — mai ales când apar promoții, produse la kg și rețete cu ingrediente.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Stocuri și recepție marfă</h2>
+      <p>
+        Gestiunea începe la recepție. În Tapselo admin, fluxul de <strong>recepție marfă</strong> îți permite să creezi documente de recepție,
+        să asociezi furnizorul și factura și să confirmi cantitățile. Poți porni de la o <strong>poză de factură sau aviz</strong>: OCR-ul
+        propune liniile, tu le verifici, apoi stocul și nota de recepție se aliniază cu ce ai primit fizic.
+      </p>
+      <p>
+        Pentru documente pe hârtie sau arhivă, poți folosi și
+        <a href={internalPath("/unelte/generator-nir/")} class="font-semibold text-accent hover:underline">generatorul gratuit de NIR</a>
+        de pe tapselo.com, apoi să introduci recepția în program. Ideea este aceeași: <strong>program gestiune stocuri</strong> înseamnă că
+        fiecare intrare are sursă (NIR, factură), nu doar o coloană „+10 buc.” fără explicații.
+      </p>
+      <p>
+        Stocul se actualizează când finalizezi recepția și când vinzi — vânzările din POS descarcă cantitățile conform configurării produsului.
+        Astfel, raportul de marjă și listele de inventar pornesc de la aceleași numere.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Inventar cu telefonul</h2>
+      <p>
+        Număratul la raft nu trebuie să fie o corvoadă cu clipboard și listă tipărită ieri. Aplicația de <strong>inventar pe telefon</strong>
+        se sincronizează cu catalogul magazinului. Scanezi codul de bare cu camera,
+        introduci cantitatea, iar sesiunea de inventar se centralizează în admin pentru analiză.
+      </p>
+      <p>
+        Pentru un magazin mic, asta înseamnă inventare parțiale în timpul zilei — lactatele dimineața, băuturile seara — fără să oprești casa.
+        Rezultatul se compară cu stocul din gestiune; diferențele le discuți cu echipa, nu le ascunzi în Excel.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Cântar Dibal și produse la kg</h2>
+      <p>
+        Dacă vinzi la kg, gestiunea trebuie să vorbească cu cântarul. Tapselo trimite prețurile și codurile de cântar din POS-ul din magazin
+        către echipamentele Dibal configurate din rețeaua locală a magazinului. Când schimbi prețul la
+        un produs în admin, îl actualizezi la cântar din POS, ca eticheta și codul de bare să rămână corecte.
+      </p>
+      <p>
+        Ghidul nostru pentru
+        <a href={internalPath("/ghid/cantar-dibal/")} class="font-semibold text-accent hover:underline">cântar Dibal</a>
+        explică pașii tehnici; aici contează ideea de business: <strong>program de gestiune</strong> pentru alimentar înseamnă și kg, nu doar bucăți.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Rețete și producție</h2>
+      <p>
+        Brutăriile și patiseriile au nevoie de gestiune pe ingrediente, nu doar pe produs finit. În Tapselo poți defini
+        <strong>rețete</strong>, înregistrezi producția zilnică și ingredientele ies din stoc automat. Știi costul pe coacă, nu doar prețul de raft.
+      </p>
+      <p>
+        Chiar dacă nu produci în loc, rețetele ajută la marjă: vezi cât te costă o shaorma sau o tartă înainte să pui prețul de vânzare.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Vânzări, offline și rapoarte</h2>
+      <p>
+        Gestiunea fără vânzare este doar depozit. Tapselo leagă POS-ul de stoc: încasările se înregistrează chiar și
+        <strong>fără internet</strong>, iar la reconectare datele se sincronizează (comportament documentat pe site și în aplicația POS).
+        În admin ai <strong>rapoarte de vânzări</strong>, profit pe categorii și recomandări generate din datele magazinului.
+      </p>
+      <p>
+        Nu ai nevoie de cinci exporturi diferite pentru o întrebare simplă: „Ce s-a vândut ieri și cu ce marjă?” — răspunsul vine din același
+        <strong>program gestiune</strong> în care ai introdus marfa.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Import produse din programul vechi</h2>
+      <p>
+        Schimbarea softului este momentul în care mulți comercianți renunță. Pe
+        <a href={internalPath("/#pricing")} class="font-semibold text-accent hover:underline">pagina de prețuri</a>
+        listăm explicit <strong>„Import produse din programul vechi”</strong> ca parte din pachet. La implementare, echipa Tapselo te ajută să
+        aduci catalogul existent — denumiri, coduri de bare, prețuri, grupe — astfel încât prima zi de vânzare cu Tapselo să nu fie prima zi de
+        reintroducere manuală a miilor de produse.
+      </p>
+      <p>
+        Dacă ai export CSV sau listă din vechiul program, discutăm formatul la demo și stabilim pașii de migrare pentru magazinul tău.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Prețuri transparente</h2>
+      <p>
+        <strong>Program gestiune</strong> nu ar trebui să vină cu surprize la factură. După beta, planurile publice sunt:
+      </p>
+      <ul>
+        <li><strong>Tapselo Start</strong> — 79 lei/lună + TVA, o casă;</li>
+        <li><strong>Tapselo Magazin</strong> — 129 lei/lună + TVA, două case;</li>
+        <li>casă suplimentară — +39 lei/lună + TVA;</li>
+        <li>magazin suplimentar — +99 lei/lună + TVA;</li>
+        <li>în <strong>beta</strong> aplicația este <strong>gratuită</strong>, fără card, cu preaviz de 30 de zile înainte de tarif.</li>
+      </ul>
+      <p>
+        Primele 20 de magazine din beta păstrează prețul afișat pe viață, conform promisiunii de pe homepage. Detalii actualizate pe
+        <a href={internalPath("/#pricing")} class="font-semibold text-accent hover:underline">secțiunea Prețuri</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Întrebări frecvente</h2>
+      <dl class="space-y-6">
+        {faq.map((item) => (
+          <div>
+            <dt class="font-bold text-primary">{item.q}</dt>
+            <dd class="mt-2">{item.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="rounded-xl border border-accent/30 bg-ticket-light/40 p-6">
+      <h2 class="font-display text-2xl italic text-primary">Următorul pas</h2>
+      <p class="mt-3">
+        Programează un <a href={internalPath("/demo/")} class="font-semibold text-accent hover:underline">demo Tapselo</a>
+        sau compară funcțiile cu alte programe pe
+        <a href={internalPath("/comparatie/")} class="font-semibold text-accent hover:underline">pagina de comparație</a>.
+        Dacă vrei doar documente gratuite, vezi
+        <a href={internalPath("/unelte/generator-nir/")} class="font-semibold text-accent hover:underline">generatorul NIR</a>
+        și
+        <a href={internalPath("/unelte/fisa-de-magazie/")} class="font-semibold text-accent hover:underline">fișa de magazie</a>
+        — utile chiar și înainte să schimbi softul.
+      </p>
+    </section>
+  </article>
+</GuideShell>
