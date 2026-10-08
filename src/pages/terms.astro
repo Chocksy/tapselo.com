@@ -2,6 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
+import EmailLink from "../components/EmailLink.astro";
+import { internalPath } from "../lib/internal-url.ts";
 ---
 
 <Layout
@@ -31,7 +33,7 @@ import Footer from "../components/Footer.astro";
         <p class="mt-4 leading-relaxed text-text-secondary">
           Tapselo POS este operat de <strong class="font-bold text-primary">Ciocanel Razvan Tudor PFA</strong>,
           România. Pentru orice întrebare despre acești termeni, scrie-ne la
-          <a href="mailto:contact@tapselo.com" class="font-bold text-accent hover:text-accent-hover">contact@tapselo.com</a>.
+          <EmailLink class="font-bold text-accent hover:text-accent-hover" />.
         </p>
       </section>
 
@@ -64,7 +66,7 @@ import Footer from "../components/Footer.astro";
         <p class="mt-4 leading-relaxed text-text-secondary">
           Integrarea este opțională. Când conectezi o pagină de Facebook, ne autorizezi să
           procesăm mesajele primite pe acea pagină conform
-          <a href="/privacy" class="font-bold text-accent hover:text-accent-hover">Politicii de confidențialitate</a>.
+          <a href={internalPath("/privacy")} class="font-bold text-accent hover:text-accent-hover">Politicii de confidențialitate</a>.
           Poți deconecta pagina oricând din panoul de administrare.
         </p>
       </section>
@@ -74,12 +76,12 @@ import Footer from "../components/Footer.astro";
         <p class="mt-4 leading-relaxed text-text-secondary">
           Datele magazinului tău rămân ale tale. Le poți exporta sau poți cere ștergerea lor.
           Vezi pagina
-          <a href="/data-deletion" class="font-bold text-accent hover:text-accent-hover">Ștergerea datelor</a>.
+          <a href={internalPath("/data-deletion")} class="font-bold text-accent hover:text-accent-hover">Ștergerea datelor</a>.
         </p>
         <p class="mt-4 leading-relaxed text-text-secondary">
           Pentru datele clienților magazinului (modulele Clienți, Campanii și Pagina de oferte),
           magazinul este operator, iar Tapselo este persoana împuternicită. Regulile sunt în
-          <a href="/dpa" class="font-bold text-accent hover:text-accent-hover">Acordul de prelucrare a datelor</a>.
+          <a href={internalPath("/dpa")} class="font-bold text-accent hover:text-accent-hover">Acordul de prelucrare a datelor</a>.
         </p>
       </section>
 
@@ -116,7 +118,7 @@ import Footer from "../components/Footer.astro";
         <p class="mt-4 leading-relaxed text-text-secondary">
           Tapselo POS is point-of-sale and order management software for small food shops, operated
           by Ciocanel Razvan Tudor PFA (Romania). Contact:
-          <a href="mailto:contact@tapselo.com" class="font-bold text-accent hover:text-accent-hover">contact@tapselo.com</a>.
+          <EmailLink class="font-bold text-accent hover:text-accent-hover" />.
           The service is sold as a subscription and access requires an account: one account per
           store, with invited users.
         </p>
@@ -127,10 +129,10 @@ import Footer from "../components/Footer.astro";
         <p class="mt-4 leading-relaxed text-text-secondary">
           The Facebook Messenger integration is optional. Connecting a Page authorizes us to process
           the messages it receives, as described in the
-          <a href="/privacy" class="font-bold text-accent hover:text-accent-hover">privacy policy</a>.
+          <a href={internalPath("/privacy")} class="font-bold text-accent hover:text-accent-hover">privacy policy</a>.
           You can disconnect at any time. Your store data stays yours: you can export it or request
           deletion via the
-          <a href="/data-deletion" class="font-bold text-accent hover:text-accent-hover">data deletion page</a>.
+          <a href={internalPath("/data-deletion")} class="font-bold text-accent hover:text-accent-hover">data deletion page</a>.
         </p>
         <p class="mt-4 leading-relaxed text-text-secondary">
           The service is provided "as is". We make reasonable efforts to keep it available. Our

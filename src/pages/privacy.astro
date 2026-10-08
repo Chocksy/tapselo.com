@@ -2,6 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
+import EmailLink from "../components/EmailLink.astro";
+import { internalPath } from "../lib/internal-url.ts";
 ---
 
 <Layout
@@ -31,7 +33,7 @@ import Footer from "../components/Footer.astro";
         <p class="mt-4 leading-relaxed text-text-secondary">
           Tapselo POS este operat de <strong class="font-bold text-primary">Ciocanel Razvan Tudor PFA</strong>,
           România. Pentru orice întrebare despre datele tale, scrie-ne la
-          <a href="mailto:contact@tapselo.com" class="font-bold text-accent hover:text-accent-hover">contact@tapselo.com</a>.
+          <EmailLink class="font-bold text-accent hover:text-accent-hover" />.
           Răspundem în 24 de ore.
         </p>
       </section>
@@ -97,7 +99,7 @@ import Footer from "../components/Footer.astro";
         </p>
         <p class="mt-4 leading-relaxed text-text-secondary">
           Poți cere ștergerea datelor tale oricând. Vezi pagina
-          <a href="/data-deletion" class="font-bold text-accent hover:text-accent-hover">Ștergerea datelor</a>.
+          <a href={internalPath("/data-deletion")} class="font-bold text-accent hover:text-accent-hover">Ștergerea datelor</a>.
         </p>
       </section>
 
@@ -106,7 +108,7 @@ import Footer from "../components/Footer.astro";
         <p class="mt-4 leading-relaxed text-text-secondary">
           "Tapselo" este un conector pe care îl adaugi în Claude sau ChatGPT, la adresa
           <code>https://tapselo.com/mcp</code>. Nu are cont și nu cere autentificare. Ce face este descris pe pagina
-          <a href="/ai" class="font-bold text-accent hover:text-accent-hover">Asistent AI</a>.
+          <a href={internalPath("/ai")} class="font-bold text-accent hover:text-accent-hover">Asistent AI</a>.
         </p>
         <h3 class="mt-6 font-bold text-primary">Ce primim</h3>
         <p class="mt-2 leading-relaxed text-text-secondary">
@@ -151,7 +153,7 @@ import Footer from "../components/Footer.astro";
         <h3 class="mt-6 font-bold text-primary">Ștergere și abuz</h3>
         <p class="mt-2 leading-relaxed text-text-secondary">
           Ca să ștergem un document înainte de 30 de zile sau ca să raportezi o pagină, scrie la
-          <a href="mailto:contact@tapselo.com" class="font-bold text-accent hover:text-accent-hover">contact@tapselo.com</a>
+          <EmailLink class="font-bold text-accent hover:text-accent-hover" />
           cu linkul documentului. Îl ștergem după link.
         </p>
       </section>
@@ -165,7 +167,7 @@ import Footer from "../components/Footer.astro";
         <p class="mt-4 leading-relaxed text-text-secondary">
           Ai dreptul de acces la datele tale, de rectificare și de ștergere. Ai și dreptul să te
           opui prelucrării și să ceri portarea datelor. Scrie la
-          <a href="mailto:contact@tapselo.com" class="font-bold text-accent hover:text-accent-hover">contact@tapselo.com</a>
+          <EmailLink class="font-bold text-accent hover:text-accent-hover" />
           și răspundem în cel mult 30 de zile.
         </p>
       </section>
@@ -184,7 +186,7 @@ import Footer from "../components/Footer.astro";
         <p class="mt-4 leading-relaxed text-text-secondary">
           Tapselo POS is a point-of-sale and order management app for small food shops and
           bakeries, operated by Ciocanel Razvan Tudor PFA (Romania). Contact:
-          <a href="mailto:contact@tapselo.com" class="font-bold text-accent hover:text-accent-hover">contact@tapselo.com</a>.
+          <EmailLink class="font-bold text-accent hover:text-accent-hover" />.
         </p>
         <p class="mt-4 leading-relaxed text-text-secondary">
           For app accounts we process user names and emails, store data (products, prices, sales,
@@ -213,7 +215,7 @@ import Footer from "../components/Footer.astro";
           document tools are stored for 30 days and then deleted by a daily job. Logs hold the tool name, success or error, duration, error type and, on failure, the technical error message; they hold no user text or tool arguments.
           Outside services: ANAF (the CUI you check), BNR (exchange rate, nothing sent about you), and Open Food Facts
           (the barcodes you look up). Document pages are public to anyone with the link and marked noindex. To delete a
-          document or report abuse, email contact@tapselo.com with the link. Last updated: 1 October 2026.
+          document or report abuse, email <!--email_off-->contact@tapselo.com<!--/email_off--> with the link. Last updated: 1 October 2026.
         </p>
       </section>
     </div>

@@ -1,12 +1,13 @@
 ---
 import { Menu, X } from "@lucide/astro";
+import { internalPath } from "../lib/internal-url.ts";
 
 const links = [
-  ["/#features", "Funcții"],
-  ["/#echipamente", "Echipamente"],
-  ["/#pricing", "Prețuri"],
-  ["/ghid", "Ghid"],
-  ["/ai", "Asistent AI"],
+  [internalPath("/#features"), "Funcții"],
+  [internalPath("/#echipamente"), "Echipamente"],
+  [internalPath("/#pricing"), "Prețuri"],
+  [internalPath("/ghid"), "Ghid"],
+  [internalPath("/ai"), "Asistent AI"],
   ["https://app.tapselo.com", "Intră în cont"],
 ];
 ---

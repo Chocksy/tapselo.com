@@ -3,6 +3,7 @@
 // Everything else is escaped. Links only for https:, http: and site paths.
 
 import { escapeHtml } from "./offers-render.ts";
+import { internalPath } from "./internal-url.ts";
 
 function safeHref(url: string): string | null {
   const u = url.trim();
@@ -21,7 +22,8 @@ export function inlineMd(raw: string): string {
     if (m[1] !== undefined) {
       out.push(`<code>${escapeHtml(m[1])}</code>`);
     } else {
-      const href = safeHref(m[3]);
+      const rawHref = safeHref(m[3]);
+      const href = rawHref && rawHref.startsWith("/") ? internalPath(rawHref) : rawHref;
       const text = bold(escapeHtml(m[2]));
       const ext = href && /^https?:/i.test(href);
       out.push(

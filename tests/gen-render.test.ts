@@ -32,7 +32,11 @@ test("every kind renders the shell: noindex, banner, print button, script, foote
     assert.equal(out.split("<script>").length - 1, 1, k);
     assert.ok(out.includes(`<script>${PRINT_SCRIPT}</script>`), k);
     assert.match(out, /Generat cu <a [^>]*>tapselo\.com<\/a>/, k);
-    assert.match(out, /<p class="g-abuse no-print">Pagină creată de un utilizator\. Expiră pe 31\.10\.2026\. Raportează abuz: <a href="mailto:contact@tapselo\.com">contact@tapselo\.com<\/a><\/p>/, k);
+    assert.match(
+      out,
+      /<p class="g-abuse no-print">Pagină creată de un utilizator\. Expiră pe 31\.10\.2026\. Raportează abuz: <!--email_off--><a href="mailto:contact@tapselo\.com">contact@tapselo\.com<\/a><!--\/email_off--><\/p>/,
+      k,
+    );
     assert.match(out, /@page\{size:A4/, k);
     assert.match(out, /\.no-print\{display:none !important\}/, k);
     assert.doesNotMatch(out, /Înscrie-te|Cum folosim datele clienților/, k);

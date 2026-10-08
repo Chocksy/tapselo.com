@@ -7,6 +7,7 @@ import dibal from "../../lib/kb/dibal.json";
 import datecsJson from "../../lib/kb/datecs-errors.json";
 import { supportArticles } from "../../lib/articles/load.ts";
 import { articlePath } from "../../lib/articles/schema.ts";
+import { internalPath } from "../../lib/internal-url.ts";
 
 const hintTitles = [...new Set(Object.values(datecsJson.hints as Record<string, { title: string }>).map((h) => h.title))];
 const card = "block rounded-xl border border-border-light p-5 transition-colors hover:border-accent";
@@ -24,7 +25,7 @@ const card = "block rounded-xl border border-border-light p-5 transition-colors 
     <h2 class="font-display text-3xl italic text-primary">Reguli pentru magazin</h2>
     <div class="mt-6 grid gap-4 sm:grid-cols-2">
       {rules.map((r) => (
-        <a href={r.page} class={card}>
+        <a href={internalPath(r.page)} class={card}>
           <h3 class="text-primary">{r.title}</h3>
           <p class="mt-2 text-sm leading-relaxed text-text-secondary">{r.summary}</p>
         </a>
@@ -36,7 +37,7 @@ const card = "block rounded-xl border border-border-light p-5 transition-colors 
     <h2 class="font-display text-3xl italic text-primary">Deschide un magazin</h2>
     <div class="mt-6 grid gap-4 sm:grid-cols-2">
       {checklists.map((c) => (
-        <a href={c.page} class={card}>
+        <a href={internalPath(c.page)} class={card}>
           <h3 class="text-primary">{c.title}</h3>
           <p class="mt-2 text-sm leading-relaxed text-text-secondary">{c.summary}</p>
         </a>
@@ -46,7 +47,7 @@ const card = "block rounded-xl border border-border-light p-5 transition-colors 
 
   <section>
     <h2 class="font-display text-3xl italic text-primary">Declarație A4200</h2>
-    <a href="/ghid/verificare-a4200" class={`mt-6 ${card}`}>
+    <a href={internalPath("/ghid/verificare-a4200")} class={`mt-6 ${card}`}>
       <h3 class="text-primary">Verificare A4200 gratuită</h3>
       <p class="mt-2 text-sm leading-relaxed text-text-secondary">
         Verifică opisul și zilele fiscale .p7b înainte de DUKIntegrator. Fără upload, cu explicații în română și decoder .err.txt.
@@ -57,12 +58,12 @@ const card = "block rounded-xl border border-border-light p-5 transition-colors 
   <section>
     <h2 class="font-display text-3xl italic text-primary">Articole de suport</h2>
     <p class="mt-2 text-sm text-text-secondary">
-      <a href="/ghid/articole" class="text-accent hover:text-accent-hover">Vezi toate articolele</a>
+      <a href={internalPath("/ghid/articole")} class="text-accent hover:text-accent-hover">Vezi toate articolele</a>
       — A4200, casă de marcat fără internet, export .p7b, DUKIntegrator, raport Z Datecs.
     </p>
     <div class="mt-6 grid gap-4 sm:grid-cols-2">
       {supportArticles.map((a) => (
-        <a href={articlePath(a.slug)} class={card}>
+        <a href={internalPath(articlePath(a.slug))} class={card}>
           <h3 class="text-primary">{a.title}</h3>
           <p class="mt-2 text-sm leading-relaxed text-text-secondary">{a.description}</p>
         </a>
@@ -72,7 +73,7 @@ const card = "block rounded-xl border border-border-light p-5 transition-colors 
 
   <section>
     <h2 class="font-display text-3xl italic text-primary">Casa de marcat Datecs</h2>
-    <a href="/ghid/erori-datecs" class={`mt-6 ${card}`}>
+    <a href={internalPath("/ghid/erori-datecs")} class={`mt-6 ${card}`}>
       <h3 class="text-primary">Erori casă de marcat Datecs</h3>
       <p class="mt-2 text-sm leading-relaxed text-text-secondary">
         {datecsJson.count} coduri de eroare în română și engleză. Pași de rezolvare pentru: {hintTitles.join(", ").toLowerCase()}.
@@ -82,7 +83,7 @@ const card = "block rounded-xl border border-border-light p-5 transition-colors 
 
   <section>
     <h2 class="font-display text-3xl italic text-primary">Cântar Dibal</h2>
-    <a href="/ghid/cantar-dibal" class={`mt-6 ${card}`}>
+    <a href={internalPath("/ghid/cantar-dibal")} class={`mt-6 ${card}`}>
       <h3 class="text-primary">Cântar Dibal și casa de marcat</h3>
       <ul class="mt-2 space-y-1 pl-5 text-sm text-text-secondary">
         {dibal.map((e) => <li class="list-disc">{e.title}</li>)}
@@ -92,7 +93,7 @@ const card = "block rounded-xl border border-border-light p-5 transition-colors 
 
   <section>
     <h2 class="font-display text-3xl italic text-primary">Comparație</h2>
-    <a href="/comparatie" class={`mt-6 ${card}`}>
+    <a href={internalPath("/comparatie")} class={`mt-6 ${card}`}>
       <h3 class="text-primary">Programe de casă de marcat și POS din România</h3>
       <p class="mt-2 text-sm leading-relaxed text-text-secondary">
         Ce știe fiecare program: offline, casa de marcat, cântare, rețete, stocuri, comenzi. Date de pe site-urile producătorilor.

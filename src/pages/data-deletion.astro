@@ -2,6 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
+import EmailLink from "../components/EmailLink.astro";
+import { internalPath } from "../lib/internal-url.ts";
 ---
 
 <Layout
@@ -35,7 +37,7 @@ import Footer from "../components/Footer.astro";
         <ul class="mt-4 space-y-3 pl-5 text-text-secondary">
           <li class="list-disc leading-relaxed">
             Trimite un email la
-            <a href="mailto:contact@tapselo.com" class="font-bold text-accent hover:text-accent-hover">contact@tapselo.com</a>
+            <EmailLink class="font-bold text-accent hover:text-accent-hover" />
             și scrie numele paginii de Facebook căreia i-ai scris.
           </li>
           <li class="list-disc leading-relaxed">
@@ -53,7 +55,7 @@ import Footer from "../components/Footer.astro";
         <h2 class="font-display text-3xl italic text-primary">Ai un magazin cu cont Tapselo</h2>
         <p class="mt-4 leading-relaxed text-text-secondary">
           Dacă vrei să ștergi contul și toate datele magazinului, scrie-ne la
-          <a href="mailto:contact@tapselo.com" class="font-bold text-accent hover:text-accent-hover">contact@tapselo.com</a>
+          <EmailLink class="font-bold text-accent hover:text-accent-hover" />
           de pe adresa de email a contului. Ștergem utilizatorii, produsele, prețurile, vânzările,
           documentele de recepție și mesajele primite prin Messenger în cel mult 30 de zile, apoi
           confirmăm pe email.
@@ -79,7 +81,7 @@ import Footer from "../components/Footer.astro";
           Această pagină este URL-ul oficial cu instrucțiuni de ștergere a datelor
           (Data Deletion Instructions URL) pentru aplicația Facebook Tapselo. Detaliile complete
           despre prelucrare sunt în
-          <a href="/privacy" class="font-bold text-accent hover:text-accent-hover">Politica de confidențialitate</a>.
+          <a href={internalPath("/privacy")} class="font-bold text-accent hover:text-accent-hover">Politica de confidențialitate</a>.
         </p>
       </section>
 
@@ -91,7 +93,7 @@ import Footer from "../components/Footer.astro";
         <p class="mt-4 leading-relaxed text-text-secondary">
           <strong class="font-bold text-primary">Messenger customers:</strong> to have your data
           deleted, email
-          <a href="mailto:contact@tapselo.com" class="font-bold text-accent hover:text-accent-hover">contact@tapselo.com</a>
+          <EmailLink class="font-bold text-accent hover:text-accent-hover" />
           with the name of the Facebook Page you messaged, or send the word "STERGERE" to that Page
           on Messenger. We delete your messages and any order suggestions derived from them within
           30 days and confirm when it is done. No Tapselo account is needed.
@@ -106,7 +108,7 @@ import Footer from "../components/Footer.astro";
         <p class="mt-4 leading-relaxed text-text-secondary">
           We retain only records Romanian law requires us to keep, such as fiscal sales records.
           Those contain no Messenger content and no sender identifiers. See the
-          <a href="/privacy" class="font-bold text-accent hover:text-accent-hover">privacy policy</a>
+          <a href={internalPath("/privacy")} class="font-bold text-accent hover:text-accent-hover">privacy policy</a>
           for full details.
         </p>
       </section>

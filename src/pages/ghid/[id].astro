@@ -3,17 +3,26 @@
 import GuideShell from "../../components/GuideShell.astro";
 import { markdownToHtml } from "../../lib/markdown.ts";
 import rules from "../../lib/kb/rules.json";
+import { internalPath } from "../../lib/internal-url.ts";
 
 export function getStaticPaths() {
   return rules.map((rule) => ({ params: { id: rule.page.replace(/^\/ghid\//, "") }, props: { rule } }));
 }
 
 const RELATED_TOOLS: Record<string, { href: string; label: string }> = {
-  "cote-tva-casa-de-marcat": { href: "/unelte/calculator-tva", label: "Calculator TVA 21% și 11%" },
-  "plafoane-numerar": { href: "/unelte/registru-de-casa", label: "Generator registru de casă" },
-  "registrul-de-casa": { href: "/unelte/registru-de-casa", label: "Generator registru de casă" },
-  "nir-nota-receptie": { href: "/unelte/generator-nir", label: "Generator NIR" },
-  "pret-unitar-kg-litru": { href: "/unelte/calculator-adaos-comercial", label: "Calculator adaos comercial" },
+  "cote-tva-casa-de-marcat": { href: internalPath("/unelte/calculator-tva"), label: "Calculator TVA 21% și 11%" },
+  "plafoane-numerar": { href: internalPath("/unelte/registru-de-casa"), label: "Generator registru de casă" },
+  "registrul-de-casa": { href: internalPath("/unelte/registru-de-casa"), label: "Generator registru de casă" },
+  "nir-nota-receptie": { href: internalPath("/unelte/generator-nir"), label: "Generator NIR" },
+  "pret-unitar-kg-litru": { href: internalPath("/unelte/calculator-adaos-comercial"), label: "Calculator adaos comercial" },
+  "garantie-sgr-bon-fiscal": {
+    href: internalPath("/unelte/afise-obligatorii-magazin"),
+    label: "Generator afișe obligatorii (SGR, ANPC, program)",
+  },
+  "raport-z-memorie-fiscala-p7b": {
+    href: internalPath("/unelte/afise-obligatorii-magazin"),
+    label: "Generator afiș casă de marcat",
+  },
 };
 
 const { rule } = Astro.props;

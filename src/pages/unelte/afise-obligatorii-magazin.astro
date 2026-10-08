@@ -1,0 +1,165 @@
+---
+import ToolShell from "../../components/ToolShell.astro";
+import AfiseObligatoriiTool from "../../components/unelte/AfiseObligatoriiTool.astro";
+import { internalPath } from "../../lib/internal-url.ts";
+import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
+
+const path = "/unelte/afise-obligatorii-magazin/";
+const heading = "Această unitate este dotată cu casă de marcat – afișe obligatorii pentru magazin";
+
+const faq = [
+  {
+    q: "Ce afișe trebuie să aibă un magazin cu casă de marcat?",
+    a: "Minim anunțul de atenționare privind bonul fiscal (OUG nr. 28/1999, art. 1 alin. (11), model aprobat prin Ordinul MF nr. 159/2015), afișat la locul AMEF. În plus, de regulă: programul de funcționare (OG nr. 99/2000, art. 9; Legea nr. 296/2004, art. 63), informări pentru consumatori (comisariat județean, SAL), afișe SGR dacă vinzi băuturi în ambalaje SGR, „Fumatul interzis” în spațiile închise (Legea nr. 349/2002) și, pentru tutun, afișarea interdicției către minori (Ordinul ANPC nr. 331/2025). Pentru alcool, legea interzice vânzarea către minori (Legea nr. 61/1991, art. 2 pct. 23^1), fără un model unic de afiș obligatoriu ca la tutun.",
+  },
+  {
+    q: "Unde pun afișul „Această unitate este dotată cu casă de marcat”?",
+    a: "Ordinul MF nr. 159/2015 cere afișarea anunțului la locul de amplasare a aparatului de marcat electronic fiscal, vizibil clienților. În restaurante, baruri și cluburi informarea se face și pe prima pagină a meniului sau la fiecare masă.",
+  },
+  {
+    q: "Generatorul trimite datele mele pe server?",
+    a: "Nu. Completezi denumirea, CUI-ul, adresa și logo-ul doar în browser; documentele se generează local. Nu trimitem aceste câmpuri în analytics.",
+  },
+  {
+    q: "Pot printa toate afișele pe o singură foaie?",
+    a: "Fiecare afiș important (casă de marcat, program, ANPC) este gândit pentru o pagină A4 lizibilă. Poți bifa doar ce îți trebuie și folosi „Descarcă PDF / print” pentru o foaie per afiș, sau printa previzualizarea compactă.",
+  },
+  {
+    q: "Ce verifică ANPC la afișe?",
+    a: "Inspectorii ANPC verifică, între altele, informarea consumatorilor (inclusiv datele comisariatului și SAL), respectarea prețurilor afișate, programul de funcționare și măsurile privind tutunul/alcoolul către minori. Sancțiunile depind de abatere și sunt prevăzute în legislația specifică.",
+  },
+  {
+    q: "Am nevoie de cont Tapselo?",
+    a: "Nu. Generatorul este gratuit și funcționează fără înregistrare, ca celelalte unelte de pe tapselo.com.",
+  },
+];
+
+const jsonLd = toolJsonLd({
+  path,
+  heading,
+  appName: "Generator afișe obligatorii magazin Tapselo",
+  description:
+    "Generator gratuit de afișe obligatorii pentru magazine: casă de marcat, program, ANPC, SGR, fumat interzis, interdicții minori. PDF și print în browser.",
+  faq,
+});
+---
+
+<ToolShell
+  title="Afișe obligatorii magazin – generator gratuit (casă de marcat, ANPC, program) | Tapselo"
+  description="Generează gratuit afișe obligatorii pentru magazin: casă de marcat, program, ANPC, SGR, fumat interzis și interdicții pentru minori. PDF și print în browser, fără cont."
+  heading={heading}
+  path={path}
+  lead="Bifezi afișele, completezi o dată datele magazinului și descarci documente printabile — cu diacritice corecte și texte aliniate surselor oficiale acolo unde există modele legale."
+  campaign="afise-obligatorii-magazin"
+  ctaTitle="Bon fiscal corect și mai puțină birocrație la casă"
+  ctaBody="Tapselo ține nomenclatorul, TVA-ul pe grupe fiscale și raportarea Z — ca să nu reintroduci aceleași date la fiecare control."
+  related={[
+    { href: "/ghid/garantie-sgr-bon-fiscal/", label: "Garanția SGR de 0,50 lei pe bon și la raft" },
+    { href: "/ghid/raport-z-memorie-fiscala-p7b/", label: "Raport Z, memorie fiscală și fișiere .p7b" },
+    { href: "/ghid/cote-tva-casa-de-marcat/", label: "Cote TVA și grupe fiscale în casa de marcat" },
+  ]}
+  jsonLd={jsonLd}
+  faq={faq}
+>
+  <AfiseObligatoriiTool />
+
+  <article class="prose-tapselo space-y-8 text-text-secondary leading-relaxed">
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Ce afișe sunt obligatorii într-un magazin mic</h2>
+      <p>
+        La deschiderea unui magazin, pe lângă autorizațiile de la DSP, primărie sau ISU, comercianții trebuie să informeze
+        clienții direct la punctul de vânzare. Lista variază după activitate (alimentar, tutun, băuturi SGR, alcool), dar
+        câteva afișe apar în aproape orice control ANAF, ANPC sau Poliție Locală.
+      </p>
+      <p>
+        <strong class="text-primary">Casă de marcat.</strong> Operatorii care folosesc AMEF trebuie să afișeze anunțul de
+        atenționare privind bonul fiscal, conform OUG nr. 28/1999, art. 1 alin. (11). Modelul și conținutul sunt aprobate
+        prin Ordinul ministrului finanțelor publice nr. 159/2015; textul include solicitarea de a cere și păstra bonul fiscal.
+        Anunțul se pune la locul aparatului, vizibil cumpărătorilor.
+      </p>
+      <p>
+        <strong class="text-primary">Program de funcționare.</strong> OG nr. 99/2000 privind comercializarea produselor și
+        serviciilor de piață (art. 9) cere afișarea orarului la intrare, vizibil din exterior, și respectarea lui. Codul
+        consumului (Legea nr. 296/2004, art. 63) menționează și afișarea denumirii unității, a autorizației și a
+        avertismentelor prevăzute de lege.
+      </p>
+      <p>
+        <strong class="text-primary">ANPC.</strong> Consumatorii trebuie să știe cum contactează comisariatul județean și
+        cum pot folosi soluționarea alternativă a litigiilor (SAL). Telefonul consumatorului este 021 9551 (pagina
+        <a href="https://anpc.ro/sal/" class="font-semibold text-accent hover:underline">anpc.ro/sal</a> și
+        <a href="https://anpc.ro/contact/" class="font-semibold text-accent hover:underline">anpc.ro/contact</a>).
+      </p>
+      <p>
+        <strong class="text-primary">SGR.</strong> Dacă vinzi băuturi în ambalaje cu garanție-returnare, HG nr. 1074/2021
+        îți impune să indici garanția distinct de preț și să afișezi informații pentru consumatori (art. 6). Garanția este de
+        0,5 lei per ambalaj (art. 12 alin. (5)). Dacă nu ai punct propriu de returnare, dar folosești parteneriat cu UAT/ADI
+        (art. 17 alin. (7)), se afișează textul legal „Acest magazin nu funcționează ca punct de returnare a ambalajelor“
+        (art. 6 alin. (2)).
+      </p>
+      <p>
+        <strong class="text-primary">Fumat și minori.</strong> În spațiile publice închise, Legea nr. 349/2002 (art. 3 alin.
+        (1) și art. 5 alin. (1)) impun interdicția de fumat și marcarea cu „Fumatul interzis”. Vânzarea de alcool către
+        minori este interzisă (Legea nr. 61/1991, art. 2 pct. 23^1, introdus prin Legea nr. 174/2023). Pentru tutun și
+        produse conexe, Ordinul ANPC nr. 331/2025 impune afișarea interdicției la locul de vânzare și placheta de pe anpc.ro.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Unde le pui în magazin</h2>
+      <ul class="list-disc space-y-2 pl-5">
+        <li>Anunțul casei de marcat: lângă casa de marcat și la intrarea în zona de plată, la înălțimea ochilor.</li>
+        <li>Programul: pe ușă sau vitrină, lizibil din exterior, conform OG nr. 99/2000.</li>
+        <li>ANPC: la intrare sau lângă casă, împreună cu alte informări pentru consumatori.</li>
+        <li>SGR: la raftul cu băuturi în ambalaje SGR și, dacă ai punct de returnare, la zona de colectare.</li>
+        <li>Fumat / minori: la intrare, lângă vitrină sau la raftul cu alcool și tutun.</li>
+      </ul>
+      <p class="text-sm">
+        Păstrează o copie PDF sau foto a afișelor la zi — la controale poți demonstra rapid că informarea era vizibilă.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Cine verifică și ce riscuri ai</h2>
+      <p>
+        <strong class="text-primary">ANAF</strong> verifică utilizarea AMEF, emiterea bonului fiscal și afișarea anunțului
+        prevăzut de OUG nr. 28/1999. Neemiterea bonului sau nerespectarea obligațiilor de conectare se sancționează conform
+        Codului de procedură fiscală și actelor complementare — valorile exacte depind de tipul abaterii; verifică textul
+        actualizat pe legislatie.just.ro înainte de a te baza pe o sumă fixă.
+      </p>
+      <p>
+        <strong class="text-primary">ANPC</strong> controlează informarea consumatorilor, prețurile, programul și măsurile
+        privind tutunul/alcoolul. Amenziile sunt prevăzute în OG nr. 21/1992 și actele ANPC (de exemplu pentru practici
+        comerciale incorecte sau neinformare).
+      </p>
+      <p>
+        <strong class="text-primary">Poliția Locală</strong> și structurile MAI pot aplica sancțiuni pentru ordine publică,
+        inclusiv vânzarea de alcool sau tutun minorilor (Legea nr. 61/1991, Legea nr. 349/2002).
+      </p>
+      <p>
+        Sancțiunile se actualizează prin legi noi; dacă nu găsești suma într-o sursă oficială, tratează orice amendă ca
+        pe un interval posibil și remediază abaterea — afișele corecte sunt cea mai ieftină prevenție.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Cum folosești generatorul Tapselo</h2>
+      <p>
+        Selectezi afișele, completezi denumirea și adresa o singură dată, ajustezi programul și comisariatul ANPC, apoi
+        previzualizezi textul cu diacritice. Butonul „Descarcă PDF / print” deschide o pagină pregătită pentru print sau
+        „Salvează ca PDF” din browser, cu font Noto Sans pentru ș, ț, ă, î, â. Logo-ul, dacă îl încarci, nu părăsește
+        dispozitivul tău.
+      </p>
+      <p>
+        Dacă deschizi un magazin de la zero, combină generatorul cu ghidurile noastre
+        <a href={internalPath("/ghid/deschide-minimarket-alimentara")} class="font-semibold text-accent hover:underline">pași pentru magazin alimentar</a>
+        și cu verificarea casei de marcat pentru raport Z și A4200.
+      </p>
+    </section>
+  </article>
+</ToolShell>
+
+<style>
+  .prose-tapselo a {
+    text-underline-offset: 2px;
+  }
+</style>

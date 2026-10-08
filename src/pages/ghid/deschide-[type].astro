@@ -4,6 +4,7 @@ import GuideShell from "../../components/GuideShell.astro";
 import { inlineMd } from "../../lib/markdown.ts";
 import { checklistSources, type Checklist } from "../../lib/mcp/answers/checklist.ts";
 import checklists from "../../lib/kb/shop-checklists.json";
+import { internalPath } from "../../lib/internal-url.ts";
 
 export function getStaticPaths() {
   return (checklists as Checklist[]).map((c) => ({
@@ -73,4 +74,14 @@ const { c } = Astro.props as { c: Checklist };
       {c.documents.map((x) => <li set:html={inlineMd(x)} />)}
     </ul>
   </section>
+
+  <p class="rounded-xl border border-border-light p-5 text-sm text-text-secondary">
+    Unealtă gratuită:{" "}
+    <a
+      href={internalPath("/unelte/afise-obligatorii-magazin")}
+      class="font-semibold text-primary underline underline-offset-2 hover:text-accent"
+    >
+      Generator afișe obligatorii magazin (casă de marcat, program, ANPC, SGR)
+    </a>
+  </p>
 </GuideShell>

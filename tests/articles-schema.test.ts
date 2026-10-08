@@ -63,6 +63,6 @@ test("buildArticleJsonLd emits Article, BreadcrumbList, HowTo and FAQPage", () =
 test("article paths match route prefix", () => {
   const articles = parseArticlesFile(articlesJson);
   for (const a of articles) {
-    assert.equal(articlePath(a.slug), `/ghid/articole/${a.slug}`);
+    assert.equal(articlePath(a.slug), `/ghid/articole/${a.slug}/`);
   }
 });

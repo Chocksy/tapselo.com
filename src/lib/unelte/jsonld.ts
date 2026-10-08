@@ -1,3 +1,5 @@
+import { internalPath } from "../internal-url.ts";
+
 const SITE = "https://tapselo.com";
 
 /** Canonical URLs on tapselo.com end with "/" (see <link rel="canonical"> in Layout). */
@@ -20,7 +22,7 @@ export interface Crumb {
 export function toolBreadcrumbs(heading: string, path: string): Crumb[] {
   return [
     { name: "Acasă", path: "/" },
-    { name: "Unelte gratuite", path: "/unelte" },
+    { name: "Unelte gratuite", path: "/unelte/" },
     { name: heading, path },
   ];
 }
@@ -33,7 +35,10 @@ export interface BreadcrumbLink {
 
 /** Every crumb links to its page except the last one (the current page). */
 export function breadcrumbLinks(crumbs: Crumb[]): BreadcrumbLink[] {
-  return crumbs.map((c, i) => ({ label: c.name, href: i < crumbs.length - 1 ? c.path : undefined }));
+  return crumbs.map((c, i) => ({
+    label: c.name,
+    href: i < crumbs.length - 1 ? internalPath(c.path) : undefined,
+  }));
 }
 
 export function webApplicationJsonLd(opts: { name: string; path: string; description: string }): Record<string, unknown> {

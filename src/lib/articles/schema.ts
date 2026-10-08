@@ -8,7 +8,7 @@ const PUBLISHER = {
   logo: `${SITE}/logo.png`,
 };
 
-export const A4200_CHECKER_PATH = "/ghid/verificare-a4200";
+export const A4200_CHECKER_PATH = "/ghid/verificare-a4200/";
 
 export type ArticleType = "howto" | "article";
 export type ArticleCta = "a4200" | "default";
@@ -165,7 +165,7 @@ export function parseArticlesFile(raw: unknown): SupportArticle[] {
 }
 
 export function articlePath(slug: string): string {
-  return `/ghid/articole/${slug}`;
+  return `/ghid/articole/${slug}/`;
 }
 
 export function articleUrl(slug: string): string {

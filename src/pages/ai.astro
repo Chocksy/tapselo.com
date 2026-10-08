@@ -5,6 +5,8 @@
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
+import EmailLink from "../components/EmailLink.astro";
+import { internalPath } from "../lib/internal-url.ts";
 import { answerTools } from "../lib/mcp/tools.ts";
 import { generatorTools } from "../lib/generators/tools.ts";
 
@@ -155,7 +157,7 @@ const li = "list-disc leading-relaxed";
           Conectorul primește doar datele trimise pentru o unealtă (de exemplu un CUI sau lista de produse), nu
           conversația ta. Răspunsurile nu se salvează. Documentele se păstrează 30 de zile, apoi se șterg automat.
           În loguri scriem doar numele uneltei, rezultatul și durata, fără textul tău. Detalii în
-          <a href="/privacy#asistent-ai" class={a}>politica de confidențialitate</a>.
+          <a href={internalPath("/privacy#asistent-ai")} class={a}>politica de confidențialitate</a>.
         </p>
       </section>
 
@@ -163,7 +165,7 @@ const li = "list-disc leading-relaxed";
         <h2 class="font-display text-3xl italic text-primary">Ajutor</h2>
         <p class={p}>
           Pentru întrebări, erori, ștergerea unui document sau raportarea unei pagini, scrie la
-          <a href="mailto:contact@tapselo.com" class={a}>contact@tapselo.com</a>. Pentru un document, trimite și linkul lui.
+          <EmailLink class={a} />. Pentru un document, trimite și linkul lui.
         </p>
       </section>
 
@@ -181,8 +183,8 @@ const li = "list-disc leading-relaxed";
           Add it in Claude: Settings &rarr; Connectors &rarr; Add custom connector, URL <code>{MCP_URL}</code>, no
           sign-in. Documents expire after 30 days and are public to anyone with the link. No account is needed. The
           information is not legal or tax advice. Privacy:
-          <a href="/privacy#asistent-ai" class={a}>tapselo.com/privacy#asistent-ai</a>. Support:
-          <a href="mailto:contact@tapselo.com" class={a}>contact@tapselo.com</a>.
+          <a href={internalPath("/privacy#asistent-ai")} class={a}>tapselo.com/privacy#asistent-ai</a>. Support:
+          <EmailLink class={a} />.
         </p>
       </section>
     </div>

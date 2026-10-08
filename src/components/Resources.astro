@@ -1,0 +1,64 @@
+---
+import { internalPath } from "../lib/internal-url.ts";
+import { toolLinks, ruleGuideLinks, shopGuideLinks, articleLinks } from "../lib/site-directory.ts";
+
+const linkClass =
+  "text-sm text-text-secondary transition-colors hover:text-accent focus-visible:text-accent focus-visible:outline-none";
+---
+
+<section id="resurse" class="border-t border-border bg-surface py-20">
+  <div class="mx-auto max-w-6xl px-6">
+    <h2 class="font-display text-3xl italic text-primary sm:text-4xl">Resurse pentru comercianți</h2>
+    <p class="mt-3 max-w-2xl text-lg text-text-secondary">
+      Ghiduri fiscale, deschidere de magazin și unelte gratuite în browser — fără cont Tapselo.
+    </p>
+
+    <div class="mt-10 grid gap-10 lg:grid-cols-2">
+      <div>
+        <h3 class="text-lg font-bold text-primary">
+          <a href={internalPath("/unelte/")} class="hover:text-accent">Unelte gratuite</a>
+        </h3>
+        <ul class="mt-4 columns-1 gap-x-6 sm:columns-2">
+          {toolLinks.map((item) => (
+            <li class="mb-2 break-inside-avoid">
+              <a href={item.href} class={linkClass}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-bold text-primary">
+          <a href={internalPath("/ghid/")} class="hover:text-accent">Ghid pentru magazine</a>
+        </h3>
+        <p class="mt-2 text-sm font-semibold text-text-muted">Reguli și fiscalitate</p>
+        <ul class="mt-2 columns-1 gap-x-6 sm:columns-2">
+          {ruleGuideLinks.map((item) => (
+            <li class="mb-2 break-inside-avoid">
+              <a href={item.href} class={linkClass}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-6 text-sm font-semibold text-text-muted">Deschide un magazin</p>
+        <ul class="mt-2 space-y-2">
+          {shopGuideLinks.map((item) => (
+            <li>
+              <a href={item.href} class={linkClass}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-10">
+      <h3 class="text-lg font-bold text-primary">Articole de suport</h3>
+      <ul class="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+        {articleLinks.map((item) => (
+          <li>
+            <a href={item.href} class={linkClass}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>

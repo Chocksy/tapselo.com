@@ -1,20 +1,21 @@
 ---
-import { ArrowRight, BadgePercent, Barcode, Calculator, ClipboardList, FileCheck, NotebookPen, ScanBarcode } from "@lucide/astro";
+import { ArrowRight, BadgePercent, Barcode, Calculator, ClipboardList, FileCheck, NotebookPen, ScanBarcode, ScrollText } from "@lucide/astro";
 import GuideShell from "../components/GuideShell.astro";
 import { A4200_CHECKER_PATH } from "../lib/articles/schema.ts";
 import { barcodeApiBase } from "../lib/unelte/barcode.ts";
 import { breadcrumbJsonLd, breadcrumbLinks, type Crumb } from "../lib/unelte/jsonld.ts";
+import { internalPath } from "../lib/internal-url.ts";
 
 const barcodeEnabled = barcodeApiBase(import.meta.env.PUBLIC_BARCODE_API_URL) !== "";
 
 const crumbs: Crumb[] = [
   { name: "Acasă", path: "/" },
-  { name: "Unelte gratuite", path: "/unelte" },
+  { name: "Unelte gratuite", path: "/unelte/" },
 ];
 
 const tools = [
   {
-    href: "/unelte/calculator-tva",
+    href: internalPath("/unelte/calculator-tva"),
     title: "Calculator TVA",
     icon: Calculator,
     action: "Deschide calculatorul",
@@ -23,7 +24,7 @@ const tools = [
       (barcodeEnabled ? " Opțional: cota TVA după codul de bare EAN." : ""),
   },
   {
-    href: "/unelte/verificare-cod-de-bare",
+    href: internalPath("/unelte/verificare-cod-de-bare"),
     title: "Verificare cod de bare",
     icon: ScanBarcode,
     action: "Deschide verificarea",
@@ -31,7 +32,7 @@ const tools = [
       "Caută un produs după codul EAN-13: țara prefixului (594 = România), cifra de control, denumirea, cota TVA, marca și imaginea.",
   },
   {
-    href: "/unelte/registru-de-casa",
+    href: internalPath("/unelte/registru-de-casa"),
     title: "Registru de casă",
     icon: NotebookPen,
     action: "Deschide registrul",
@@ -39,7 +40,7 @@ const tools = [
       "Generator zilnic: sold din ziua precedentă, încasări, plăți, sold final. Export PDF și Excel, cu avertizare la plafonul de 50.000 lei.",
   },
   {
-    href: "/unelte/generator-nir",
+    href: internalPath("/unelte/generator-nir"),
     title: "Generator NIR",
     icon: ClipboardList,
     action: "Deschide generatorul",
@@ -47,7 +48,7 @@ const tools = [
       "Notă de recepție și constatare de diferențe din datele facturii: liniile de marfă, TVA, adaos, PDF printabil pentru semnături.",
   },
   {
-    href: "/unelte/calculator-adaos-comercial",
+    href: internalPath("/unelte/calculator-adaos-comercial"),
     title: "Calculator adaos comercial",
     icon: BadgePercent,
     action: "Deschide calculatorul",
@@ -55,7 +56,7 @@ const tools = [
       "De la cost fără TVA la preț de vânzare cu TVA și invers, rotunjire la raft și afiș de preț. Verifică plafonul de 20% pentru alimentele de bază.",
   },
   {
-    href: "/unelte/generator-cod-de-bare",
+    href: internalPath("/unelte/generator-cod-de-bare"),
     title: "Generator cod de bare",
     icon: Barcode,
     action: "Deschide generatorul",
@@ -63,7 +64,15 @@ const tools = [
       "EAN-13 cu cifră de control, EAN-8 și Code 128. Descarcă PNG/SVG sau printează o foaie A4 cu etichete pentru produse și cântar.",
   },
   {
-    href: A4200_CHECKER_PATH,
+    href: internalPath("/unelte/afise-obligatorii-magazin"),
+    title: "Afișe obligatorii magazin",
+    icon: ScrollText,
+    action: "Deschide generatorul",
+    description:
+      "Casă de marcat, program, ANPC, SGR, fumat interzis și interdicții pentru minori — PDF și print în browser, fără cont.",
+  },
+  {
+    href: internalPath(A4200_CHECKER_PATH),
     title: "Verificare A4200",
     icon: FileCheck,
     action: "Deschide verificarea",

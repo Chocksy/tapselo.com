@@ -2,6 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
+import EmailLink from "../components/EmailLink.astro";
+import { internalPath } from "../lib/internal-url.ts";
 
 // Version string stored on the business when the owner accepts (admin: accept_dpa).
 const DPA_VERSION = "dpa-2026-09-28";
@@ -44,10 +46,10 @@ const a = "font-bold text-accent hover:text-accent-hover";
         <p class={p}>
           <strong class="font-bold text-primary">Persoana împuternicită</strong> este Tapselo, operat de
           Ciocanel Razvan Tudor PFA, România, contact
-          <a href="mailto:contact@tapselo.com" class={a}>contact@tapselo.com</a> (numit mai jos "Tapselo").
+          <EmailLink class={a} /> (numit mai jos "Tapselo").
         </p>
         <p class={p}>
-          Acordul completează <a href="/terms" class={a}>Termenii și condițiile</a>. Pentru datele
+          Acordul completează <a href={internalPath("/terms")} class={a}>Termenii și condițiile</a>. Pentru datele
           personale ale clienților magazinului, acest acord are prioritate.
         </p>
       </section>

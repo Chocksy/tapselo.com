@@ -37,7 +37,7 @@ test("toolJsonLd: WebApplication, FAQPage and a breadcrumb from Acasă", () => {
 test("breadcrumbLinks: every crumb links except the current page", () => {
   assert.deepEqual(breadcrumbLinks(toolBreadcrumbs("Verificare A4200", "/ghid/verificare-a4200")), [
     { label: "Acasă", href: "/" },
-    { label: "Unelte gratuite", href: "/unelte" },
+    { label: "Unelte gratuite", href: "/unelte/" },
     { label: "Verificare A4200", href: undefined },
   ]);
 });

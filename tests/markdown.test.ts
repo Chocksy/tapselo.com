@@ -21,6 +21,6 @@ test("markdown: escapes HTML and refuses unsafe links", () => {
   assert.doesNotMatch(inlineMd("[click](javascript:alert(1))"), /href|javascript:alert\(1\)\)/);
   assert.equal(inlineMd("[click](javascript:void)"), "click");
   assert.equal(inlineMd("[<b>](https://a.ro)"), '<a href="https://a.ro" rel="noopener" target="_blank">&lt;b&gt;</a>');
-  assert.equal(inlineMd("[ghid](/ghid/x)"), '<a href="/ghid/x">ghid</a>');
+  assert.equal(inlineMd("[ghid](/ghid/x)"), '<a href="/ghid/x/">ghid</a>');
   assert.equal(inlineMd("`<i>`"), "<code>&lt;i&gt;</code>");
 });

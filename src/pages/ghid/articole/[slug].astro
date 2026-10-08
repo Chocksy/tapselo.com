@@ -3,6 +3,7 @@
 import GuideShell from "../../../components/GuideShell.astro";
 import { getArticleBySlug, supportArticles } from "../../../lib/articles/load.ts";
 import { articlePath, buildArticleJsonLd } from "../../../lib/articles/schema.ts";
+import { internalPath } from "../../../lib/internal-url.ts";
 import { markdownToHtml } from "../../../lib/markdown.ts";
 
 export function getStaticPaths() {
@@ -32,8 +33,8 @@ const card = "block rounded-xl border border-border-light p-4 transition-colors 
   articleCta={article.cta}
   jsonLd={jsonLd}
   breadcrumbs={[
-    { label: "Ghid pentru magazine", href: "/ghid" },
-    { label: "Articole de suport", href: "/ghid/articole" },
+    { label: "Ghid pentru magazine", href: internalPath("/ghid") },
+    { label: "Articole de suport", href: internalPath("/ghid/articole") },
     { label: article.title },
   ]}
 >
@@ -71,7 +72,7 @@ const card = "block rounded-xl border border-border-light p-4 transition-colors 
       <h2 class="font-display text-3xl italic text-primary">Articole legate</h2>
       <div class="mt-6 grid gap-4 sm:grid-cols-2">
         {related.map((a) => (
-          <a href={articlePath(a.slug)} class={card}>
+          <a href={internalPath(articlePath(a.slug))} class={card}>
             <h3 class="text-sm font-semibold text-primary">{a.title}</h3>
             <p class="mt-1 text-sm text-text-secondary">{a.description}</p>
           </a>

@@ -3,7 +3,7 @@ import ToolShell from "../../components/ToolShell.astro";
 import NirGeneratorTool from "../../components/unelte/NirGeneratorTool.astro";
 import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
 
-const path = "/unelte/generator-nir";
+const path = "/unelte/generator-nir/";
 const heading = "Generator NIR";
 const faq = [
   {
@@ -42,7 +42,6 @@ const jsonLd = toolJsonLd({
   campaign="generator-nir"
   ctaTitle="NIR din poză de factură, în Tapselo"
   ctaBody="Fotografiezi factura la recepție și Tapselo completează liniile, stocul și NIR-ul — fără rescriere în Excel."
-  ctaHref="/?utm_source=unelte&utm_medium=site&utm_campaign=generator-nir#how-it-works"
   related={[{ href: "/ghid/nir-nota-receptie", label: "NIR: nota de recepție și constatare de diferențe" }]}
   jsonLd={jsonLd}
   faq={faq}
