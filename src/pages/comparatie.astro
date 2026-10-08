@@ -6,6 +6,7 @@ import { NEEDS, featureState, orderComparisonVendors, type Competitor } from "..
 import { formatDateRo } from "../lib/mcp/text.ts";
 import { vendorLogoPath } from "../lib/kb/vendor-logos.ts";
 import competitorsJson from "../lib/kb/competitors.json";
+import { internalPath } from "../lib/internal-url.ts";
 
 const vendors = orderComparisonVendors(competitorsJson as (Competitor & { id: string })[]);
 const needs = Object.entries(NEEDS) as [keyof typeof NEEDS, { field: string; label: string }][];
@@ -45,6 +46,10 @@ const structuredList = {
   <p class="rounded-xl border border-ticket bg-ticket-light p-4 text-sm text-primary">
     Pagina este făcută de Tapselo, unul dintre producătorii din tabel. Datele vin de pe site-urile producătorilor, verificate la {range}.
     Bifa verde = da, conform site-ului producătorului. X roșu = nu sau neverificat (nu am găsit informația publică).
+  </p>
+  <p class="text-sm text-text-secondary">
+    Cauți un <a href={internalPath("/program-gestiune-magazin/")} class="font-semibold text-accent hover:underline">program de gestiune pentru magazin</a>?
+    Vezi cum abordează Tapselo stocurile, recepția și inventarul.
   </p>
 
   <nav aria-label="Filtre">

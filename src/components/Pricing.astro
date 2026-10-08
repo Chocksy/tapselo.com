@@ -1,5 +1,6 @@
 ---
 import { Check, ArrowRight } from "@lucide/astro";
+import { internalPath } from "../lib/internal-url.ts";
 
 const plans = [
   { name: "Start", price: 79, tills: "1 casă de marcat", note: "Pentru cafenele și magazine mici" },
@@ -36,6 +37,7 @@ const extras = [
       </p>
       <p class="animate-on-scroll animate-delay-100 mt-4 text-lg leading-relaxed text-text-secondary">
         Cât timp suntem în beta, Tapselo e gratuit, fără card. Prețurile de mai jos se aplică după beta și te anunțăm cu 30 de zile înainte.
+        <a href={internalPath("/program-gestiune-magazin/")} class="font-semibold text-accent hover:underline">Vezi programul de gestiune pentru magazin</a>.
       </p>
       <p class="animate-on-scroll animate-delay-100 mt-3 text-base font-bold text-primary">
         Bonus: primele 20 de magazine din beta păstrează pe viață prețul de mai jos, fără scumpiri.

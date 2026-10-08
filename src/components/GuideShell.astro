@@ -22,6 +22,8 @@ interface Props {
   breadcrumb?: boolean;
   breadcrumbs?: BreadcrumbLink[];
   ctaTitle?: string;
+  ctaBody?: string;
+  ctaHref?: string;
   /** Secondary CTA above the main Tapselo block (A4200 checker). */
   articleCta?: "a4200" | "default";
   jsonLd?: Record<string, unknown>[];
@@ -38,10 +40,12 @@ const {
   breadcrumb = true,
   breadcrumbs,
   ctaTitle = "Tapselo face asta automat la casa de marcat",
+  ctaBody = "Cote TVA corecte pe bon, cântare Dibal, raport Z și stocuri, într-un singur program care merge și fără internet.",
+  ctaHref = internalPath("/#how-it-works"),
   articleCta = "default",
   jsonLd = [],
 } = Astro.props;
-const ctaUrl = internalPath("/#how-it-works");
+const ctaUrl = ctaHref;
 const a4200CheckerUrl = internalPath(A4200_CHECKER_PATH);
 const ctaLocation = `ghid-${campaign}`;
 ---
@@ -104,9 +108,7 @@ const ctaLocation = `ghid-${campaign}`;
 
       <section class="rounded-xl border border-border bg-surface p-6 md:p-8">
         <h2 class="font-display text-3xl italic text-primary">{ctaTitle}</h2>
-        <p class="mt-3 leading-relaxed text-text-secondary">
-          Cote TVA corecte pe bon, cântare Dibal, raport Z și stocuri, într-un singur program care merge și fără internet.
-        </p>
+        <p class="mt-3 leading-relaxed text-text-secondary">{ctaBody}</p>
         <a
           href={ctaUrl}
           data-tapselo-cta={ctaLocation}
