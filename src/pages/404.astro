@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
+import { internalPath } from "../lib/internal-url.ts";
 ---
 
 <Layout
@@ -30,7 +31,7 @@ import Footer from "../components/Footer.astro";
         Pagina principală
       </a>
       <a
-        href="/unelte"
+        href={internalPath("/unelte")}
         class="ut-btn ut-btn-secondary w-full max-w-xs text-center no-underline"
       >
         Unelte gratuite

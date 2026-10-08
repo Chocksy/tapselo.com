@@ -1,49 +1,101 @@
 ---
 import { Github } from "@lucide/astro";
+import { internalPath } from "../lib/internal-url.ts";
+import {
+  toolLinks,
+  ruleGuideLinks,
+  shopGuideLinks,
+  articleLinks,
+  guideHubLinks,
+} from "../lib/site-directory.ts";
+
+const navClass = "text-sm font-medium text-text-on-primary/60 transition-colors hover:text-white";
+const colTitle = "text-xs font-bold uppercase tracking-wide text-text-on-primary/50";
+const colLink = "text-sm text-text-on-primary/60 transition-colors hover:text-white";
 ---
 
-<footer class="bg-primary py-10 border-t border-white/10">
+<footer class="border-t border-white/10 bg-primary py-12">
   <div class="mx-auto max-w-6xl px-6">
-    <div class="flex flex-col items-center justify-between gap-6 md:flex-row">
+    <div class="flex flex-col gap-10 lg:flex-row lg:justify-between">
       <div class="flex items-center gap-2">
         <img src="/logo.png" alt="Tapselo" class="h-7 w-7 rounded" />
         <span class="text-sm font-bold text-white">Tapselo POS</span>
       </div>
 
-      <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
-        <a href="/unelte" class="text-sm font-medium text-text-on-primary/60 transition-colors hover:text-white">Unelte gratuite</a>
-        <a href="/#features" class="text-sm font-medium text-text-on-primary/60 transition-colors hover:text-white">Funcționalități</a>
-        <a href="/#how-it-works" class="text-sm font-medium text-text-on-primary/60 transition-colors hover:text-white">Cum funcționează</a>
-        <a href="/#echipamente" class="text-sm font-medium text-text-on-primary/60 transition-colors hover:text-white">Echipamente</a>
-        <a href="/demo" class="text-sm font-medium text-text-on-primary/60 transition-colors hover:text-white">Demo</a>
-        <a href="/ghid" class="text-sm font-medium text-text-on-primary/60 transition-colors hover:text-white">Ghid</a>
-        <a href="/ai" class="text-sm font-medium text-text-on-primary/60 transition-colors hover:text-white">Asistent AI</a>
-        <a href="/comparatie" class="text-sm font-medium text-text-on-primary/60 transition-colors hover:text-white">Comparație</a>
-        <a href="/#contact" class="text-sm font-medium text-text-on-primary/60 transition-colors hover:text-white">Contact</a>
-        <a
-          href="https://github.com/Chocksy/tapselo-pos"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-text-on-primary/40 transition-colors hover:text-white"
-          aria-label="GitHub repository"
-        >
-          <Github class="h-4 w-4" />
-        </a>
+      <div class="grid flex-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div>
+          <p class={colTitle}>Produs</p>
+          <div class="mt-3 flex flex-col gap-2">
+            <a href={internalPath("/#features")} class={colLink}>Funcționalități</a>
+            <a href={internalPath("/#how-it-works")} class={colLink}>Cum funcționează</a>
+            <a href={internalPath("/#echipamente")} class={colLink}>Echipamente</a>
+            <a href={internalPath("/demo")} class={colLink}>Demo</a>
+            <a href={internalPath("/#contact")} class={colLink}>Contact</a>
+          </div>
+        </div>
+        <div>
+          <p class={colTitle}>Unelte gratuite</p>
+          <ul class="mt-3 space-y-2">
+            <li><a href={internalPath("/unelte")} class={colLink}>Toate uneltele</a></li>
+            {toolLinks.map((item) => (
+              <li><a href={item.href} class={colLink}>{item.label}</a></li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p class={colTitle}>Ghid magazine</p>
+          <ul class="mt-3 max-h-64 space-y-2 overflow-y-auto pr-2">
+            {guideHubLinks.map((item) => (
+              <li><a href={item.href} class={colLink}>{item.label}</a></li>
+            ))}
+            {ruleGuideLinks.map((item) => (
+              <li><a href={item.href} class={colLink}>{item.label}</a></li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p class={colTitle}>Deschide magazin</p>
+          <ul class="mt-3 space-y-2">
+            {shopGuideLinks.map((item) => (
+              <li><a href={item.href} class={colLink}>{item.label}</a></li>
+            ))}
+          </ul>
+          <p class={`${colTitle} mt-6`}>Articole</p>
+          <ul class="mt-3 space-y-2">
+            {articleLinks.map((item) => (
+              <li><a href={item.href} class={colLink}>{item.label}</a></li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
 
-    <div class="mt-8 flex flex-col items-center gap-3 border-t border-white/10 pt-8 text-center">
-      <p class="text-sm text-text-on-primary/40">
-        &copy; 2026 Tapselo. Toate drepturile rezervate.
-      </p>
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 border-t border-white/10 pt-8">
+      <a href={internalPath("/unelte")} class={navClass}>Unelte gratuite</a>
+      <a href={internalPath("/ghid")} class={navClass}>Ghid</a>
+      <a href={internalPath("/ai")} class={navClass}>Asistent AI</a>
+      <a href={internalPath("/comparatie")} class={navClass}>Comparație</a>
+      <a
+        href="https://github.com/Chocksy/tapselo-pos"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-text-on-primary/40 transition-colors hover:text-white"
+        aria-label="GitHub repository"
+      >
+        <Github class="h-4 w-4" />
+      </a>
+    </div>
+
+    <div class="mt-8 flex flex-col items-center gap-3 text-center">
+      <p class="text-sm text-text-on-primary/40">&copy; 2026 Tapselo. Toate drepturile rezervate.</p>
       <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-        <a href="/privacy" class="text-xs text-text-on-primary/40 transition-colors hover:text-white">Confidențialitate</a>
+        <a href={internalPath("/privacy")} class="text-xs text-text-on-primary/40 transition-colors hover:text-white">Confidențialitate</a>
         <span class="text-xs text-text-on-primary/20">&middot;</span>
-        <a href="/data-deletion" class="text-xs text-text-on-primary/40 transition-colors hover:text-white">Ștergerea datelor</a>
+        <a href={internalPath("/data-deletion")} class="text-xs text-text-on-primary/40 transition-colors hover:text-white">Ștergerea datelor</a>
         <span class="text-xs text-text-on-primary/20">&middot;</span>
-        <a href="/terms" class="text-xs text-text-on-primary/40 transition-colors hover:text-white">Termeni</a>
+        <a href={internalPath("/terms")} class="text-xs text-text-on-primary/40 transition-colors hover:text-white">Termeni</a>
         <span class="text-xs text-text-on-primary/20">&middot;</span>
-        <a href="/dpa" class="text-xs text-text-on-primary/40 transition-colors hover:text-white">Acord de prelucrare a datelor</a>
+        <a href={internalPath("/dpa")} class="text-xs text-text-on-primary/40 transition-colors hover:text-white">Acord de prelucrare a datelor</a>
       </div>
     </div>
   </div>

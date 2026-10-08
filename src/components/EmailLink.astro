@@ -1,0 +1,13 @@
+---
+/** Mailto link wrapped for Cloudflare Email Obfuscation (<!--email_off-->). */
+interface Props {
+  email?: string;
+  class?: string;
+}
+
+const { email = "contact@tapselo.com", class: className } = Astro.props;
+---
+
+<!--email_off-->
+<a href={`mailto:${email}`} class={className}>{email}</a>
+<!--/email_off-->

@@ -68,7 +68,7 @@ export function footerHtml(kind: string, expiresAt: string | null | undefined, l
   const exp = formatDate(expiresAt);
   const abuse = local
     ? ""
-    : `\n<p class="g-abuse no-print">Pagină creată de un utilizator.${exp ? ` Expiră pe ${escapeHtml(exp)}.` : ""} Raportează abuz: <a href="mailto:${ABUSE_EMAIL}">${ABUSE_EMAIL}</a></p>`;
+    : `\n<p class="g-abuse no-print">Pagină creată de un utilizator.${exp ? ` Expiră pe ${escapeHtml(exp)}.` : ""} Raportează abuz: <!--email_off--><a href="mailto:${ABUSE_EMAIL}">${ABUSE_EMAIL}</a><!--/email_off--></p>`;
   return `<div class="g-footer">
 <p class="g-made">Generat cu <a href="${escapeHtml(href)}">tapselo.com</a></p>${abuse}
 </div>`;

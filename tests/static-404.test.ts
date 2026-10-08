@@ -9,6 +9,6 @@ test("dist/404.html exists for Cloudflare Pages real 404 responses", { skip: !ex
   const html = readFileSync(dist404, "utf8");
   assert.match(html, /<meta name="robots" content="noindex">/);
   assert.match(html, /Pagina nu a fost găsită/);
-  assert.match(html, /href="\/unelte"/);
+  assert.match(html, /href="\/unelte\/"/);
   assert.match(html, /href="\/"/);
 });

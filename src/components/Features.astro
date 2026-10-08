@@ -1,4 +1,5 @@
 ---
+import { internalPath } from "../lib/internal-url.ts";
 import {
   WifiOff,
   ArrowRight,
@@ -96,7 +97,7 @@ const features = [
     </div>
 
     <p class="animate-on-scroll mt-8">
-      <a href="/demo" class="group inline-flex items-center gap-2 text-base font-bold text-accent hover:text-accent-hover">
+      <a href={internalPath("/demo")} class="group inline-flex items-center gap-2 text-base font-bold text-accent hover:text-accent-hover">
         Vezi tot turul, pe scurt
         <ArrowRight class="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5" />
       </a>
