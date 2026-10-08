@@ -107,12 +107,37 @@ export interface CashbookPayload {
   entries: CashbookEntry[];
 }
 
+export interface WarehouseCardEntry {
+  /** YYYY-MM-DD */
+  date: string;
+  doc_number: string;
+  doc_type: string;
+  /** Intrări (quantity or value per row, per user input). */
+  entries_in?: number;
+  /** Ieșiri */
+  entries_out?: number;
+  /** Optional control signature note for the row. */
+  control_signature?: string;
+}
+
+export interface WarehouseCardPayload {
+  company: string;
+  warehouse: string;
+  product: string;
+  product_code?: string;
+  unit: string;
+  unit_price?: number;
+  opening_stock: number;
+  rows: WarehouseCardEntry[];
+}
+
 export interface PayloadByKind {
   flyer: FlyerPayload;
   labels: LabelsPayload;
   nir: NirPayload;
   recipe: RecipePayload;
   cashbook: CashbookPayload;
+  warehouse_card: WarehouseCardPayload;
 }
 
 export type ImageStatus = "pending" | "ready" | "failed" | "skipped";
