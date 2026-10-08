@@ -15,6 +15,14 @@ const RELATED_TOOLS: Record<string, { href: string; label: string }> = {
   "registrul-de-casa": { href: internalPath("/unelte/registru-de-casa"), label: "Generator registru de casă" },
   "nir-nota-receptie": { href: internalPath("/unelte/generator-nir"), label: "Generator NIR" },
   "pret-unitar-kg-litru": { href: internalPath("/unelte/calculator-adaos-comercial"), label: "Calculator adaos comercial" },
+  "garantie-sgr-bon-fiscal": {
+    href: internalPath("/unelte/afise-obligatorii-magazin"),
+    label: "Generator afișe obligatorii (SGR, ANPC, program)",
+  },
+  "raport-z-memorie-fiscala-p7b": {
+    href: internalPath("/unelte/afise-obligatorii-magazin"),
+    label: "Generator afiș casă de marcat",
+  },
 };
 
 const { rule } = Astro.props;
