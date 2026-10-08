@@ -1,60 +1,76 @@
 ---
 import ToolShell from "../../components/ToolShell.astro";
 import VatCalculatorTool from "../../components/unelte/VatCalculatorTool.astro";
+import VatCalculatorContent from "../../components/unelte/VatCalculatorContent.astro";
 import { barcodeApiBase } from "../../lib/unelte/barcode.ts";
 import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
 
 const path = "/unelte/calculator-tva/";
-const heading = "Calculator TVA 21% și 11%";
+const heading = "Calculator TVA 2026 – adaugă sau scoate TVA 21% / 11%";
 const barcodeApi = barcodeApiBase(import.meta.env.PUBLIC_BARCODE_API_URL);
 
 const faq = [
   {
-    q: "Cum calculez TVA 21% din preț?",
-    a: "În modul „Scoate TVA”, introdu prețul cu TVA inclus și cota 21%. Obții baza (preț fără TVA) și suma de TVA.",
+    q: "Cum adaug TVA 21% la un preț fără TVA?",
+    a: "Alege modul „Adaugă TVA”, cota 21% și introdu suma netă. Formula: preț cu TVA = preț fără TVA × 1,21. Exemplu: 100 lei net → 21 lei TVA → 121 lei brut.",
   },
   {
-    q: "Care este formula de calcul TVA 21% și 11%?",
-    a: "Adăugare: TVA = preț fără TVA × 0,21 (sau × 0,11). Exemplu: 100 lei + TVA 21% = 121 lei. Scoatere din preț: TVA = preț cu TVA × 21 / 121 (sau × 11 / 111). Exemplu: din 100 lei cu TVA 21%, TVA = 17,36 lei și prețul fără TVA = 82,64 lei.",
+    q: "Cum extrag TVA din prețul cu TVA inclus?",
+    a: "Alege modul „Extrage TVA” și introdu prețul de la raft (brut). Preț fără TVA = brut ÷ 1,21 (sau ÷ 1,11 la cotă redusă); TVA = brut − preț fără TVA, rotunjit la bani.",
   },
   {
-    q: "Care este diferența între TVA 21% și 11%?",
-    a: "Din 1 august 2025, 21% este cota standard; 11% este cota redusă pentru alimente și alte categorii din Codul fiscal. Alimentele cu zahăr adăugat de cel puțin 10 g/100 g, băuturile din NC 2202 și alcoolul rămân la 21%. Verifică încadrarea produsului.",
+    q: "Care sunt formulele complete pentru TVA 21% și 11%?",
+    a: "Adăugare: TVA = net × cotă; brut = net × (1 + cotă). Extragere: net = brut ÷ (1 + cotă); TVA = brut − net. La 11%, înlocuiești 0,21 cu 0,11 (divizor 1,11).",
+  },
+  {
+    q: "Ce cote de TVA sunt în vigoare din august 2025?",
+    a: "Conform Legii nr. 141/2025, din 1 august 2025 cota standard este 21% și cota redusă unică este 11%. Până la 31 iulie 2025 se aplicau 19%, 9% și 5%.",
+  },
+  {
+    q: "Care este diferența între TVA 21% și 11% la magazin?",
+    a: "21% este cota standard pentru majoritatea produselor. 11% se aplică alimentelor și altor categorii din Codul fiscal (ex. apă NC 2201, medicamente, cărți), cu excepții importante: alcool, băuturi NC 2202, alimente cu zahăr adăugat ≥10 g/100 g rămân la 21%. Verifică încadrarea produsului.",
   },
   ...(barcodeApi
     ? [
         {
-          q: "De unde vine cota TVA la codul de bare?",
-          a: "Căutăm codul în nomenclatorul Tapselo, care conține denumirea produsului și cota TVA. Nu afișăm prețuri sau date de magazin.",
+          q: "De unde vine cota TVA la căutarea după cod EAN?",
+          a: "Căutăm codul în nomenclatorul Tapselo și afișăm denumirea produsului și cota TVA mapată. Nu trimitem și nu afișăm prețuri sau date interne de magazin.",
         },
       ]
     : []),
 ];
 
+const metaDescription =
+  "Calculator TVA 2026 gratuit: adaugă TVA la prețul net sau extrage TVA din prețul brut, la cotele 21% și 11%. Formule, exemple și tabel cote — în lei, fără cont.";
+
 const jsonLd = toolJsonLd({
   path,
   heading,
   appName: "Calculator TVA Tapselo",
-  description: "Calculator TVA online: adaugă sau scoate TVA la 21% și 11%, calcul din preț cu sau fără TVA.",
+  description:
+    "Calculator TVA online: adaugă TVA la preț net sau extrage TVA din preț brut, la 21% și 11%, cu rotunjire la bani.",
   faq,
 });
 ---
 
 <ToolShell
-  title="Calculator TVA online — calcul TVA 21% și 11% | Tapselo"
-  description="Calculator TVA gratuit: adaugă sau scoate TVA la cotele 21% și 11% (din august 2025). Calculează preț cu TVA, preț fără TVA și suma TVA din preț."
+  title="Calculator TVA 2026 – adaugă sau scoate TVA 21% / 11%"
+  description={metaDescription}
   heading={heading}
   path={path}
-  lead="Calculează rapid TVA 21% sau 11%: adaugă TVA la prețul fără TVA sau extrage TVA din prețul cu TVA inclus. Rulează în browser, fără cont."
+  lead="Calculează TVA 21% sau 11% în ambele sensuri: de la preț fără TVA la preț la raft sau invers. Rulează în browser, fără cont — cu virgulă românească și rotunjire la bani."
   campaign="calculator-tva"
   ctaTitle="Cote TVA corecte pe bon, automat"
   ctaBody="Tapselo pune fiecare produs pe grupa fiscală corectă la casa de marcat — fără bonuri cu TVA greșit."
   related={[
-    { href: "/ghid/cote-tva-casa-de-marcat", label: "Cotele de TVA 21% și 11% și grupele de TVA din casa de marcat" },
-    { href: "/unelte/verificare-cod-de-bare", label: "Verificare cod de bare: caută produsul după codul EAN" },
+    { href: "/ghid/cote-tva-casa-de-marcat/", label: "Cotele de TVA 21% și 11% și grupele de TVA din casa de marcat" },
+    { href: "/ghid/plafon-scutire-tva-395000/", label: "Plafonul de scutire de TVA: 395.000 lei" },
+    { href: "/unelte/calculator-adaos-comercial/", label: "Calculator adaos comercial — preț de vânzare cu TVA" },
+    { href: "/unelte/verificare-cod-de-bare/", label: "Verificare cod de bare: caută produsul după codul EAN" },
   ]}
   jsonLd={jsonLd}
   faq={faq}
 >
   <VatCalculatorTool barcodeApi={barcodeApi} />
+  <VatCalculatorContent />
 </ToolShell>

@@ -180,7 +180,10 @@ test("sticky footer: short pages fill a tall viewport", async () => {
 test("calculator TVA: add / remove, Romanian numbers", async () => {
   const { ctx, page, errors } = await phonePage();
   await open(page, "/unelte/calculator-tva/");
-  assert.equal(await page.textContent("h1"), "Calculator TVA 21% și 11%");
+  assert.equal(
+    await page.textContent("h1"),
+    "Calculator TVA 2026 – adaugă sau scoate TVA 21% / 11%",
+  );
   assert.equal(await page.locator("[data-vat-rate]").count(), 2);
   await page.fill("#vat-amount", "1.234,50");
   assert.match(await page.textContent("#vat-result"), /1\.493,75/);

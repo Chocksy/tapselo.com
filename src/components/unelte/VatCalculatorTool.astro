@@ -11,13 +11,14 @@ const { barcodeApi } = Astro.props;
 <section class="ut-card" aria-labelledby="vat-calc-title">
   <h2 id="vat-calc-title" class="font-display text-2xl italic text-primary">Calculator TVA online</h2>
   <p class="mt-2 text-sm text-text-secondary">
-    Adaugă sau scoate TVA la cotele valabile din 1 august 2025: <strong>21%</strong> (standard) și <strong>11%</strong> (redusă). Sumele sunt în lei.
+    Adaugă TVA la prețul net sau extrage TVA din prețul brut, la cotele din 1 august 2025: <strong>21%</strong> (standard) și
+    <strong>11%</strong> (redusă). Sumele sunt în lei.
   </p>
 
   <div class="mt-6 space-y-4" id="vat-tool" data-barcode-api={barcodeApi || undefined}>
     <div class="ut-seg" role="group" aria-label="Operație TVA">
       <button type="button" data-vat-mode="add" aria-pressed="true">Adaugă TVA</button>
-      <button type="button" data-vat-mode="remove" aria-pressed="false">Scoate TVA</button>
+      <button type="button" data-vat-mode="remove" aria-pressed="false">Extrage TVA</button>
     </div>
 
     <div class="ut-seg" role="group" aria-label="Cotă TVA">
@@ -36,7 +37,7 @@ const { barcodeApi } = Astro.props;
         placeholder="ex. 100 sau 1.234,50"
         aria-describedby="vat-amount-hint"
       />
-      <p class="ut-hint" id="vat-amount-hint">La „Adaugă TVA” introdu prețul fără TVA; la „Scoate TVA”, prețul cu TVA inclus.</p>
+      <p class="ut-hint" id="vat-amount-hint">La „Adaugă TVA” introdu prețul fără TVA; la „Extrage TVA”, prețul cu TVA inclus.</p>
     </div>
 
     <dl class="ut-result" id="vat-result" aria-live="polite"></dl>
@@ -78,8 +79,8 @@ const { barcodeApi } = Astro.props;
   let lastCalcKey = "";
 
   const HINTS: Record<VatMode, string> = {
-    add: "La „Adaugă TVA” introdu prețul fără TVA; la „Scoate TVA”, prețul cu TVA inclus.",
-    remove: "Introdu prețul cu TVA inclus: afli prețul fără TVA și TVA-ul din preț.",
+    add: "Introdu prețul fără TVA: calculatorul afișează TVA-ul și prețul cu TVA inclus.",
+    remove: "Introdu prețul cu TVA inclus (de la raft): afli prețul fără TVA și suma de TVA.",
   };
 
   function renderVat() {

@@ -12,7 +12,7 @@ test("toolJsonLd: WebApplication, FAQPage and a breadcrumb from Acasă", () => {
   const faq = [{ q: "Întrebare?", a: "Răspuns." }];
   const [app, faqPage, crumbs] = toolJsonLd({
     path: "/unelte/calculator-tva",
-    heading: "Calculator TVA 21% și 11%",
+    heading: "Calculator TVA 2026 – adaugă sau scoate TVA 21% / 11%",
     appName: "Calculator TVA Tapselo",
     description: "d",
     faq,
@@ -28,7 +28,7 @@ test("toolJsonLd: WebApplication, FAQPage and a breadcrumb from Acasă", () => {
     [
       [1, "Acasă", "https://tapselo.com/"],
       [2, "Unelte gratuite", "https://tapselo.com/unelte/"],
-      [3, "Calculator TVA 21% și 11%", "https://tapselo.com/unelte/calculator-tva/"],
+      [3, "Calculator TVA 2026 – adaugă sau scoate TVA 21% / 11%", "https://tapselo.com/unelte/calculator-tva/"],
     ],
   );
   assert.deepEqual(toolBreadcrumbs("H", "/unelte/x").map((c) => c.name), ["Acasă", "Unelte gratuite", "H"]);

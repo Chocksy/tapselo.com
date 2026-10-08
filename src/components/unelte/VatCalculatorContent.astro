@@ -1,0 +1,183 @@
+---
+/** Long-form SEO content for /unelte/calculator-tva/ (kept separate from ToolShell FAQ). */
+---
+
+<article class="space-y-10 text-text-secondary">
+  <section aria-labelledby="vat-when-title">
+    <h2 id="vat-when-title" class="font-display text-2xl italic text-primary">Când folosești calculatorul TVA</h2>
+    <p class="mt-4 leading-relaxed">
+      În magazin lucrezi zilnic cu prețuri <strong>cu TVA inclus</strong> la raft, dar la achiziții și în gestiune ai adesea
+      <strong>prețuri fără TVA</strong> (net). Calculatorul de mai sus rezolvă ambele sensuri: adaugi TVA la o sumă netă sau extragi
+      TVA din prețul brut afișat clientului. Cotele disponibile sunt cele în vigoare din <strong>1 august 2025</strong> conform
+      <strong>Legii nr. 141/2025</strong>: <strong>21%</strong> (standard) și <strong>11%</strong> (redusă unică).
+    </p>
+    <p class="mt-4 leading-relaxed">
+      Rotunjirea se face la <strong>2 zecimale (bani)</strong>, ca la casa de marcat și pe bonul fiscal. Poți introduce sume cu
+      <strong>virgulă zecimală</strong> (ex. <code class="text-sm">1.234,50</code>) sau punct ca separator de mii. Rezultatul afișează
+      întotdeauna trei valori: preț fără TVA, suma de TVA și preț cu TVA.
+    </p>
+    <p class="mt-4 leading-relaxed">
+      Dacă ai nevoie să treci de la cost la preț de vânzare cu adaos, folosește
+      <a href="/unelte/calculator-adaos-comercial/" class="font-semibold text-accent underline-offset-2 hover:underline"
+        >calculatorul de adaos comercial</a
+      >. Pentru plafonul de scutire de TVA (395.000 lei) și momentul înregistrării ca plătitor, vezi ghidul
+      <a href="/ghid/plafon-scutire-tva-395000/" class="font-semibold text-accent underline-offset-2 hover:underline"
+        >plafon scutire TVA</a
+      >.
+    </p>
+  </section>
+
+  <section aria-labelledby="vat-formula-title">
+    <h2 id="vat-formula-title" class="font-display text-2xl italic text-primary">Formulele de calcul TVA</h2>
+    <p class="mt-4 leading-relaxed">
+      Notăm <strong>net</strong> = preț fără TVA, <strong>brut</strong> = preț cu TVA inclus, <strong>c</strong> = cota (0,21 sau 0,11).
+    </p>
+    <h3 class="mt-6 text-lg font-semibold text-primary">1. Adaugă TVA (de la net la brut)</h3>
+    <p class="mt-2 leading-relaxed">
+      Când cunoști prețul fără TVA și vrei prețul de vânzare la raft:
+    </p>
+    <ul class="mt-3 list-disc space-y-2 pl-6 leading-relaxed">
+      <li><strong>TVA</strong> = net × c</li>
+      <li><strong>Brut</strong> = net × (1 + c) = net + TVA</li>
+    </ul>
+    <p class="mt-3 leading-relaxed">
+      În practică, după înmulțire rotunjești fiecare componentă la 2 zecimale. De exemplu, TVA 21% pe 100 lei net: TVA = 21,00 lei,
+      brut = 121,00 lei.
+    </p>
+    <h3 class="mt-6 text-lg font-semibold text-primary">2. Extrage TVA (de la brut la net)</h3>
+    <p class="mt-2 leading-relaxed">
+      Când ai prețul de la raft (cu TVA) și vrei să știi cât este TVA-ul și baza:
+    </p>
+    <ul class="mt-3 list-disc space-y-2 pl-6 leading-relaxed">
+      <li><strong>Net</strong> = brut ÷ (1 + c)</li>
+      <li><strong>TVA</strong> = brut − net (echivalent: brut ÷ (1 + c) × c, după rotunjirea la bani)</li>
+    </ul>
+    <p class="mt-3 leading-relaxed">
+      La extragere, rotunjirea netului la 2 zecimale poate face ca TVA + net să fie exact egal cu brutul introdus — așa calculează
+      și casa de marcat când afișează defalcarea pe bon.
+    </p>
+  </section>
+
+  <section aria-labelledby="vat-examples-title">
+    <h2 id="vat-examples-title" class="font-display text-2xl italic text-primary">Exemple numerice (21% și 11%)</h2>
+    <div class="mt-4 space-y-6 leading-relaxed">
+      <div class="rounded-lg border border-border-light bg-surface p-5">
+        <h3 class="font-semibold text-primary">Exemplu 1 — Adaugă TVA 21% la 100 lei net</h3>
+        <p class="mt-2">
+          TVA = 100 × 0,21 = <strong>21,00 lei</strong>. Preț cu TVA = 100 + 21 = <strong>121,00 lei</strong>. Este cota standard
+          pentru majoritatea produselor nonalimentare și pentru multe servicii.
+        </p>
+      </div>
+      <div class="rounded-lg border border-border-light bg-surface p-5">
+        <h3 class="font-semibold text-primary">Exemplu 2 — Extrage TVA 21% din 121 lei brut</h3>
+        <p class="mt-2">
+          Net = 121 ÷ 1,21 = <strong>100,00 lei</strong>. TVA = 121 − 100 = <strong>21,00 lei</strong>. Dacă ai doar eticheta de
+          121 lei, folosești modul „Extrage TVA” din calculator.
+        </p>
+      </div>
+      <div class="rounded-lg border border-border-light bg-surface p-5">
+        <h3 class="font-semibold text-primary">Exemplu 3 — Aliment la cotă redusă 11% (extragere din 100 lei brut)</h3>
+        <p class="mt-2">
+          Net = 100 ÷ 1,11 ≈ 90,0909… → rotunjit <strong>90,09 lei</strong>. TVA = 100 − 90,09 = <strong>9,91 lei</strong>. Multe
+          alimente de bază intră la 11% din august 2025, dar verifică produsul (de ex. băuturile răcoritoare și alimentele cu mult
+          zahăr adăugat rămân la 21%). Ghid detaliat:
+          <a href="/ghid/cote-tva-casa-de-marcat/" class="font-semibold text-accent underline-offset-2 hover:underline"
+            >cote TVA la casa de marcat</a
+          >.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="vat-rates-title">
+    <h2 id="vat-rates-title" class="font-display text-2xl italic text-primary">Tabel cote TVA în România</h2>
+    <p class="mt-4 leading-relaxed">
+      Modificările din <strong>Legea nr. 141/2025</strong>, publicată în Monitorul Oficial, au aplicat noile cote de la
+      <strong>1 august 2025</strong>. ANAF a publicat materiale de sinteză pentru contribuabili (inclusiv actualizarea caselor de
+      marcat). Mai jos este un rezumat pentru calcule rapide; încadrarea exactă a unui produs ține de Codul fiscal și de codul NC.
+    </p>
+    <div class="ut-table-wrap mt-6">
+      <table class="ut-table">
+        <thead>
+          <tr>
+            <th scope="col">Perioadă</th>
+            <th scope="col">Cotă standard</th>
+            <th scope="col">Cote reduse</th>
+            <th scope="col">Note pentru magazine</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Din 1 august 2025</strong></td>
+            <td>21%</td>
+            <td>11% (cotă redusă unică)</td>
+            <td
+              >Înlocuiește vechiul 19% / 9% / 5%. Alimentele din lista legală, apa potabilă (NC 2201), medicamente, cărți și anumite
+              servicii de restaurant fără alcool pot folosi 11% — cu excepțiile din lege (alcool, NC 2202, zahăr adăugat ≥10 g/100 g
+              etc.).</td
+            >
+          </tr>
+          <tr>
+            <td><strong>Până la 31 iulie 2025</strong></td>
+            <td>19%</td>
+            <td>9% și 5%</td>
+            <td
+              >9% pentru multe alimente și servicii hoteliere; 5% pentru anumite produse sociale (ex. locuințe sociale în condițiile
+              legii) și categorii specifice. Istoric util pentru facturi vechi și reconciliere contabilă.</td
+            >
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="mt-4 text-sm leading-relaxed">
+      Surse oficiale utile:
+      <a
+        href="https://static.anaf.ro/static/10/Anaf/AsistentaContribuabili_r/Cotele_de_TVA_09.2025.pdf"
+        class="font-semibold text-accent underline-offset-2 hover:underline"
+        rel="noopener noreferrer">ANAF — Cotele de TVA aplicabile din 1 august 2025 (PDF)</a
+      >;
+      textul legii pe
+      <a
+        href="https://legislatie.just.ro/Public/DetaliiDocumentAfis/300022"
+        class="font-semibold text-accent underline-offset-2 hover:underline"
+        rel="noopener noreferrer">legislatie.just.ro — Legea 141/2025</a
+      >.
+    </p>
+  </section>
+
+  <section aria-labelledby="vat-pos-title">
+    <h2 id="vat-pos-title" class="font-display text-2xl italic text-primary">TVA pe bonul fiscal și în gestiune</h2>
+    <p class="mt-4 leading-relaxed">
+      La casă, clientul plătește de regulă <strong>prețul cu TVA</strong>. Raportul Z și jurnalul de vânzări agregă TVA-ul pe cote (21% și 11%). Când introduci un produs nou în nomenclator, ai nevoie fie de prețul net de la furnizor plus adaos, fie de prețul final de la concurență — de aceea un calculator bidirecțional economisește timp față de formule în Excel.
+    </p>
+    <p class="mt-4 leading-relaxed">
+      Atenție: <strong>cota greșită pe bon</strong> nu se corectează doar prin recalcul pe hârtie; poate fi nevoie de bon de retur sau proceduri contabile. Verifică grupa fiscală programată pe imprimantă și maparea din POS. Dacă nu ești plătitor de TVA, prețurile la raft nu conțin TVA de colectat, dar tot poți folosi calculatorul pentru simulări înainte de înregistrare la ANAF.
+    </p>
+  </section>
+
+  <section aria-labelledby="vat-tools-title">
+    <h2 id="vat-tools-title" class="font-display text-2xl italic text-primary">Unelte și ghiduri legate de TVA</h2>
+    <ul class="mt-4 list-disc space-y-2 pl-6 leading-relaxed">
+      <li>
+        <a href="/unelte/calculator-adaos-comercial/" class="font-semibold text-accent underline-offset-2 hover:underline"
+          >Calculator adaos comercial</a
+        > — de la cost fără TVA la preț la raft, cu rotunjire.
+      </li>
+      <li>
+        <a href="/unelte/verificare-cod-de-bare/" class="font-semibold text-accent underline-offset-2 hover:underline"
+          >Verificare cod de bare (EAN)</a
+        > — denumire produs și cotă TVA din nomenclator.
+      </li>
+      <li>
+        <a href="/ghid/cote-tva-casa-de-marcat/" class="font-semibold text-accent underline-offset-2 hover:underline"
+          >Cote TVA și grupe fiscale la casa de marcat</a
+        >.
+      </li>
+      <li>
+        <a href="/ghid/plafon-scutire-tva-395000/" class="font-semibold text-accent underline-offset-2 hover:underline"
+          >Plafonul de scutire TVA (395.000 lei)</a
+        >.
+      </li>
+    </ul>
+  </section>
+</article>
