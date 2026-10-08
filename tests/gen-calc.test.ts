@@ -4,6 +4,7 @@ import { nirLine, nirTotals } from "../src/lib/generators/nir.ts";
 import { unitPrice } from "../src/lib/generators/labels.ts";
 import { recipeCalc, ingredientAllergens, allergensInText, ALLERGENS } from "../src/lib/generators/recipe.ts";
 import { cashbookCalc, CASH_LIMIT } from "../src/lib/generators/cashbook.ts";
+import { warehouseCardCalc } from "../src/lib/generators/warehouse-card.ts";
 import { fmtMoney, fmtQty } from "../src/lib/generators/page.ts";
 
 test("NIR line: cost, VAT, markup, sale price, non-chargeable VAT", () => {
@@ -137,6 +138,19 @@ test("cash book running balance and the 50,000 lei warning", () => {
 
   // float noise does not leak: 0.1 + 0.2
   assert.equal(cashbookCalc({ opening_balance: 0.1, entries: [{ doc: "Z", description: "x", receipt: 0.2 }] }).closing_balance, 0.3);
+});
+
+test("warehouse card: running stock from opening, entries and exits", () => {
+  const c = warehouseCardCalc({
+    opening_stock: 10,
+    rows: [
+      { date: "2026-10-01", doc_number: "NIR 1", doc_type: "NIR", entries_in: 5 },
+      { date: "2026-10-02", doc_number: "BC 2", doc_type: "Bon consum", entries_out: 3 },
+      { date: "2026-10-03", doc_number: "AV 1", doc_type: "Aviz", entries_out: 2 },
+    ],
+  });
+  assert.deepEqual(c.rows.map((r) => r.stock), [15, 12, 10]);
+  assert.equal(c.closing_stock, 10);
 });
 
 test("Romanian number format", () => {

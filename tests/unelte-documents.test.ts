@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { cashbookHtml, nirHtml } from "../src/lib/unelte/document-export.ts";
+import { cashbookHtml, nirHtml, warehouseCardHtml } from "../src/lib/unelte/document-export.ts";
 
 const EVIL = `"><script>window.__xss=1</script><img src=x onerror=alert(1)>`;
 
@@ -42,6 +42,28 @@ test("local NIR: NIR number and date, received quantities, no abuse line", () =>
   assert.match(html, /<td class="num">10<\/td>\n<td class="num">9<\/td>\n<td class="num">5,00<\/td>\n<td class="num">45,00<\/td>/);
   assert.match(html, /Diferențe la recepție/);
   assert.doesNotMatch(html, /Raportează abuz|Expiră pe/);
+});
+
+test("local fișă de magazie: cod 14-3-8, stoc rulat, UTM unelte", () => {
+  const html = warehouseCardHtml({
+    company: "Magazin Ana SRL",
+    warehouse: "Depozit",
+    product: "Lapte 3,5%",
+    product_code: "L001",
+    unit: "buc",
+    unit_price: 8.5,
+    opening_stock: 20,
+    rows: [
+      { date: "2026-10-07", doc_number: "NIR 3", doc_type: "NIR", entries_in: 10 },
+      { date: "2026-10-07", doc_number: "VZ", doc_type: "Vânzare", entries_out: 4 },
+    ],
+  });
+  assert.match(html, /14-3-8/);
+  assert.match(html, /Fișă de magazie/);
+  assert.match(html, /utm_source=unelte&amp;utm_medium=document&amp;utm_campaign=g_warehouse_card/);
+  assert.match(html, /Stoc final/);
+  assert.match(html, /<td class="num">30<\/td>/);
+  assert.match(html, /<td class="num">26<\/td>/);
 });
 
 test("local documents escape every user field", () => {

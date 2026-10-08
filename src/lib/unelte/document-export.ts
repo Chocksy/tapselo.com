@@ -1,6 +1,7 @@
 import { renderCashbook } from "../generators/cashbook.ts";
 import { renderNir } from "../generators/nir.ts";
-import type { CashbookPayload, DraftRecord, NirPayload } from "../generators/types.ts";
+import { renderWarehouseCard } from "../generators/warehouse-card.ts";
+import type { CashbookPayload, DraftRecord, NirPayload, WarehouseCardPayload } from "../generators/types.ts";
 import { cashbookXlsx, downloadBlob, XLSX_MIME } from "./spreadsheet.ts";
 
 const LOCAL_DRAFT: DraftRecord = {
@@ -44,4 +45,16 @@ export function downloadNirPdfViaPrint(payload: NirPayload): boolean {
 
 export function downloadCashbookPdfViaPrint(payload: CashbookPayload): boolean {
   return openPrintHtml(cashbookHtml(payload));
+}
+
+export function warehouseCardHtml(payload: WarehouseCardPayload, blank = false): string {
+  return renderWarehouseCard(payload, { ...LOCAL_DRAFT, kind: "warehouse_card" }, { local: true, blank });
+}
+
+export function downloadWarehouseCardPdfViaPrint(payload: WarehouseCardPayload): boolean {
+  return openPrintHtml(warehouseCardHtml(payload));
+}
+
+export function downloadWarehouseCardBlankPdfViaPrint(payload: WarehouseCardPayload): boolean {
+  return openPrintHtml(warehouseCardHtml(payload, true));
 }

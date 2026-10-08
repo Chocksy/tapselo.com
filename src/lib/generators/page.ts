@@ -20,6 +20,7 @@ export const KIND_TITLES: Record<string, string> = {
   nir: "Notă de recepție și constatare de diferențe (NIR)",
   recipe: "Fișă tehnică",
   cashbook: "Registrul de casă",
+  warehouse_card: "Fișă de magazie",
 };
 
 // ---------- number formatting (Romanian: 1.234,56) ----------

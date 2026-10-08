@@ -1,5 +1,5 @@
 ---
-import { ArrowRight, BadgePercent, Barcode, Calculator, ClipboardList, FileCheck, NotebookPen, ScanBarcode, ScrollText } from "@lucide/astro";
+import { ArrowRight, BadgePercent, Barcode, Calculator, ClipboardList, FileCheck, NotebookPen, Package, ScanBarcode, ScrollText } from "@lucide/astro";
 import GuideShell from "../components/GuideShell.astro";
 import { A4200_CHECKER_PATH } from "../lib/articles/schema.ts";
 import { barcodeApiBase } from "../lib/unelte/barcode.ts";
@@ -46,6 +46,14 @@ const tools = [
     action: "Deschide generatorul",
     description:
       "Notă de recepție și constatare de diferențe din datele facturii: liniile de marfă, TVA, adaos, PDF printabil pentru semnături.",
+  },
+  {
+    href: internalPath("/unelte/fisa-de-magazie"),
+    title: "Fișă de magazie",
+    icon: Package,
+    action: "Deschide generatorul",
+    description:
+      "Model 14-3-8: intrări, ieșiri și stoc calculat automat pe produs și magazie. Print, PDF sau foaie goală — în browser.",
   },
   {
     href: internalPath("/unelte/calculator-adaos-comercial"),

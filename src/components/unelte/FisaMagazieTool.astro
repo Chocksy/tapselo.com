@@ -1,0 +1,310 @@
+---
+---
+
+<section class="ut-card" aria-labelledby="fisa-magazie-title">
+  <h2 id="fisa-magazie-title" class="font-display text-2xl italic text-primary">Generator fișă de magazie</h2>
+  <p class="mt-2 text-sm text-text-secondary">
+    Completează antetul și mișcările; stocul se calculează automat (cod formular <strong class="text-primary">14-3-8</strong>, OMFP nr. 2.634/2015). Print sau PDF din browser, plus model gol.
+  </p>
+
+  <div id="fisa-magazie-tool" class="mt-6 space-y-4">
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="fm-company">Unitatea (firmă)</label>
+        <input class="ut-input" id="fm-company" type="text" maxlength="120" autocomplete="organization" />
+      </div>
+      <div>
+        <label class="ut-label" for="fm-warehouse">Magazia</label>
+        <input class="ut-input" id="fm-warehouse" type="text" maxlength="80" placeholder="Depozit principal" />
+      </div>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="lg:col-span-2">
+        <label class="ut-label" for="fm-product">Materialul / produsul</label>
+        <input class="ut-input" id="fm-product" type="text" maxlength="120" />
+      </div>
+      <div>
+        <label class="ut-label" for="fm-code">Cod</label>
+        <input class="ut-input" id="fm-code" type="text" maxlength="40" />
+      </div>
+      <div>
+        <label class="ut-label" for="fm-unit">U/M</label>
+        <input class="ut-input" id="fm-unit" type="text" maxlength="12" placeholder="buc" />
+      </div>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="fm-price">Preț unitar (lei, opțional)</label>
+        <input class="ut-input" id="fm-price" type="text" inputmode="decimal" placeholder="0" />
+      </div>
+      <div>
+        <label class="ut-label" for="fm-opening">Stoc inițial</label>
+        <input class="ut-input" id="fm-opening" type="text" inputmode="decimal" value="0" />
+      </div>
+    </div>
+
+    <div class="ut-table-wrap">
+      <table class="ut-table ut-stack" id="fm-table">
+        <thead>
+          <tr>
+            <th scope="col">Data</th>
+            <th scope="col">Nr. document</th>
+            <th scope="col">Fel document</th>
+            <th scope="col">Intrări</th>
+            <th scope="col">Ieșiri</th>
+            <th scope="col">Stoc</th>
+            <th scope="col">Semnătură control</th>
+            <th scope="col"><span class="sr-only">Acțiuni</span></th>
+          </tr>
+        </thead>
+        <tbody id="fm-rows"></tbody>
+      </table>
+    </div>
+    <button type="button" class="ut-btn ut-btn-secondary" id="fm-add-row">+ Rând</button>
+
+    <div class="ut-result" id="fm-summary" aria-live="polite"></div>
+    <p class="ut-err hidden" id="fm-err" role="alert"></p>
+
+    <div class="flex flex-wrap gap-3">
+      <button type="button" class="ut-btn ut-btn-primary" id="fm-pdf">Salvează PDF</button>
+      <button type="button" class="ut-btn ut-btn-secondary" id="fm-print">Printează</button>
+      <button type="button" class="ut-btn ut-btn-secondary" id="fm-blank">Model gol (PDF)</button>
+    </div>
+  </div>
+</section>
+
+<script>
+  import type { WarehouseCardEntry, WarehouseCardPayload } from "../../lib/generators/types.ts";
+  import { warehouseCardCalc } from "../../lib/generators/warehouse-card.ts";
+  import { escapeHtml, fmtQty } from "../../lib/generators/page.ts";
+  import { parseRoNumber } from "../../lib/unelte/parse.ts";
+  import { localIsoDate } from "../../lib/unelte/dates.ts";
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
+  import {
+    downloadWarehouseCardBlankPdfViaPrint,
+    downloadWarehouseCardPdfViaPrint,
+  } from "../../lib/unelte/document-export.ts";
+
+  const tbody = document.getElementById("fm-rows") as HTMLTableSectionElement;
+  const errEl = document.getElementById("fm-err") as HTMLElement;
+  const summaryEl = document.getElementById("fm-summary") as HTMLElement;
+
+  const FIELDS = [
+    { f: "date", label: "Data", type: "date", placeholder: "", maxlength: 10 },
+    { f: "docn", label: "Nr. document", type: "text", placeholder: "NIR 12", maxlength: 40 },
+    { f: "doct", label: "Fel document", type: "text", placeholder: "NIR", maxlength: 40 },
+    { f: "inn", label: "Intrări", type: "decimal", placeholder: "0", maxlength: 20 },
+    { f: "out", label: "Ieșiri", type: "decimal", placeholder: "0", maxlength: 20 },
+    { f: "sig", label: "Semnătură control", type: "text", placeholder: "", maxlength: 60 },
+  ] as const;
+
+  function renumber() {
+    tbody.querySelectorAll("tr").forEach((tr, i) => {
+      FIELDS.forEach(({ f, label }) => tr.querySelector(`[data-f="${f}"]`)?.setAttribute("aria-label", `${label}, rândul ${i + 1}`));
+      tr.querySelector("[data-del]")?.setAttribute("aria-label", `Șterge rândul ${i + 1}`);
+    });
+  }
+
+  function addRow() {
+    const tr = document.createElement("tr");
+    const inputFields = FIELDS.filter((x) => x.f !== "sig");
+    for (const { f, label, type, placeholder, maxlength } of inputFields) {
+      const td = document.createElement("td");
+      td.dataset.label = label;
+      const input = document.createElement("input");
+      input.dataset.f = f;
+      input.placeholder = placeholder;
+      input.maxLength = maxlength;
+      if (type === "date") {
+        input.type = "date";
+        if (!input.value) input.value = localIsoDate();
+      } else {
+        input.inputMode = type === "decimal" ? "decimal" : "text";
+      }
+      td.append(input);
+      tr.append(td);
+    }
+    const stockTd = document.createElement("td");
+    stockTd.dataset.label = "Stoc";
+    stockTd.dataset.stock = "";
+    stockTd.className = "fm-stock num";
+    tr.append(stockTd);
+
+    const sig = FIELDS.find((x) => x.f === "sig")!;
+    const sigTd = document.createElement("td");
+    sigTd.dataset.label = sig.label;
+    const sigInput = document.createElement("input");
+    sigInput.dataset.f = sig.f;
+    sigInput.maxLength = sig.maxlength;
+    sigTd.append(sigInput);
+    tr.append(sigTd);
+
+    const td = document.createElement("td");
+    const del = document.createElement("button");
+    del.type = "button";
+    del.className = "ut-del";
+    del.dataset.del = "";
+    del.textContent = "Șterge";
+    del.addEventListener("click", () => {
+      tr.remove();
+      renumber();
+      renderSummary();
+    });
+    td.append(del);
+    tr.append(td);
+    tbody.append(tr);
+    renumber();
+  }
+
+  addRow();
+  addRow();
+  document.getElementById("fm-add-row")?.addEventListener("click", addRow);
+
+  type Collected =
+    | { ok: true; payload: Omit<WarehouseCardPayload, "company" | "warehouse" | "product" | "product_code" | "unit" | "unit_price"> }
+    | { ok: false; error: string };
+
+  const val = (tr: Element, f: string) => (tr.querySelector(`[data-f="${f}"]`) as HTMLInputElement).value.trim();
+
+  function collectRows(): Collected {
+    const opening = parseRoNumber((document.getElementById("fm-opening") as HTMLInputElement).value);
+    if (opening.kind !== "ok") return { ok: false, error: "Stocul inițial nu este valid (ex. 1.234,50)." };
+
+    const rows: WarehouseCardEntry[] = [];
+    const trs = [...tbody.querySelectorAll("tr")];
+    for (const [i, tr] of trs.entries()) {
+      const date = val(tr, "date");
+      const doc_number = val(tr, "docn");
+      const doc_type = val(tr, "doct");
+      const inn = parseRoNumber(val(tr, "inn"));
+      const out = parseRoNumber(val(tr, "out"));
+      const control_signature = val(tr, "sig");
+      if (!date && !doc_number && !doc_type && inn.kind === "empty" && out.kind === "empty" && !control_signature) continue;
+      if (inn.kind === "invalid" || out.kind === "invalid") {
+        return { ok: false, error: `Cantitatea de pe rândul ${i + 1} nu este validă.` };
+      }
+      if (!date) return { ok: false, error: `Completează data pe rândul ${i + 1}.` };
+      rows.push({
+        date,
+        doc_number: doc_number || "-",
+        doc_type: doc_type || "-",
+        entries_in: inn.kind === "ok" && inn.value > 0 ? inn.value : undefined,
+        entries_out: out.kind === "ok" && out.value > 0 ? out.value : undefined,
+        control_signature: control_signature || undefined,
+      });
+    }
+    if (!rows.length) return { ok: false, error: "Adaugă cel puțin o mișcare sau șterge rândurile goale." };
+    return { ok: true, payload: { opening_stock: opening.value, rows } };
+  }
+
+  function renderSummary() {
+    const r = collectRows();
+    if (!r.ok) {
+      summaryEl.innerHTML = `<p class="text-sm text-text-secondary">${escapeHtml(r.error)}</p>`;
+      tbody.querySelectorAll("[data-stock]").forEach((el) => {
+        el.textContent = "";
+      });
+      return;
+    }
+    const unit = (document.getElementById("fm-unit") as HTMLInputElement).value.trim() || "buc";
+    const c = warehouseCardCalc(r.payload);
+    tbody.querySelectorAll("tr").forEach((tr, i) => {
+      const cell = tr.querySelector("[data-stock]");
+      if (cell && c.rows[i]) cell.textContent = fmtQty(c.rows[i].stock);
+    });
+    summaryEl.innerHTML = `<dl><dt>Stoc final</dt><dd>${escapeHtml(fmtQty(c.closing_stock))} ${escapeHtml(unit)}</dd></dl>`;
+  }
+
+  document.getElementById("fisa-magazie-tool")?.addEventListener("input", renderSummary);
+  renderSummary();
+
+  function showError(msg: string) {
+    errEl.textContent = msg;
+    errEl.classList.remove("hidden");
+  }
+
+  function collect(): WarehouseCardPayload | null {
+    const company = (document.getElementById("fm-company") as HTMLInputElement).value.trim();
+    const warehouse = (document.getElementById("fm-warehouse") as HTMLInputElement).value.trim();
+    const product = (document.getElementById("fm-product") as HTMLInputElement).value.trim();
+    const unit = (document.getElementById("fm-unit") as HTMLInputElement).value.trim();
+    if (!company || !warehouse || !product || !unit) {
+      showError("Completează unitatea, magazia, produsul și U/M.");
+      return null;
+    }
+    const price = parseRoNumber((document.getElementById("fm-price") as HTMLInputElement).value);
+    if (price.kind === "invalid") {
+      showError("Prețul unitar nu este valid.");
+      return null;
+    }
+    const r = collectRows();
+    if (!r.ok) {
+      showError(r.error);
+      return null;
+    }
+    errEl.classList.add("hidden");
+    const payload: WarehouseCardPayload = {
+      company,
+      warehouse,
+      product,
+      unit,
+      ...r.payload,
+    };
+    const code = (document.getElementById("fm-code") as HTMLInputElement).value.trim();
+    if (code) payload.product_code = code;
+    if (price.kind === "ok" && price.value > 0) payload.unit_price = price.value;
+    return payload;
+  }
+
+  function headerOnly(): WarehouseCardPayload | null {
+    const company = (document.getElementById("fm-company") as HTMLInputElement).value.trim();
+    const warehouse = (document.getElementById("fm-warehouse") as HTMLInputElement).value.trim();
+    const product = (document.getElementById("fm-product") as HTMLInputElement).value.trim();
+    const unit = (document.getElementById("fm-unit") as HTMLInputElement).value.trim() || "buc";
+    if (!company || !warehouse || !product) {
+      showError("Pentru modelul gol, completează minim unitatea, magazia și produsul.");
+      return null;
+    }
+    errEl.classList.add("hidden");
+    const payload: WarehouseCardPayload = {
+      company,
+      warehouse,
+      product,
+      unit,
+      opening_stock: 0,
+      rows: [],
+    };
+    const code = (document.getElementById("fm-code") as HTMLInputElement).value.trim();
+    if (code) payload.product_code = code;
+    return payload;
+  }
+
+  document.getElementById("fm-pdf")?.addEventListener("click", () => {
+    const p = collect();
+    if (!p) return;
+    if (!downloadWarehouseCardPdfViaPrint(p)) showError("Permite ferestrele pop-up pentru PDF.");
+    else trackToolUsed("fisa_de_magazie", "generate_pdf");
+  });
+
+  document.getElementById("fm-print")?.addEventListener("click", () => {
+    const p = collect();
+    if (!p) return;
+    if (!downloadWarehouseCardPdfViaPrint(p)) showError("Permite ferestrele pop-up pentru print.");
+    else trackToolUsed("fisa_de_magazie", "print");
+  });
+
+  document.getElementById("fm-blank")?.addEventListener("click", () => {
+    const p = headerOnly();
+    if (!p) return;
+    if (!downloadWarehouseCardBlankPdfViaPrint(p)) showError("Permite ferestrele pop-up pentru PDF.");
+    else trackToolUsed("fisa_de_magazie", "generate_pdf", { variant: "blank" });
+  });
+</script>
+
+<style>
+  .fm-stock {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+</style>
