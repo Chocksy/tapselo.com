@@ -1,0 +1,398 @@
+---
+---
+
+<section class="ut-card" aria-labelledby="ao-title">
+  <h2 id="ao-title" class="font-display text-2xl italic text-primary">Generator afișe obligatorii</h2>
+  <p class="mt-2 text-sm text-text-secondary">
+    Bifează afișele necesare, completează datele magazinului o singură dată, verifică previzualizarea și descarcă PDF sau printează. Totul rămâne în browserul tău.
+  </p>
+
+  <div id="ao-tool" class="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+    <div class="space-y-6">
+      <fieldset class="space-y-3">
+        <legend class="text-sm font-semibold text-primary">Afișe de generat</legend>
+        <div class="grid gap-2 sm:grid-cols-2" id="ao-signs"></div>
+      </fieldset>
+
+      <div class="space-y-4 rounded-lg border border-border-light p-4">
+        <h3 class="font-semibold text-primary">Date magazin (reutilizate pe afișe)</h3>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div class="sm:col-span-2">
+            <label class="ut-label" for="ao-name">Denumire firmă / magazin</label>
+            <input class="ut-input" id="ao-name" type="text" maxlength="120" autocomplete="organization" />
+          </div>
+          <div>
+            <label class="ut-label" for="ao-cui">CUI (opțional)</label>
+            <input class="ut-input" id="ao-cui" type="text" maxlength="20" />
+          </div>
+          <div>
+            <label class="ut-label" for="ao-logo">Logo (opțional, rămâne în browser)</label>
+            <input class="ut-input" id="ao-logo" type="file" accept="image/png,image/jpeg,image/webp" />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="ut-label" for="ao-address">Adresă punct de lucru</label>
+            <input class="ut-input" id="ao-address" type="text" maxlength="200" autocomplete="street-address" />
+          </div>
+        </div>
+      </div>
+
+      <div id="ao-panel-casa" class="hidden space-y-2 rounded-lg border border-border-light p-4">
+        <h3 class="font-semibold text-primary">Casă de marcat</h3>
+        <label class="flex items-start gap-2 text-sm text-text-secondary">
+          <input type="checkbox" id="ao-casa-ext" class="mt-1" />
+          <span>Adaugă textul despre solicitarea bonului fiscal (Ordin MF nr. 159/2015, anexă — OUG 28/1999)</span>
+        </label>
+      </div>
+
+      <div id="ao-panel-program" class="hidden space-y-3 rounded-lg border border-border-light p-4">
+        <h3 class="font-semibold text-primary">Program de funcționare</h3>
+        <div class="ut-table-wrap">
+          <table class="ut-table text-sm" id="ao-schedule">
+            <thead>
+              <tr>
+                <th scope="col">Zi</th>
+                <th scope="col">Deschide</th>
+                <th scope="col">Închide</th>
+                <th scope="col">Zi închisă</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div>
+          <label class="ut-label" for="ao-break">Pauză (opțional)</label>
+          <input class="ut-input" id="ao-break" type="text" maxlength="40" placeholder="ex. 13:00–14:00" />
+        </div>
+        <div>
+          <label class="ut-label" for="ao-closed-note">Zile libere / note (opțional)</label>
+          <input class="ut-input" id="ao-closed-note" type="text" maxlength="120" placeholder="ex. Duminică și sărbători legale — închis" />
+        </div>
+      </div>
+
+      <div id="ao-panel-anpc" class="hidden space-y-3 rounded-lg border border-border-light p-4">
+        <h3 class="font-semibold text-primary">ANPC — comisariat județean</h3>
+        <div>
+          <label class="ut-label" for="ao-county">Județ</label>
+          <select class="ut-select" id="ao-county"></select>
+        </div>
+        <div>
+          <label class="ut-label" for="ao-cpc-name">Denumire comisariat</label>
+          <input class="ut-input" id="ao-cpc-name" type="text" maxlength="160" />
+        </div>
+        <div>
+          <label class="ut-label" for="ao-cpc-addr">Adresă</label>
+          <input class="ut-input" id="ao-cpc-addr" type="text" maxlength="200" />
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label class="ut-label" for="ao-cpc-phone">Telefon</label>
+            <input class="ut-input" id="ao-cpc-phone" type="text" maxlength="40" />
+          </div>
+          <div>
+            <label class="ut-label" for="ao-cpc-email">E-mail</label>
+            <input class="ut-input" id="ao-cpc-email" type="email" maxlength="80" />
+          </div>
+        </div>
+      </div>
+
+      <div id="ao-panel-sgr" class="hidden space-y-3 rounded-lg border border-border-light p-4">
+        <h3 class="font-semibold text-primary">SGR</h3>
+        <label class="flex items-center gap-2 text-sm text-text-secondary">
+          <input type="checkbox" id="ao-sgr-point" checked />
+          Avem punct de returnare SGR la acest magazin
+        </label>
+        <div id="ao-sgr-fields" class="space-y-3">
+          <div>
+            <label class="ut-label" for="ao-sgr-addr">Adresă punct returnare (opțional)</label>
+            <input class="ut-input" id="ao-sgr-addr" type="text" maxlength="200" />
+          </div>
+          <div>
+            <label class="ut-label" for="ao-sgr-hours">Program returnare (opțional)</label>
+            <input class="ut-input" id="ao-sgr-hours" type="text" maxlength="80" />
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        <button type="button" class="ut-btn ut-btn-primary" id="ao-pdf">Descarcă PDF / print</button>
+        <button type="button" class="ut-btn ut-btn-secondary" id="ao-print">Printează previzualizarea</button>
+      </div>
+      <p class="ut-err hidden" id="ao-err" role="alert"></p>
+    </div>
+
+    <div>
+      <h3 class="font-semibold text-primary">Previzualizare live</h3>
+      <p class="mt-1 text-sm text-text-secondary">Verifică diacriticele (ș, ț, ă, î, â) înainte de print.</p>
+      <div id="ao-preview" class="ao-preview-stack mt-4 space-y-4" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .ao-preview-stack .ao-preview-card {
+    border: 1px solid var(--color-border-light);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background: #fff;
+    font-family: "SignRo", Arial, Helvetica, sans-serif;
+  }
+  .ao-preview-stack .sign-box {
+    border: 2px solid #0f172a;
+    padding: 1rem;
+    min-height: 10rem;
+  }
+  .ao-preview-stack .sign-h {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.35;
+  }
+  .ao-preview-stack .sign-p {
+    margin: 0 0 0.35rem;
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .ao-preview-stack .sign-lg {
+    font-size: 1.05rem;
+    text-transform: uppercase;
+  }
+  .ao-preview-stack .sign-logo {
+    display: block;
+    max-height: 3rem;
+    margin: 0 auto 0.5rem;
+  }
+</style>
+
+<script>
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
+  import { anpcCounties, countyById } from "../../lib/unelte/afise-obligatorii/anpc-counties.ts";
+  import { renderSignPreviewHtml, renderSignsPrintHtml } from "../../lib/unelte/afise-obligatorii/render.ts";
+  import { buildSigns, defaultToolState } from "../../lib/unelte/afise-obligatorii/signs.ts";
+  import type { DayHours, SignId, ToolState, WeekSchedule } from "../../lib/unelte/afise-obligatorii/types.ts";
+  import { SIGN_IDS } from "../../lib/unelte/afise-obligatorii/types.ts";
+  import { openPrintHtml } from "../../lib/unelte/document-export.ts";
+
+  const SIGN_LABELS: Record<SignId, string> = {
+    casa_marcat: "Casă de marcat (OUG 28/1999)",
+    program: "Program de funcționare",
+    anpc: "Informații consumatori (ANPC)",
+    sgr: "SGR – returnare ambalaje",
+    fumat: "Fumatul interzis",
+    minori_alcool_tutun: "Interzis minorilor (alcool & tutun)",
+  };
+
+  const DAY_ROWS: { key: keyof WeekSchedule; label: string }[] = [
+    { key: "mon", label: "Luni" },
+    { key: "tue", label: "Marți" },
+    { key: "wed", label: "Miercuri" },
+    { key: "thu", label: "Joi" },
+    { key: "fri", label: "Vineri" },
+    { key: "sat", label: "Sâmbătă" },
+    { key: "sun", label: "Duminică" },
+  ];
+
+  const el = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const signsRoot = el<HTMLElement>("ao-signs");
+  const preview = el<HTMLElement>("ao-preview");
+  const errEl = el<HTMLElement>("ao-err");
+  const scheduleBody = el<HTMLTableSectionElement>("ao-schedule").querySelector("tbody")!;
+
+  let logoDataUrl: string | null = null;
+
+  function showErr(msg: string) {
+    errEl.textContent = msg;
+    errEl.classList.toggle("hidden", !msg);
+  }
+
+  function readSchedule(): WeekSchedule {
+    const base = defaultToolState().schedule;
+    const out = { ...base };
+    for (const { key } of DAY_ROWS) {
+      const closed = document.querySelector<HTMLInputElement>(`[data-day-closed="${key}"]`)?.checked;
+      if (closed) {
+        out[key] = null;
+        continue;
+      }
+      const open = document.querySelector<HTMLInputElement>(`[data-day-open="${key}"]`)?.value || "08:00";
+      const close = document.querySelector<HTMLInputElement>(`[data-day-close="${key}"]`)?.value || "20:00";
+      out[key] = { open, close };
+    }
+    out.breakLabel = el<HTMLInputElement>("ao-break").value;
+    out.closedNotes = el<HTMLInputElement>("ao-closed-note").value;
+    return out;
+  }
+
+  function readState(): ToolState {
+    const selected = SIGN_IDS.filter((id) => document.querySelector<HTMLInputElement>(`[data-sign-id="${id}"]`)?.checked);
+    const county = countyById(el<HTMLSelectElement>("ao-county").value);
+    return {
+      selected,
+      shop: {
+        businessName: el<HTMLInputElement>("ao-name").value,
+        cui: el<HTMLInputElement>("ao-cui").value,
+        address: el<HTMLInputElement>("ao-address").value,
+        logoDataUrl,
+      },
+      schedule: readSchedule(),
+      anpc: {
+        countyId: county.id,
+        commissionName: el<HTMLInputElement>("ao-cpc-name").value || county.commissionName,
+        address: el<HTMLInputElement>("ao-cpc-addr").value || county.address,
+        phone: el<HTMLInputElement>("ao-cpc-phone").value || county.phone,
+        email: el<HTMLInputElement>("ao-cpc-email").value || county.email,
+      },
+      casaMarcatExtended: el<HTMLInputElement>("ao-casa-ext").checked,
+      sgrAcceptsReturns: el<HTMLInputElement>("ao-sgr-point").checked,
+      sgrReturnAddress: el<HTMLInputElement>("ao-sgr-addr").value,
+      sgrReturnHours: el<HTMLInputElement>("ao-sgr-hours").value,
+      sgrHasReturnPoint: el<HTMLInputElement>("ao-sgr-point").checked,
+    };
+  }
+
+  function togglePanels(selected: SignId[]) {
+    const map: Record<string, SignId> = {
+      "ao-panel-casa": "casa_marcat",
+      "ao-panel-program": "program",
+      "ao-panel-anpc": "anpc",
+      "ao-panel-sgr": "sgr",
+    };
+    for (const [panelId, signId] of Object.entries(map)) {
+      el<HTMLElement>(panelId).classList.toggle("hidden", !selected.includes(signId));
+    }
+  }
+
+  function refreshPreview() {
+    const state = readState();
+    togglePanels(state.selected);
+    const signs = buildSigns(state);
+    preview.innerHTML = signs.map((s) => renderSignPreviewHtml(s, state.shop)).join("");
+    showErr(state.selected.length === 0 ? "Selectează cel puțin un afiș." : "");
+  }
+
+  function analyticsExtra(state: ToolState): Record<string, string> {
+    return { sign_ids: state.selected.join(",") };
+  }
+
+  function initSignCheckboxes() {
+    for (const id of SIGN_IDS) {
+      const wrap = document.createElement("label");
+      wrap.className = "flex items-start gap-2 text-sm text-text-secondary";
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.dataset.signId = id;
+      input.checked = defaultToolState().selected.includes(id);
+      input.addEventListener("change", refreshPreview);
+      wrap.append(input, document.createTextNode(SIGN_LABELS[id]));
+      signsRoot.append(wrap);
+    }
+  }
+
+  function initScheduleRows() {
+    const def = defaultToolState().schedule;
+    for (const { key, label } of DAY_ROWS) {
+      const hours = def[key] as DayHours | null;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${label}</td>
+        <td><input type="time" data-day-open="${key}" value="${hours?.open ?? "08:00"}" /></td>
+        <td><input type="time" data-day-close="${key}" value="${hours?.close ?? "20:00"}" /></td>
+        <td><input type="checkbox" data-day-closed="${key}" ${hours === null ? "checked" : ""} aria-label="${label} închis" /></td>`;
+      scheduleBody.append(tr);
+    }
+    scheduleBody.querySelectorAll("input").forEach((inp) => inp.addEventListener("change", refreshPreview));
+  }
+
+  function initCountySelect() {
+    const sel = el<HTMLSelectElement>("ao-county");
+    for (const c of anpcCounties) {
+      const o = document.createElement("option");
+      o.value = c.id;
+      o.textContent = c.label;
+      sel.append(o);
+    }
+    sel.addEventListener("change", () => {
+      const c = countyById(sel.value);
+      el<HTMLInputElement>("ao-cpc-name").value = c.commissionName;
+      el<HTMLInputElement>("ao-cpc-addr").value = c.address;
+      el<HTMLInputElement>("ao-cpc-phone").value = c.phone;
+      el<HTMLInputElement>("ao-cpc-email").value = c.email;
+      refreshPreview();
+    });
+    sel.dispatchEvent(new Event("change"));
+  }
+
+  el<HTMLInputElement>("ao-logo").addEventListener("change", () => {
+    const file = el<HTMLInputElement>("ao-logo").files?.[0];
+    if (!file) {
+      logoDataUrl = null;
+      refreshPreview();
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      logoDataUrl = typeof reader.result === "string" ? reader.result : null;
+      refreshPreview();
+    };
+    reader.readAsDataURL(file);
+  });
+
+  for (const id of [
+    "ao-name",
+    "ao-cui",
+    "ao-address",
+    "ao-casa-ext",
+    "ao-break",
+    "ao-closed-note",
+    "ao-cpc-name",
+    "ao-cpc-addr",
+    "ao-cpc-phone",
+    "ao-cpc-email",
+    "ao-sgr-point",
+    "ao-sgr-addr",
+    "ao-sgr-hours",
+  ]) {
+    el<HTMLInputElement>(id).addEventListener("input", refreshPreview);
+  }
+
+  el<HTMLButtonElement>("ao-pdf").addEventListener("click", () => {
+    const state = readState();
+    if (!state.selected.length) {
+      showErr("Selectează cel puțin un afiș.");
+      return;
+    }
+    const html = renderSignsPrintHtml(buildSigns(state), state.shop);
+    if (!openPrintHtml(html)) {
+      showErr("Nu am putut deschide fereastra de print. Permite popup-urile pentru tapselo.com.");
+      return;
+    }
+    showErr("");
+    trackToolUsed("afise_obligatorii", "generate_pdf", analyticsExtra(state));
+  });
+
+  el<HTMLButtonElement>("ao-print").addEventListener("click", () => {
+    const state = readState();
+    if (!state.selected.length) {
+      showErr("Selectează cel puțin un afiș.");
+      return;
+    }
+    const w = window.open("", "_blank");
+    if (!w) {
+      showErr("Nu am putut deschide fereastra de print.");
+      return;
+    }
+    const signs = buildSigns(state);
+    const body = signs.map((s) => renderSignPreviewHtml(s, state.shop)).join("");
+    w.document.write(`<!doctype html><html lang="ro"><head><meta charset="utf-8"><title>Print</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/noto-sans@5.2.5/latin-ext-400-normal.css" />
+<style>body{font-family:"Noto Sans",Arial,sans-serif;padding:12mm}.ao-preview-card{page-break-after:always;margin-bottom:8mm}</style></head><body>${body}</body></html>`);
+    w.document.close();
+    w.print();
+    trackToolUsed("afise_obligatorii", "print", analyticsExtra(state));
+  });
+
+  initSignCheckboxes();
+  initScheduleRows();
+  initCountySelect();
+  refreshPreview();
+</script>

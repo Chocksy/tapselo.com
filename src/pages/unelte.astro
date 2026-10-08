@@ -1,5 +1,5 @@
 ---
-import { ArrowRight, BadgePercent, Barcode, Calculator, ClipboardList, FileCheck, NotebookPen, ScanBarcode } from "@lucide/astro";
+import { ArrowRight, BadgePercent, Barcode, Calculator, ClipboardList, FileCheck, NotebookPen, ScanBarcode, ScrollText } from "@lucide/astro";
 import GuideShell from "../components/GuideShell.astro";
 import { A4200_CHECKER_PATH } from "../lib/articles/schema.ts";
 import { barcodeApiBase } from "../lib/unelte/barcode.ts";
@@ -62,6 +62,14 @@ const tools = [
     action: "Deschide generatorul",
     description:
       "EAN-13 cu cifră de control, EAN-8 și Code 128. Descarcă PNG/SVG sau printează o foaie A4 cu etichete pentru produse și cântar.",
+  },
+  {
+    href: internalPath("/unelte/afise-obligatorii-magazin"),
+    title: "Afișe obligatorii magazin",
+    icon: ScrollText,
+    action: "Deschide generatorul",
+    description:
+      "Casă de marcat, program, ANPC, SGR, fumat interzis și interdicții pentru minori — PDF și print în browser, fără cont.",
   },
   {
     href: internalPath(A4200_CHECKER_PATH),
