@@ -25,6 +25,14 @@ test("shopHeaderLines reuses business fields across signs", () => {
   assert.match(sign.bodyHtml, /Str\. Exemplu 1/);
 });
 
+test("ANPC sign lists SAL without discontinued EU ODR URL", () => {
+  const state = defaultToolState();
+  state.selected = ["anpc"];
+  const html = renderSignsPrintHtml(buildSigns(state), state.shop);
+  assert.match(html, /021 9551/);
+  assert.doesNotMatch(html, /ec\.europa\.eu\/consumers\/odr/);
+});
+
 test("casa de marcat sign keeps official diacritics", () => {
   assert.match(CASA_MARCAT_MAIN, /ț/);
   assert.match(CASA_MARCAT_MAIN, /ă/);

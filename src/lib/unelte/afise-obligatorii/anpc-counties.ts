@@ -11,7 +11,6 @@ export interface AnpcCounty {
 export const ANPC_SAL_PHONE = "021 9551";
 export const ANPC_SAL_URL = "https://anpc.ro/sal/";
 export const ANPC_COMPLAINT_URL = "https://anpc.ro/depune-o-plangere/";
-export const EU_ODR_URL = "https://ec.europa.eu/consumers/odr";
 
 export const anpcCounties: AnpcCounty[] = [
   {

@@ -1,14 +1,11 @@
 import { escapeHtml } from "../../generators/page.ts";
-import {
-  ANPC_COMPLAINT_URL,
-  ANPC_SAL_PHONE,
-  ANPC_SAL_URL,
-  EU_ODR_URL,
-} from "./anpc-counties.ts";
+import { ANPC_COMPLAINT_URL, ANPC_SAL_PHONE, ANPC_SAL_URL } from "./anpc-counties.ts";
 import { formatScheduleLines, shopHeaderLines } from "./schedule.ts";
 import type { RenderedSign, SignId, ToolState } from "./types.ts";
 
-/** Wording from Ordinul MF nr. 159/2015, anexă (Monitorul Oficial nr. 131/2015). */
+/**
+ * Text aliniat modelului din anexa la Ordinul MF nr. 159/2015 (MO nr. 131/2015; anexa este publicată în facsimil pe legislatie.just.ro).
+ */
 export const CASA_MARCAT_MAIN =
   "Această unitate este dotată cu casă de marcat fiscală conform Legii nr. 116/2004 și O.U.G. nr. 28/1999. Vă rugăm solicitați și păstrați bonul fiscal!";
 
@@ -20,7 +17,16 @@ export const CASA_MARCAT_EXTENDED: string[] = [
 
 const FUMAT_TITLE = "Fumatul interzis";
 
-const MINORI_TITLE = "Interzisă vânzarea băuturilor alcoolice și a produselor din tutun către minori";
+const MINORI_TITLE = "Interzisă vânzarea către persoane sub 18 ani";
+
+const MINORI_BODY_TUTUN =
+  "Interzisă vânzarea produselor din tutun, țigaretelor electronice și produselor conexe către persoane care nu au împlinit vârsta de 18 ani.";
+
+const MINORI_FOOTNOTE_ALCOOL =
+  "Băuturi alcoolice: interzisă comercializarea sau oferirea cu titlu gratuit către minori (Legea nr. 61/1991, art. 2 pct. 23^1, introdus prin Legea nr. 174/2023).";
+
+const MINORI_FOOTNOTE_TUTUN =
+  "Tutun și produse conexe: obligație de afișare a interdicției la locul de vânzare (Ordinul ANPC nr. 331/2025, art. 1–2).";
 
 function p(lines: string[]): string {
   return lines.map((l) => `<p class="sign-p">${escapeHtml(l)}</p>`).join("");
@@ -66,7 +72,6 @@ function renderAnpc(state: ToolState): RenderedSign {
     `Telefonul consumatorului (SAL): ${ANPC_SAL_PHONE}`,
     `Soluționare alternativă a litigiilor (SAL): ${ANPC_SAL_URL}`,
     `Reclamații online: ${ANPC_COMPLAINT_URL}`,
-    `Platforma europeană ODR: ${EU_ODR_URL}`,
   ].filter(Boolean);
   return {
     id: "anpc",
@@ -83,19 +88,19 @@ function renderSgr(state: ToolState): RenderedSign {
   const lines: string[] = [];
   if (state.sgrHasReturnPoint && state.sgrAcceptsReturns) {
     lines.push(
-      "Acest punct de vânzare preia ambalaje SGR returnate de consumatori, în vederea restituirii garanției, conform HG nr. 1074/2021.",
+      "Acest punct de vânzare preia ambalaje SGR returnate de consumatori și restituie garanția, conform HG nr. 1074/2021.",
     );
     const addr = state.sgrReturnAddress.trim();
     const hours = state.sgrReturnHours.trim();
     if (addr) lines.push(`Punct de returnare: ${addr}`);
     if (hours) lines.push(`Program returnare: ${hours}`);
     lines.push(
-      "Ambalajele SGR pot fi returnate în orice punct de returnare din România; garanția este de 0,50 lei per ambalaj, afișată distinct de preț.",
+      "Ambalajele SGR pot fi returnate în orice punct de returnare din România; valoarea garanției (0,5 lei per ambalaj) se indică distinct de preț (HG nr. 1074/2021, art. 6 alin. (1) lit. b) și art. 12 alin. (5)).",
     );
   } else {
     lines.push(
-      "Acest magazin nu funcționează ca punct de returnare a ambalajelor.",
-      "Ambalajele SGR pot fi returnate în orice punct de returnare din România, conform HG nr. 1074/2021.",
+      "Informații pentru consumatori privind garanția-returnare (HG nr. 1074/2021, art. 6 alin. (1) lit. g)): ambalajele SGR pot fi returnate în orice punct de returnare din România.",
+      "Dacă returnarea se face prin parteneriat UAT/ADI fără punct propriu în magazin, se afișează textul: „Acest magazin nu funcționează ca punct de returnare a ambalajelor“ (art. 6 alin. (2)).",
     );
   }
   return {
@@ -117,7 +122,7 @@ function renderFumat(): RenderedSign {
     bodyHtml: `<div class="sign-box sign-center">
 <p class="sign-symbol" aria-hidden="true">🚭</p>
 <h2 class="sign-h sign-lg">${escapeHtml(FUMAT_TITLE)}</h2>
-<p class="sign-p muted">Spații publice închise — Legea nr. 349/2002, art. 3; Legea nr. 15/2016.</p>
+<p class="sign-p muted">Spații publice închise — Legea nr. 349/2002, art. 3 alin. (1) și art. 5 alin. (1).</p>
 </div>`,
   };
 }
@@ -129,7 +134,9 @@ function renderMinori(): RenderedSign {
     landscape: false,
     bodyHtml: `<div class="sign-box sign-center">
 <h2 class="sign-h sign-lg">${escapeHtml(MINORI_TITLE)}</h2>
-<p class="sign-p muted">Persoane sub 18 ani — Legea nr. 61/1991 (modificată prin Legea nr. 174/2023); Ordinul ANPC nr. 331/2025 (tutun și produse conexe).</p>
+<p class="sign-p">${escapeHtml(MINORI_BODY_TUTUN)}</p>
+<p class="sign-p muted">${escapeHtml(MINORI_FOOTNOTE_ALCOOL)}</p>
+<p class="sign-p muted">${escapeHtml(MINORI_FOOTNOTE_TUTUN)}</p>
 </div>`,
   };
 }

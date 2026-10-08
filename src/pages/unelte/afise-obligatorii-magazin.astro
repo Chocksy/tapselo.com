@@ -10,7 +10,7 @@ const heading = "Această unitate este dotată cu casă de marcat – afișe obl
 const faq = [
   {
     q: "Ce afișe trebuie să aibă un magazin cu casă de marcat?",
-    a: "Minim anunțul de atenționare privind bonul fiscal (OUG nr. 28/1999, art. 1 alin. (11), model aprobat prin Ordinul MF nr. 159/2015), afișat la locul AMEF. În plus, de regulă: programul de funcționare (OG nr. 99/2000, art. 9), placheta ANPC cu datele comisariatului județean și căile de reclamație, afișe SGR dacă vinzi băuturi în ambalaje SGR, „Fumatul interzis” în spațiile închise și interdicția de vânzare către minori pentru alcool și tutun.",
+    a: "Minim anunțul de atenționare privind bonul fiscal (OUG nr. 28/1999, art. 1 alin. (11), model aprobat prin Ordinul MF nr. 159/2015), afișat la locul AMEF. În plus, de regulă: programul de funcționare (OG nr. 99/2000, art. 9; Legea nr. 296/2004, art. 63), informări pentru consumatori (comisariat județean, SAL), afișe SGR dacă vinzi băuturi în ambalaje SGR, „Fumatul interzis” în spațiile închise (Legea nr. 349/2002) și, pentru tutun, afișarea interdicției către minori (Ordinul ANPC nr. 331/2025). Pentru alcool, legea interzice vânzarea către minori (Legea nr. 61/1991, art. 2 pct. 23^1), fără un model unic de afiș obligatoriu ca la tutun.",
   },
   {
     q: "Unde pun afișul „Această unitate este dotată cu casă de marcat”?",
@@ -85,19 +85,22 @@ const jsonLd = toolJsonLd({
       </p>
       <p>
         <strong class="text-primary">ANPC.</strong> Consumatorii trebuie să știe cum contactează comisariatul județean și
-        cum pot folosi soluționarea alternativă a litigiilor (SAL). Telefonul consumatorului este 021 9551 (pagina SAL de pe
-        anpc.ro). Pentru litigii transfrontaliere, platforma europeană ODR este la ec.europa.eu/consumers/odr.
+        cum pot folosi soluționarea alternativă a litigiilor (SAL). Telefonul consumatorului este 021 9551 (pagina
+        <a href="https://anpc.ro/sal/" class="font-semibold text-accent hover:underline">anpc.ro/sal</a> și
+        <a href="https://anpc.ro/contact/" class="font-semibold text-accent hover:underline">anpc.ro/contact</a>).
       </p>
       <p>
         <strong class="text-primary">SGR.</strong> Dacă vinzi băuturi în ambalaje cu garanție-returnare, HG nr. 1074/2021
-        îți impune informarea clienților la raft și obligații de preluare a ambalajelor la punctele de returnare. Dacă nu
-        organizezi punct propriu, legea prevede afișarea textului că magazinul nu funcționează ca punct de returnare.
+        îți impune să indici garanția distinct de preț și să afișezi informații pentru consumatori (art. 6). Garanția este de
+        0,5 lei per ambalaj (art. 12 alin. (5)). Dacă nu ai punct propriu de returnare, dar folosești parteneriat cu UAT/ADI
+        (art. 17 alin. (7)), se afișează textul legal „Acest magazin nu funcționează ca punct de returnare a ambalajelor“
+        (art. 6 alin. (2)).
       </p>
       <p>
-        <strong class="text-primary">Fumat și minori.</strong> În spațiile publice închise, Legea nr. 349/2002 (art. 3) și
-        Legea nr. 15/2016 impun interdicția de fumat și marcarea cu „Fumatul interzis”. Vânzarea de alcool către minori este
-        interzisă prin Legea nr. 61/1991, modificată prin Legea nr. 174/2023; pentru tutun și produse conexe, Ordinul ANPC
-        nr. 331/2025 impune afișarea interdicției pentru persoane sub 18 ani.
+        <strong class="text-primary">Fumat și minori.</strong> În spațiile publice închise, Legea nr. 349/2002 (art. 3 alin.
+        (1) și art. 5 alin. (1)) impun interdicția de fumat și marcarea cu „Fumatul interzis”. Vânzarea de alcool către
+        minori este interzisă (Legea nr. 61/1991, art. 2 pct. 23^1, introdus prin Legea nr. 174/2023). Pentru tutun și
+        produse conexe, Ordinul ANPC nr. 331/2025 impune afișarea interdicției la locul de vânzare și placheta de pe anpc.ro.
       </p>
     </section>
 
