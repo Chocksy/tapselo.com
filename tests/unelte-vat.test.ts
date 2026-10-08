@@ -9,6 +9,20 @@ test("calculateVat: add 21%", () => {
   assert.equal(r.gross, 121);
 });
 
+test("calculateVat: add 11% rounds VAT and gross to bani", () => {
+  const r = calculateVat({ amount: 10.33, rate: 11, mode: "add" });
+  assert.equal(r.vat, 1.14);
+  assert.equal(r.gross, 11.47);
+  assert.equal(r.net + r.vat, r.gross);
+});
+
+test("calculateVat: extract uses gross / (1 + rate) then TVA as remainder", () => {
+  const r = calculateVat({ amount: 55.5, rate: 11, mode: "remove" });
+  assert.equal(r.net, 50);
+  assert.equal(r.vat, 5.5);
+  assert.equal(r.gross, 55.5);
+});
+
 test("calculateVat: remove 21% from gross", () => {
   const r = calculateVat({ amount: 121, rate: 21, mode: "remove" });
   assert.equal(r.gross, 121);
