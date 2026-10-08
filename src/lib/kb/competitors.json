@@ -333,8 +333,8 @@
   },
   {
     "id": "pob-soft-retail",
-    "name": "POB Soft Retail",
-    "url": "https://pobsoft.ro",
+    "name": "POB Soft / Conexa",
+    "url": "https://conexa.software",
     "segments": [
       "retail",
       "alimentar",
@@ -353,20 +353,20 @@
     "fiscal_p7b_archive": null,
     "customer_offers": null,
     "ai_assistant": null,
-    "pricing_public": "Preturi orientative pe site, fara precizare daca sunt licenta unica sau abonament",
-    "pricing_from": "490lei (Vanzare); De la 1000lei (Vanzare & Gestiune)",
-    "notes": "Program de gestiune si vanzare prin scanare coduri de bare pentru magazine, format din POB Server, POB Backoffice si POB Retail. Tipareste bonurile pe casa de marcat sau imprimanta fiscala, lucreaza cu cantare si genereaza NIR si rapoarte de stoc. Suportul extins are abonament lunar 'începând de la 120 lei/lună'.",
+    "pricing_public": "Plan Baza: 299 RON/lună, 3 dispozitive simultan, fără contract; stație suplimentară +89 RON/lună (prețuri finale afișate pe site, MNDIGITAL SOLUTIONS SRL neplătitoare de TVA).",
+    "pricing_from": "299 RON/lună (3 dispozitive); +89 RON/lună per stație suplimentară",
+    "notes": "Conexa (POB Soft) este platformă POS și gestiune pentru retail și HoReCa: stocuri în timp real, NIR, e-Factura SPV, rapoarte și POS tactil. Site-ul menționează conectare la case AMEF și cântare comerciale. POB Soft rămâne brandul istoric în testimoniale.",
     "sources": [
       {
-        "title": "POB Soft - program gestiune magazin",
-        "url": "https://pobsoft.ro/program-gestiune-magazin/"
+        "title": "Conexa — prețuri și plan Baza",
+        "url": "https://conexa.software"
       },
       {
-        "title": "POB Soft - site oficial",
+        "title": "POB Soft — site anterior",
         "url": "https://pobsoft.ro/"
       }
     ],
-    "verified_on": "2026-10-01"
+    "verified_on": "2026-10-08"
   },
   {
     "id": "selectsoft-retail",
