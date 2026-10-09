@@ -237,10 +237,16 @@ test("parseMultipartBody: more than 64 files → 413 JSON ClientError", async ()
   );
 });
 
-test("buildPdfDownloadName from anonymized opis", () => {
+test("buildPdfDownloadName uses calendar month from day files in zip", () => {
   const opis = fs.readFileSync(path.join(FIX_DIR, "Perioada_raportare.p7b"));
-  const name = buildPdfDownloadName(opis);
-  assert.equal(name, "A4200_9999999901_Z11-Z13.pdf");
+  const day = fs.readFileSync(path.join(FIX_DIR, "9999999901_Z0011.p7b"));
+  const name = buildPdfDownloadName(opis, {
+    "Perioada_raportare.p7b": opis,
+    "9999999901_Z0011.p7b": day,
+    "9999999901_Z0012.p7b": day,
+    "9999999901_Z0013.p7b": day,
+  });
+  assert.equal(name, "A4200_9999999901_2025-12_Z11-Z13.pdf");
 });
 
 test("clientIp: ignores X-Forwarded-For unless TRUST_PROXY", () => {

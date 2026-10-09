@@ -54,7 +54,7 @@
     "PERIOD_MISMATCH": {
       "title": "Zile din luni diferite",
       "ce_inseamna": "Fișierele de zi fiscală nu sunt toate din aceeași lună calendaristică.",
-      "ce_faci": "Depune câte un A4200 pe lună. Separă exporturile în foldere distincte."
+      "ce_faci": "Cere service-ului exporturi separate din casă, câte una pe lună calendaristică, fiecare cu opisul semnat pentru intervalul Z respectiv."
     },
     "MISSING_Z": {
       "title": "Zile lipsă",

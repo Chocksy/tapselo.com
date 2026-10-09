@@ -3,9 +3,13 @@ import { SUPPORTED_TIP_AMEF } from "./constants.ts";
 import {
   checkSingleCalendarMonthAmongDays,
   dayCalendarPeriod,
+  formatSegmentZRange,
   groupDaysByZ,
+  isCrossMonthFallbackExport,
+  splitDaysByMonth,
   type DayEntry,
 } from "./day-groups.ts";
+import { RO_MONTHS } from "./constants.ts";
 import type { CheckerIssue, CrossCheckInput } from "./types.ts";
 
 function issue(
@@ -38,9 +42,9 @@ export function runCrossChecks(input: CrossCheckInput): CheckerIssue[] {
     out.push(
       issue(
         "MULTIPLE_OPIS",
-        "Mai multe opisuri",
-        "Ai încărcat mai mult de un fișier de tip opis (mReg).",
-        "Păstrează un singur opis pentru perioada raportată și șterge duplicatele.",
+        "Mai multe opisuri în același export",
+        "Ai încărcat mai mult de un fișier de tip opis (mReg) fără separare clară pe exporturi.",
+        "Încarcă fiecare export lunar în arhivă sau folder separat (un opis + zilele lui), apoi verifică din nou.",
       ),
     );
   }
@@ -108,16 +112,21 @@ export function runCrossChecks(input: CrossCheckInput): CheckerIssue[] {
     const periods = dayEntries.map((d) => dayCalendarPeriod(d.parsed)).filter((p): p is { an: number; luna: number } => p !== null);
     const mixedMonths = periods.length > 1 && monthRef === null;
     if (mixedMonths) {
-      const sample = periods
-        .slice(0, 3)
-        .map((p) => `${p.luna}/${p.an}`)
-        .join(", ");
+      const segments = splitDaysByMonth(dayEntries);
+      const sample = segments
+        .map((s) => `${RO_MONTHS[s.luna - 1]} ${s.an} (${formatSegmentZRange(s)})`)
+        .join("; ");
+      const fallback = isCrossMonthFallbackExport(dayEntries, opis.nrRapI, opis.nrRapF);
       out.push(
         issue(
           "PERIOD_MISMATCH",
           "Zile din luni diferite",
-          `Nu toate zilele fiscale sunt din aceeași lună calendaristică (ex.: ${sample}).`,
-          "Depune câte un A4200 pe lună. Separă exporturile în foldere distincte.",
+          `Nu toate zilele fiscale sunt din aceeași lună calendaristică: ${sample}.`,
+          fallback
+            ? "Poți genera un singur PDF pentru întreg intervalul, dar recomandăm exporturi lunare separate de la service când este posibil."
+            : "Cere service-ului exporturi separate din casă, câte una pe lună calendaristică, fiecare cu opisul semnat pentru intervalul Z respectiv.",
+          undefined,
+          fallback ? "warning" : "error",
         ),
       );
     }

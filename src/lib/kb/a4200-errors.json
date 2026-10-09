@@ -8,8 +8,8 @@
     },
     "MULTIPLE_OPIS": {
       "title": "Mai multe opisuri",
-      "ce_inseamna": "Există mai mult de un fișier registru (mReg) în selecție.",
-      "ce_faci": "Lasă un singur Perioada_raportare.p7b pentru perioada aleasă."
+      "ce_inseamna": "Există mai mult de un fișier registru (mReg) în același export, fără separare pe luni.",
+      "ce_faci": "Încarcă fiecare export lunar în arhivă sau folder separat (un opis + zilele lui)."
     },
     "NO_OPIS": {
       "title": "Lipsește opisul",
@@ -54,7 +54,7 @@
     "PERIOD_MISMATCH": {
       "title": "Zile din luni diferite",
       "ce_inseamna": "Fișierele de zi fiscală nu sunt toate din aceeași lună calendaristică.",
-      "ce_faci": "Depune câte un A4200 pe lună. Separă exporturile în foldere distincte."
+      "ce_faci": "Cere service-ului exporturi separate din casă, câte una pe lună calendaristică, fiecare cu opisul semnat pentru intervalul Z respectiv."
     },
     "MISSING_Z": {
       "title": "Zile lipsă",
