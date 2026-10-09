@@ -95,6 +95,17 @@ if (prefix === "before") {
     await screenshotStep3Section(page, path.join(outDir, `a4200-step3-${prefix}-ltv-success-${name}.png`));
     await page.close();
   }
+
+  const freshPage = await browser.newPage({ viewport: { width: 390, height: 1400 } });
+  await freshPage.goto(`${base}/ghid/verificare-a4200/`, { waitUntil: "networkidle" });
+  await freshPage.locator("#a4200-jump-signed-pdf").click();
+  await freshPage.waitForSelector("#a4200-step-3:not(.hidden)");
+  await uploadLtvSignedPdf(freshPage);
+  await screenshotStep3Section(
+    freshPage,
+    path.join(outDir, "a4200-step3-fresh-signed-upload-mobile.png"),
+  );
+  await freshPage.close();
 }
 
 await browser.close();

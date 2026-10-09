@@ -1,6 +1,7 @@
 # build output
 dist/
 dist-e2e/
+dist-a4200-e2e/
 
 # generated types
 .astro/

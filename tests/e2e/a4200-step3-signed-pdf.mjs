@@ -11,7 +11,6 @@ import { chromium } from "playwright-core";
 import {
   assertStep3DomOrder,
   goToStep3PdfReady,
-  screenshotStep3Section,
   uploadLtvSignedPdf,
 } from "./lib/a4200-step3-flow.mjs";
 
@@ -82,5 +81,20 @@ test("step 3: LTV signed PDF shows strip message and ANAF download in order", as
   assert.ok(await strip.isVisible());
   assert.match(await strip.textContent(), /eliminat datele adăugate după semnare/);
   assert.ok(await page.locator("#a4200-anaf-ready-download").isVisible());
+  await page.close();
+});
+
+test("step 3: fresh session — upload signed PDF without generating PDF in browser", async () => {
+  const page = await browser.newPage({ viewport: { width: 390, height: 900 } });
+  await page.goto(`${base}/ghid/verificare-a4200/`, { waitUntil: "networkidle" });
+  await page.locator("#a4200-jump-signed-pdf").click();
+  await page.waitForSelector("#a4200-step-3:not(.hidden)");
+
+  assert.ok(await page.locator("#a4200-signed-upload-label").isVisible());
+  assert.ok(await page.locator("#a4200-pdf-download").isHidden());
+
+  await uploadLtvSignedPdf(page);
+  assert.ok(await page.locator("#a4200-anaf-ready-download").isVisible());
+  assert.match(await page.locator("#a4200-anaf-ready-download").getAttribute("download"), /_PENTRU-ANAF\.pdf$/);
   await page.close();
 });

@@ -13,6 +13,11 @@ const STEP3_ORDER_IDS = [
   "a4200-step3-advanced",
 ];
 
+export async function goToStep3SignedOnly(page) {
+  await page.waitForFunction(() => typeof window.__a4200E2E?.goToStep3SignedOnly === "function");
+  await page.evaluate(() => window.__a4200E2E.goToStep3SignedOnly());
+}
+
 export async function goToStep3PdfReady(page) {
   await page.waitForFunction(() => typeof window.__a4200E2E?.goToStep3PdfReady === "function");
   await page.evaluate(() => window.__a4200E2E.goToStep3PdfReady());
@@ -33,8 +38,6 @@ export async function uploadLtvSignedPdf(page) {
         dl &&
         !dl.hidden &&
         !!dl.getAttribute("href") &&
-        upload &&
-        !upload.hidden &&
         result &&
         !result.hidden
       );

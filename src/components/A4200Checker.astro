@@ -56,6 +56,15 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       </label>
       <p id="a4200-file-hint" class="mt-4 text-xs text-text-muted" />
     </div>
+    <p class="text-center text-sm">
+      <button
+        type="button"
+        id="a4200-jump-signed-pdf"
+        class="font-medium text-accent underline-offset-2 hover:text-accent-hover hover:underline"
+      >
+        Ai deja PDF-ul semnat? Încarcă-l aici
+      </button>
+    </p>
   </section>
 
   <!-- Step 2 -->
@@ -107,7 +116,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       Semnează PDF-ul <strong>o singură dată</strong> cu certificatul calificat al firmei și <strong>nu</strong> îl
       resalva după semnare (fără „Salvează” sau „Export” în aplicația de semnare).
     </p>
-    <div id="a4200-signed-upload-wrap" class="hidden space-y-3" hidden>
+    <div id="a4200-signed-upload-wrap" class="space-y-3">
       <label
         id="a4200-signed-upload-label"
         class="flex min-h-14 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-accent bg-ticket-light/30 px-4 py-5 text-center text-sm font-semibold text-primary hover:bg-ticket-light/50"
@@ -143,6 +152,10 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       <p class="mt-2">
         La depunere folosește <strong>doar</strong> fișierul descărcat cu butonul „Descarcă fișierul pentru ANAF” (nume
         care se termină în <strong>_PENTRU-ANAF.pdf</strong>), nu PDF-ul direct din aplicația de semnare.
+      </p>
+      <p class="mt-2">
+        Poți sări direct la încărcarea PDF-ului semnat (link de la pasul 1 sau reîncarcă pagina) — nu trebuie să regenerezi
+        PDF-ul din arhivă dacă îl ai deja semnat.
       </p>
     </div>
     <details id="a4200-step3-advanced" class="rounded-lg border border-border-light p-3 text-sm text-text-secondary">
@@ -319,8 +332,6 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     stripMsgEl.classList.add("hidden");
     anafReadyHint.hidden = true;
     anafReadyHint.classList.add("hidden");
-    signedUploadWrap.hidden = true;
-    signedUploadWrap.classList.add("hidden");
     signedResultWrap.hidden = true;
     signedResultWrap.classList.add("hidden");
     signedPdfInput.value = "";
@@ -332,7 +343,6 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   }
 
   function updateStep3Ui() {
-    setWrapVisible(signedUploadWrap, pdfGenerated);
     setWrapVisible(signedResultWrap, step3AnafReady);
     if (currentStep === 3) {
       primaryBtn.classList.toggle("hidden", pdfGenerated && !step3AnafReady);
@@ -687,6 +697,10 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     if (currentStep > 1) setStep(currentStep - 1);
   });
 
+  document.getElementById("a4200-jump-signed-pdf")?.addEventListener("click", () => {
+    setStep(3);
+  });
+
   function preventDefaults(e: DragEvent) {
     e.preventDefault();
     e.stopPropagation();
@@ -736,7 +750,12 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   updateStep3Ui();
 
   if (import.meta.env.PUBLIC_E2E_A4200_HARNESS === "1") {
-    (window as Window & { __a4200E2E?: { goToStep3PdfReady(): void } }).__a4200E2E = {
+    (window as Window & {
+      __a4200E2E?: { goToStep3PdfReady(): void; goToStep3SignedOnly(): void };
+    }).__a4200E2E = {
+      goToStep3SignedOnly() {
+        setStep(3);
+      },
       goToStep3PdfReady() {
         setStep(3);
         pdfGenerated = true;
