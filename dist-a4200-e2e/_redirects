@@ -1,9 +1,0 @@
-# Shopper pages: one static page per prefix, the slug is read from location.pathname.
-# Rewrite to "/c/" (not "/c/index.html"): Pages strips index.html, which would loop.
-/c/:slug   /c/  200
-/c/:slug/  /c/  200
-/p/:slug   /p/  200
-/p/:slug/  /p/  200
-
-# Sales WhatsApp. The number stays out of every page and bundle; scrapers see only /whatsapp.
-/whatsapp  https://wa.me/40723595584?text=Bun%C4%83%21%20Am%20%C3%AEncercat%20demo-ul%20Tapselo.  302
