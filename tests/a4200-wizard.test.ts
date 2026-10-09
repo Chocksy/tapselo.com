@@ -40,7 +40,7 @@ test("primary button labels follow step context", () => {
   assert.equal(primaryButtonLabel(1, { hasFiles: true }), "Verifică arhiva");
   assert.equal(primaryButtonLabel(2, { checksOk: true }), "Continuă: PDF și semnare");
   assert.equal(primaryButtonLabel(2, { checksOk: false }), "Încarcă din nou arhiva");
-  assert.equal(primaryButtonLabel(3, {}), "Descarcă PDF pentru semnare");
+  assert.equal(primaryButtonLabel(3, {}), "Descarcă PDF-ul");
   assert.equal(primaryButtonLabel(3, { onStep3ReadyForAnaf: true }), "Continuă: încărcare ANAF");
 });
 
