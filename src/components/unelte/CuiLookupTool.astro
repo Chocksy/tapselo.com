@@ -1,0 +1,120 @@
+---
+interface Props {
+  anafApi: string;
+  /** Chrome Web Store URL when published; placeholder until then. */
+  extensionStoreUrl?: string;
+}
+
+const { anafApi, extensionStoreUrl = "" } = Astro.props;
+const showExtension = extensionStoreUrl.length > 0;
+---
+
+<section class="ut-card" aria-labelledby="cui-title">
+  <h2 id="cui-title" class="font-display text-2xl italic text-primary">Verifică firma după CUI</h2>
+  <p class="mt-2 text-sm text-text-secondary">
+    Introdu codul fiscal (CUI/CIF), cu sau fără prefix RO. Datele vin din serviciul public ANAF PlatitorTvaRest, prin proxy-ul Tapselo
+    (cache ~24 h, fără a trimite CUI-ul în analytics).
+  </p>
+
+  <form id="cui-form" class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end" data-anaf-api={anafApi} novalidate>
+    <div class="flex-1">
+      <label class="ut-label" for="cui-input">CUI (cod fiscal)</label>
+      <input
+        class="ut-input font-mono"
+        id="cui-input"
+        name="cui"
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        enterkeyhint="search"
+        maxlength="14"
+        placeholder="ex. RO14399840"
+        autofocus
+      />
+    </div>
+    <button type="submit" class="ut-btn ut-btn-primary" id="cui-search">Verifică</button>
+  </form>
+
+  <p class="ut-err hidden" id="cui-err" role="alert"></p>
+
+  <div id="cui-results" class="mt-6 hidden" aria-live="polite">
+    <div class="ut-result" id="cui-result"></div>
+  </div>
+
+  {showExtension ? (
+    <p class="mt-8 text-sm text-text-secondary">
+      Preferi verificarea direct din browser, fără să deschizi pagina?
+      <a
+        href={extensionStoreUrl}
+        class="font-semibold text-accent hover:text-accent-hover"
+        rel="noopener noreferrer"
+      >
+        Instalează extensia Chrome Tapselo
+      </a>
+      .
+    </p>
+  ) : (
+    <p class="mt-8 text-sm text-text-secondary" id="cui-ext-placeholder">
+      Extensia Chrome pentru verificare rapidă din meniul contextual va fi disponibilă în Chrome Web Store în curând.
+    </p>
+  )}
+</section>
+
+<script>
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
+  import { lookupCuiViaApi } from "../../lib/cui-anaf/client.ts";
+  import { companyDisplayRows } from "../../lib/cui-anaf/labels.ts";
+  import { escapeHtml } from "../../lib/generators/page.ts";
+
+  const form = document.getElementById("cui-form") as HTMLFormElement;
+  const input = document.getElementById("cui-input") as HTMLInputElement;
+  const err = document.getElementById("cui-err") as HTMLParagraphElement;
+  const results = document.getElementById("cui-results") as HTMLDivElement;
+  const result = document.getElementById("cui-result") as HTMLDivElement;
+  const apiBase = form.dataset.anafApi || "/api";
+
+  function showError(message: string) {
+    err.textContent = message;
+    err.classList.remove("hidden");
+    results.classList.add("hidden");
+  }
+
+  function clearError() {
+    err.textContent = "";
+    err.classList.add("hidden");
+  }
+
+  function renderCompany(company: import("../../lib/cui-anaf/types.ts").CompanyInfo) {
+    const rows = companyDisplayRows(company);
+    const dl = rows
+      .map(
+        (r) =>
+          `<dt class="font-semibold text-primary">${escapeHtml(r.label)}</dt><dd class="mt-1 text-text-secondary">${escapeHtml(r.value)}</dd>`,
+      )
+      .join("");
+    result.innerHTML = `<dl class="grid gap-4 sm:grid-cols-2">${dl}</dl>`;
+    results.classList.remove("hidden");
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    clearError();
+    const raw = input.value.trim();
+    if (!raw) {
+      showError("Introdu un CUI.");
+      return;
+    }
+    const btn = document.getElementById("cui-search") as HTMLButtonElement;
+    btn.disabled = true;
+    const out = await lookupCuiViaApi(raw, apiBase);
+    btn.disabled = false;
+    if (!out.ok) {
+      showError(out.message);
+      return;
+    }
+    trackToolUsed("verificare_cui", "lookup");
+    renderCompany(out.company);
+  });
+</script>

@@ -1,5 +1,5 @@
 ---
-import { ArrowRight, BadgePercent, Barcode, Calculator, ClipboardList, FileCheck, NotebookPen, Package, ScanBarcode, ScrollText } from "@lucide/astro";
+import { ArrowRight, BadgePercent, Barcode, Building2, Calculator, ClipboardList, FileCheck, NotebookPen, Package, ScanBarcode, ScrollText } from "@lucide/astro";
 import GuideShell from "../components/GuideShell.astro";
 import { A4200_CHECKER_PATH } from "../lib/articles/schema.ts";
 import { barcodeApiBase } from "../lib/unelte/barcode.ts";
@@ -30,6 +30,14 @@ const tools = [
     action: "Deschide verificarea",
     description:
       "Caută un produs după codul EAN-13: țara prefixului (594 = România), cifra de control, denumirea, cota TVA, marca și imaginea.",
+  },
+  {
+    href: internalPath("/unelte/verificare-cui"),
+    title: "Verificare CUI ANAF",
+    icon: Building2,
+    action: "Deschide verificarea",
+    description:
+      "Verifică o firmă după CUI: denumire, adresă, plătitor TVA, TVA la încasare, split TVA și Registrul RO e-Factura — date publice ANAF.",
   },
   {
     href: internalPath("/unelte/registru-de-casa"),

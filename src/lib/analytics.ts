@@ -16,6 +16,7 @@ export type AnalyticsTool =
   | "generator_cod_de_bare"
   | "calculator_adaos"
   | "verificare_cod_de_bare"
+  | "verificare_cui"
   | "afise_obligatorii";
 
 export type ToolAction =
