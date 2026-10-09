@@ -1,0 +1,56 @@
+---
+import ToolShell from "../../components/ToolShell.astro";
+import CuiLookupTool from "../../components/unelte/CuiLookupTool.astro";
+import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
+
+const path = "/unelte/verificare-cui/";
+const heading = "Verificare CUI ANAF";
+
+const faq = [
+  {
+    q: "Ce verifică această unealtă?",
+    a: "Interoghează serviciul public ANAF PlatitorTvaRest (v9) pentru o firmă la data curentă: denumire, adresă, statut de plătitor de TVA, TVA la încasare, inactiv fiscal, split TVA și prezența în Registrul RO e-Factura.",
+  },
+  {
+    q: "Ce înseamnă „nu apare în Registrul RO e-Factura”?",
+    a: "Înseamnă că firma nu figurează în registrul opțional RO e-Factura la data interogării. Nu spune dacă firma este sau nu obligată să folosească e-Factura în relațiile B2B — pentru obligații legale, consultă contabilul sau ANAF.",
+  },
+  {
+    q: "Păstrați CUI-urile căutate?",
+    a: "Nu trimitem codul fiscal în analytics. Proxy-ul Tapselo poate păstra răspunsul ANAF în cache tehnic (~24 ore) pentru a respecta limita de 1 cerere pe secundă către ANAF.",
+  },
+  {
+    q: "Există extensie Chrome?",
+    a: "Da — extensia Tapselo „Verificare CUI ANAF” permite verificarea din meniul contextual pe text selectat sau din popup. Linkul din Chrome Web Store apare aici imediat ce publicarea este finalizată.",
+  },
+];
+
+const jsonLd = toolJsonLd({
+  path,
+  heading,
+  appName: "Verificare CUI ANAF Tapselo",
+  description:
+    "Verificare CUI online: firmă, adresă, plătitor TVA, TVA la încasare, split TVA și Registrul RO e-Factura — date publice ANAF.",
+  faq,
+});
+---
+
+<ToolShell
+  title="Verificare CUI ANAF – firmă, TVA și e-Factura | Gratuit"
+  description="Verifică gratuit un CUI în registrul public ANAF: denumire, adresă, plătitor TVA, TVA la încasare, split TVA și Registrul RO e-Factura."
+  heading={heading}
+  path={path}
+  lead="Caută o firmă după codul fiscal (CUI/CIF). Date direct din ANAF, fără cont Tapselo."
+  campaign="verificare-cui"
+  ctaTitle="Facturi și casă de marcat pentru magazinul tău"
+  ctaBody="Tapselo ține evidența vânzărilor, stocurilor și raportului Z — program pentru magazine mici din România."
+  related={[
+    { href: "/unelte/calculator-tva", label: "Calculator TVA 21% și 11%" },
+    { href: "/unelte/verificare-cod-de-bare", label: "Verificare cod de bare EAN" },
+    { href: "/ghid/cote-tva-casa-de-marcat", label: "Cote TVA și grupe în casa de marcat" },
+  ]}
+  jsonLd={jsonLd}
+  faq={faq}
+>
+  <CuiLookupTool anafApi="/api" />
+</ToolShell>

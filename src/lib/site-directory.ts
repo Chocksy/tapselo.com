@@ -10,6 +10,7 @@ export type SiteLink = { href: string; label: string };
 export const toolLinks: SiteLink[] = [
   { href: internalPath("/unelte/calculator-tva"), label: "Calculator TVA" },
   { href: internalPath("/unelte/verificare-cod-de-bare"), label: "Verificare cod de bare" },
+  { href: internalPath("/unelte/verificare-cui"), label: "Verificare CUI ANAF" },
   { href: internalPath("/unelte/registru-de-casa"), label: "Registru de casă" },
   { href: internalPath("/unelte/generator-nir"), label: "Generator NIR" },
   { href: internalPath("/unelte/fisa-de-magazie"), label: "Fișă de magazie" },
