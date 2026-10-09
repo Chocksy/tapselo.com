@@ -4,9 +4,11 @@ import fs from "node:fs";
 import path from "node:path";
 import {
   anafExportFilename,
+  anafExportFilenameForDays,
   isPdfBytes,
   prepareSignedPdfForAnaf,
 } from "../src/lib/a4200/signed-pdf.ts";
+import type { DayEntry } from "../src/lib/a4200/day-groups.ts";
 import { stripPdfLtvIncrement } from "../src/lib/a4200/strip-pdf-ltv.ts";
 
 const FIX = path.join(import.meta.dirname, "fixtures/a4200/pdf");
@@ -17,6 +19,25 @@ function readFixture(name: string): Uint8Array {
 
 test("anafExportFilename uses _PENTRU-ANAF suffix", () => {
   assert.equal(anafExportFilename("Perioada_raportare.pdf"), "Perioada_raportare_PENTRU-ANAF.pdf");
+});
+
+test("anafExportFilenameForDays embeds calendar month for multi-export downloads", () => {
+  const days: DayEntry[] = [
+    {
+      file: "day.xml",
+      parsed: {
+        zReport: 1,
+        nui: "9999999901",
+        an: 2025,
+        luna: 12,
+        idM: "",
+        cif: "1234567890",
+      },
+    },
+  ];
+  const name = anafExportFilenameForDays("A4200.pdf", days);
+  assert.match(name, /2025-12/);
+  assert.match(name, /_PENTRU-ANAF\.pdf$/);
 });
 
 test("prepareSignedPdfForAnaf rejects non-PDF", () => {

@@ -1,3 +1,5 @@
+import { splitDaysByMonth, type DayEntry } from "./day-groups.ts";
+import { formatMonthRangeKey } from "./mixed-month.ts";
 import { stripPdfLtvIncrement } from "./strip-pdf-ltv.ts";
 
 const PDF_HEADER = "%PDF-";
@@ -23,6 +25,23 @@ export type PrepareSignedPdfForAnafOutcome = PrepareSignedPdfForAnafResult | Pre
 export function anafExportFilename(originalName: string): string {
   const base = originalName.replace(/\.pdf$/i, "").replace(/-anaf$/i, "").replace(/_PENTRU-ANAF$/i, "");
   return `${base}_PENTRU-ANAF.pdf`;
+}
+
+/** Month hint from day files, e.g. `A4200_2025-12_PENTRU-ANAF.pdf` for multi-export flows. */
+export function anafExportFilenameForDays(originalName: string, days: DayEntry[]): string {
+  const monthKey = formatMonthRangeKey(splitDaysByMonth(days));
+  const baseStem = originalName.replace(/\.pdf$/i, "").replace(/_PENTRU-ANAF$/i, "");
+  if (!monthKey) return anafExportFilename(originalName);
+  const monthSlug = monthKey.replace(/_/g, "-");
+  if (baseStem.toLowerCase().includes(monthSlug.toLowerCase())) {
+    return anafExportFilename(originalName);
+  }
+  const stem = baseStem || "A4200";
+  return `${stem}_${monthSlug}_PENTRU-ANAF.pdf`;
+}
+
+export interface PrepareSignedPdfOptions {
+  preferredDownloadName?: string;
 }
 
 function decodeLatin1(bytes: Uint8Array): string {
@@ -87,6 +106,7 @@ export function looksSignedPdf(text: string): boolean {
 export function prepareSignedPdfForAnaf(
   pdf: Uint8Array | ArrayBuffer,
   originalFilename: string,
+  options: PrepareSignedPdfOptions = {},
 ): PrepareSignedPdfForAnafOutcome {
   const bytes = pdf instanceof Uint8Array ? pdf : new Uint8Array(pdf);
 
@@ -149,6 +169,8 @@ export function prepareSignedPdfForAnaf(
     ok: true,
     bytes: strip.stripped,
     strippedIncrement: strip.strippedIncrement === true,
-    downloadName: anafExportFilename(originalFilename || "declarare.pdf"),
+    downloadName:
+      options.preferredDownloadName ??
+      anafExportFilename(originalFilename || "declarare.pdf"),
   };
 }

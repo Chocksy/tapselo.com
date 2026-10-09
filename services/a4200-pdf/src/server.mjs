@@ -104,7 +104,13 @@ async function generatePdf(workDir) {
   const opisPath = opisPathInDir(workDir, names);
   const opisBase = basename(opisPath);
   const opisBytes = await fs.readFile(opisPath);
-  const downloadName = buildPdfDownloadName(opisBytes);
+  const allBuffers = {};
+  for (const n of names) {
+    if (n.toLowerCase().endsWith(".p7b")) {
+      allBuffers[n] = await fs.readFile(join(workDir, n));
+    }
+  }
+  const downloadName = buildPdfDownloadName(opisBytes, allBuffers);
 
   await runDuk(opisPath);
 

@@ -25,6 +25,21 @@ export const VERIFIED_ON = "2026-10-07";
 /** tip_amef values supported in v1 (A4203 general-use AMEF). */
 export const SUPPORTED_TIP_AMEF = new Set(["U", "A"]);
 
+export const RO_MONTHS = [
+  "ianuarie",
+  "februarie",
+  "martie",
+  "aprilie",
+  "mai",
+  "iunie",
+  "iulie",
+  "august",
+  "septembrie",
+  "octombrie",
+  "noiembrie",
+  "decembrie",
+] as const;
+
 export const NUI_LEN = 10;
 export const Z_SUFFIX_LEN = 4;
 export const IDM_DAY_LEN = 28;
