@@ -160,7 +160,7 @@ export function primaryButtonLabel(step: number, ctx: WizardButtonContext = {}):
     case 2:
       return ctx.checksOk ? "Continuă: PDF și semnare" : "Încarcă din nou arhiva";
     case 3:
-      return ctx.onStep3ReadyForAnaf ? "Continuă: încărcare ANAF" : "Descarcă PDF pentru semnare";
+      return ctx.onStep3ReadyForAnaf ? "Continuă: încărcare ANAF" : "Descarcă PDF-ul";
     case 4:
       return "Deschide portalul ANAF";
     default: {

@@ -84,56 +84,82 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       Descarcă PDF-ul și semnează-l
     </h2>
     <p class="text-sm leading-relaxed text-text-secondary">
-      Generează PDF-ul declarației, semnează-l electronic cu certificatul firmei, apoi încarcă aici PDF-ul semnat. Îl
-      pregătim automat pentru portalul ANAF.
+      Totul de la încărcarea PDF-ului semnat încolo rulează în browser — nu trimitem fișierul semnat la server și nu
+      analizăm conținutul lui.
     </p>
     {
-      a4200PdfBase ? (
-        <p class="text-xs text-text-muted">
-          La generarea PDF, fișierele de la casă sunt trimise criptat către serverul Tapselo, procesate în memorie și
-          șterse imediat după răspuns.
-        </p>
-      ) : (
+      !a4200PdfBase && (
         <p class="text-xs text-amber-800 rounded-md border border-amber-200 bg-amber-50/80 p-3">
           Generarea PDF nu este disponibilă momentan pe acest site. Poți folosi programul de la ANAF pe calculatorul tău
           sau reveni mai târziu.
         </p>
       )
     }
-    <ol class="list-decimal space-y-2 pl-5 text-sm text-text-secondary">
-      <li>Apasă butonul de mai jos și salvează PDF-ul pe calculator.</li>
-      <li>
-        Deschide <strong>certSIGN webSIGN</strong> (sau aplicația de semnare pe care o folosești) și semnează PDF-ul cu
-        certificatul calificat al firmei.
-      </li>
-      <li>Încarcă PDF-ul semnat — îl pregătim pentru încărcarea la ANAF.</li>
-    </ol>
+    <div
+      class="rounded-xl border border-amber-200 bg-amber-50/80 p-4 text-sm leading-relaxed text-text-secondary"
+      role="note"
+    >
+      <p class="font-semibold text-primary">
+        ANAF respinge cu „Document modificat după aplicarea semnăturii electronice”?
+      </p>
+      <p class="mt-2">
+        La depunere folosește <strong>doar</strong> fișierul descărcat cu butonul „Descarcă fișierul pentru ANAF” (nume
+        care se termină în <strong>_PENTRU-ANAF.pdf</strong>), nu PDF-ul direct din aplicația de semnare.
+      </p>
+    </div>
     <p id="a4200-pdf-status" class="text-sm text-text-muted" />
     <a
       id="a4200-pdf-download"
-      class="hidden min-h-11 items-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-primary hover:border-accent"
+      class="hidden flex min-h-12 w-full items-center justify-center rounded-md bg-accent px-6 py-3 text-base font-bold text-white hover:bg-accent-hover"
       hidden
       download="Perioada_raportare.pdf"
     >
-      Descarcă PDF generat
+      Descarcă PDF-ul
     </a>
-    <div id="a4200-signed-upload-wrap" class="hidden mt-2 space-y-2" hidden>
+    <p class="text-sm leading-relaxed text-text-secondary">
+      Semnează PDF-ul <strong>o singură dată</strong> cu certificatul calificat al firmei și <strong>nu</strong> îl
+      resalva după semnare (fără „Salvează” sau „Export” în aplicația de semnare).
+    </p>
+    <div id="a4200-signed-upload-wrap" class="hidden space-y-3" hidden>
       <label
-        class="flex min-h-11 cursor-pointer items-center justify-center rounded-md border border-dashed border-border-light bg-surface px-4 py-3 text-sm font-medium text-primary hover:border-accent"
+        id="a4200-signed-upload-label"
+        class="flex min-h-14 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-accent bg-ticket-light/30 px-4 py-5 text-center text-sm font-semibold text-primary hover:bg-ticket-light/50"
       >
         Încarcă PDF-ul semnat
+        <span class="text-xs font-normal text-text-muted">Verificăm semnătura local, în browser</span>
         <input type="file" id="a4200-signed-pdf-input" class="hidden" accept=".pdf,application/pdf" />
       </label>
-      <p id="a4200-anaf-ready-msg" class="hidden text-sm text-green-700" hidden />
+      <p id="a4200-signed-error" class="hidden text-sm text-red-700" hidden role="alert" />
+      <p id="a4200-strip-msg" class="hidden text-sm text-text-secondary" hidden />
       <a
         id="a4200-anaf-ready-download"
-        class="hidden min-h-11 items-center rounded-md bg-accent px-4 py-2 text-sm font-bold text-white hover:bg-accent-hover"
+        class="hidden flex min-h-12 w-full items-center justify-center rounded-md bg-accent px-6 py-3 text-base font-bold text-white hover:bg-accent-hover"
         hidden
-        download="declarare-anaf.pdf"
+        download="declarare_PENTRU-ANAF.pdf"
       >
         Descarcă fișierul pentru ANAF
       </a>
+      <p id="a4200-anaf-ready-hint" class="hidden text-sm text-green-700" hidden>
+        Fișierul este gata. Descarcă-l, apoi continuă la pasul următor pentru încărcarea la ANAF.
+      </p>
     </div>
+    <details id="a4200-step3-advanced" class="rounded-lg border border-border-light p-3 text-sm text-text-secondary">
+      <summary class="cursor-pointer font-medium text-primary">Opțiuni avansate</summary>
+      <div class="mt-3 space-y-2 leading-relaxed">
+        <p>
+          Poți semna în <strong>certSIGN webSIGN</strong> sau în aplicația de semnare pe care o folosești de obicei.
+          Dacă PDF-ul nu se generează, reîncearcă butonul din bara de jos sau folosește DUKIntegrator pe calculator.
+        </p>
+        {
+          a4200PdfBase ? (
+            <p class="text-xs text-text-muted">
+              La generarea PDF, exportul de la casă este trimis criptat către serverul Tapselo, procesat în memorie și
+              șters imediat după răspuns. PDF-ul semnat nu pleacă de pe calculator la acest pas.
+            </p>
+          ) : null
+        }
+      </div>
+    </details>
   </section>
 
   <!-- Step 4 -->
@@ -154,7 +180,10 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
           >decl.anaf.mfinante.gov.ro</a
         > și autentifică-te cu certificatul digital al firmei.
       </li>
-      <li>Încarcă PDF-ul pregătit la pasul anterior (un singur fișier per depunere).</li>
+      <li>
+        Încarcă <strong>exclusiv</strong> fișierul <strong>_PENTRU-ANAF.pdf</strong> de la pasul 3 (nu PDF-ul brut
+        semnat în aplicația de semnare).
+      </li>
       <li>
         După încărcare, verifică recipisa la
         <a href="https://stare.anaf.ro/StareD112" target="_blank" rel="noopener" class="text-accent hover:text-accent-hover"
@@ -219,7 +248,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   import { validateAgainstXsd } from "../lib/a4200/validate-xsd.ts";
   import { explainXsdMessage } from "../lib/a4200/explain.ts";
   import { decodeDukErrTxt } from "../lib/a4200/duk-decoder.ts";
-  import { stripPdfLtvIncrement } from "../lib/a4200/strip-pdf-ltv.ts";
+  import { prepareSignedPdfForAnaf } from "../lib/a4200/signed-pdf.ts";
   import type { CheckerIssue, ClassifiedFile } from "../lib/a4200/types.ts";
   import { collectP7bFromFiles, p7bPayloadsToZip } from "../lib/a4200/collect-p7b.ts";
   import { trackToolUsed } from "../lib/analytics-client.ts";
@@ -256,7 +285,9 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   const signedUploadWrap = document.getElementById("a4200-signed-upload-wrap")!;
   const pdfStatus = document.getElementById("a4200-pdf-status");
   const pdfDownload = document.getElementById("a4200-pdf-download") as HTMLAnchorElement;
-  const anafReadyMsg = document.getElementById("a4200-anaf-ready-msg")!;
+  const signedErrorEl = document.getElementById("a4200-signed-error")!;
+  const stripMsgEl = document.getElementById("a4200-strip-msg")!;
+  const anafReadyHint = document.getElementById("a4200-anaf-ready-hint")!;
   const anafReadyDownload = document.getElementById("a4200-anaf-ready-download") as HTMLAnchorElement;
   const activeClass = drop.dataset.activeClass ?? "";
 
@@ -271,7 +302,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     el.href = href;
     el.hidden = false;
     el.classList.remove("hidden");
-    el.classList.add("inline-flex");
+    el.classList.add("inline-flex", "flex");
   }
 
   function resetStep3State() {
@@ -279,8 +310,12 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     step3AnafReady = false;
     hideActionLink(pdfDownload);
     hideActionLink(anafReadyDownload);
-    anafReadyMsg.hidden = true;
-    anafReadyMsg.classList.add("hidden");
+    signedErrorEl.hidden = true;
+    signedErrorEl.classList.add("hidden");
+    stripMsgEl.hidden = true;
+    stripMsgEl.classList.add("hidden");
+    anafReadyHint.hidden = true;
+    anafReadyHint.classList.add("hidden");
     signedUploadWrap.hidden = true;
     signedUploadWrap.classList.add("hidden");
     signedPdfInput.value = "";
@@ -539,7 +574,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
         pdfGenerated = true;
         updateStep3Ui();
         if (pdfStatus) {
-          pdfStatus.textContent = "PDF generat. Descarcă-l, semnează-l, apoi încarcă PDF-ul semnat mai jos.";
+          pdfStatus.textContent = "PDF-ul este gata. Descarcă-l cu butonul de mai sus, semnează-l, apoi încarcă PDF-ul semnat.";
           pdfStatus.className = "text-sm text-green-700";
         }
         trackToolUsed("a4200", "generate_pdf", { result: "ok" });
@@ -573,31 +608,39 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   signedPdfInput.addEventListener("change", async () => {
     const file = signedPdfInput.files?.[0];
     hideActionLink(anafReadyDownload);
-    anafReadyMsg.hidden = true;
-    anafReadyMsg.classList.add("hidden");
+    signedErrorEl.hidden = true;
+    signedErrorEl.classList.add("hidden");
+    stripMsgEl.hidden = true;
+    stripMsgEl.classList.add("hidden");
+    anafReadyHint.hidden = true;
+    anafReadyHint.classList.add("hidden");
     step3AnafReady = false;
     updateStep3Ui();
     if (!file) {
       updatePrimaryButton();
       return;
     }
-    anafReadyMsg.textContent = "Pregătim fișierul pentru ANAF…";
-    anafReadyMsg.hidden = false;
-    anafReadyMsg.classList.remove("hidden");
-    anafReadyMsg.className = "text-sm text-text-muted";
     const buf = new Uint8Array(await file.arrayBuffer());
-    const res = stripPdfLtvIncrement(buf);
-    if (!res.ok || !res.stripped) {
-      anafReadyMsg.textContent = res.reason ?? "Nu am putut procesa PDF-ul. Încearcă din nou sau contactează-ne.";
-      anafReadyMsg.className = "text-sm text-red-700";
+    const res = prepareSignedPdfForAnaf(buf, file.name);
+    if (!res.ok) {
+      signedErrorEl.textContent = res.message;
+      signedErrorEl.hidden = false;
+      signedErrorEl.classList.remove("hidden");
       updatePrimaryButton();
+      trackToolUsed("a4200", "check", { result: "errors" });
       return;
     }
-    const blob = new Blob([res.stripped], { type: "application/pdf" });
+    const blob = new Blob([res.bytes], { type: "application/pdf" });
     showActionLink(anafReadyDownload, URL.createObjectURL(blob));
-    anafReadyDownload.download = file.name.replace(/\.pdf$/i, "") + "-anaf.pdf";
-    anafReadyMsg.textContent = "Fișierul este gata pentru încărcarea la ANAF. Descarcă-l și continuă la pasul următor.";
-    anafReadyMsg.className = "text-sm text-green-700";
+    anafReadyDownload.download = res.downloadName;
+    if (res.strippedIncrement) {
+      stripMsgEl.textContent =
+        "Am eliminat datele adăugate după semnare (altfel ANAF respinge fișierul).";
+      stripMsgEl.hidden = false;
+      stripMsgEl.classList.remove("hidden");
+    }
+    anafReadyHint.hidden = false;
+    anafReadyHint.classList.remove("hidden");
     step3AnafReady = true;
     trackToolUsed("a4200", "check", { result: "ok" });
     updatePrimaryButton();
