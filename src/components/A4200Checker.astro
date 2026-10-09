@@ -84,8 +84,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       Descarcă PDF-ul și semnează-l
     </h2>
     <p class="text-sm leading-relaxed text-text-secondary">
-      Totul de la încărcarea PDF-ului semnat încolo rulează în browser — nu trimitem fișierul semnat la server și nu
-      analizăm conținutul lui.
+      Verificarea și curățarea se fac în browser; fișierul semnat nu este trimis la server.
     </p>
     {
       !a4200PdfBase && (
@@ -95,18 +94,6 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
         </p>
       )
     }
-    <div
-      class="rounded-xl border border-amber-200 bg-amber-50/80 p-4 text-sm leading-relaxed text-text-secondary"
-      role="note"
-    >
-      <p class="font-semibold text-primary">
-        ANAF respinge cu „Document modificat după aplicarea semnăturii electronice”?
-      </p>
-      <p class="mt-2">
-        La depunere folosește <strong>doar</strong> fișierul descărcat cu butonul „Descarcă fișierul pentru ANAF” (nume
-        care se termină în <strong>_PENTRU-ANAF.pdf</strong>), nu PDF-ul direct din aplicația de semnare.
-      </p>
-    </div>
     <p id="a4200-pdf-status" class="text-sm text-text-muted" />
     <a
       id="a4200-pdf-download"
@@ -141,6 +128,19 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       </a>
       <p id="a4200-anaf-ready-hint" class="hidden text-sm text-green-700" hidden>
         Fișierul este gata. Descarcă-l, apoi continuă la pasul următor pentru încărcarea la ANAF.
+      </p>
+    </div>
+    <div
+      id="a4200-anaf-troubleshoot"
+      class="rounded-xl border border-amber-200 bg-amber-50/80 p-4 text-sm leading-relaxed text-text-secondary"
+      role="note"
+    >
+      <p class="font-semibold text-primary">
+        ANAF respinge cu „Document modificat după aplicarea semnăturii electronice”?
+      </p>
+      <p class="mt-2">
+        La depunere folosește <strong>doar</strong> fișierul descărcat cu butonul „Descarcă fișierul pentru ANAF” (nume
+        care se termină în <strong>_PENTRU-ANAF.pdf</strong>), nu PDF-ul direct din aplicația de semnare.
       </p>
     </div>
     <details id="a4200-step3-advanced" class="rounded-lg border border-border-light p-3 text-sm text-text-secondary">
