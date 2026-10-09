@@ -1,0 +1,64 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Navbar from "../../../components/Navbar.astro";
+import Footer from "../../../components/Footer.astro";
+import { internalPath } from "../../../lib/internal-url.ts";
+
+const title = "Confidențialitate — extensia Verificare CUI ANAF | Tapselo";
+const description =
+  "Politica de confidențialitate pentru extensia Chrome Tapselo „Verificare CUI ANAF”: ce date procesăm, ce nu colectăm și cum contactezi echipa.";
+---
+
+<Layout title={title} description={description}>
+  <Navbar />
+  <main class="bg-surface-white py-24">
+    <article class="mx-auto max-w-3xl px-6 prose prose-neutral">
+      <h1 class="font-display text-4xl italic text-primary">Confidențialitate — extensia Verificare CUI ANAF</h1>
+      <p class="text-text-secondary">Ultima actualizare: 9 octombrie 2026</p>
+
+      <h2>Ce face extensia</h2>
+      <p>
+        Extensia Chrome „Verificare CUI ANAF – firmă, TVA și e-Factura | Tapselo” îți permite să verifici un cod fiscal (CUI)
+        în registrul public ANAF și, opțional, să cauți un produs după cod de bare în API-ul public Tapselo (fără prețuri).
+      </p>
+
+      <h2>Ce date colectăm</h2>
+      <p>
+        <strong>Nu colectăm și nu stocăm pe serverele Tapselo CUI-urile pe care le verifici.</strong> Interogarea ANAF se face
+        din extensia ta direct către <code>webservicesp.anaf.ro</code>; ANAF primește CUI-ul pe care îl trimiți, conform
+        serviciului lor public.
+      </p>
+      <p>
+        Pentru căutarea după cod de bare, extensia apelează <code>tapselo.com/api/barcodes/</code> cu codul EAN introdus;
+        acest serviciu returnează denumirea și cota TVA din nomenclatorul public Tapselo, fără preț.
+      </p>
+      <p>
+        Extensia nu include analytics, telemetrie sau cod executat de la distanță. Poate folosi
+        <code>chrome.storage</code> doar pentru cache local al răspunsurilor ANAF (maxim ~24 ore per CUI), ca să reduci
+        numărul de cereri.
+      </p>
+
+      <h2>Permisiuni Chrome</h2>
+      <ul>
+        <li><strong>contextMenus</strong> — „Verifică CUI la ANAF” pe textul selectat.</li>
+        <li><strong>storage</strong> — cache local opțional pentru răspunsuri ANAF.</li>
+        <li><strong>host_permissions</strong> — doar <code>webservicesp.anaf.ro</code> și <code>tapselo.com</code> (API cod de bare).</li>
+      </ul>
+
+      <h2>Link către site</h2>
+      <p>
+        În extensie poate apărea un link către
+        <a href="https://tapselo.com/unelte/verificare-cui/">tapselo.com</a> cu parametri UTM pentru a înțelege de unde vine
+        traficul; acest lucru nu transmite CUI-ul tău.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Pentru întrebări despre această extensie, scrie-ne din
+        <a href={internalPath("/#contact")}>formularul de contact</a> Tapselo sau consultă
+        <a href={internalPath("/privacy")}>politica generală de confidențialitate</a> a site-ului.
+      </p>
+    </article>
+  </main>
+  <Footer />
+</Layout>

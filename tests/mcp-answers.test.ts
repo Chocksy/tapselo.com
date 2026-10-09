@@ -223,7 +223,7 @@ test("check_company: CUI checks, parser, live-shape fixture, friendly failures",
   assert.match(ok.text, /\*\*DANTE INTERNATIONAL SA\*\* \(CUI 14399840\)/);
   assert.match(ok.text, /Platitor de TVA: da/);
   assert.match(ok.text, /Cod CAEN: 4754/);
-  assert.match(ok.text, /In Registrul RO e-Factura: nu/);
+  assert.match(ok.text, /Registrul RO e-Factura: nu apare în Registrul RO e-Factura/);
   assert.match(ok.text, /utm_campaign=check_company/);
 
   const down = await checkCompany("14399840", stubFetch(() => { throw new Error("timeout"); }));

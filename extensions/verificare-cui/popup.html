@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ro">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Verificare CUI ANAF</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="hdr">
+      <img src="icons/icon-32.png" width="32" height="32" alt="" />
+      <h1>Verificare CUI</h1>
+    </header>
+    <nav class="tabs" role="tablist">
+      <button type="button" class="tab active" data-tab="cui" role="tab" aria-selected="true">CUI</button>
+      <button type="button" class="tab" data-tab="barcode" role="tab" aria-selected="false">Cod de bare</button>
+    </nav>
+    <section id="panel-cui" class="panel" role="tabpanel">
+      <form id="cui-form">
+        <label for="cui-input">CUI (cod fiscal)</label>
+        <input id="cui-input" name="cui" inputmode="numeric" autocomplete="off" placeholder="ex. RO14399840" />
+        <button type="submit" class="primary">Verifică la ANAF</button>
+      </form>
+      <p id="cui-err" class="err" hidden></p>
+      <dl id="cui-result" class="result" hidden></dl>
+    </section>
+    <section id="panel-barcode" class="panel hidden" role="tabpanel" hidden>
+      <form id="bc-form">
+        <label for="bc-input">Cod EAN-13</label>
+        <input id="bc-input" name="ean" inputmode="numeric" autocomplete="off" placeholder="ex. 5941234000013" />
+        <button type="submit" class="primary">Caută produs</button>
+      </form>
+      <p class="hint">Afișăm denumirea și cota TVA din nomenclatorul Tapselo. Fără prețuri.</p>
+      <p id="bc-err" class="err" hidden></p>
+      <div id="bc-result" class="result" hidden></div>
+    </section>
+    <footer class="ftr">
+      <a id="tapselo-link" href="#" rel="noopener noreferrer">Mai multe unelte pe Tapselo</a>
+      ·
+      <a href="https://tapselo.com/extensii/verificare-cui/confidentialitate/" rel="noopener noreferrer">Confidențialitate</a>
+    </footer>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
