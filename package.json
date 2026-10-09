@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "node --experimental-strip-types --test 'tests/*.test.ts'",
-    "test:e2e": "astro build --outDir dist-e2e && node --test tests/e2e/unelte-smoke.mjs"
+    "test:e2e": "astro build --outDir dist-e2e && node --test tests/e2e/unelte-smoke.mjs",
+    "test:e2e:a4200": "PUBLIC_E2E_A4200_HARNESS=1 PUBLIC_A4200_PDF_URL=https://pdf.test astro build --outDir dist-a4200-e2e && node --test tests/e2e/a4200-step3-signed-pdf.mjs"
   },
   "overrides": {
     "@lucide/astro": {

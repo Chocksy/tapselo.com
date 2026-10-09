@@ -117,6 +117,8 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
         <input type="file" id="a4200-signed-pdf-input" class="hidden" accept=".pdf,application/pdf" />
       </label>
       <p id="a4200-signed-error" class="hidden text-sm text-red-700" hidden role="alert" />
+    </div>
+    <div id="a4200-signed-result-wrap" class="hidden space-y-3" hidden>
       <p id="a4200-strip-msg" class="hidden text-sm text-text-secondary" hidden />
       <a
         id="a4200-anaf-ready-download"
@@ -283,6 +285,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   const dukOut = document.getElementById("a4200-duk-out")!;
   const signedPdfInput = document.getElementById("a4200-signed-pdf-input") as HTMLInputElement;
   const signedUploadWrap = document.getElementById("a4200-signed-upload-wrap")!;
+  const signedResultWrap = document.getElementById("a4200-signed-result-wrap")!;
   const pdfStatus = document.getElementById("a4200-pdf-status");
   const pdfDownload = document.getElementById("a4200-pdf-download") as HTMLAnchorElement;
   const signedErrorEl = document.getElementById("a4200-signed-error")!;
@@ -318,17 +321,19 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     anafReadyHint.classList.add("hidden");
     signedUploadWrap.hidden = true;
     signedUploadWrap.classList.add("hidden");
+    signedResultWrap.hidden = true;
+    signedResultWrap.classList.add("hidden");
     signedPdfInput.value = "";
   }
 
+  function setWrapVisible(el: HTMLElement, show: boolean) {
+    el.hidden = !show;
+    el.classList.toggle("hidden", !show);
+  }
+
   function updateStep3Ui() {
-    if (pdfGenerated) {
-      signedUploadWrap.hidden = false;
-      signedUploadWrap.classList.remove("hidden");
-    } else {
-      signedUploadWrap.hidden = true;
-      signedUploadWrap.classList.add("hidden");
-    }
+    setWrapVisible(signedUploadWrap, pdfGenerated);
+    setWrapVisible(signedResultWrap, step3AnafReady);
     if (currentStep === 3) {
       primaryBtn.classList.toggle("hidden", pdfGenerated && !step3AnafReady);
     } else {
@@ -615,7 +620,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     anafReadyHint.hidden = true;
     anafReadyHint.classList.add("hidden");
     step3AnafReady = false;
-    updateStep3Ui();
+    setWrapVisible(signedResultWrap, false);
     if (!file) {
       updatePrimaryButton();
       return;
@@ -729,4 +734,25 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   hideActionLink(anafReadyDownload);
   updatePrimaryButton();
   updateStep3Ui();
+
+  if (import.meta.env.PUBLIC_E2E_A4200_HARNESS === "1") {
+    (window as Window & { __a4200E2E?: { goToStep3PdfReady(): void } }).__a4200E2E = {
+      goToStep3PdfReady() {
+        setStep(3);
+        pdfGenerated = true;
+        showActionLink(
+          pdfDownload,
+          URL.createObjectURL(new Blob(["%PDF-1.4\n%%EOF\n"], { type: "application/pdf" })),
+        );
+        pdfDownload.download = "Perioada_raportare.pdf";
+        if (pdfStatus) {
+          pdfStatus.textContent =
+            "PDF-ul este gata. Descarcă-l cu butonul de mai sus, semnează-l, apoi încarcă PDF-ul semnat.";
+          pdfStatus.className = "text-sm text-green-700";
+        }
+        updateStep3Ui();
+        updatePrimaryButton();
+      },
+    };
+  }
 </script>

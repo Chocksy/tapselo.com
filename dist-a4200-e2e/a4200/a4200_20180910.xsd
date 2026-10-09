@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="mfp:anaf:dgti:a4200:declaratie:v1" targetNamespace="mfp:anaf:dgti:a4200:declaratie:v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.02" xml:lang="ro">
+	<xs:element name="mReg" type="MRegType"/>
+	<xs:complexType name="MRegType">
+		<xs:complexContent>
+			<xs:restriction base="xs:anyType">
+				<xs:attribute name="idM" type="Str24" use="required"/>
+				<xs:attribute name="an" type="xs:integer"/>
+				<xs:attribute name="luna" type="xs:integer"/>
+				<xs:attribute name="cif" type="CifSType" use="required"/>
+				<xs:attribute name="nrRapI" type="IntPoz4SType" use="required"/>
+				<xs:attribute name="nrRapF" type="IntPoz4SType" use="required"/>
+				<xs:attribute name="tip_amef" type="Str_tipuriAmefSType" use="required"/>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="Str24">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="24"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CifSType">
+		<xs:restriction base="xs:token">
+			<xs:pattern value="[1-9]\d{12}|[1-9]\d{1,9}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntPoz4SType">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="9999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Str_tipuriAmefSType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1"/>
+			<xs:enumeration value="S"/>
+			<xs:enumeration value="T"/>
+			<xs:enumeration value="A"/>
+			<xs:enumeration value="U"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>
