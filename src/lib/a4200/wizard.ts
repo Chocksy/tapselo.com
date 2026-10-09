@@ -1,7 +1,17 @@
 import { formatZ, formatZRange, type OpisCheckSummary } from "./check-summary.ts";
-import { checkSingleCalendarMonthAmongDays, type DayEntry } from "./day-groups.ts";
+import { RO_MONTHS } from "./constants.ts";
+import { checkSingleCalendarMonthAmongDays, splitDaysByMonth, type DayEntry } from "./day-groups.ts";
+import {
+  ANAF_PDF_EXPORT_MONTH_NOTE,
+  buildCrossMonthCloseNote,
+  buildLateDeadlineLines,
+  buildMixedMonthExplanation,
+  buildServiceTechnicianMessage,
+  formatSpanPeriodLabel,
+} from "./mixed-month.ts";
 import { periodFromIdM } from "./parse.ts";
 import type { CheckerIssue, ParsedOpis } from "./types.ts";
+import type { GroupCheckResult } from "./opis-groups.ts";
 
 export const WIZARD_STEP_COUNT = 4;
 
@@ -17,20 +27,7 @@ export function countBlockingIssues(issues: CheckerIssue[]): number {
   return issues.filter((i) => i.severity === "error" && !WIZARD_NON_BLOCKING_ERROR_CODES.has(i.code)).length;
 }
 
-export const RO_MONTHS = [
-  "ianuarie",
-  "februarie",
-  "martie",
-  "aprilie",
-  "mai",
-  "iunie",
-  "iulie",
-  "august",
-  "septembrie",
-  "octombrie",
-  "noiembrie",
-  "decembrie",
-] as const;
+export { RO_MONTHS } from "./constants.ts";
 
 export function resolveOpisPeriod(opis: ParsedOpis): { an: number; luna: number } | null {
   if (opis.an != null && opis.luna != null) return { an: opis.an, luna: opis.luna };
@@ -73,6 +70,10 @@ export interface VerificationPlainSummary {
   foundLine: string | null;
   missingLines: string[];
   periodLabel: string | null;
+  mixedMonthHtml: string | null;
+  serviceTechnicianMessage: string | null;
+  infoLines: string[];
+  pdfMonthNote: string | null;
 }
 
 export function buildVerificationPlainSummary(
@@ -93,17 +94,26 @@ export function buildVerificationPlainSummary(
       foundLine: null,
       missingLines: [],
       periodLabel: null,
+      mixedMonthHtml: null,
+      serviceTechnicianMessage: null,
+      infoLines: [],
+      pdfMonthNote: null,
     };
   }
 
-  const periodLabel =
-    (days.length > 0 ? formatPeriodLabelFromDays(days) : null) ?? formatPeriodLabelFromOpis(summary.opis);
+  const segments = days.length > 0 ? splitDaysByMonth(days) : [];
+  const singleMonth = days.length > 0 ? formatPeriodLabelFromDays(days) : null;
+  const spanLabel = segments.length > 1 ? formatSpanPeriodLabel(segments) : null;
+  const periodLabel = singleMonth ?? (days.length === 0 ? formatPeriodLabelFromOpis(summary.opis) : spanLabel);
+  const mixedMonths = days.length > 0 && singleMonth === null && segments.length > 1;
   const zPlain = formatZRangePlain(summary.opis);
   const complete = summary.presentCount === summary.expectedCount && errorCount === 0;
-  const ok = complete;
+  const ok = complete && !mixedMonths;
 
   let foundLine: string;
-  if (summary.presentCount === summary.expectedCount) {
+  if (mixedMonths) {
+    foundLine = `Am găsit rapoartele ${zPlain} pe ${segments.length} luni calendaristice (${spanLabel ?? "luni diferite"}).`;
+  } else if (summary.presentCount === summary.expectedCount) {
     foundLine = periodLabel
       ? `Am găsit rapoartele ${zPlain} pentru ${periodLabel}.`
       : `Am găsit toate rapoartele ${zPlain} (${summary.expectedCount} zile).`;
@@ -133,13 +143,83 @@ export function buildVerificationPlainSummary(
     headline = "Numărul casei de marcat (NUI) din export nu pare corect.";
   } else if (missing.length > 0) {
     headline = "Lipsesc zile din exportul de la casă.";
+  } else if (mixedMonths) {
+    headline = "Exportul acoperă mai multe luni calendaristice.";
   } else if (errorCount > 0) {
     headline = "Trebuie corectate unele probleme înainte de PDF.";
   } else {
     headline = "Verifică lista de mai jos.";
   }
 
-  return { ok, errorCount, headline, foundLine, missingLines, periodLabel };
+  const mixedMonthHtml = mixedMonths ? buildMixedMonthExplanation(days, summary.opis) : null;
+  const serviceTechnicianMessage = mixedMonths ? buildServiceTechnicianMessage(segments) : null;
+  const infoLines: string[] = [];
+  if (mixedMonths) {
+    infoLines.push(...buildLateDeadlineLines(segments));
+    const closeNote = buildCrossMonthCloseNote(days);
+    if (closeNote) infoLines.push(closeNote);
+  }
+
+  return {
+    ok,
+    errorCount,
+    headline,
+    foundLine,
+    missingLines,
+    periodLabel,
+    mixedMonthHtml,
+    serviceTechnicianMessage,
+    infoLines,
+    pdfMonthNote: null,
+  };
+}
+
+export function buildUploadPlainSummary(
+  uploadIssues: CheckerIssue[],
+  groups: GroupCheckResult[],
+): VerificationPlainSummary {
+  const allIssues = [...uploadIssues, ...groups.flatMap((g) => g.issues)];
+  const errorCount = countBlockingIssues(allIssues);
+  const readyGroups = groups.filter((g) => g.readyForPdf);
+
+  if (groups.length === 0) {
+    return buildVerificationPlainSummary(null, uploadIssues, []);
+  }
+
+  if (groups.length === 1) {
+    const g = groups[0];
+    const plain = buildVerificationPlainSummary(g.summary, [...uploadIssues, ...g.issues], g.group.days);
+    if (g.readyForPdf) {
+      return { ...plain, ok: true, pdfMonthNote: ANAF_PDF_EXPORT_MONTH_NOTE };
+    }
+    return plain;
+  }
+
+  const headline =
+    readyGroups.length > 0
+      ? `Am găsit ${groups.length} exporturi — ${readyGroups.length} ${readyGroups.length === 1 ? "este gata" : "sunt gata"} pentru PDF.`
+      : "Trebuie rezolvate problemele din exporturile încărcate.";
+
+  const foundLine = groups
+    .map((g) => {
+      const seg = splitDaysByMonth(g.group.days);
+      const label = seg.length === 1 ? formatSpanPeriodLabel(seg) : formatZRangePlain(g.group.opis);
+      return `${label ?? "Export"} (${formatZRangePlain(g.group.opis)})`;
+    })
+    .join("; ");
+
+  return {
+    ok: readyGroups.length > 0 && errorCount === countBlockingIssues(uploadIssues),
+    errorCount,
+    headline,
+    foundLine,
+    missingLines: [],
+    periodLabel: null,
+    mixedMonthHtml: null,
+    serviceTechnicianMessage: null,
+    infoLines: [],
+    pdfMonthNote: ANAF_PDF_EXPORT_MONTH_NOTE,
+  };
 }
 
 export function canProceedToPdfStep(plain: VerificationPlainSummary): boolean {

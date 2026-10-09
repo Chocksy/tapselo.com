@@ -68,6 +68,8 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   >
     <h2 id="a4200-step-2-title" class="font-display text-2xl italic text-primary" tabindex="-1">Verificăm fișierele</h2>
     <div id="a4200-plain-summary" class="rounded-xl border border-border-light bg-surface p-5 text-sm leading-relaxed" />
+    <div id="a4200-mixed-month-box" class="hidden space-y-3 rounded-xl border border-amber-200 bg-amber-50/80 p-4 text-sm" hidden />
+    <ul id="a4200-info-lines" class="hidden list-disc space-y-1 pl-5 text-sm text-text-muted" />
     <ul id="a4200-missing-list" class="hidden list-disc space-y-2 pl-5 text-sm text-text-secondary" />
     <p id="a4200-step2-hint" class="text-sm text-text-muted" />
   </section>
@@ -108,6 +110,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       </li>
       <li>Încarcă PDF-ul semnat — îl pregătim pentru încărcarea la ANAF.</li>
     </ol>
+    <div id="a4200-pdf-groups" class="hidden space-y-4" hidden />
     <p id="a4200-pdf-status" class="text-sm text-text-muted" />
     <a
       id="a4200-pdf-download"
@@ -214,19 +217,25 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
 
 <script>
   import { ingestFileList } from "../lib/a4200/ingest.ts";
-  import { buildCrossCheckInput, runLocalChecks } from "../lib/a4200/pipeline.ts";
+  import { buildCrossCheckInput } from "../lib/a4200/pipeline.ts";
   import { buildOpisCheckSummary, formatZ } from "../lib/a4200/check-summary.ts";
   import { validateAgainstXsd } from "../lib/a4200/validate-xsd.ts";
   import { explainXsdMessage } from "../lib/a4200/explain.ts";
   import { decodeDukErrTxt } from "../lib/a4200/duk-decoder.ts";
   import { stripPdfLtvIncrement } from "../lib/a4200/strip-pdf-ltv.ts";
   import type { CheckerIssue, ClassifiedFile } from "../lib/a4200/types.ts";
-  import { collectP7bFromFiles, p7bPayloadsToZip } from "../lib/a4200/collect-p7b.ts";
+  import {
+    collectP7bFromFiles,
+    groupP7bLogicalNames,
+    p7bPayloadsToZip,
+  } from "../lib/a4200/collect-p7b.ts";
+  import { groupCardLabel } from "../lib/a4200/mixed-month.ts";
+  import { runFullUploadChecks, type GroupCheckResult } from "../lib/a4200/opis-groups.ts";
   import { trackToolUsed } from "../lib/analytics-client.ts";
   import {
     WIZARD_STEP_COUNT,
-    buildVerificationPlainSummary,
-    canProceedToPdfStep,
+    buildUploadPlainSummary,
+    countBlockingIssues,
     primaryButtonLabel,
     stepFocusTargetId,
     stepHeading,
@@ -245,7 +254,10 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   const folderInput = document.getElementById("a4200-folder-input") as HTMLInputElement;
   const fileHint = document.getElementById("a4200-file-hint")!;
   const plainSummaryEl = document.getElementById("a4200-plain-summary")!;
+  const mixedMonthBox = document.getElementById("a4200-mixed-month-box")!;
+  const infoLinesEl = document.getElementById("a4200-info-lines")!;
   const missingListEl = document.getElementById("a4200-missing-list")!;
+  const pdfGroupsEl = document.getElementById("a4200-pdf-groups")!;
   const step2Hint = document.getElementById("a4200-step2-hint")!;
   const summaryEl = document.getElementById("a4200-summary")!;
   const zTableEl = document.getElementById("a4200-z-table")!;
@@ -306,6 +318,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   let lastUploadFiles: File[] = [];
   let lastClassified: ClassifiedFile[] = [];
   let lastIssues: CheckerIssue[] = [];
+  let lastGroups: GroupCheckResult[] = [];
   let lastPlainOk = false;
   let step3AnafReady = false;
   let pdfGenerated = false;
@@ -432,15 +445,58 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       </ul>`;
   }
 
-  function renderPlainStep2(files: ClassifiedFile[], issues: CheckerIssue[]) {
-    const { input } = buildCrossCheckInput(files);
-    const summary = buildOpisCheckSummary(input);
-    const plain = buildVerificationPlainSummary(summary, issues, input.days);
-    lastPlainOk = plain.ok;
+  function enrichGroupsWithXsd(groups: GroupCheckResult[], xsd: CheckerIssue[]): GroupCheckResult[] {
+    return groups.map((g) => {
+      const names = new Set([g.group.opisFile, ...g.group.days.map((d) => d.file)]);
+      const extra = xsd.filter((i) => !i.file || names.has(i.file));
+      const issues = [...g.issues, ...extra];
+      const readyForPdf =
+        g.summary !== null &&
+        g.summary.presentCount === g.summary.expectedCount &&
+        countBlockingIssues(issues) === 0 &&
+        g.group.days.length > 0;
+      return { ...g, issues, readyForPdf };
+    });
+  }
 
-    const headlineClass = plain.ok ? "text-green-700" : "text-red-700";
+  function renderPlainStep2(uploadIssues: CheckerIssue[], groups: GroupCheckResult[]) {
+    const plain = buildUploadPlainSummary(uploadIssues, groups);
+    lastPlainOk = plain.ok || groups.some((g) => g.readyForPdf);
+
+    const headlineClass = plain.ok || lastPlainOk ? "text-green-700" : "text-red-700";
     plainSummaryEl.innerHTML = `<p class="text-lg font-semibold ${headlineClass}">${plain.headline}</p>
       ${plain.foundLine ? `<p class="mt-3 text-text-secondary">${plain.foundLine}</p>` : ""}`;
+
+    if (plain.mixedMonthHtml) {
+      mixedMonthBox.classList.remove("hidden");
+      mixedMonthBox.hidden = false;
+      mixedMonthBox.innerHTML = `<p class="text-text-secondary">${plain.mixedMonthHtml}</p>
+        <button type="button" id="a4200-copy-service-btn" class="min-h-10 rounded-md border border-amber-300 bg-white px-4 py-2 text-sm font-semibold text-primary hover:border-accent">
+          Copiază mesajul pentru service
+        </button>`;
+      document.getElementById("a4200-copy-service-btn")?.addEventListener("click", async () => {
+        if (!plain.serviceTechnicianMessage) return;
+        try {
+          await navigator.clipboard.writeText(plain.serviceTechnicianMessage);
+          const btn = document.getElementById("a4200-copy-service-btn");
+          if (btn) btn.textContent = "Mesaj copiat în clipboard";
+        } catch {
+          /* ignore */
+        }
+      });
+    } else {
+      mixedMonthBox.classList.add("hidden");
+      mixedMonthBox.hidden = true;
+      mixedMonthBox.innerHTML = "";
+    }
+
+    if (plain.infoLines.length > 0) {
+      infoLinesEl.classList.remove("hidden");
+      infoLinesEl.innerHTML = plain.infoLines.map((l) => `<li>${l}</li>`).join("");
+    } else {
+      infoLinesEl.classList.add("hidden");
+      infoLinesEl.innerHTML = "";
+    }
 
     if (plain.missingLines.length > 0) {
       missingListEl.classList.remove("hidden");
@@ -450,13 +506,53 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       missingListEl.innerHTML = "";
     }
 
-    if (!plain.ok) {
+    if (!lastPlainOk) {
       step2Hint.textContent =
         "Rezolvă problemele de mai sus (sau deschide Detalii tehnice), apoi încarcă din nou arhiva de la service.";
     } else {
       step2Hint.textContent = "Poți continua la generarea PDF și semnare.";
     }
+    lastPdfMonthNote = plain.pdfMonthNote;
     updatePrimaryButton();
+  }
+
+  let lastPdfMonthNote: string | null = null;
+
+  function renderPdfGroupCards(groups: GroupCheckResult[], pdfMonthNote: string | null) {
+    const ready = groups.filter((g) => g.readyForPdf);
+    const multi = ready.length > 1;
+    if (ready.length === 0) {
+      pdfGroupsEl.classList.add("hidden");
+      pdfGroupsEl.hidden = true;
+      pdfGroupsEl.innerHTML = "";
+      return;
+    }
+    pdfGroupsEl.classList.remove("hidden");
+    pdfGroupsEl.hidden = false;
+    const note = pdfMonthNote
+      ? `<p class="mb-3 text-xs text-text-muted">${pdfMonthNote}</p>`
+      : "";
+    pdfGroupsEl.innerHTML =
+      note +
+      ready
+        .map((g) => {
+          const cardLabel = groupCardLabel(g.group.days, g.group.opis.nrRapI, g.group.opis.nrRapF);
+          return `<article class="rounded-xl border border-border-light bg-surface p-4" data-group-key="${g.group.key}">
+          <p class="font-semibold text-primary">${cardLabel}</p>
+          <button type="button" class="a4200-gen-pdf-btn mt-3 min-h-10 rounded-md bg-accent px-4 py-2 text-sm font-bold text-white hover:bg-accent-hover ${multi ? "" : "hidden"}" data-group-key="${g.group.key}" ${multi ? "" : "hidden"}>
+            Generează PDF
+          </button>
+          <p class="a4200-gen-pdf-status mt-2 text-xs text-text-muted" data-group-key="${g.group.key}"></p>
+        </article>`;
+        })
+        .join("");
+
+    pdfGroupsEl.querySelectorAll(".a4200-gen-pdf-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const key = (btn as HTMLElement).dataset.groupKey;
+        if (key) void generatePdfForGroup(key);
+      });
+    });
   }
 
   async function runXsd(files: ClassifiedFile[]): Promise<CheckerIssue[]> {
@@ -489,10 +585,11 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     plainSummaryEl.innerHTML = `<p class="text-text-muted">Se analizează ${fileList.length} fișier(e)…</p>`;
     const { files } = await ingestFileList(fileList);
     lastClassified = files;
-    const local = runLocalChecks(files);
+    const { uploadIssues, groups } = runFullUploadChecks(files);
     const xsd = await runXsd(files);
-    lastIssues = [...local, ...xsd];
-    renderPlainStep2(files, lastIssues);
+    lastGroups = enrichGroupsWithXsd(groups, xsd);
+    lastIssues = [...uploadIssues, ...lastGroups.flatMap((g) => g.issues)];
+    renderPlainStep2(uploadIssues, lastGroups);
     renderTechnicalSummary(files, lastIssues);
     renderZTable(files);
     renderTechnicalIssues(lastIssues);
@@ -509,65 +606,78 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     updateStep3Ui();
   }
 
-  async function generatePdf() {
-    if (!PDF_SERVICE_URL || !lastPlainOk || lastUploadFiles.length === 0) return;
-    primaryBtn.disabled = true;
-    hideActionLink(pdfDownload);
-    if (pdfStatus) {
-      pdfStatus.textContent = "Se generează PDF-ul… poate dura câteva zeci de secunde.";
-      pdfStatus.className = "text-sm text-text-muted";
+  async function postZipForPdf(zipBytes: Uint8Array): Promise<{ ok: true; blob: Blob; filename?: string } | { ok: false; msg: string }> {
+    const res = await fetch(`${PDF_SERVICE_URL}/a4200`, {
+      method: "POST",
+      headers: { "Content-Type": "application/zip" },
+      body: zipBytes,
+    });
+    if (res.ok) {
+      const blob = await res.blob();
+      const disposition = res.headers.get("Content-Disposition");
+      const filenameMatch = disposition?.match(/filename="([^"]+)"/);
+      return { ok: true, blob, filename: filenameMatch?.[1] };
     }
+    const ct = res.headers.get("content-type") ?? "";
+    let msg = "";
+    if (ct.includes("application/json")) {
+      const j = await res.json();
+      msg = [j.message, j.nextStep].filter(Boolean).join(" — ");
+    } else {
+      msg = await res.text();
+    }
+    return { ok: false, msg: msg || `Eroare ${res.status} de la server.` };
+  }
+
+  async function generatePdfForGroup(groupKey: string) {
+    if (!PDF_SERVICE_URL) return;
+    const g = lastGroups.find((x) => x.group.key === groupKey);
+    if (!g?.readyForPdf) return;
+    const statusEl = pdfGroupsEl.querySelector(`.a4200-gen-pdf-status[data-group-key="${groupKey}"]`);
+    if (statusEl) statusEl.textContent = "Se generează PDF-ul…";
     try {
-      const payloads = await collectP7bFromFiles(lastUploadFiles);
-      if (payloads.length === 0) {
-        throw new Error("Nu am găsit fișiere de export în încărcare.");
-      }
-      const zipBytes = p7bPayloadsToZip(payloads);
-      const res = await fetch(`${PDF_SERVICE_URL}/a4200`, {
-        method: "POST",
-        headers: { "Content-Type": "application/zip" },
-        body: zipBytes,
-      });
-      if (res.ok) {
-        const blob = await res.blob();
-        const disposition = res.headers.get("Content-Disposition");
-        const filenameMatch = disposition?.match(/filename="([^"]+)"/);
-        if (filenameMatch?.[1]) {
-          pdfDownload.download = filenameMatch[1];
-        }
-        showActionLink(pdfDownload, URL.createObjectURL(blob));
+      const names = groupP7bLogicalNames(g.group);
+      const payloads = await collectP7bFromFiles(lastUploadFiles, names);
+      if (payloads.length === 0) throw new Error("Nu am găsit fișiere .p7b pentru acest export.");
+      const result = await postZipForPdf(p7bPayloadsToZip(payloads));
+      if (result.ok) {
+        const link = document.createElement("a");
+        link.className =
+          "mt-2 inline-flex min-h-10 items-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-primary hover:border-accent";
+        link.download = result.filename ?? "A4200.pdf";
+        showActionLink(link as HTMLAnchorElement, URL.createObjectURL(result.blob));
+        link.textContent = "Descarcă PDF generat";
+        statusEl?.replaceWith(link);
         pdfGenerated = true;
         updateStep3Ui();
-        if (pdfStatus) {
-          pdfStatus.textContent = "PDF generat. Descarcă-l, semnează-l, apoi încarcă PDF-ul semnat mai jos.";
-          pdfStatus.className = "text-sm text-green-700";
-        }
         trackToolUsed("a4200", "generate_pdf", { result: "ok" });
       } else {
-        const ct = res.headers.get("content-type") ?? "";
-        let msg = "";
-        if (ct.includes("application/json")) {
-          const j = await res.json();
-          msg = [j.message, j.nextStep].filter(Boolean).join(" — ");
-        } else {
-          msg = await res.text();
-        }
-        if (pdfStatus) {
-          pdfStatus.textContent = msg || `Eroare ${res.status} de la server.`;
-          pdfStatus.className = "text-sm text-red-700";
+        if (statusEl) {
+          statusEl.textContent = result.msg;
+          statusEl.className = "a4200-gen-pdf-status mt-2 text-xs text-red-700";
         }
         trackToolUsed("a4200", "generate_pdf", { result: "errors" });
       }
     } catch {
-      if (pdfStatus) {
-        pdfStatus.textContent =
-          "Nu am putut contacta serviciul de PDF. Încearcă din nou sau folosește programul ANAF pe calculator.";
-        pdfStatus.className = "text-sm text-red-700";
-      }
-    } finally {
-      primaryBtn.disabled = false;
-      updatePrimaryButton();
+      if (statusEl) statusEl.textContent = "Nu am putut genera PDF-ul pentru acest export.";
     }
+  }
+
+  async function generatePdf() {
+    if (!PDF_SERVICE_URL || !lastPlainOk || lastUploadFiles.length === 0) return;
+    const ready = lastGroups.filter((g) => g.readyForPdf);
+    if (ready.length === 1) {
+      await generatePdfForGroup(ready[0].group.key);
+      return;
+    }
+    primaryBtn.disabled = true;
+    hideActionLink(pdfDownload);
+    if (pdfStatus) {
+      pdfStatus.textContent = "Alege exportul pentru care vrei PDF, folosind butoanele de pe carduri.";
+      pdfStatus.className = "text-sm text-text-muted";
+    }
+    primaryBtn.disabled = false;
+    updatePrimaryButton();
   }
 
   signedPdfInput.addEventListener("change", async () => {
@@ -617,6 +727,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     if (currentStep === 2) {
       if (lastPlainOk) {
         setStep(3);
+        renderPdfGroupCards(lastGroups, lastPdfMonthNote);
       } else {
         setStep(1);
       }

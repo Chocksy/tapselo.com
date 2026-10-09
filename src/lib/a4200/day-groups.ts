@@ -1,9 +1,20 @@
+import { formatZ } from "./check-summary.ts";
 import { periodFromIdM, zFromFileName } from "./parse.ts";
 import type { ParsedDay } from "./types.ts";
 
 export interface DayEntry {
   file: string;
   parsed: ParsedDay;
+}
+
+export interface MonthDaySegment {
+  an: number;
+  luna: number;
+  zFrom: number;
+  zTo: number;
+  count: number;
+  firstDate: string | null;
+  lastDate: string | null;
 }
 
 export function dayCalendarPeriod(day: ParsedDay): { an: number; luna: number } | null {
@@ -81,4 +92,88 @@ export function checkSingleCalendarMonthAmongDays(days: DayEntry[]): { an: numbe
     else if (p.an !== ref.an || p.luna !== ref.luna) return null;
   }
   return ref;
+}
+
+function idMDateLabel(idM: string): string | null {
+  const p = periodFromIdM(idM);
+  if (!p) return null;
+  const day = idM.length >= 18 ? idM.slice(16, 18) : "??";
+  return `${day}.${String(p.luna).padStart(2, "0")}.${p.an}`;
+}
+
+/** Sort by Z, then group consecutive days that share the same calendar month (from msj idM / an+luna). */
+export function splitDaysByMonth(days: DayEntry[]): MonthDaySegment[] {
+  if (days.length === 0) return [];
+  const sorted = [...days].sort((a, b) => a.parsed.zReport - b.parsed.zReport);
+  const segments: MonthDaySegment[] = [];
+
+  let current: MonthDaySegment | null = null;
+  for (const d of sorted) {
+    const p = dayCalendarPeriod(d.parsed);
+    if (!p) continue;
+    const z = d.parsed.zReport;
+    if (
+      !current ||
+      current.an !== p.an ||
+      current.luna !== p.luna ||
+      z !== current.zTo + 1
+    ) {
+      if (current) segments.push(current);
+      current = {
+        an: p.an,
+        luna: p.luna,
+        zFrom: z,
+        zTo: z,
+        count: 1,
+        firstDate: idMDateLabel(d.parsed.idM),
+        lastDate: idMDateLabel(d.parsed.idM),
+      };
+    } else {
+      current.zTo = z;
+      current.count += 1;
+      current.lastDate = idMDateLabel(d.parsed.idM);
+    }
+  }
+  if (current) segments.push(current);
+  return segments;
+}
+
+/** Days where fiscal close (rB idR) falls in a different calendar month than day start (idM). */
+export function countDaysWithCloseInOtherMonth(days: DayEntry[]): number {
+  let n = 0;
+  for (const d of days) {
+    const start = dayCalendarPeriod(d.parsed);
+    const close = periodFromIdM(d.parsed.idR);
+    if (!start || !close) continue;
+    if (start.an !== close.an || start.luna !== close.luna) n += 1;
+  }
+  return n;
+}
+
+export function formatSegmentZRange(seg: MonthDaySegment): string {
+  return seg.zFrom === seg.zTo ? formatZ(seg.zFrom) : `${formatZ(seg.zFrom)}–${formatZ(seg.zTo)}`;
+}
+
+export function reportingDeadlineDate(an: number, luna: number): Date {
+  let year = an;
+  let month = luna + 1;
+  if (month > 12) {
+    month = 1;
+    year += 1;
+  }
+  return new Date(year, month - 1, 20);
+}
+
+export function formatReportingDeadlineRo(an: number, luna: number): string {
+  const d = reportingDeadlineDate(an, luna);
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yyyy = d.getFullYear();
+  return `${dd}.${mm}.${yyyy}`;
+}
+
+export function isReportingDeadlinePassed(an: number, luna: number, now = new Date()): boolean {
+  const deadline = reportingDeadlineDate(an, luna);
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return today > deadline;
 }
