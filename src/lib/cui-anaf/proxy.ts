@@ -1,18 +1,19 @@
 // Server-side ANAF proxy for tapselo.com (Pages Function). One global client toward ANAF per isolate.
 
+import { interpretAnafResponseText, looksLikeHtmlResponse } from "./anaf-response.ts";
 import { ANAF_MAX_CUIS_PER_REQUEST, ANAF_PROXY_CACHE_SECONDS, ANAF_TVA_URL } from "./constants.ts";
 import { isValidCui, normalizeCui } from "./normalize.ts";
-import { parseAnafResponse } from "./parse.ts";
 import type { CompanyInfo } from "./types.ts";
 import { AnafRequestThrottle } from "./throttle.ts";
 
 export const MSG_INVALID_CUI =
   "CUI invalid. Verifică cifrele și încearcă din nou (cu sau fără prefix RO).";
 export const MSG_NOT_FOUND = "ANAF nu are date pentru acest CUI la data interogării.";
+export const MSG_ANAF_UNAVAILABLE = "ANAF indisponibil. Încearcă din nou peste câteva minute.";
 export const MSG_RATE_LIMIT = "Prea multe interogări către ANAF. Așteaptă o secundă și încearcă din nou.";
-export const MSG_ANAF_DOWN =
-  "Serviciul ANAF nu răspunde acum. Încearcă din nou peste câteva minute.";
 export const MSG_BAD_METHOD = "Metodă neacceptată.";
+
+export type ProxyErrorCode = "not_found" | "anaf_unavailable" | "rate_limit" | "invalid_cui";
 
 const globalThrottle = new AnafRequestThrottle();
 
@@ -46,6 +47,15 @@ export function jsonResponse(
   });
 }
 
+export function proxyError(
+  code: ProxyErrorCode,
+  message: string,
+  status: number,
+  headers: Record<string, string> = {},
+): Response {
+  return jsonResponse({ error: message, code }, status, headers);
+}
+
 export interface AnafProxyDeps {
   fetch: typeof fetch;
   throttle?: AnafRequestThrottle;
@@ -57,7 +67,10 @@ export interface AnafProxyDeps {
 export async function fetchAnafCompany(
   cui: string,
   deps: AnafProxyDeps,
-): Promise<{ ok: true; company: CompanyInfo } | { ok: false; status: number; error: string }> {
+): Promise<
+  | { ok: true; company: CompanyInfo }
+  | { ok: false; status: number; error: string; code: ProxyErrorCode }
+> {
   const date = deps.today ?? todayIsoBucharest();
   const throttle = deps.throttle ?? globalThrottle;
   const cacheKey = deps.cacheKey ?? ((c, d) => `https://tapselo.internal/anaf-cui/${c}/${d}`);
@@ -72,7 +85,7 @@ export async function fetchAnafCompany(
 
   const retry = throttle.retryAfterSeconds();
   if (retry > 0) {
-    return { ok: false, status: 429, error: MSG_RATE_LIMIT };
+    return { ok: false, status: 429, error: MSG_RATE_LIMIT, code: "rate_limit" };
   }
 
   await throttle.acquire();
@@ -85,19 +98,23 @@ export async function fetchAnafCompany(
       body: JSON.stringify([{ cui: Number(cui), data: date }]),
     });
   } catch {
-    return { ok: false, status: 503, error: MSG_ANAF_DOWN };
+    return { ok: false, status: 503, error: MSG_ANAF_UNAVAILABLE, code: "anaf_unavailable" };
   }
 
-  if (!res.ok) return { ok: false, status: 503, error: MSG_ANAF_DOWN };
-
-  let company: CompanyInfo | null;
-  try {
-    company = parseAnafResponse(await res.text(), cui);
-  } catch {
-    return { ok: false, status: 503, error: MSG_ANAF_DOWN };
+  const text = await res.text();
+  if (!res.ok || looksLikeHtmlResponse(text)) {
+    return { ok: false, status: 503, error: MSG_ANAF_UNAVAILABLE, code: "anaf_unavailable" };
   }
 
-  if (!company) return { ok: false, status: 404, error: MSG_NOT_FOUND };
+  const outcome = interpretAnafResponseText(text, cui);
+  if (outcome.kind === "unavailable") {
+    return { ok: false, status: 503, error: MSG_ANAF_UNAVAILABLE, code: "anaf_unavailable" };
+  }
+  if (outcome.kind === "not_found") {
+    return { ok: false, status: 404, error: MSG_NOT_FOUND, code: "not_found" };
+  }
+
+  const company = outcome.company;
 
   if (deps.cache) {
     const payload = jsonResponse(company, 200, {
@@ -115,12 +132,12 @@ export async function handleAnafCuiGet(
   deps: AnafProxyDeps,
 ): Promise<Response> {
   if (request.method !== "GET" && request.method !== "HEAD") {
-    return jsonResponse({ error: MSG_BAD_METHOD }, 405, { Allow: "GET, HEAD" });
+    return proxyError("anaf_unavailable", MSG_BAD_METHOD, 405, { Allow: "GET, HEAD" });
   }
 
   const normalized = normalizeCui(rawCui);
   if (!normalized || !isValidCui(normalized)) {
-    return jsonResponse({ error: MSG_INVALID_CUI }, 400, {
+    return proxyError("invalid_cui", MSG_INVALID_CUI, 400, {
       "Cache-Control": "public, max-age=86400",
     });
   }
@@ -129,7 +146,7 @@ export async function handleAnafCuiGet(
   if (!result.ok) {
     const headers: Record<string, string> = { "Cache-Control": "no-store" };
     if (result.status === 429) headers["Retry-After"] = "1";
-    return jsonResponse({ error: result.error }, result.status, headers);
+    return proxyError(result.code, result.error, result.status, headers);
   }
 
   if (request.method === "HEAD") {

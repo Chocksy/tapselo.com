@@ -6,6 +6,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { articleLastmodByPath, parseArticlesFile } from './src/lib/articles/schema.ts';
+import { anafCuiDevProxyPlugin } from './src/lib/cui-anaf/vite-dev-proxy.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const articlesRaw = JSON.parse(readFileSync(join(__dirname, 'src/lib/kb/articles.json'), 'utf8'));
@@ -30,7 +31,7 @@ export default defineConfig({
     }),
   ],
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), anafCuiDevProxyPlugin()],
     optimizeDeps: {
       exclude: ['xmllint-wasm'],
     },

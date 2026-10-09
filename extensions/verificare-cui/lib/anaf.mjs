@@ -1,6 +1,6 @@
 import { ANAF_MAX_CUIS_PER_REQUEST, ANAF_TVA_URL, CACHE_TTL_MS } from "./constants.mjs";
 import { isValidCui, normalizeCui } from "./normalize.mjs";
-import { parseAnafResponse } from "./parse.mjs";
+import { interpretAnafResponse, looksLikeHtmlResponse } from "./parse.mjs";
 import { AnafRequestThrottle } from "./throttle.mjs";
 
 const throttle = new AnafRequestThrottle();
@@ -45,25 +45,32 @@ export async function lookupCuiAnaf(rawCui) {
   if (cached) return { ok: true, company: cached };
 
   await throttle.acquire();
-  const res = await fetch(ANAF_TVA_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify([{ cui: Number(cui), data: date }]),
-  });
-  if (!res.ok) {
-    return { ok: false, error: "Serviciul ANAF nu răspunde acum. Încearcă din nou peste câteva minute." };
-  }
-  let company;
+  let res;
   try {
-    company = parseAnafResponse(await res.text(), cui);
+    res = await fetch(ANAF_TVA_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify([{ cui: Number(cui), data: date }]),
+    });
   } catch {
-    return { ok: false, error: "Răspuns neașteptat de la ANAF." };
+    return { ok: false, error: "ANAF indisponibil. Încearcă din nou peste câteva minute." };
   }
-  if (!company) {
+
+  const text = await res.text();
+  if (!res.ok || looksLikeHtmlResponse(text)) {
+    return { ok: false, error: "ANAF indisponibil. Încearcă din nou peste câteva minute." };
+  }
+
+  const outcome = interpretAnafResponse(text, cui);
+  if (outcome.kind === "unavailable") {
+    return { ok: false, error: "ANAF indisponibil. Încearcă din nou peste câteva minute." };
+  }
+  if (outcome.kind === "not_found") {
     return { ok: false, error: "ANAF nu are date pentru acest CUI la data interogării." };
   }
-  await writeCache(cui, date, company);
-  return { ok: true, company };
+
+  await writeCache(cui, date, outcome.company);
+  return { ok: true, company: outcome.company };
 }
 
 /** Batch helper — respects ANAF max 100 CUIs (unused in UI; guard for future). */
