@@ -455,7 +455,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
         g.summary.presentCount === g.summary.expectedCount &&
         countBlockingIssues(issues) === 0 &&
         g.group.days.length > 0;
-      return { ...g, issues, readyForPdf };
+      return { ...g, issues, readyForPdf, crossMonthFallback: g.crossMonthFallback };
     });
   }
 
@@ -463,23 +463,43 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     const plain = buildUploadPlainSummary(uploadIssues, groups);
     lastPlainOk = plain.ok || groups.some((g) => g.readyForPdf);
 
-    const headlineClass = plain.ok || lastPlainOk ? "text-green-700" : "text-red-700";
+    const headlineClass =
+      plain.crossMonthFallback
+        ? "text-amber-900"
+        : plain.ok || lastPlainOk
+          ? "text-green-700"
+          : "text-red-700";
     plainSummaryEl.innerHTML = `<p class="text-lg font-semibold ${headlineClass}">${plain.headline}</p>
       ${plain.foundLine ? `<p class="mt-3 text-text-secondary">${plain.foundLine}</p>` : ""}`;
 
     if (plain.mixedMonthHtml) {
       mixedMonthBox.classList.remove("hidden");
       mixedMonthBox.hidden = false;
-      mixedMonthBox.innerHTML = `<p class="text-text-secondary">${plain.mixedMonthHtml}</p>
+      mixedMonthBox.innerHTML = `<div class="space-y-3 text-text-secondary">${plain.mixedMonthHtml}
+        <div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
         <button type="button" id="a4200-copy-service-btn" class="min-h-10 rounded-md border border-amber-300 bg-white px-4 py-2 text-sm font-semibold text-primary hover:border-accent">
           Copiază mesajul pentru service
-        </button>`;
+        </button>
+        <button type="button" id="a4200-copy-spv-btn" class="min-h-10 rounded-md border border-amber-300 bg-white px-4 py-2 text-sm font-semibold text-primary hover:border-accent">
+          Copiază mesajul pentru SPV
+        </button>
+        </div></div>`;
       document.getElementById("a4200-copy-service-btn")?.addEventListener("click", async () => {
         if (!plain.serviceTechnicianMessage) return;
         try {
           await navigator.clipboard.writeText(plain.serviceTechnicianMessage);
           const btn = document.getElementById("a4200-copy-service-btn");
           if (btn) btn.textContent = "Mesaj copiat în clipboard";
+        } catch {
+          /* ignore */
+        }
+      });
+      document.getElementById("a4200-copy-spv-btn")?.addEventListener("click", async () => {
+        if (!plain.spvAnafMessage) return;
+        try {
+          await navigator.clipboard.writeText(plain.spvAnafMessage);
+          const btn = document.getElementById("a4200-copy-spv-btn");
+          if (btn) btn.textContent = "Mesaj SPV copiat în clipboard";
         } catch {
           /* ignore */
         }
@@ -536,7 +556,13 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       note +
       ready
         .map((g) => {
-          const cardLabel = groupCardLabel(g.group.days, g.group.opis.nrRapI, g.group.opis.nrRapF);
+          const cardLabel = groupCardLabel(
+            g.group.days,
+            g.group.opis.nrRapI,
+            g.group.opis.nrRapF,
+            g.crossMonthFallback,
+            g.group.opis,
+          );
           return `<article class="rounded-xl border border-border-light bg-surface p-4" data-group-key="${g.group.key}">
           <p class="font-semibold text-primary">${cardLabel}</p>
           <button type="button" class="a4200-gen-pdf-btn mt-3 min-h-10 rounded-md bg-accent px-4 py-2 text-sm font-bold text-white hover:bg-accent-hover ${multi ? "" : "hidden"}" data-group-key="${g.group.key}" ${multi ? "" : "hidden"}>

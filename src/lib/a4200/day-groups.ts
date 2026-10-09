@@ -172,6 +172,38 @@ export function formatReportingDeadlineRo(an: number, luna: number): string {
   return `${dd}.${mm}.${yyyy}`;
 }
 
+/** dd.mm.yyyy from AMEF idM (positions 10–17 = YYYYMMDD). */
+export function formatIdMDateRo(idM: string): string | null {
+  if (idM.length < 16) return null;
+  const y = idM.slice(10, 14);
+  const m = idM.slice(14, 16);
+  const d = idM.slice(16, 18);
+  if (!/^\d{4}$/.test(y) || !/^\d{2}$/.test(m) || !/^\d{2}$/.test(d)) return null;
+  return `${d}.${m}.${y}`;
+}
+
+export function dateRangeFromDays(days: DayEntry[]): { from: string; to: string } | null {
+  if (days.length === 0) return null;
+  const sorted = [...days].sort((a, b) => a.parsed.zReport - b.parsed.zReport);
+  const from = formatIdMDateRo(sorted[0].parsed.idM);
+  const to = formatIdMDateRo(sorted[sorted.length - 1].parsed.idM);
+  if (!from || !to) return null;
+  return { from, to };
+}
+
+export function isCrossMonthFallbackExport(days: DayEntry[], nrRapI: number, nrRapF: number): boolean {
+  if (days.length === 0) return false;
+  if (checkSingleCalendarMonthAmongDays(days)) return false;
+  const segments = splitDaysByMonth(days);
+  if (segments.length < 2) return false;
+  const expected = nrRapF - nrRapI + 1;
+  if (days.length !== expected) return false;
+  const total = segments.reduce((s, seg) => s + seg.count, 0);
+  if (total !== expected) return false;
+  if (segments[0].zFrom !== nrRapI || segments[segments.length - 1].zTo !== nrRapF) return false;
+  return true;
+}
+
 export function isReportingDeadlinePassed(an: number, luna: number, now = new Date()): boolean {
   const deadline = reportingDeadlineDate(an, luna);
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());

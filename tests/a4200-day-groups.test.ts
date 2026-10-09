@@ -57,6 +57,8 @@ test("plain summary never uses opis export month when day files exist", () => {
   assert.ok(plain.mixedMonthHtml);
   assert.match(plain.serviceTechnicianMessage ?? "", /Z 101–Z 103/);
   assert.match(plain.serviceTechnicianMessage ?? "", /Z 104–Z 105/);
+  assert.equal(plain.ok, true);
+  assert.equal(plain.crossMonthFallback, true);
 });
 
 test("late deadline line when reporting month has passed", () => {

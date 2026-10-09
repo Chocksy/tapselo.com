@@ -3,7 +3,7 @@ import { runCrossChecks } from "./crosscheck.ts";
 import { buildOpisCheckSummary } from "./check-summary.ts";
 import { countBlockingIssues } from "./wizard.ts";
 import type { CheckerIssue, ClassifiedFile, ParsedOpis } from "./types.ts";
-import type { DayEntry } from "./day-groups.ts";
+import { isCrossMonthFallbackExport, type DayEntry } from "./day-groups.ts";
 import { parseDayXml, parseOpisXml } from "./parse.ts";
 import { explainParseError } from "./explain.ts";
 
@@ -99,6 +99,7 @@ export interface GroupCheckResult {
   summary: ReturnType<typeof buildOpisCheckSummary>;
   issues: CheckerIssue[];
   readyForPdf: boolean;
+  crossMonthFallback: boolean;
 }
 
 export function buildUploadLevelIssues(partition: UploadPartitionResult): CheckerIssue[] {
@@ -163,13 +164,18 @@ export function runGroupChecks(group: OpisExportGroup): GroupCheckResult {
   const issues = [...runIdentifierChecks(input), ...runCrossChecks(input)];
   const summary = buildOpisCheckSummary(input);
   const blocking = countBlockingIssues(issues);
+  const crossMonthFallback = isCrossMonthFallbackExport(
+    group.days,
+    group.opis.nrRapI,
+    group.opis.nrRapF,
+  );
   const readyForPdf =
     summary !== null &&
     summary.presentCount === summary.expectedCount &&
     blocking === 0 &&
     group.days.length > 0;
 
-  return { group, summary, issues, readyForPdf };
+  return { group, summary, issues, readyForPdf, crossMonthFallback };
 }
 
 export function runFullUploadChecks(files: ClassifiedFile[]): {

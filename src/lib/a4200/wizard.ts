@@ -1,12 +1,18 @@
 import { formatZ, formatZRange, type OpisCheckSummary } from "./check-summary.ts";
 import { RO_MONTHS } from "./constants.ts";
-import { checkSingleCalendarMonthAmongDays, splitDaysByMonth, type DayEntry } from "./day-groups.ts";
+import {
+  checkSingleCalendarMonthAmongDays,
+  isCrossMonthFallbackExport,
+  splitDaysByMonth,
+  type DayEntry,
+} from "./day-groups.ts";
 import {
   ANAF_PDF_EXPORT_MONTH_NOTE,
   buildCrossMonthCloseNote,
+  buildCrossMonthWarningHtml,
   buildLateDeadlineLines,
-  buildMixedMonthExplanation,
   buildServiceTechnicianMessage,
+  buildSpvAnafMessage,
   formatSpanPeriodLabel,
 } from "./mixed-month.ts";
 import { periodFromIdM } from "./parse.ts";
@@ -72,6 +78,8 @@ export interface VerificationPlainSummary {
   periodLabel: string | null;
   mixedMonthHtml: string | null;
   serviceTechnicianMessage: string | null;
+  spvAnafMessage: string | null;
+  crossMonthFallback: boolean;
   infoLines: string[];
   pdfMonthNote: string | null;
 }
@@ -96,6 +104,8 @@ export function buildVerificationPlainSummary(
       periodLabel: null,
       mixedMonthHtml: null,
       serviceTechnicianMessage: null,
+      spvAnafMessage: null,
+      crossMonthFallback: false,
       infoLines: [],
       pdfMonthNote: null,
     };
@@ -106,9 +116,11 @@ export function buildVerificationPlainSummary(
   const spanLabel = segments.length > 1 ? formatSpanPeriodLabel(segments) : null;
   const periodLabel = singleMonth ?? (days.length === 0 ? formatPeriodLabelFromOpis(summary.opis) : spanLabel);
   const mixedMonths = days.length > 0 && singleMonth === null && segments.length > 1;
+  const crossMonthFallback =
+    mixedMonths && isCrossMonthFallbackExport(days, summary.opis.nrRapI, summary.opis.nrRapF);
   const zPlain = formatZRangePlain(summary.opis);
   const complete = summary.presentCount === summary.expectedCount && errorCount === 0;
-  const ok = complete && !mixedMonths;
+  const ok = complete && (!mixedMonths || crossMonthFallback);
 
   let foundLine: string;
   if (mixedMonths) {
@@ -133,7 +145,9 @@ export function buildVerificationPlainSummary(
   let headline: string;
   const badCui = issues.some((i) => i.code === "CUI_CHECK_DIGIT");
   const badNui = issues.some((i) => i.code === "NUI_CHECK_DIGIT");
-  if (ok) {
+  if (ok && crossMonthFallback) {
+    headline = "Exportul acoperă mai multe luni — poți genera un singur PDF, cu atenție.";
+  } else if (ok) {
     headline = "Totul arată în regulă pentru depunere.";
   } else if (badCui && badNui) {
     headline = "Codul fiscal și numărul casei (NUI) din export par greșite.";
@@ -151,10 +165,11 @@ export function buildVerificationPlainSummary(
     headline = "Verifică lista de mai jos.";
   }
 
-  const mixedMonthHtml = mixedMonths ? buildMixedMonthExplanation(days, summary.opis) : null;
-  const serviceTechnicianMessage = mixedMonths ? buildServiceTechnicianMessage(segments) : null;
+  const mixedMonthHtml = crossMonthFallback ? buildCrossMonthWarningHtml(days) : null;
+  const serviceTechnicianMessage = crossMonthFallback ? buildServiceTechnicianMessage(segments) : null;
+  const spvAnafMessage = crossMonthFallback ? buildSpvAnafMessage(days, summary.opis) : null;
   const infoLines: string[] = [];
-  if (mixedMonths) {
+  if (crossMonthFallback) {
     infoLines.push(...buildLateDeadlineLines(segments));
     const closeNote = buildCrossMonthCloseNote(days);
     if (closeNote) infoLines.push(closeNote);
@@ -169,8 +184,10 @@ export function buildVerificationPlainSummary(
     periodLabel,
     mixedMonthHtml,
     serviceTechnicianMessage,
+    spvAnafMessage,
+    crossMonthFallback,
     infoLines,
-    pdfMonthNote: null,
+    pdfMonthNote: crossMonthFallback || ok ? ANAF_PDF_EXPORT_MONTH_NOTE : null,
   };
 }
 
@@ -190,7 +207,15 @@ export function buildUploadPlainSummary(
     const g = groups[0];
     const plain = buildVerificationPlainSummary(g.summary, [...uploadIssues, ...g.issues], g.group.days);
     if (g.readyForPdf) {
-      return { ...plain, ok: true, pdfMonthNote: ANAF_PDF_EXPORT_MONTH_NOTE };
+      return {
+        ...plain,
+        ok: true,
+        crossMonthFallback: g.crossMonthFallback,
+        spvAnafMessage: g.crossMonthFallback ? buildSpvAnafMessage(g.group.days, g.group.opis) : plain.spvAnafMessage,
+        mixedMonthHtml:
+          g.crossMonthFallback ? buildCrossMonthWarningHtml(g.group.days) : plain.mixedMonthHtml,
+        pdfMonthNote: ANAF_PDF_EXPORT_MONTH_NOTE,
+      };
     }
     return plain;
   }
@@ -217,6 +242,8 @@ export function buildUploadPlainSummary(
     periodLabel: null,
     mixedMonthHtml: null,
     serviceTechnicianMessage: null,
+    spvAnafMessage: null,
+    crossMonthFallback: false,
     infoLines: [],
     pdfMonthNote: ANAF_PDF_EXPORT_MONTH_NOTE,
   };

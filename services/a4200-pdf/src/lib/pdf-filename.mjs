@@ -25,9 +25,9 @@ function periodFromDayXml(text) {
  * Prefer calendar month from day files (an/luna on msj), not opis export timestamp.
  * @param {Map<string, Buffer> | Record<string, Buffer | Uint8Array>} p7bMap
  */
-export function inferMonthFromDayFiles(p7bMap) {
+function collectMonthKeysFromDayP7b(p7bMap) {
   const entries = p7bMap instanceof Map ? [...p7bMap.entries()] : Object.entries(p7bMap);
-  const counts = new Map();
+  const keys = new Set();
   for (const [name, data] of entries) {
     if (!name.toLowerCase().endsWith(".p7b")) continue;
     const text = latin1(data);
@@ -35,18 +35,16 @@ export function inferMonthFromDayFiles(p7bMap) {
     if (!isDay) continue;
     const p = periodFromDayXml(text);
     if (!p) continue;
-    const key = `${p.y}-${String(p.m).padStart(2, "0")}`;
-    counts.set(key, (counts.get(key) ?? 0) + 1);
+    keys.add(`${p.y}-${String(p.m).padStart(2, "0")}`);
   }
-  let best = null;
-  let bestN = 0;
-  for (const [key, n] of counts) {
-    if (n > bestN) {
-      bestN = n;
-      best = key;
-    }
-  }
-  return best;
+  return [...keys].sort();
+}
+
+export function inferMonthFromDayFiles(p7bMap) {
+  const keys = collectMonthKeysFromDayP7b(p7bMap);
+  if (keys.length === 0) return null;
+  if (keys.length === 1) return keys[0];
+  return `${keys[0]}_${keys[keys.length - 1]}`;
 }
 
 /**

@@ -1,6 +1,7 @@
-import { formatZ } from "./check-summary.ts";
+import { formatZ, formatZRange } from "./check-summary.ts";
 import {
   countDaysWithCloseInOtherMonth,
+  dateRangeFromDays,
   formatReportingDeadlineRo,
   formatSegmentZRange,
   isReportingDeadlinePassed,
@@ -9,6 +10,7 @@ import {
   type MonthDaySegment,
 } from "./day-groups.ts";
 import { RO_MONTHS } from "./constants.ts";
+import { periodFromIdM } from "./parse.ts";
 import type { ParsedOpis } from "./types.ts";
 
 export function formatSpanPeriodLabel(segments: MonthDaySegment[]): string | null {
@@ -25,7 +27,30 @@ export function formatSpanPeriodLabel(segments: MonthDaySegment[]): string | nul
   return `${RO_MONTHS[first.luna - 1]} ${first.an}–${RO_MONTHS[last.luna - 1]} ${last.an}`;
 }
 
-export function groupCardLabel(days: DayEntry[], fallbackZFrom: number, fallbackZTo: number): string {
+export function formatMonthRangeKey(segments: MonthDaySegment[]): string | null {
+  if (segments.length === 0) return null;
+  const keys = segments.map((s) => `${s.an}-${String(s.luna).padStart(2, "0")}`);
+  if (keys.length === 1) return keys[0];
+  return `${keys[0]}_${keys[keys.length - 1]}`;
+}
+
+export function crossMonthPdfCardLabel(days: DayEntry[], opis: ParsedOpis): string {
+  const segments = splitDaysByMonth(days);
+  const span = formatSpanPeriodLabel(segments) ?? "mai multe luni";
+  const zRange = formatZRange(opis);
+  const n = days.length;
+  const zile = n === 1 ? "1 zi" : `${n} zile`;
+  return `${span} · ${zRange} · ${zile} (export pe mai multe luni)`;
+}
+
+export function groupCardLabel(
+  days: DayEntry[],
+  fallbackZFrom: number,
+  fallbackZTo: number,
+  crossMonthFallback = false,
+  opis?: ParsedOpis | null,
+): string {
+  if (crossMonthFallback && opis) return crossMonthPdfCardLabel(days, opis);
   const segments = splitDaysByMonth(days);
   if (segments.length === 1) return formatSegmentCardLabel(segments[0]);
   if (segments.length > 1) {
@@ -47,27 +72,24 @@ export function formatSegmentCardLabel(seg: MonthDaySegment): string {
   return `${month} ${seg.an} · ${zRange} · ${zile}`;
 }
 
-export function formatMixedMonthSegmentLine(seg: MonthDaySegment): string {
-  const month = RO_MONTHS[seg.luna - 1];
-  const zRange = formatSegmentZRange(seg);
-  const zile = seg.count === 1 ? "1 zi" : `${seg.count} zile`;
-  return `**${month} ${seg.an} – ${zRange} (${zile})**`;
+export function formatMixedMonthSegmentListHtml(segments: MonthDaySegment[]): string {
+  return segments
+    .map((s) => {
+      const month = RO_MONTHS[s.luna - 1];
+      const zRange = formatSegmentZRange(s);
+      const zile = s.count === 1 ? "1 zi" : `${s.count} zile`;
+      return `<strong>${month} ${s.an}</strong> – ${zRange} (${zile})`;
+    })
+    .join(", ");
 }
 
-export function buildMixedMonthExplanation(days: DayEntry[], _opis?: ParsedOpis | null): string {
+export function buildCrossMonthWarningHtml(days: DayEntry[]): string {
   const segments = splitDaysByMonth(days);
   const n = segments.length;
-  const parts = segments.map((s) => {
-    const month = RO_MONTHS[s.luna - 1];
-    const zRange = formatSegmentZRange(s);
-    const zile = s.count === 1 ? "1 zi" : `${s.count} zile`;
-    return `<strong>${month} ${s.an} – ${zRange} (${zile})</strong>`;
-  });
-  const list =
-    n <= 1
-      ? parts[0] ?? ""
-      : parts.slice(0, -1).join(", ") + " și " + parts[parts.length - 1];
-  return `Exportul acoperă ${n} ${n === 1 ? "lună" : "luni"}: ${list}. ANAF cere câte un A4200 pe lună, fiecare cu fișierul de perioadă semnat de casă, așa că nu putem împărți noi acest export.`;
+  const list = formatMixedMonthSegmentListHtml(segments);
+  return `<p>Exportul acoperă <strong>${n} luni calendaristice</strong>: ${list}.</p>
+<p>Conform OPANAF nr. 627/2018, art. 2 alin. (4), perioada de raportare este luna calendaristică (de regulă, câte o declarație A4200 pe lună). Dacă termenele au trecut, depunerea acum poate fi mai utilă decât amânarea.</p>
+<p>Recomandăm, pe cât posibil, exporturi lunare separate de la service — butonul de mai jos generează un mesaj pentru tehnician.</p>`;
 }
 
 export function buildServiceTechnicianMessage(segments: MonthDaySegment[]): string {
@@ -78,6 +100,28 @@ export function buildServiceTechnicianMessage(segments: MonthDaySegment[]): stri
   });
   const list = ranges.join(" și ");
   return `Te rog fă exporturi separate din casă (La cerere ANAF → după număr Z): ${list}, fiecare pe stick gol / în arhivă separată.`;
+}
+
+export function buildSpvAnafMessage(days: DayEntry[], opis: ParsedOpis): string {
+  const segments = splitDaysByMonth(days);
+  const zFrom = formatZ(opis.nrRapI);
+  const zTo = formatZ(opis.nrRapF);
+  const zRange = opis.nrRapI === opis.nrRapF ? zFrom : `${zFrom}–${zTo}`;
+  const range = dateRangeFromDays(days);
+  const periodText = range ? `${range.from} – ${range.to}` : "perioada din borderou";
+  const exportPeriod = periodFromIdM(opis.idM);
+  const exportMonth =
+    exportPeriod != null
+      ? `${RO_MONTHS[exportPeriod.luna - 1]} ${exportPeriod.an}`
+      : "luna înregistrării exportului";
+
+  return `Bună ziua,
+
+Vă informez că declarația A4200 înregistrată la ${exportMonth} acoperă rapoartele ${zRange}, pentru intervalul ${periodText}, așa cum au fost exportate din casa de marcat.
+
+nr. recipisă: ________
+
+Vă mulțumesc.`;
 }
 
 export function buildLateDeadlineLines(segments: MonthDaySegment[], now = new Date()): string[] {

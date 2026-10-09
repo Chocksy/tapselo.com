@@ -5,6 +5,7 @@ import {
   dayCalendarPeriod,
   formatSegmentZRange,
   groupDaysByZ,
+  isCrossMonthFallbackExport,
   splitDaysByMonth,
   type DayEntry,
 } from "./day-groups.ts";
@@ -115,12 +116,17 @@ export function runCrossChecks(input: CrossCheckInput): CheckerIssue[] {
       const sample = segments
         .map((s) => `${RO_MONTHS[s.luna - 1]} ${s.an} (${formatSegmentZRange(s)})`)
         .join("; ");
+      const fallback = isCrossMonthFallbackExport(dayEntries, opis.nrRapI, opis.nrRapF);
       out.push(
         issue(
           "PERIOD_MISMATCH",
           "Zile din luni diferite",
           `Nu toate zilele fiscale sunt din aceeași lună calendaristică: ${sample}.`,
-          "Cere service-ului exporturi separate din casă, câte una pe lună calendaristică, fiecare cu opisul semnat pentru intervalul Z respectiv.",
+          fallback
+            ? "Poți genera un singur PDF pentru întreg intervalul, dar recomandăm exporturi lunare separate de la service când este posibil."
+            : "Cere service-ului exporturi separate din casă, câte una pe lună calendaristică, fiecare cu opisul semnat pentru intervalul Z respectiv.",
+          undefined,
+          fallback ? "warning" : "error",
         ),
       );
     }
