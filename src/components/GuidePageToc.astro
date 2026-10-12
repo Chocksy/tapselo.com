@@ -3,7 +3,7 @@
 ---
 
 <aside class="guide-page-toc max-lg:hidden" aria-label="Cuprins" data-guide-page-toc hidden>
-  <nav class="guide-page-toc__nav rounded-xl border border-border-light bg-surface-white p-5">
+  <nav class="guide-page-toc__nav guide-page-toc__scroll rounded-xl border border-border-light bg-surface-white p-5">
     <p class="text-sm font-bold text-primary">Pe pagină</p>
     <ul class="guide-page-toc__list mt-2 space-y-1" role="list"></ul>
   </nav>
@@ -17,11 +17,32 @@
 
 <style>
   .guide-page-toc {
+    --guide-toc-sticky-top: 5.5rem;
+    --guide-toc-viewport-margin: 1.5rem;
     position: sticky;
-    top: 5.5rem;
-    max-height: calc(100vh - 6.5rem);
-    overflow-y: auto;
+    top: var(--guide-toc-sticky-top);
     align-self: start;
+  }
+
+  .guide-page-toc__scroll {
+    max-height: calc(100vh - var(--guide-toc-sticky-top) - var(--guide-toc-viewport-margin));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-light) transparent;
+  }
+
+  .guide-page-toc__scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .guide-page-toc__scroll::-webkit-scrollbar-thumb {
+    background: var(--color-border-light);
+    border-radius: 3px;
+  }
+
+  .guide-page-toc__scroll::-webkit-scrollbar-track {
+    background: transparent;
   }
 
   .guide-page-toc__list {
