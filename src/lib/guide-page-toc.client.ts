@@ -42,6 +42,13 @@ function collectHeadings(root: HTMLElement): TocItem[] {
   return items;
 }
 
+function scrollLinkIntoTocViewport(link: HTMLElement, scrollRoot: HTMLElement): void {
+  const linkRect = link.getBoundingClientRect();
+  const rootRect = scrollRoot.getBoundingClientRect();
+  if (linkRect.top >= rootRect.top && linkRect.bottom <= rootRect.bottom) return;
+  link.scrollIntoView({ block: "nearest", inline: "nearest" });
+}
+
 export function initGuidePageToc(): void {
   const root = document.querySelector<HTMLElement>("[data-guide-toc-root]");
   const aside = document.querySelector<HTMLElement>("[data-guide-page-toc]");
@@ -54,12 +61,16 @@ export function initGuidePageToc(): void {
   list.replaceChildren();
   const linkById = new Map<string, HTMLAnchorElement>();
 
+  const scrollRoot = aside.querySelector<HTMLElement>(".guide-page-toc__scroll");
+
   const setActive = (id: string) => {
     for (const [key, link] of linkById) {
       const active = key === id;
       link.classList.toggle("is-active", active);
-      if (active) link.setAttribute("aria-current", "true");
-      else link.removeAttribute("aria-current");
+      if (active) {
+        link.setAttribute("aria-current", "true");
+        if (scrollRoot) scrollLinkIntoTocViewport(link, scrollRoot);
+      } else link.removeAttribute("aria-current");
     }
   };
 
