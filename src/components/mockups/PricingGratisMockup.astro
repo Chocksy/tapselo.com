@@ -1,0 +1,173 @@
+---
+import { Check, ArrowRight } from "@lucide/astro";
+import { internalPath } from "../../lib/internal-url.ts";
+import type { PricingGratisVariant } from "../../lib/mockups/pricing-gratis-variant.ts";
+
+interface Props {
+  variant: PricingGratisVariant;
+}
+
+const { variant } = Astro.props;
+
+const plans = [
+  { name: "Start", price: 79, tills: "1 casă de marcat", note: "Pentru cafenele și magazine mici", featured: false },
+  { name: "Magazin", price: 129, tills: "2 case de marcat", note: "Pentru magazine alimentare", featured: true },
+];
+
+const included = [
+  "Casa de marcat care merge și fără internet",
+  "Bon fiscal: conectezi imprimanta și gata",
+  "Cântar integrat, prețul apare automat",
+  "Rapoarte de vânzări cu recomandări automate",
+  "Inventar cu telefonul, rețete și producție",
+  "Clienți, cupoane și pagina de oferte",
+  "Import produse din programul vechi",
+  "Se actualizează singur, fără opriri",
+];
+
+const extras = [
+  ["Casă de marcat în plus", "+39 lei"],
+  ["Magazin în plus", "+99 lei"],
+  ["Plătești 10 luni, primești 12", "anual"],
+  ["În beta", "gratis"],
+];
+
+const fadedLayerClass = "select-none opacity-[0.45] blur-[1.25px] saturate-[0.8]";
+const planPriceFadedClass =
+  "select-none opacity-50 blur-[0.5px] line-through decoration-primary/35 decoration-2";
+---
+
+<section id="pricing" class="bg-surface py-24" data-pricing-mockup={variant}>
+  <div class="site-container">
+    <div class="max-w-2xl">
+      <h2 class="font-display text-4xl italic text-primary sm:text-5xl">
+        Prețuri simple. <span class="text-accent">Totul inclus.</span>
+      </h2>
+      <p class="mt-5 inline-flex items-center rounded-full bg-cash-light px-4 py-1.5 text-sm font-bold text-cash ring-1 ring-cash/30">
+        Beta: totul e gratuit acum
+      </p>
+      <p class="mt-4 text-lg leading-relaxed text-text-secondary">
+        Cât timp suntem în beta, Tapselo e gratuit, fără card. Prețurile de mai jos se aplică după beta și te anunțăm cu 30 de zile înainte.
+        <a href={internalPath("/program-gestiune-magazin/")} class="font-semibold text-accent hover:underline">Vezi programul de gestiune pentru magazin</a>.
+      </p>
+      <p class="mt-3 text-base font-bold text-primary">
+        Bonus: primele 20 de magazine din beta păstrează pe viață prețul de mai jos, fără scumpiri.
+      </p>
+    </div>
+
+    <div class="relative mt-12">
+      {variant === "a" && (
+        <div
+          class="pointer-events-none absolute inset-0 z-20 flex items-center justify-center overflow-hidden"
+          aria-hidden="true"
+        >
+          <div
+            class="flex min-w-[140%] items-center justify-center border-[6px] border-cash/55 bg-cash/[0.12] px-8 py-5 shadow-[0_0_0_1px_rgba(16,185,129,0.25)]"
+            style="transform: rotate(-14deg);"
+          >
+            <span
+              class="font-display text-[clamp(3.5rem,12vw,7.5rem)] font-normal italic leading-none tracking-[0.08em] text-cash drop-shadow-sm"
+              style="-webkit-text-stroke: 2px rgba(15, 23, 42, 0.12);"
+            >
+              GRATIS
+            </span>
+          </div>
+        </div>
+      )}
+
+      {variant === "b" && (
+        <div
+          class="pointer-events-none absolute inset-0 z-20 flex items-center justify-center overflow-hidden rounded-2xl border border-white/60 bg-gradient-to-b from-surface-white/70 via-surface-white/50 to-surface-white/65 backdrop-blur-lg"
+          aria-hidden="true"
+        >
+          <div class="mx-4 flex max-w-md flex-col items-center rounded-2xl border-2 border-cash/40 bg-surface-white px-8 py-9 text-center shadow-2xl shadow-cash/15 ring-4 ring-cash/10 sm:px-10">
+            <span class="font-display text-[clamp(3.25rem,14vw,4.75rem)] italic leading-none tracking-tight text-cash">GRATIS</span>
+            <p class="mt-4 text-lg font-bold text-primary">Gratuit în perioada beta</p>
+            <p class="mt-2 max-w-xs text-sm leading-relaxed text-text-secondary">
+              Fără card acum · după beta, prețurile de referință de mai jos
+            </p>
+          </div>
+        </div>
+      )}
+
+      <div class:list={["grid gap-6 lg:grid-cols-3", (variant === "a" || variant === "b") && fadedLayerClass, variant === "b" && "rounded-2xl"]}>
+        {plans.map((plan) => (
+          <div
+            class:list={[
+              "relative flex flex-col overflow-hidden rounded-xl border bg-surface-white p-8 transition-shadow duration-300",
+              plan.featured ? "border-accent ring-1 ring-accent" : "border-border",
+            ]}
+          >
+            {variant === "c" && (
+              <div class="pointer-events-none absolute right-0 top-0 z-10 h-24 w-24 overflow-hidden" aria-hidden="true">
+                <div
+                  class="absolute left-[-8px] top-[18px] w-[150%] bg-cash py-1.5 text-center shadow-md"
+                  style="transform: rotate(45deg);"
+                >
+                  <span class="text-xs font-extrabold tracking-[0.22em] text-white sm:text-sm">GRATIS</span>
+                </div>
+              </div>
+            )}
+
+            <div>
+              <h3 class="text-lg font-bold text-primary">Tapselo {plan.name}</h3>
+              <p class="mt-1 text-sm text-text-secondary">{plan.note}</p>
+              {variant === "c" ? (
+                <div class="mt-6">
+                  <p class:list={["flex flex-wrap items-baseline gap-x-2 gap-y-1", planPriceFadedClass]}>
+                    <span class="font-display text-5xl italic text-primary">{plan.price}</span>
+                    <span class="text-lg font-medium text-text-secondary">lei / lună + TVA</span>
+                  </p>
+                  <p class="mt-2 font-display text-4xl italic leading-none text-cash sm:text-5xl">Gratuit acum</p>
+                </div>
+              ) : (
+                <p class="mt-6 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                  <span class="font-display text-5xl italic text-primary">{plan.price}</span>
+                  <span class="text-lg font-medium text-text-secondary">lei / lună + TVA</span>
+                </p>
+              )}
+              <p class="mt-2 text-sm font-bold text-text">{plan.tills}</p>
+              <a
+                href="https://app.tapselo.com"
+                data-tapselo-cta="pricing-mockup"
+                class:list={[
+                  "group mt-8 flex w-full items-center justify-center gap-2 rounded-md py-3.5 text-base font-bold transition-all",
+                  plan.featured ? "bg-accent text-white" : "bg-primary text-white",
+                ]}
+              >
+                Începe gratuit
+                <ArrowRight class="h-4 w-4" />
+              </a>
+              <a
+                href="https://app.tapselo.com/?demo=1"
+                class="mt-3 text-center text-sm font-medium text-text-secondary underline-offset-4"
+              >
+                sau încearcă demo-ul
+              </a>
+            </div>
+          </div>
+        ))}
+
+        <div class:list={["rounded-xl border border-border bg-surface-white p-8", variant === "c" && fadedLayerClass]}>
+          <h3 class="text-lg font-bold text-primary">Ambele planuri includ:</h3>
+          <ul class="mt-5 space-y-3">
+            {included.map((item) => (
+              <li class="flex items-start gap-3">
+                <Check class="mt-0.5 h-5 w-5 shrink-0 text-success" />
+                <span class="text-sm font-medium text-text">{item}</span>
+              </li>
+            ))}
+          </ul>
+          <dl class="mt-6 space-y-2 border-t border-border pt-5">
+            {extras.map(([label, value]) => (
+              <div class="flex justify-between gap-4 text-sm">
+                <dt class="text-text-secondary">{label}</dt>
+                <dd class="font-bold text-text">{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

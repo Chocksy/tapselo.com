@@ -1,0 +1,21 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import PricingGratisMockup from "../../components/mockups/PricingGratisMockup.astro";
+---
+
+<Layout title="Mockup prețuri GRATIS" description="Mockup intern — secțiune prețuri" noindex>
+  <main>
+    <PricingGratisMockup variant="a" />
+  </main>
+  <script is:inline>
+    (() => {
+      const v = new URLSearchParams(window.location.search).get("variant")?.toLowerCase();
+      if (v === "b" || v === "c" || v === "a") {
+        const target = `/mockups/pricing-gratis/${v}${window.location.search.includes("variant=") ? "" : window.location.search}`;
+        if (window.location.pathname !== `/mockups/pricing-gratis/${v}`) {
+          window.location.replace(target);
+        }
+      }
+    })();
+  </script>
+</Layout>

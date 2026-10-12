@@ -1,0 +1,31 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import PricingGratisMockup from "../../../components/mockups/PricingGratisMockup.astro";
+import { parsePricingGratisVariant, type PricingGratisVariant } from "../../../lib/mockups/pricing-gratis-variant.ts";
+
+export function getStaticPaths() {
+  return (["a", "b", "c"] as PricingGratisVariant[]).map((variant) => ({
+    params: { variant },
+    props: { variant },
+  }));
+}
+
+interface Props {
+  variant: PricingGratisVariant;
+}
+
+const { variant } = Astro.props;
+
+const labels: Record<PricingGratisVariant, string> = {
+  a: "Variantă A — ștampilă diagonală",
+  b: "Variantă B — overlay frosted",
+  c: "Variantă C — panglici pe carduri",
+};
+---
+
+<Layout title="Mockup prețuri GRATIS" description="Mockup intern — secțiune prețuri" noindex>
+  <main>
+    <p class="sr-only">{labels[variant]}</p>
+    <PricingGratisMockup variant={variant} />
+  </main>
+</Layout>
