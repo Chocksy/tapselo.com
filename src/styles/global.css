@@ -108,6 +108,12 @@
     margin-inline: 0;
   }
 
+  .site-prose {
+    width: 100%;
+    max-width: 56rem;
+    margin-inline: 0;
+  }
+
   .site-hero {
     padding-top: 6rem;
     padding-bottom: 2.5rem;
