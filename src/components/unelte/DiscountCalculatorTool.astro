@@ -1,0 +1,352 @@
+---
+/** Interactive discount calculator for /unelte/calculator-reducere/ */
+---
+
+<section class="ut-card" aria-labelledby="disc-calc-title">
+  <h2 id="disc-calc-title" class="font-display text-2xl italic text-primary">Calculator reducere online</h2>
+  <p class="mt-2 text-sm text-text-secondary" id="disc-mode-desc">
+    Introdu prețul inițial și procentul de reducere — calculezi prețul după discount, în lei.
+  </p>
+
+  <div class="mt-6 space-y-4" id="disc-tool">
+    <div class="ut-seg" role="group" aria-label="Mod calculator reducere">
+      <button type="button" data-disc-mode="after_percent" aria-pressed="true">Preț după %</button>
+      <button type="button" data-disc-mode="final_and_savings" aria-pressed="false">Final + economii</button>
+      <button type="button" data-disc-mode="percent_between" aria-pressed="false">% între prețuri</button>
+      <button type="button" data-disc-mode="stacked" aria-pressed="false">Reduceri în lanț</button>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2" id="disc-fields-simple">
+      <div>
+        <label class="ut-label" for="disc-original">Preț inițial (lei)</label>
+        <input
+          class="ut-input"
+          id="disc-original"
+          type="text"
+          inputmode="decimal"
+          autocomplete="off"
+          placeholder="ex. 199,99"
+        />
+      </div>
+      <div id="disc-percent-wrap">
+        <label class="ut-label" for="disc-percent">Reducere (%)</label>
+        <input
+          class="ut-input"
+          id="disc-percent"
+          type="text"
+          inputmode="decimal"
+          autocomplete="off"
+          placeholder="ex. 20"
+        />
+      </div>
+      <div class="hidden" id="disc-sale-wrap">
+        <label class="ut-label" for="disc-sale">Preț redus / nou (lei)</label>
+        <input
+          class="ut-input"
+          id="disc-sale"
+          type="text"
+          inputmode="decimal"
+          autocomplete="off"
+          placeholder="ex. 159,99"
+        />
+      </div>
+    </div>
+
+    <div class="hidden space-y-3" id="disc-stacked-block">
+      <p class="text-sm text-text-secondary">
+        Fiecare procent se aplică pe prețul rămas după reducerea anterioară (ca la promoții succesive în magazin).
+      </p>
+      <div>
+        <label class="ut-label" for="disc-stacked-original">Preț inițial (lei)</label>
+        <input
+          class="ut-input"
+          id="disc-stacked-original"
+          type="text"
+          inputmode="decimal"
+          autocomplete="off"
+          placeholder="ex. 100"
+        />
+      </div>
+      <div class="space-y-2" id="disc-stack-rows" aria-live="polite"></div>
+      <button type="button" class="ut-btn ut-btn-secondary" id="disc-add-step">Adaugă o reducere</button>
+    </div>
+
+    <dl class="ut-result" id="disc-result" aria-live="polite"></dl>
+  </div>
+</section>
+
+<script>
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
+  import { escapeHtml, fmtLei, fmtMoney } from "../../lib/generators/page.ts";
+  import {
+    percentBetweenPrices,
+    priceAfterPercent,
+    stackedDiscount,
+    type DiscountMode,
+  } from "../../lib/unelte/discount.ts";
+  import { parseRoNumber } from "../../lib/unelte/parse.ts";
+
+  const root = document.getElementById("disc-tool");
+  if (!root) throw new Error("disc-tool missing");
+
+  let mode: DiscountMode = "after_percent";
+  let lastCalcKey = "";
+
+  const MODE_DESC: Record<DiscountMode, string> = {
+    after_percent: "Introdu prețul inițial și procentul de reducere — calculezi prețul după discount, în lei.",
+    final_and_savings: "Același calcul, cu prețul final și suma economisită afișate clar.",
+    percent_between: "Ai prețul vechi și prețul de promoție? Găsești procentul de reducere.",
+    stacked: "Mai multe reduceri una după alta (ex. 20% apoi 10%) — vezi prețul final și reducerea efectivă.",
+  };
+
+  const el = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+
+  function parseField(id: string): number | null | "invalid" {
+    const p = parseRoNumber(el<HTMLInputElement>(id).value);
+    if (p.kind === "ok") return p.value;
+    if (p.kind === "empty") return null;
+    return "invalid";
+  }
+
+  function parsePercentField(id: string): number | null | "invalid" {
+    const p = parseRoNumber(el<HTMLInputElement>(id).value, 4);
+    if (p.kind === "ok") return p.value;
+    if (p.kind === "empty") return null;
+    return "invalid";
+  }
+
+  const hint = (msg: string) => `<p class="text-sm text-text-secondary">${escapeHtml(msg)}</p>`;
+  const err = (msg: string) => `<p class="ut-err">${escapeHtml(msg)}</p>`;
+
+  function setMode(next: DiscountMode) {
+    mode = next;
+    el<HTMLElement>("disc-mode-desc").textContent = MODE_DESC[next];
+    const simple = el<HTMLElement>("disc-fields-simple");
+    const stacked = el<HTMLElement>("disc-stacked-block");
+    const percentWrap = el<HTMLElement>("disc-percent-wrap");
+    const saleWrap = el<HTMLElement>("disc-sale-wrap");
+    root.querySelectorAll<HTMLButtonElement>("[data-disc-mode]").forEach((btn) => {
+      btn.setAttribute("aria-pressed", btn.dataset.discMode === next ? "true" : "false");
+    });
+    const isStacked = next === "stacked";
+    const isBetween = next === "percent_between";
+    stacked.classList.toggle("hidden", !isStacked);
+    simple.classList.toggle("hidden", isStacked);
+    percentWrap.classList.toggle("hidden", isBetween);
+    saleWrap.classList.toggle("hidden", !isBetween);
+    render();
+  }
+
+  function ensureStackRows() {
+    const container = el<HTMLElement>("disc-stack-rows");
+    if (container.children.length === 0) {
+      addStackRow(20);
+      addStackRow(10);
+    }
+  }
+
+  function addStackRow(value = 10) {
+    const container = el<HTMLElement>("disc-stack-rows");
+    const row = document.createElement("div");
+    row.className = "disc-stack-row flex flex-wrap items-end gap-2";
+    const idx = container.children.length + 1;
+    row.innerHTML = `
+      <div class="min-w-[8rem] flex-1">
+        <label class="ut-label">Reducere ${idx} (%)</label>
+        <input class="ut-input disc-stack-pct" type="text" inputmode="decimal" value="${escapeHtml(String(value))}" aria-label="Reducere ${idx} procent" />
+      </div>
+      <button type="button" class="ut-del disc-stack-remove" ${idx <= 1 ? "hidden" : ""}>Șterge</button>`;
+    container.appendChild(row);
+    row.querySelector(".disc-stack-remove")?.addEventListener("click", () => {
+      if (container.children.length <= 1) return;
+      row.remove();
+      renumberStackLabels();
+      render();
+    });
+    row.querySelector(".disc-stack-pct")?.addEventListener("input", render);
+  }
+
+  function renumberStackLabels() {
+    const container = el<HTMLElement>("disc-stack-rows");
+    container.querySelectorAll<HTMLElement>(".disc-stack-row").forEach((row, i) => {
+      const label = row.querySelector("label");
+      const input = row.querySelector<HTMLInputElement>(".disc-stack-pct");
+      const n = i + 1;
+      if (label) label.textContent = `Reducere ${n} (%)`;
+      if (input) input.setAttribute("aria-label", `Reducere ${n} procent`);
+      const rm = row.querySelector<HTMLElement>(".disc-stack-remove");
+      if (rm) rm.classList.toggle("hidden", n === 1);
+    });
+  }
+
+  function renderAfterPercent(emphasis: "final" | "both") {
+    const original = parseField("disc-original");
+    const percent = parsePercentField("disc-percent");
+    if (original === null || percent === null) {
+      return hint("Introdu prețul inițial și procentul de reducere.");
+    }
+    if (original === "invalid" || percent === "invalid") {
+      return err("Verifică valorile (ex. preț 199,99 și reducere 20).");
+    }
+    try {
+      const r = priceAfterPercent(original, percent);
+      if (emphasis === "final") {
+        return `
+          <dt>Preț după reducere</dt><dd>${fmtLei(r.final)}</dd>
+          <dt>Preț inițial</dt><dd>${fmtLei(r.original)}</dd>
+          <dt>Reducere</dt><dd>${fmtMoney(r.percentOff)}%</dd>`;
+      }
+      return `
+        <dt>Preț final</dt><dd>${fmtLei(r.final)}</dd>
+        <dt>Sumă economisită</dt><dd>${fmtLei(r.saved)}</dd>
+        <dt>Preț inițial</dt><dd>${fmtLei(r.original)}</dd>
+        <dt>Reducere aplicată</dt><dd>${fmtMoney(r.percentOff)}%</dd>`;
+    } catch (e) {
+      return err(e instanceof Error ? e.message : "Date invalide.");
+    }
+  }
+
+  function renderBetween() {
+    const original = parseField("disc-original");
+    const sale = parseField("disc-sale");
+    if (original === null || sale === null) {
+      return hint("Introdu prețul inițial și prețul redus.");
+    }
+    if (original === "invalid" || sale === "invalid") {
+      return err("Prețurile nu sunt valide (ex. 200 și 150).");
+    }
+    try {
+      const r = percentBetweenPrices(original, sale);
+      return `
+        <dt>Reducere</dt><dd>${fmtMoney(r.percentOff)}%</dd>
+        <dt>Sumă economisită</dt><dd>${fmtLei(r.saved)}</dd>
+        <dt>Preț inițial</dt><dd>${fmtLei(r.original)}</dd>
+        <dt>Preț redus</dt><dd>${fmtLei(r.sale)}</dd>`;
+    } catch (e) {
+      return err(e instanceof Error ? e.message : "Date invalide.");
+    }
+  }
+
+  function renderStacked() {
+    const original = parseField("disc-stacked-original");
+    if (original === null) return hint("Introdu prețul inițial.");
+    if (original === "invalid") return err("Prețul inițial nu este valid.");
+    const percents: number[] = [];
+    for (const input of el<HTMLElement>("disc-stack-rows").querySelectorAll<HTMLInputElement>(".disc-stack-pct")) {
+      const p = parseRoNumber(input.value, 4);
+      if (p.kind === "empty") return hint("Completează toate procentele de reducere.");
+      if (p.kind === "invalid") return err("Un procent nu este valid (ex. 15 sau 12,5).");
+      percents.push(p.value);
+    }
+    try {
+      const r = stackedDiscount(original, percents);
+      const steps = r.percents.map((p, i) => `−${fmtMoney(p)}%`).join(", apoi ");
+      return `
+        <dt>Preț final</dt><dd>${fmtLei(r.final)}</dd>
+        <dt>Reducere efectivă</dt><dd>${fmtMoney(r.effectivePercent)}%</dd>
+        <dt>Sumă economisită</dt><dd>${fmtLei(r.saved)}</dd>
+        <dt>Pași</dt><dd class="!text-base !font-semibold">${escapeHtml(steps)}</dd>
+        <dt>Preț inițial</dt><dd>${fmtLei(r.original)}</dd>`;
+    } catch (e) {
+      return err(e instanceof Error ? e.message : "Date invalide.");
+    }
+  }
+
+  function trackKeyForMode(): string | null {
+    switch (mode) {
+      case "after_percent":
+      case "final_and_savings": {
+        const o = parseField("disc-original");
+        const p = parsePercentField("disc-percent");
+        if (o === null || p === null || o === "invalid" || p === "invalid") return null;
+        try {
+          priceAfterPercent(o, p);
+          return `${mode}:${o}:${p}`;
+        } catch {
+          return null;
+        }
+      }
+      case "percent_between": {
+        const o = parseField("disc-original");
+        const s = parseField("disc-sale");
+        if (o === null || s === null || o === "invalid" || s === "invalid") return null;
+        try {
+          percentBetweenPrices(o, s);
+          return `${mode}:${o}:${s}`;
+        } catch {
+          return null;
+        }
+      }
+      case "stacked": {
+        const o = parseField("disc-stacked-original");
+        if (o === null || o === "invalid") return null;
+        const percents: number[] = [];
+        for (const input of el<HTMLElement>("disc-stack-rows").querySelectorAll<HTMLInputElement>(".disc-stack-pct")) {
+          const p = parseRoNumber(input.value, 4);
+          if (p.kind !== "ok") return null;
+          percents.push(p.value);
+        }
+        try {
+          stackedDiscount(o, percents);
+          return `${mode}:${o}:${percents.join(",")}`;
+        } catch {
+          return null;
+        }
+      }
+      default: {
+        const never: never = mode;
+        throw new Error(`mod necunoscut: ${String(never)}`);
+      }
+    }
+  }
+
+  function render() {
+    const out = el<HTMLElement>("disc-result");
+    let html = "";
+    switch (mode) {
+      case "after_percent":
+        html = renderAfterPercent("final");
+        break;
+      case "final_and_savings":
+        html = renderAfterPercent("both");
+        break;
+      case "percent_between":
+        html = renderBetween();
+        break;
+      case "stacked":
+        html = renderStacked();
+        break;
+      default: {
+        const never: never = mode;
+        throw new Error(`mod necunoscut: ${String(never)}`);
+      }
+    }
+    out.innerHTML = html;
+    const calcKey = trackKeyForMode();
+    if (calcKey && calcKey !== lastCalcKey) {
+      lastCalcKey = calcKey;
+      trackToolUsed("calculator_reducere", "calculate", { mode });
+    }
+  }
+
+  root.querySelectorAll<HTMLButtonElement>("[data-disc-mode]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const m = btn.dataset.discMode as DiscountMode;
+      if (m === "stacked") ensureStackRows();
+      setMode(m);
+    });
+  });
+
+  el<HTMLButtonElement>("disc-add-step").addEventListener("click", () => {
+    addStackRow();
+    renumberStackLabels();
+    render();
+  });
+
+  for (const id of ["disc-original", "disc-percent", "disc-sale", "disc-stacked-original"]) {
+    el<HTMLInputElement>(id).addEventListener("input", render);
+  }
+
+  ensureStackRows();
+  setMode("after_percent");
+</script>

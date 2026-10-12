@@ -1,5 +1,5 @@
 ---
-import { ArrowRight, BadgePercent, Barcode, Building2, Calculator, ClipboardList, FileCheck, NotebookPen, Package, ScanBarcode, ScrollText } from "@lucide/astro";
+import { ArrowRight, BadgePercent, Barcode, Building2, Calculator, ClipboardList, FileCheck, NotebookPen, Package, Percent, ScanBarcode, ScrollText } from "@lucide/astro";
 import GuideShell from "../components/GuideShell.astro";
 import { A4200_CHECKER_PATH } from "../lib/articles/schema.ts";
 import { barcodeApiBase } from "../lib/unelte/barcode.ts";
@@ -70,6 +70,14 @@ const tools = [
     action: "Deschide calculatorul",
     description:
       "De la cost fără TVA la preț de vânzare cu TVA și invers, rotunjire la raft și afiș de preț. Verifică plafonul de 20% pentru alimentele de bază.",
+  },
+  {
+    href: internalPath("/unelte/calculator-reducere"),
+    title: "Calculator reducere",
+    icon: Percent,
+    action: "Deschide calculatorul",
+    description:
+      "Preț după discount %, sumă economisită, procent între două prețuri și reduceri în lanț (ex. 20% apoi 10%). În lei, în browser.",
   },
   {
     href: internalPath("/unelte/generator-cod-de-bare"),

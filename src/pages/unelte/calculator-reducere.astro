@@ -1,0 +1,65 @@
+---
+import ToolShell from "../../components/ToolShell.astro";
+import DiscountCalculatorTool from "../../components/unelte/DiscountCalculatorTool.astro";
+import DiscountCalculatorContent from "../../components/unelte/DiscountCalculatorContent.astro";
+import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
+
+const path = "/unelte/calculator-reducere/";
+const heading = "Calculator reducere";
+
+const faq = [
+  {
+    q: "Cum calculez prețul după o reducere procentuală?",
+    a: "Înmulțești prețul inițial cu (1 − reducerea%/100). Exemplu: 100 lei cu −15% → 100 × 0,85 = 85 lei. Suma economisită este 15 lei.",
+  },
+  {
+    q: "Cum găsesc procentul de reducere între două prețuri?",
+    a: "Scazi prețul nou din prețul vechi, împarți la prețul vechi și înmulțești cu 100: reducere% = (preț vechi − preț nou) / preț vechi × 100. Prețul nou trebuie să fie cel mult egal cu prețul vechi.",
+  },
+  {
+    q: "De ce 20% + 10% nu fac 30% reducere?",
+    a: "La promoții în lanț, a doua reducere se aplică pe prețul deja redus. Matematic: preț final = inițial × 0,80 × 0,90 = inițial × 0,72, deci reducerea efectivă este 28%, nu 30%.",
+  },
+  {
+    q: "Pot folosi calculatorul pentru prețuri cu TVA?",
+    a: "Da, dacă folosești aceeași bază la ambele prețuri (ambele cu TVA sau ambele fără TVA). Pentru a trece de la cost la preț de raft cu TVA, vezi calculatorul de adaos comercial și calculatorul TVA.",
+  },
+  {
+    q: "Salvați prețurile introduse?",
+    a: "Nu. Calculele rulează local în browser; nu trimitem sumele în analytics.",
+  },
+];
+
+const metaDescription =
+  "Calculator reducere gratuit: preț după discount %, sumă economisită, procent între două prețuri și reduceri în lanț (20% apoi 10% = 28%). În lei, fără cont.";
+
+const jsonLd = toolJsonLd({
+  path,
+  heading,
+  appName: "Calculator reducere Tapselo",
+  description:
+    "Calculator discount online în română: preț după reducere, economii, procent între prețuri și reduceri succesive, cu rotunjire la bani.",
+  faq,
+});
+---
+
+<ToolShell
+  title="Calculator reducere — preț după discount % | Gratuit"
+  description={metaDescription}
+  heading={heading}
+  path={path}
+  lead="Calculezi în lei prețul după reducere, suma economisită, procentul între două prețuri sau reduceri succesive la promoții — direct în browser, fără cont."
+  campaign="calculator-reducere"
+  ctaTitle="Prețuri clare la casă și la raft"
+  ctaBody="În Tapselo setezi prețul de vânzare o dată; casa de marcat și etichetele folosesc aceeași valoare, fără recalcul manual la fiecare promoție."
+  related={[
+    { href: "/unelte/calculator-adaos-comercial/", label: "Calculator adaos comercial — de la cost la preț de vânzare" },
+    { href: "/unelte/calculator-tva/", label: "Calculator TVA 21% și 11%" },
+    { href: "/ghid/pret-unitar-kg-litru/", label: "Prețul unitar pe kg sau litru la raft" },
+  ]}
+  jsonLd={jsonLd}
+  faq={faq}
+>
+  <DiscountCalculatorTool />
+  <DiscountCalculatorContent />
+</ToolShell>
