@@ -1,6 +1,6 @@
 // Tiny markdown to HTML for the KB bodies on /ghid pages.
-// Supports paragraphs, **bold**, `code`, "- " and "1. " lists, [text](url) links.
-// Everything else is escaped. Links only for https:, http: and site paths.
+// Supports ##/### headings, paragraphs, **bold**, `code`, "- " and "1. " lists,
+// [text](url) links, and pipe tables. Everything else is escaped.
 
 import { escapeHtml } from "./offers-render.ts";
 import { internalPath } from "./internal-url.ts";
@@ -11,10 +11,21 @@ function safeHref(url: string): string | null {
   return null;
 }
 
+/** Stable id for heading anchors (Romanian diacritics stripped). */
+export function slugifyHeading(title: string): string {
+  const base = title
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
+    .toLowerCase()
+    .replace(/&[^;]+;/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return base || "section";
+}
+
 /** Inline markdown on one line of raw text; returns HTML. */
 export function inlineMd(raw: string): string {
   const out: string[] = [];
-  // Split into code spans, links and plain text, so escaping happens once per piece.
   const re = /`([^`]+)`|\[([^\]]+)\]\(([^)\s]+)\)/g;
   let last = 0;
   for (let m = re.exec(raw); m; m = re.exec(raw)) {
@@ -38,14 +49,68 @@ export function inlineMd(raw: string): string {
   return out.join("");
 }
 
-// Runs on escaped text: "**" is not touched by escapeHtml.
 const bold = (html: string) => html.replace(/\*\*([^*]+?)\*\*/g, "<strong>$1</strong>");
 
-/** Block markdown: blank-line separated paragraphs and lists. */
+function isTableRow(line: string): boolean {
+  const t = line.trim();
+  return t.startsWith("|") && t.endsWith("|") && t.includes("|");
+}
+
+function isTableSeparator(line: string): boolean {
+  const t = line.trim();
+  if (!isTableRow(line)) return false;
+  return t.replace(/[|\s:-]/g, "") === "";
+}
+
+function parseTableRow(line: string): string[] {
+  return line
+    .trim()
+    .replace(/^\|/, "")
+    .replace(/\|$/, "")
+    .split("|")
+    .map((c) => c.trim());
+}
+
+function renderTable(rows: string[][]): string {
+  if (rows.length < 2) return "";
+  const [head, ...body] = rows;
+  const thead = `<thead><tr>${head.map((c) => `<th>${inlineMd(c)}</th>`).join("")}</tr></thead>`;
+  const tbody = `<tbody>${body.map((r) => `<tr>${r.map((c) => `<td>${inlineMd(c)}</td>`).join("")}</tr>`).join("")}</tbody>`;
+  return `<table class="kb-table">${thead}${tbody}</table>`;
+}
+
+/** H2 titles for in-page TOC (order preserved). */
+export function markdownH2Toc(md: string): { id: string; title: string }[] {
+  const slugCounts = new Map<string, number>();
+  const toc: { id: string; title: string }[] = [];
+  for (const line of String(md ?? "").split(/\r?\n/)) {
+    const h2 = /^##\s+(.+)$/.exec(line.trim());
+    if (!h2) continue;
+    const title = h2[1].trim();
+    const base = slugifyHeading(title);
+    const n = (slugCounts.get(base) ?? 0) + 1;
+    slugCounts.set(base, n);
+    const id = n === 1 ? base : `${base}-${n}`;
+    toc.push({ id, title });
+  }
+  return toc;
+}
+
+/** Block markdown: blank-line separated paragraphs, lists, headings, tables. */
 export function markdownToHtml(md: string): string {
   const html: string[] = [];
   let para: string[] = [];
   let list: { tag: "ul" | "ol"; items: string[] } | null = null;
+  let tableLines: string[] = [];
+  const slugCounts = new Map<string, number>();
+
+  const headingId = (title: string): string => {
+    const base = slugifyHeading(title);
+    const n = (slugCounts.get(base) ?? 0) + 1;
+    slugCounts.set(base, n);
+    return n === 1 ? base : `${base}-${n}`;
+  };
+
   const flushPara = () => {
     if (para.length) html.push(`<p>${para.map(inlineMd).join(" ")}</p>`);
     para = [];
@@ -54,7 +119,49 @@ export function markdownToHtml(md: string): string {
     if (list) html.push(`<${list.tag}>${list.items.map((i) => `<li>${inlineMd(i)}</li>`).join("")}</${list.tag}>`);
     list = null;
   };
-  for (const line of String(md ?? "").split(/\r?\n/)) {
+  const flushTable = () => {
+    if (tableLines.length === 0) return;
+    const parsed: string[][] = [];
+    for (const row of tableLines) {
+      if (isTableSeparator(row)) continue;
+      parsed.push(parseTableRow(row));
+    }
+    if (parsed.length) html.push(renderTable(parsed));
+    tableLines = [];
+  };
+
+  const lines = String(md ?? "").split(/\r?\n/);
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (isTableRow(line)) {
+      flushPara();
+      flushList();
+      tableLines.push(line);
+      continue;
+    }
+    flushTable();
+
+    const h3 = /^###\s+(.+)$/.exec(trimmed);
+    if (h3) {
+      flushPara();
+      flushList();
+      const title = h3[1].trim();
+      const id = headingId(title);
+      html.push(`<h3 id="${escapeHtml(id)}" class="kb-h3">${inlineMd(title)}</h3>`);
+      continue;
+    }
+    const h2 = /^##\s+(.+)$/.exec(trimmed);
+    if (h2) {
+      flushPara();
+      flushList();
+      const title = h2[1].trim();
+      const id = headingId(title);
+      html.push(`<h2 id="${escapeHtml(id)}" class="kb-h2">${inlineMd(title)}</h2>`);
+      continue;
+    }
+
     const ul = /^\s*[-*]\s+(.*)$/.exec(line);
     const ol = /^\s*\d+[.)]\s+(.*)$/.exec(line);
     const item = ul ?? ol;
@@ -64,17 +171,18 @@ export function markdownToHtml(md: string): string {
       if (list && list.tag !== tag) flushList();
       list ??= { tag, items: [] };
       list.items.push(item[1]);
-    } else if (!line.trim()) {
+    } else if (!trimmed) {
       flushPara();
       flushList();
     } else if (list && /^\s+\S/.test(line)) {
       list.items[list.items.length - 1] += ` ${line.trim()}`;
     } else {
       flushList();
-      para.push(line.trim());
+      para.push(trimmed);
     }
   }
   flushPara();
   flushList();
+  flushTable();
   return html.join("\n");
 }

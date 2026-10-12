@@ -1,6 +1,6 @@
 ---
 import GuideShell from "../../components/GuideShell.astro";
-import { markdownToHtml } from "../../lib/markdown.ts";
+import { markdownH2Toc, markdownToHtml } from "../../lib/markdown.ts";
 import { internalPath } from "../../lib/internal-url.ts";
 import {
   breadcrumbJsonLd,
@@ -183,6 +183,8 @@ const jsonLd = [
   breadcrumbJsonLd(crumbs),
 ];
 
+const toc = markdownH2Toc(body);
+
 const sources = [
   {
     title: "Legea nr. 252/2003 privind registrul unic de control (forma consolidată)",
@@ -219,7 +221,19 @@ const sources = [
   ctaTitle="Evidența zilnică a magazinului, fără birocrație inutilă"
   ctaBody="Tapselo te ajută cu vânzările, stocurile și documentele de casă — ca la control să ai ordine în operațiuni, nu doar registrul unic completat de inspector."
   jsonLd={jsonLd}
+  contentWidth="reading"
 >
+  <nav class="rounded-xl border border-border-light p-5" aria-label="Cuprins">
+    <p class="text-sm font-bold text-primary">Pe pagină</p>
+    <ul class="mt-2 space-y-1 pl-5 text-sm">
+      {toc.map((item) => (
+        <li class="list-disc">
+          <a href={`#${item.id}`} class="text-accent hover:text-accent-hover">{item.title}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
   <article class="kb-prose" set:html={markdownToHtml(body)} />
 
   <section>

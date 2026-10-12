@@ -1,7 +1,7 @@
 // Run: npm test
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { markdownToHtml, inlineMd } from "../src/lib/markdown.ts";
+import { markdownToHtml, inlineMd, markdownH2Toc, slugifyHeading } from "../src/lib/markdown.ts";
 
 test("markdown: paragraphs, bold, lists, links, code", () => {
   const html = markdownToHtml("Din **1 august**\nlinia 2\n\n- unu\n- **doi**\n\n1. a\n2. b [ANAF](https://anaf.ro/x?a=1&b=2)\n\n`28CCCCC`");
@@ -14,6 +14,17 @@ test("markdown: paragraphs, bold, lists, links, code", () => {
       "<p><code>28CCCCC</code></p>",
     ].join("\n"),
   );
+});
+
+test("markdown: h2/h3 headings with ids and tables", () => {
+  const md = "## Prima secțiune\n\nText.\n\n### Sub\n\n| A | B |\n| --- | --- |\n| unu | **doi** |";
+  const html = markdownToHtml(md);
+  assert.match(html, /<h2 id="prima-sectiune" class="kb-h2">Prima secțiune<\/h2>/);
+  assert.match(html, /<h3 id="sub" class="kb-h3">Sub<\/h3>/);
+  assert.match(html, /<table class="kb-table">/);
+  assert.match(html, /<strong>doi<\/strong>/);
+  assert.deepEqual(markdownH2Toc(md), [{ id: "prima-sectiune", title: "Prima secțiune" }]);
+  assert.equal(slugifyHeading("Cine trebuie să țină registrul"), "cine-trebuie-sa-tina-registrul");
 });
 
 test("markdown: escapes HTML and refuses unsafe links", () => {

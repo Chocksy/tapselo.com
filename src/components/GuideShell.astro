@@ -27,6 +27,8 @@ interface Props {
   /** Secondary CTA above the main Tapselo block (A4200 checker). */
   articleCta?: "a4200" | "default";
   jsonLd?: Record<string, unknown>[];
+  /** Narrow column for long-form prose; hub pages use full container width. */
+  contentWidth?: "reading" | "full";
 }
 
 const {
@@ -44,7 +46,9 @@ const {
   ctaHref = internalPath("/#how-it-works"),
   articleCta = "default",
   jsonLd = [],
+  contentWidth = "full",
 } = Astro.props;
+const contentInnerClass = contentWidth === "reading" ? "site-reading" : "w-full";
 const ctaUrl = ctaHref;
 const a4200CheckerUrl = internalPath(A4200_CHECKER_PATH);
 const ctaLocation = `ghid-${campaign}`;
@@ -54,7 +58,7 @@ const ctaLocation = `ghid-${campaign}`;
   <Navbar />
 
   <header class="bg-primary pt-28 pb-14 md:pt-32">
-    <div class="mx-auto max-w-5xl px-6">
+    <div class={`site-container ${contentInnerClass}`}>
       {breadcrumbs && breadcrumbs.length > 0 ? (
         <Breadcrumbs items={breadcrumbs} />
       ) : (
@@ -69,7 +73,8 @@ const ctaLocation = `ghid-${campaign}`;
   </header>
 
   <main class="bg-surface-white py-14">
-    <div class="mx-auto max-w-5xl space-y-12 px-6">
+    <div class="site-container">
+      <div class={`${contentInnerClass} space-y-12`}>
       <slot />
 
       {sources.length > 0 && (
@@ -121,6 +126,7 @@ const ctaLocation = `ghid-${campaign}`;
       <p class="text-sm text-text-muted">
         Pagina are scop informativ și nu este consultanță juridică sau fiscală. Pentru cazul tău, verifică sursele oficiale sau întreabă contabilul.
       </p>
+      </div>
     </div>
   </main>
 
@@ -130,6 +136,12 @@ const ctaLocation = `ghid-${campaign}`;
 <style is:global>
   .kb-prose { color: var(--color-text-secondary); line-height: 1.7; }
   .kb-prose > * + * { margin-top: 1rem; }
+  .kb-prose .kb-h2,
+  .kb-h2 { margin-top: 2.5rem; font-family: var(--font-display); font-size: clamp(1.75rem, 3vw + 0.5rem, 2.25rem); font-style: italic; font-weight: 400; line-height: 1.15; color: var(--color-primary); }
+  .kb-prose .kb-h2:first-child,
+  .kb-h2:first-child { margin-top: 0; }
+  .kb-prose .kb-h3,
+  .kb-h3 { margin-top: 1.75rem; font-size: 1.125rem; font-weight: 600; line-height: 1.35; color: var(--color-primary); }
   .kb-prose strong { color: var(--color-primary); font-weight: 700; }
   .kb-prose a { color: var(--color-accent); }
   .kb-prose a:hover { color: var(--color-accent-hover); }
@@ -137,6 +149,7 @@ const ctaLocation = `ghid-${campaign}`;
   .kb-prose ol { list-style: decimal; padding-left: 1.25rem; }
   .kb-prose li + li { margin-top: 0.4rem; }
   .kb-prose code { font-family: var(--font-mono); font-size: 0.9em; background: var(--color-surface); padding: 0.1em 0.35em; border-radius: 4px; }
+  .kb-prose .kb-table { margin-top: 1rem; }
   .kb-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
   .kb-table th, .kb-table td { border-bottom: 1px solid var(--color-border-light); padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; }
   .kb-table th { color: var(--color-primary); font-weight: 600; background: var(--color-surface); }
