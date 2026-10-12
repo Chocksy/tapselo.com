@@ -37,6 +37,7 @@ const tool = RELATED_TOOLS[rule.id];
   sources={rule.sources}
   verifiedOn={rule.verified_on}
   campaign={rule.id}
+  contentWidth="reading"
 >
   <article class="kb-prose" set:html={markdownToHtml(rule.body)} />
   {tool && (
