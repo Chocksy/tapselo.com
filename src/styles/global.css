@@ -105,6 +105,19 @@
   .site-reading {
     width: 100%;
     max-width: 48rem;
+    margin-inline: 0;
+  }
+
+  .site-hero {
+    padding-top: 6rem;
+    padding-bottom: 2.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .site-hero {
+      padding-top: 7rem;
+      padding-bottom: 3rem;
+    }
   }
 }
 
