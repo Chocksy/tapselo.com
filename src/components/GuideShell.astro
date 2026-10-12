@@ -9,6 +9,13 @@ import { formatDateRo } from "../lib/mcp/text.ts";
 import { A4200_CHECKER_PATH } from "../lib/articles/schema.ts";
 import type { BreadcrumbLink } from "../lib/unelte/jsonld.ts";
 import { internalPath } from "../lib/internal-url.ts";
+import GuidePageToc from "./GuidePageToc.astro";
+
+function defaultGhidPageToc(pathname: string): boolean {
+  const p = pathname.replace(/\/$/, "") || "/";
+  if (p === "/ghid" || p === "/ghid/articole") return false;
+  return p.startsWith("/ghid/");
+}
 
 interface Props {
   title: string;
@@ -29,6 +36,8 @@ interface Props {
   jsonLd?: Record<string, unknown>[];
   /** Narrow column for long-form prose; hub pages use full container width. */
   contentWidth?: "reading" | "full";
+  /** Sticky “Pe pagină” TOC from article headings (desktop). Default: /ghid/ articles except hubs. */
+  pageToc?: boolean;
 }
 
 const {
@@ -47,8 +56,16 @@ const {
   articleCta = "default",
   jsonLd = [],
   contentWidth = "full",
+  pageToc: pageTocProp,
 } = Astro.props;
 const contentInnerClass = contentWidth === "reading" ? "site-reading" : "w-full";
+const pageToc = pageTocProp ?? defaultGhidPageToc(Astro.url.pathname);
+const guideLayoutClass =
+  pageToc
+    ? contentWidth === "reading"
+      ? "guide-layout guide-layout--reading"
+      : "guide-layout guide-layout--full"
+    : "";
 const ctaUrl = ctaHref;
 const a4200CheckerUrl = internalPath(A4200_CHECKER_PATH);
 const ctaLocation = `ghid-${campaign}`;
@@ -76,8 +93,11 @@ const ctaLocation = `ghid-${campaign}`;
 
   <main class="bg-surface-white py-14">
     <div class="site-container">
-      <div class={`${contentInnerClass} space-y-12`}>
-      <slot />
+      <div class:list={[guideLayoutClass]}>
+        <div class:list={["guide-layout__main", contentInnerClass, "min-w-0 space-y-12"]}>
+          <div class="guide-page-content space-y-12" data-guide-toc-root>
+            <slot />
+          </div>
 
       {sources.length > 0 && (
         <section>
@@ -128,6 +148,8 @@ const ctaLocation = `ghid-${campaign}`;
       <p class="text-sm text-text-muted">
         Pagina are scop informativ și nu este consultanță juridică sau fiscală. Pentru cazul tău, verifică sursele oficiale sau întreabă contabilul.
       </p>
+        </div>
+        {pageToc && <GuidePageToc />}
       </div>
     </div>
   </main>
