@@ -96,8 +96,14 @@ begin
   loop
     v_id := public_tool_new_id();
     v_secret := encode(extensions.gen_random_bytes(24), 'base64');
-    insert into public_tool_drafts (id, kind, payload, delete_secret)
-    values (v_id, p_kind, p_payload, v_secret)
+    insert into public_tool_drafts (id, kind, payload, delete_secret, expires_at)
+    values (
+      v_id,
+      p_kind,
+      p_payload,
+      v_secret,
+      now() + case when p_kind in ('nir', 'cashbook') then interval '7 days' else interval '30 days' end
+    )
     on conflict (id) do nothing;
     exit when found;
     v_tries := v_tries + 1;

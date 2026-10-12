@@ -6,16 +6,28 @@ import { generatorTools } from "../src/lib/generators/tools.ts";
 import {
   PUBLIC_TOOL_DRAFT_RETENTION_DAYS,
   PUBLIC_TOOL_DRAFT_RETENTION_DAYS_PREVIOUS,
+  PUBLIC_TOOL_SENSITIVE_RETENTION_DAYS,
+  retentionDaysForKind,
 } from "../src/lib/generators/retention.ts";
+import { PUBLIC_TOOL_ID_ENTROPY_BITS, PUBLIC_TOOL_ID_LENGTH } from "../src/lib/generators/id.ts";
+import { PUBLIC_PAGE_NOTICE } from "../src/lib/generators/page.ts";
 import { parseCreateDraftRpc } from "../src/lib/generators/draft-rpc.ts";
 import { deletePublicDraft } from "../src/lib/generators/delete-draft.ts";
-import type { ToolEnv } from "../src/lib/mcp/types.ts";
+
+const GENERATOR_NAMES = [
+  "create_offer_flyer",
+  "create_shelf_labels",
+  "create_nir",
+  "create_recipe_sheet",
+  "create_cash_book",
+] as const;
 
 const FORBIDDEN = [
   /always include.*tapselo/i,
   /include a tapselo link/i,
   /include the tapselo link/i,
   /include.*link.*in (every|each) (answer|response)/i,
+  /cu poze generate/i,
 ];
 
 test("/g/ Cloudflare function sets X-Robots-Tag noindex on HTML responses", () => {
@@ -24,10 +36,26 @@ test("/g/ Cloudflare function sets X-Robots-Tag noindex on HTML responses", () =
   assert.match(src, /method === "DELETE"/);
 });
 
-test("retention: 30 days in code (shortened from earlier 90-day MCP copy)", () => {
+test("document id entropy (~59.5 bits for 10 base62 chars)", () => {
+  assert.equal(PUBLIC_TOOL_ID_LENGTH, 10);
+  assert.ok(PUBLIC_TOOL_ID_ENTROPY_BITS > 59 && PUBLIC_TOOL_ID_ENTROPY_BITS < 60);
+});
+
+test("retention per kind: 7 days NIR/cash book, 30 days others", () => {
   assert.equal(PUBLIC_TOOL_DRAFT_RETENTION_DAYS, 30);
+  assert.equal(PUBLIC_TOOL_SENSITIVE_RETENTION_DAYS, 7);
   assert.equal(PUBLIC_TOOL_DRAFT_RETENTION_DAYS_PREVIOUS, 90);
-  assert.ok(PUBLIC_TOOL_DRAFT_RETENTION_DAYS <= PUBLIC_TOOL_DRAFT_RETENTION_DAYS_PREVIOUS);
+  assert.equal(retentionDaysForKind("nir"), 7);
+  assert.equal(retentionDaysForKind("cashbook"), 7);
+  assert.equal(retentionDaysForKind("flyer"), 30);
+});
+
+test("generator tool descriptions start with the public-page notice", () => {
+  for (const name of GENERATOR_NAMES) {
+    const t = generatorTools.find((x) => x.name === name);
+    assert.ok(t, name);
+    assert.ok(t.description.startsWith(PUBLIC_PAGE_NOTICE), name);
+  }
 });
 
 test("MCP tool descriptions do not instruct the model to always include Tapselo links", () => {
@@ -63,10 +91,10 @@ test("deletePublicDraft calls public_tool_delete_draft and maps responses", asyn
   if (!bad.ok) assert.equal(bad.status, 400);
 });
 
-test("generator create_offer_flyer mentions emoji visuals, not AI photos", () => {
+test("create_offer_flyer documents emoji-only image source in the tool description", () => {
   const flyer = generatorTools.find((t) => t.name === "create_offer_flyer");
   assert.ok(flyer);
-  assert.match(flyer.description, /emoji/i);
-  assert.match(flyer.description, /not user uploads/i);
-  assert.match(flyer.description, /AI-generated pictures/i);
+  assert.match(flyer.description, /emojiFor/);
+  assert.match(flyer.description, /image_url: null/);
+  assert.match(flyer.description, /no generative model/i);
 });

@@ -183,7 +183,7 @@ function page(f: Frame): string {
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>${t}</title>
 <meta name="description" content="${d}" />
-<meta name="robots" content="noindex" />
+<meta name="robots" content="noindex, nofollow" />
 <link rel="canonical" href="${c}" />
 <meta name="theme-color" content="${THEME_COLOR[f.theme]}" />
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png" />

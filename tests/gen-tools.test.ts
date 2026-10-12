@@ -132,8 +132,13 @@ test("every answer is Romanian with diacritics", async () => {
   for (const [kind, name] of Object.entries(BY_KIND)) {
     const { env } = stubEnv({ ok: true, data: "Ab3dEf7hJk" });
     const r = await tool(name).handler(structuredClone(MOCK_DRAFTS[kind as keyof typeof BY_KIND].payload) as Record<string, unknown>, env);
-    assert.match(r.text, /Pagina se printează sau se salvează ca PDF cu butonul „Printează \/ Salvează PDF”\. Linkul expiră în 30 de zile\.$/, kind);
-    assert.match(r.text, /Această pagină este publică pentru oricine are linkul/, kind);
+    const exp =
+      kind === "nir" || kind === "cashbook"
+        ? /Linkul expiră în 7 zile\.$/
+        : /Linkul expiră în 30 de zile\.$/;
+    assert.match(r.text, /Pagina se printează sau se salvează ca PDF cu butonul „Printează \/ Salvează PDF”\./, kind);
+    assert.match(r.text, exp, kind);
+    assert.match(r.text, /~59[.,]\d+ biți de entropie/, kind);
     const summary = r.text.split("\n\nDocumentul:")[0];
     assert.doesNotMatch(summary, ASCII_RO, `${kind}: ${summary}`);
   }

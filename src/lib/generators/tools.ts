@@ -14,8 +14,9 @@ import { recipeCalc, recipeSummary } from "./recipe.ts";
 import { cashbookCalc, cashbookSummary } from "./cashbook.ts";
 import { isValidEan } from "../ean13.ts";
 import { parseCreateDraftRpc } from "./draft-rpc.ts";
-import { PUBLIC_TOOL_DRAFT_RETENTION_DAYS, retentionDaysLabel } from "./retention.ts";
-import { PUBLIC_PAGE_NOTICE } from "./page.ts";
+import { retentionDaysForKind, retentionLabelForKind } from "./retention.ts";
+import { PUBLIC_TOOL_ID_ENTROPY_BITS, PUBLIC_TOOL_ID_FORMAT } from "./id.ts";
+import { FLYER_IMAGE_SOURCE, publicGeneratorDescription } from "./tool-copy.ts";
 
 export const MSG_SERVICE = "Serviciul de documente nu este disponibil acum. Încearcă din nou peste câteva minute.";
 
@@ -54,20 +55,22 @@ export async function createDraft<K extends DraftKind>(spec: Spec<K>, args: Reco
 
   const { id, delete_secret: deleteSecret } = created;
   const url = trackedUrl(`/g/${id}`, spec.tool);
-  const retention = retentionDaysLabel(PUBLIC_TOOL_DRAFT_RETENTION_DAYS);
-  const deleteLines =
-    deleteSecret
-      ? [
-          "",
-          `Ștergere (păstrează secretul, nu îl partaja): trimite cererea HTTP DELETE la ${url} cu antetul X-Delete-Secret: ${deleteSecret}`,
-        ]
-      : [];
+  const retention = retentionLabelForKind(spec.kind);
+  const deleteUrl = deleteSecret ? `${url.split("?")[0]}?delete_secret=${encodeURIComponent(deleteSecret)}` : null;
+  const deleteLines = deleteSecret
+    ? [
+        "",
+        `Ștergere (păstrează secretul, nu îl partaja): cerere HTTP DELETE la adresa documentului cu antetul X-Delete-Secret: ${deleteSecret}`,
+        `Sau deschide linkul de ștergere (aceeași adresă + secret): ${deleteUrl}`,
+      ]
+    : [];
   const text = [
     spec.summary(payload),
     "",
     `Documentul: ${url}`,
+    `Identificator: ${id} (${PUBLIC_TOOL_ID_FORMAT})`,
     "",
-    `Pagina este HTML printabil (nu returnează un fișier imagine). ${PUBLIC_PAGE_NOTICE}`,
+    "Pagina este HTML printabil (nu returnează un fișier imagine).",
     "",
     `Pagina se printează sau se salvează ca PDF cu butonul „Printează / Salvează PDF”. Linkul expiră în ${retention}.`,
     ...deleteLines,
@@ -76,10 +79,12 @@ export async function createDraft<K extends DraftKind>(spec: Spec<K>, args: Reco
     text,
     structured: {
       id,
+      id_entropy_bits: PUBLIC_TOOL_ID_ENTROPY_BITS,
       url,
-      kind: spec.kind,
       delete_secret: deleteSecret,
-      retention_days: PUBLIC_TOOL_DRAFT_RETENTION_DAYS,
+      delete_url: deleteUrl,
+      kind: spec.kind,
+      retention_days: retentionDaysForKind(spec.kind),
       ...(spec.structured?.(payload) ?? {}),
     },
   };
@@ -238,10 +243,11 @@ export const generatorTools: ToolDef[] = [
   {
     name: "create_offer_flyer",
     title: "Flyer cu oferte",
-    description:
-      `Create a printable A4 offer flyer (flyer cu oferte, promotii, pliant) for a shop in Romania from product names and prices in lei. ` +
-      `Use when the user asks for an offer flyer, promo sheet or price list for their shop. Returns a link to a public HTML page on tapselo.com (${PUBLIC_PAGE_NOTICE.toLowerCase()}) that prints or saves as PDF; it does not return an image file. ` +
-      `Product visuals are emoji icons derived from product names, not user uploads, stock photos, or AI-generated pictures. Max ${MAX_ITEMS.flyer} products. Prices in lei with VAT. ${NO_URL}`,
+    description: publicGeneratorDescription(
+      `Creates a printable A4 offer flyer from product names and prices in lei (HTML on tapselo.com/g/{id}, not an image file). ` +
+        `${FLYER_IMAGE_SOURCE} ` +
+        `Max ${MAX_ITEMS.flyer} products. Prices in lei with VAT. ${NO_URL}`,
+    ),
     inputSchema: flyerSchema,
     annotations: ANNOTATIONS,
     handler: (args, env) =>
@@ -259,10 +265,10 @@ export const generatorTools: ToolDef[] = [
   {
     name: "create_shelf_labels",
     title: "Etichete de raft",
-    description:
-      `Create printable shelf labels (etichete de raft, etichete pret), 21 per A4 page: name, price, the unit price per kg or litre required in Romania, and an EAN-13 barcode rendered as SVG (not a product photo). ` +
-      `Use when the user asks for shelf or price labels. Returns a link to a public HTML page on tapselo.com (${PUBLIC_PAGE_NOTICE.toLowerCase()}). Max ${MAX_ITEMS.labels} products. ` +
-      `For the unit price send unit_quantity + unit_label (for example 250 + "g"). ${NO_URL}`,
+    description: publicGeneratorDescription(
+      `Creates printable shelf labels (21 per A4): name, price, unit price per kg/l as required in Romania, and EAN-13 barcodes as SVG from src/lib/generators/labels.ts + src/lib/ean13.ts (no product photos). ` +
+        `Max ${MAX_ITEMS.labels} products. For unit price send unit_quantity + unit_label (e.g. 250 + "g"). ${NO_URL}`,
+    ),
     inputSchema: labelsSchema,
     annotations: ANNOTATIONS,
     handler: (args, env) =>
@@ -284,7 +290,10 @@ export const generatorTools: ToolDef[] = [
   {
     name: "create_nir",
     title: "NIR (nota de intrare-receptie)",
-    description: `Create a printable goods received note (NIR, nota de intrare-receptie) from a supplier invoice: cost values, VAT, markup, sale value, totals and signatures. Use when the user asks for a NIR or to record received goods from an invoice. Returns a link to a public HTML page on tapselo.com (${PUBLIC_PAGE_NOTICE.toLowerCase()}). Max ${MAX_ITEMS.nir} lines. unit_cost is WITHOUT VAT; sale_price is WITH VAT. If the user gives a markup %, send markup_percent. ${NO_URL}`,
+    description: publicGeneratorDescription(
+      `Creates a printable NIR from supplier invoice lines (cost, VAT, markup, totals). Public link expires in 7 days (sensitive purchase data). ` +
+        `Max ${MAX_ITEMS.nir} lines. unit_cost WITHOUT VAT; sale_price WITH VAT. Optional markup_percent. ${NO_URL}`,
+    ),
     inputSchema: nirSchema,
     annotations: ANNOTATIONS,
     handler: (args, env) =>
@@ -312,7 +321,10 @@ export const generatorTools: ToolDef[] = [
   {
     name: "create_recipe_sheet",
     title: "Fisa tehnica (reteta)",
-    description: `Create a printable recipe sheet (fisa tehnica, reteta): ingredients, total cost and cost per portion, allergens (the 14 EU allergens, also detected from ingredient names; the operator confirms them). Use when the user asks for a recipe sheet, recipe costing or allergen list for a product they make. Returns a link to a public HTML page on tapselo.com (${PUBLIC_PAGE_NOTICE.toLowerCase()}). Max ${MAX_ITEMS.recipe} ingredients. ${NO_URL}`,
+    description: publicGeneratorDescription(
+      `Creates a printable recipe sheet: ingredients, cost per portion, allergens (14 EU allergens; operator confirms). ` +
+        `Max ${MAX_ITEMS.recipe} ingredients. ${NO_URL}`,
+    ),
     inputSchema: recipeSchema,
     annotations: ANNOTATIONS,
     handler: (args, env) =>
@@ -333,7 +345,10 @@ export const generatorTools: ToolDef[] = [
   {
     name: "create_cash_book",
     title: "Registru de casa",
-    description: `Create a printable daily cash book (registru de casa) for a Romanian company: opening balance, receipts and payments with the balance after each, closing balance, and a warning above the 50,000 lei cash limit. Use when the user asks for a cash book or registru de casa for a day. Returns a link to a public HTML page on tapselo.com (${PUBLIC_PAGE_NOTICE.toLowerCase()}). Max ${MAX_ITEMS.cashbook} entries; each has receipt or payment. ${NO_URL}`,
+    description: publicGeneratorDescription(
+      `Creates a printable daily cash book (opening balance, receipts, payments, closing balance, 50,000 lei warning). ` +
+        `Public link expires in 7 days (sensitive cash positions). Max ${MAX_ITEMS.cashbook} entries. ${NO_URL}`,
+    ),
     inputSchema: cashbookSchema,
     annotations: ANNOTATIONS,
     handler: (args, env) =>

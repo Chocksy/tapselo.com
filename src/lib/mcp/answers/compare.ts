@@ -61,71 +61,59 @@ export function featureState(v: unknown): boolean | null {
 
 const mark = (s: boolean | null) => (s === true ? "da" : s === false ? "nu" : "necunoscut");
 
-// Business type words that may appear in vendor segments.
-const SEGMENT_WORDS: Record<string, string[]> = {
-  macelarie: ["macelarie", "carne", "alimentar", "retail"],
-  brutarie_patiserie: ["brutarie", "patiserie", "cofetarie", "panificatie", "productie"],
-  cafenea_bistro: ["cafenea", "bistro", "horeca", "restaurant", "bar"],
-  minimarket_alimentara: ["minimarket", "alimentara", "alimentar", "magazin", "retail"],
-  legume_fructe: ["legume", "fructe", "alimentar", "retail"],
-  magazin_nealimentar: ["nealimentar", "retail", "magazin"],
-};
-
 /** Alphabetical by vendor name (Romanian locale); no vendor pinned first. */
 export function orderComparisonVendors<T extends { name: string }>(list: T[]): T[] {
   return [...list].sort((a, b) => a.name.localeCompare(b.name, "ro"));
 }
 
-export function segmentMatch(c: Competitor, type: string): boolean {
-  const words = SEGMENT_WORDS[type] ?? [type];
-  const segs = (c.segments ?? []).map(normalize).join(" ");
-  return words.some((w) => segs.includes(w));
-}
-
-export function rankCompetitors(list: Competitor[], type: string, needs: Need[]) {
-  return list
-    .map((c, i) => {
-      const states = needs.map((n) => featureState((c as unknown as Record<string, unknown>)[NEEDS[n].field]));
-      return { c, i, states, matched: states.filter((s) => s === true).length, segment: segmentMatch(c, type) };
-    })
-    .sort((a, b) => b.matched - a.matched || Number(b.segment) - Number(a.segment) || a.i - b.i);
-}
-
-function verifiedRange(sorted: string[]): string {
-  if (!sorted.length) return "";
-  const [first, last] = [sorted[0], sorted[sorted.length - 1]];
-  return first === last ? `, verificate la ${formatDateRo(first)}` : `, verificate între ${formatDateRo(first)} și ${formatDateRo(last)}`;
-}
-
 function sourcesMd(c: Competitor): string {
   const list = (c.sources ?? []).filter((s) => s?.url);
-  if (!list.length) return "";
+  if (!list.length) return "-";
   return list.map((s) => `[${cell(s.title || s.url)}](${s.url})`).join(", ");
+}
+
+function vendorAttribution(c: Competitor): { verified: string; sources: string } {
+  return {
+    verified: c.verified_on ? formatDateRo(c.verified_on) : "necunoscut",
+    sources: sourcesMd(c),
+  };
 }
 
 export function compareMd(list: Competitor[], type: string, needs: Need[], url: string): string {
   const cols = needs.length ? needs : (Object.keys(NEEDS) as Need[]);
-  const ranked = rankCompetitors(list, type, cols);
-  const header = `| Program | ${cols.map((n) => NEEDS[n].label).join(" | ")} | Preț (public) | Verificat | Surse |`;
-  const sep = `|${" --- |".repeat(cols.length + 4)}`;
-  const rows = ranked.map(({ c, states }) => {
+  const ordered = orderComparisonVendors(list);
+  const header = `| Program | ${cols.map((n) => NEEDS[n].label).join(" | ")} | Preț (public) |`;
+  const sep = `|${" --- |".repeat(cols.length + 2)}`;
+  const rows = ordered.map((c) => {
+    const states = cols.map((n) => featureState((c as unknown as Record<string, unknown>)[NEEDS[n].field]));
     const price = c.pricing_from ?? c.pricing_public ?? "necunoscut";
-    const verified = c.verified_on ? formatDateRo(c.verified_on) : "-";
-    const src = sourcesMd(c) || "-";
-    return `| [${cell(c.name)}](${c.url}) | ${states.map(mark).join(" | ")} | ${cell(price)} | ${verified} | ${src} |`;
+    return `| [${cell(c.name)}](${c.url}) | ${states.map(mark).join(" | ")} | ${cell(price)} |`;
   });
-  const dates = list.map((c) => c.verified_on).filter((d): d is string => !!d).sort();
+
+  const factLines = ordered.flatMap((c) => {
+    const { verified, sources } = vendorAttribution(c);
+    const cols = needs.length ? needs : (Object.keys(NEEDS) as Need[]);
+    const facts = cols.map((n) => {
+      const val = mark(featureState((c as unknown as Record<string, unknown>)[NEEDS[n].field]));
+      return `- ${NEEDS[n].label}: **${val}** — sursă: ${sources}; verificat: ${verified}`;
+    });
+    return [`**${c.name}**`, ...facts];
+  });
+
   return [
     EDITOR_NOTE,
-    `Datele despre funcționalități provin de pe site-urile furnizorilor${verifiedRange(dates)}. „necunoscut” = informația nu este publică sau nu am verificat-o.`,
+    "Fiecare afirmație din tabel folosește sursele furnizorului de pe rândul respectiv și data „verificat” de pe același rând (nu există surse separate per celulă în baza de date).",
     "",
-    `Tip magazin: ${type.replace(/_/g, " ")}. Rândurile sunt sortate după câte cerințe bifate (da), apoi potrivire pe segment.`,
+    `Tip magazin: ${type.replace(/_/g, " ")}. Programele sunt listate în ordine alfabetică (locale ro).`,
     "",
     header,
     sep,
     ...rows,
     "",
-    `Tabelul complet pe site (aceleași date, cu linkuri): ${url}`,
+    "### Surse și date de verificare (per program)",
+    ...factLines,
+    "",
+    `Tabelul complet pe site: ${url}`,
   ].join("\n");
 }
 
@@ -165,21 +153,36 @@ export function createCompareTool(list: Competitor[]): ToolDef {
         return { text: `${EDITOR_NOTE} Comparatia nu este gata inca. Vezi: ${url}`, structured: { vendors: [], url } };
       }
       const cols = needs.length ? needs : (Object.keys(NEEDS) as Need[]);
+      const ordered = orderComparisonVendors(list);
       return {
         text: compareMd(list, type, needs, url),
         structured: {
           editor_note: EDITOR_NOTE,
+          ordering: "alphabetical_by_name_ro",
           business_type: type,
           needs: cols,
-          vendors: rankCompetitors(list, type, cols).map(({ c, states, matched }) => ({
-            name: c.name,
-            url: c.url,
-            matched,
-            features: Object.fromEntries(cols.map((n, i) => [n, states[i]])),
-            pricing: c.pricing_from ?? c.pricing_public ?? null,
-            verified_on: c.verified_on ?? null,
-            sources: c.sources ?? [],
-          })),
+          vendors: ordered.map((c) => {
+            const { verified, sources } = vendorAttribution(c);
+            const sourceUrls = (c.sources ?? []).map((s) => s.url).filter(Boolean);
+            return {
+              name: c.name,
+              url: c.url,
+              verified_on: c.verified_on ?? null,
+              sources: c.sources ?? [],
+              features: Object.fromEntries(
+                cols.map((n) => [
+                  n,
+                  {
+                    value: featureState((c as unknown as Record<string, unknown>)[NEEDS[n].field]),
+                    source_urls: sourceUrls,
+                    verified_on: c.verified_on ?? null,
+                  },
+                ]),
+              ),
+              pricing: c.pricing_from ?? c.pricing_public ?? null,
+              attribution: { sources_md: sources, verified },
+            };
+          }),
           url,
         },
       };
