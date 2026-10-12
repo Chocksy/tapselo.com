@@ -28,10 +28,13 @@ export const guideHubLinks: SiteLink[] = [
   { href: internalPath("/comparatie"), label: "Comparație POS" },
 ];
 
-export const ruleGuideLinks: SiteLink[] = rules.map((r) => ({
-  href: internalPath(r.page),
-  label: r.title,
-}));
+export const ruleGuideLinks: SiteLink[] = [
+  ...rules.map((r) => ({
+    href: internalPath(r.page),
+    label: r.title,
+  })),
+  { href: internalPath("/ghid/registru-unic-de-control"), label: "Registrul unic de control (RUC)" },
+];
 
 export const shopGuideLinks: SiteLink[] = checklists.map((c) => ({
   href: internalPath(c.page),
@@ -55,6 +58,7 @@ export function allGhidUneltePaths(): string[] {
   paths.add(internalPath(A4200_CHECKER_PATH));
   paths.add(internalPath("/ghid/erori-datecs"));
   paths.add(internalPath("/ghid/cantar-dibal"));
+  paths.add(internalPath("/ghid/registru-unic-de-control"));
   paths.add(internalPath("/ghid/articole"));
   return [...paths].sort();
 }
