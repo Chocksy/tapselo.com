@@ -21,6 +21,7 @@ export const KIND_TITLES: Record<string, string> = {
   recipe: "Fișă tehnică",
   cashbook: "Registrul de casă",
   warehouse_card: "Fișă de magazie",
+  cash_order: "Dispoziție de plată/încasare",
 };
 
 // ---------- number formatting (Romanian: 1.234,56) ----------
@@ -129,12 +130,18 @@ export interface ShellOptions {
   landscape?: boolean;
   /** Page margin for @page, default 10mm. */
   margin?: string;
+  /** Print page size (default A4). */
+  pageSize?: "A4" | "A5";
+  /** Extra class on &lt;main class="sheet"&gt; (e.g. a5). */
+  sheetClass?: string;
   /** Built in the browser by /unelte: no abuse line, web-tool UTM tags. */
   local?: boolean;
 }
 
 export function renderShell(o: ShellOptions): string {
-  const pageRule = `@page{size:A4${o.landscape ? " landscape" : ""};margin:${o.margin ?? "10mm"}}`;
+  const size = o.pageSize ?? "A4";
+  const pageRule = `@page{size:${size}${o.landscape ? " landscape" : ""};margin:${o.margin ?? "10mm"}}`;
+  const sheetExtra = o.sheetClass ? ` ${o.sheetClass}` : "";
   return `<!doctype html>
 <html lang="ro">
 <head>
@@ -148,7 +155,7 @@ export function renderShell(o: ShellOptions): string {
 </head>
 <body data-kind="${escapeHtml(o.kind)}">
 ${bannerHtml(o.kind, o.local)}
-<main class="sheet${o.landscape ? " landscape" : ""}">
+<main class="sheet${o.landscape ? " landscape" : ""}${sheetExtra}">
 ${o.body}
 ${footerHtml(o.kind, o.expiresAt, o.local)}
 </main>

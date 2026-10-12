@@ -131,6 +131,28 @@ export interface WarehouseCardPayload {
   rows: WarehouseCardEntry[];
 }
 
+export type CashOrderDirection = "plata" | "incasare";
+
+export interface CashOrderPayload {
+  company: string;
+  company_tax_id?: string;
+  doc_number: string;
+  /** YYYY-MM-DD */
+  date: string;
+  direction: CashOrderDirection;
+  person_name: string;
+  person_role?: string;
+  amount: number;
+  /** Optional override; otherwise generated from amount. */
+  amount_words?: string;
+  purpose: string;
+  beneficiary_id_type?: string;
+  beneficiary_id_series?: string;
+  beneficiary_id_number?: string;
+  /** YYYY-MM-DD */
+  beneficiary_date?: string;
+}
+
 export interface PayloadByKind {
   flyer: FlyerPayload;
   labels: LabelsPayload;
@@ -138,6 +160,7 @@ export interface PayloadByKind {
   recipe: RecipePayload;
   cashbook: CashbookPayload;
   warehouse_card: WarehouseCardPayload;
+  cash_order: CashOrderPayload;
 }
 
 export type ImageStatus = "pending" | "ready" | "failed" | "skipped";

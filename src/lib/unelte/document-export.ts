@@ -1,7 +1,14 @@
 import { renderCashbook } from "../generators/cashbook.ts";
+import { renderCashOrder } from "../generators/cash-order.ts";
 import { renderNir } from "../generators/nir.ts";
 import { renderWarehouseCard } from "../generators/warehouse-card.ts";
-import type { CashbookPayload, DraftRecord, NirPayload, WarehouseCardPayload } from "../generators/types.ts";
+import type {
+  CashbookPayload,
+  CashOrderPayload,
+  DraftRecord,
+  NirPayload,
+  WarehouseCardPayload,
+} from "../generators/types.ts";
 import { cashbookXlsx, downloadBlob, XLSX_MIME } from "./spreadsheet.ts";
 
 const LOCAL_DRAFT: DraftRecord = {
@@ -57,4 +64,12 @@ export function downloadWarehouseCardPdfViaPrint(payload: WarehouseCardPayload):
 
 export function downloadWarehouseCardBlankPdfViaPrint(payload: WarehouseCardPayload): boolean {
   return openPrintHtml(warehouseCardHtml(payload, true));
+}
+
+export function cashOrderHtml(payload: CashOrderPayload, pageSize: "A4" | "A5" = "A4"): string {
+  return renderCashOrder(payload, { ...LOCAL_DRAFT, kind: "cash_order" }, { local: true, pageSize });
+}
+
+export function downloadCashOrderPdfViaPrint(payload: CashOrderPayload, pageSize: "A4" | "A5" = "A4"): boolean {
+  return openPrintHtml(cashOrderHtml(payload, pageSize));
 }

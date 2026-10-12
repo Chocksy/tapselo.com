@@ -18,7 +18,9 @@ export type AnalyticsTool =
   | "calculator_reducere"
   | "verificare_cod_de_bare"
   | "verificare_cui"
-  | "afise_obligatorii";
+  | "afise_obligatorii"
+  | "fisa_de_magazie"
+  | "dispozitie_de_plata";
 
 export type ToolAction =
   | "check"

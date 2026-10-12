@@ -1,5 +1,19 @@
 ---
-import { ArrowRight, BadgePercent, Barcode, Building2, Calculator, ClipboardList, FileCheck, NotebookPen, Package, Percent, ScanBarcode, ScrollText } from "@lucide/astro";
+import {
+  ArrowRight,
+  BadgePercent,
+  Banknote,
+  Barcode,
+  Building2,
+  Calculator,
+  ClipboardList,
+  FileCheck,
+  NotebookPen,
+  Package,
+  Percent,
+  ScanBarcode,
+  ScrollText,
+} from "@lucide/astro";
 import GuideShell from "../components/GuideShell.astro";
 import { A4200_CHECKER_PATH } from "../lib/articles/schema.ts";
 import { barcodeApiBase } from "../lib/unelte/barcode.ts";
@@ -46,6 +60,14 @@ const tools = [
     action: "Deschide registrul",
     description:
       "Generator zilnic: sold din ziua precedentă, încasări, plăți, sold final. Export PDF și Excel, cu avertizare la plafonul de 50.000 lei.",
+  },
+  {
+    href: internalPath("/unelte/dispozitie-de-plata"),
+    title: "Dispoziție de plată / încasare",
+    icon: Banknote,
+    action: "Deschide generatorul",
+    description:
+      "Model 14-4-4: plată sau încasare către casierie, sumă în litere automat, verso beneficiar la plăți. PDF A4/A5 în browser.",
   },
   {
     href: internalPath("/unelte/generator-nir"),

@@ -1,0 +1,117 @@
+---
+import ToolShell from "../../components/ToolShell.astro";
+import DispozitieDePlataTool from "../../components/unelte/DispozitieDePlataTool.astro";
+import { internalPath } from "../../lib/internal-url.ts";
+import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
+
+const path = "/unelte/dispozitie-de-plata/";
+const heading = "Dispoziție de plată / încasare";
+
+const faq = [
+  {
+    q: "Ce este dispoziția de plată către casierie?",
+    a: "Este documentul prin care dispui casieriei să plătească în numerar o sumă (avans, cheltuieli, alte plăți fără alt act de dispoziție). În nomenclatorul OMFP nr. 2.634/2015 poartă codul 14-4-4; pe formular se înscrie „PLATĂ”.",
+  },
+  {
+    q: "Când folosesc dispoziția de încasare?",
+    a: "Când trebuie încasată în numerar o sumă care nu vine din vânzări (ex. restituire avans, încasări prevăzute de lege fără chitanță separată). Pe același model 14-4-4 se înscrie „ÎNCASARE”.",
+  },
+  {
+    q: "Pot descărca dispoziție de plată PDF gratuit?",
+    a: "Da — completezi formularul în browser și salvezi PDF din fereastra de printare (A4 sau A5), fără cont Tapselo.",
+  },
+  {
+    q: "Datele mele sunt trimise pe internet?",
+    a: "Nu. Documentul se generează local în browser. Nu trimitem conținutul formularului în analytics — doar că ai folosit unealta (print sau PDF).",
+  },
+  {
+    q: "Care este legătura cu registrul de casă?",
+    a: "Dispoziția justifică o plată sau o încasare care se înregistrează apoi în registrul de casă (cod 14-4-7A). Pentru zilnic, poți folosi generatorul nostru de registru de casă.",
+  },
+];
+
+const jsonLd = toolJsonLd({
+  path,
+  heading,
+  appName: "Generator dispoziție de plată / încasare Tapselo",
+  description:
+    "Generator gratuit dispoziție de plată și încasare 14-4-4: sumă în cifre și litere, PDF și print în browser.",
+  faq,
+});
+---
+
+<ToolShell
+  title="Dispoziție de plată — model 14-4-4 PDF gratuit | Tapselo"
+  description="Generator dispoziție de plată și încasare către casierie, cod 14-4-4 OMFP 2634/2015: completezi suma, scopul și semnăturile; PDF A4/A5 și print în browser."
+  heading={heading}
+  path={path}
+  lead="Ai nevoie de o dispoziție de plată sau de încasare pentru casierie? Completezi câmpurile din modelul oficial 14-4-4 — suma în litere se scrie singură — apoi printezi sau salvezi PDF, local în browser."
+  campaign="dispozitie-de-plata"
+  ctaTitle="Mai puțină hârtie la casă"
+  ctaBody="În Tapselo, încasările din vânzări și raportul Z se leagă de registrul de casă — ca să nu rescrii aceleași sume în Excel."
+  related={[
+    { href: "/unelte/registru-de-casa/", label: "Registru de casă" },
+    { href: "/ghid/registrul-de-casa", label: "Ghid registrul de casă" },
+  ]}
+  jsonLd={jsonLd}
+  faq={faq}
+>
+  <DispozitieDePlataTool />
+
+  <article class="prose-tapselo space-y-8 text-text-secondary leading-relaxed">
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Ce este și când o folosești</h2>
+      <p>
+        <strong class="text-primary">Dispoziția de plată/încasare către casierie</strong> (cod <strong class="text-primary">14-4-4</strong>,
+        OMFP nr. 2.634/2015) este actul prin care autorizezi casieria să <strong class="text-primary">plătească</strong> sau să
+        <strong class="text-primary">încaseze</strong> numerar. Pe formular se înscrie explicit „PLATĂ” sau „ÎNCASARE”, după caz
+        (sursă: <a href="https://legislatie.just.ro/Public/DetaliiDocument/267712" class="font-semibold text-accent hover:underline">legislatie.just.ro — Anexa nr. 3, model 14-4-4</a>).
+      </p>
+      <p>
+        Normele specifice arată că documentul servește, între altele, ca dispoziție pentru achitarea în numerar a avansurilor sau a plăților
+        fără alt act de dispoziție, ca dispoziție de încasare pentru sume care nu sunt venituri din exploatare, și ca document justificativ
+        în registrul de casă
+        (<a href="https://legislatie.just.ro/Public/DetaliiDocument/267712" class="font-semibold text-accent hover:underline">aceeași sursă — grupa IV, cod 14-4-4</a>).
+      </p>
+      <p>
+        În magazin, o folosești când casierul trebuie să scoată sau să primească bani la casierie pe baza unei aprobări scrise — nu pentru
+        vânzarea zilnică de la casa de marcat (acolo intervin bonul fiscal și raportul Z).
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Cum se completează modelul 14-4-4</h2>
+      <p>Modelul din Anexa nr. 3 la OMFP nr. 2.634/2015 include, în esență:</p>
+      <ul class="list-disc space-y-2 pl-5">
+        <li><strong class="text-primary">Entitatea</strong> (unitatea);</li>
+        <li><strong class="text-primary">Numărul și data</strong> întocmirii;</li>
+        <li><strong class="text-primary">Numele și prenumele</strong> și <strong class="text-primary">funcția (calitatea)</strong> persoanei care încasează sau restituie suma;</li>
+        <li><strong class="text-primary">Suma în cifre și în litere</strong>;</li>
+        <li><strong class="text-primary">Scopul</strong> încasării sau plății;</li>
+        <li><strong class="text-primary">Semnăturile</strong> conducătorului entității și compartimentului financiar-contabil;</li>
+        <li>la <strong class="text-primary">casier</strong>: suma plătită/încasată, data și semnătura;</li>
+        <li>pentru <strong class="text-primary">plăți</strong>, pe verso: date suplimentare privind beneficiarul (act de identitate, suma primită, data, semnătura) — conform notei de pe model.</li>
+      </ul>
+      <p>
+        Generatorul de mai sus urmează această structură. Verifică întotdeauna cu contabilul tău dacă documentul este potrivit pentru situația concretă.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Legătura cu registrul de casă</h2>
+      <p>
+        După ce casierul efectuează operațiunea, mișcarea apare în <a href={internalPath("/unelte/registru-de-casa/")} class="font-semibold text-accent hover:underline">registrul de casă</a>
+        (cod 14-4-7A), cu numărul dispoziției la explicații. Poți genera și registrul zilnic cu unealta noastră gratuită.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Confidențialitate</h2>
+      <p class="text-sm">
+        Numele, sumele și scopul operațiunii rămân pe dispozitivul tău. Opțional, salvăm local în browser doar denumirea unității și CUI-ul,
+        ca să nu le reintroduci la fiecare document. Analytics-ul Tapselo înregistrează doar că ai folosit unealta (print sau generate_pdf),
+        fără câmpuri din formular.
+      </p>
+    </section>
+  </article>
+</ToolShell>

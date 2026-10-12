@@ -1,0 +1,292 @@
+---
+---
+
+<section class="ut-card" aria-labelledby="cash-order-title">
+  <h2 id="cash-order-title" class="font-display text-2xl italic text-primary">Generator dispoziție de plată / încasare</h2>
+  <p class="mt-2 text-sm text-text-secondary">
+    Completezi datele pe modelul <strong class="text-primary">14-4-4</strong> (OMFP nr. 2.634/2015). Suma în litere se calculează automat. Print sau PDF din browser — nimic nu pleacă pe server.
+  </p>
+
+  <div id="cash-order-tool" class="mt-6 space-y-4">
+    <fieldset class="ut-toggle-group">
+      <legend class="ut-label">Tip document</legend>
+      <div class="flex flex-wrap gap-3">
+        <label class="ut-radio">
+          <input type="radio" name="co-direction" value="plata" checked />
+          Dispoziție de plată
+        </label>
+        <label class="ut-radio">
+          <input type="radio" name="co-direction" value="incasare" />
+          Dispoziție de încasare
+        </label>
+      </div>
+    </fieldset>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="co-company">Unitatea (entitatea)</label>
+        <input class="ut-input" id="co-company" type="text" maxlength="120" autocomplete="organization" />
+      </div>
+      <div>
+        <label class="ut-label" for="co-cui">CUI (opțional)</label>
+        <input class="ut-input" id="co-cui" type="text" maxlength="20" placeholder="RO12345678" autocomplete="off" />
+      </div>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="co-number">Număr document</label>
+        <input class="ut-input" id="co-number" type="text" maxlength="30" placeholder="1" />
+      </div>
+      <div>
+        <label class="ut-label" for="co-date">Data</label>
+        <input class="ut-input" id="co-date" type="date" />
+      </div>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="co-name">Numele și prenumele</label>
+        <input class="ut-input" id="co-name" type="text" maxlength="120" autocomplete="name" />
+      </div>
+      <div>
+        <label class="ut-label" for="co-role">Funcția (calitatea)</label>
+        <input class="ut-input" id="co-role" type="text" maxlength="80" placeholder="Administrator" />
+      </div>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="co-amount">Suma (lei, în cifre)</label>
+        <input class="ut-input" id="co-amount" type="text" inputmode="decimal" placeholder="0" />
+      </div>
+      <div>
+        <label class="ut-label" for="co-words">Suma (în litere)</label>
+        <input class="ut-input co-words" id="co-words" type="text" readonly aria-live="polite" />
+      </div>
+    </div>
+    <div>
+      <label class="ut-label" for="co-purpose">Scopul încasării / plății</label>
+      <textarea class="ut-input min-h-[4.5rem]" id="co-purpose" maxlength="400" rows="2"></textarea>
+    </div>
+
+    <div id="co-beneficiary" class="space-y-4 rounded-lg border border-border-light bg-surface-muted/40 p-4">
+      <p class="text-sm font-semibold text-primary">Date suplimentare beneficiar (doar pentru plată)</p>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label class="ut-label" for="co-id-type">Act de identitate</label>
+          <input class="ut-input" id="co-id-type" type="text" maxlength="40" placeholder="CI" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="ut-label" for="co-id-series">Seria</label>
+            <input class="ut-input" id="co-id-series" type="text" maxlength="10" />
+          </div>
+          <div>
+            <label class="ut-label" for="co-id-number">Nr.</label>
+            <input class="ut-input" id="co-id-number" type="text" maxlength="20" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <fieldset class="ut-toggle-group">
+      <legend class="ut-label">Format print</legend>
+      <div class="flex flex-wrap gap-3">
+        <label class="ut-radio">
+          <input type="radio" name="co-page" value="A4" checked />
+          A4
+        </label>
+        <label class="ut-radio">
+          <input type="radio" name="co-page" value="A5" />
+          A5
+        </label>
+      </div>
+    </fieldset>
+
+    <p class="text-sm text-text-secondary">
+      Confidențialitate: valorile din formular rămân în browser. În analytics înregistrăm doar acțiunea (print / PDF), fără sume sau nume.
+    </p>
+
+    <p class="ut-err hidden" id="co-err" role="alert"></p>
+
+    <div class="flex flex-wrap gap-3">
+      <button type="button" class="ut-btn ut-btn-primary" id="co-pdf">Salvează PDF</button>
+      <button type="button" class="ut-btn ut-btn-secondary" id="co-print">Printează</button>
+    </div>
+  </div>
+</section>
+
+<script>
+  import type { CashOrderDirection, CashOrderPayload } from "../../lib/generators/types.ts";
+  import { amountInRomanianWords } from "../../lib/unelte/romanian-amount-words.ts";
+  import { parseRoNumber } from "../../lib/unelte/parse.ts";
+  import { localIsoDate } from "../../lib/unelte/dates.ts";
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
+  import { downloadCashOrderPdfViaPrint } from "../../lib/unelte/document-export.ts";
+
+  const STORAGE_KEY = "tapselo_cash_order_unit";
+  const dateInput = document.getElementById("co-date") as HTMLInputElement;
+  const wordsEl = document.getElementById("co-words") as HTMLInputElement;
+  const errEl = document.getElementById("co-err") as HTMLElement;
+  const beneficiary = document.getElementById("co-beneficiary") as HTMLElement;
+  if (!dateInput.value) dateInput.value = localIsoDate();
+
+  function loadUnit() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw) as { company?: string; cui?: string };
+      if (data.company) (document.getElementById("co-company") as HTMLInputElement).value = data.company;
+      if (data.cui) (document.getElementById("co-cui") as HTMLInputElement).value = data.cui;
+    } catch {
+      /* ignore */
+    }
+  }
+
+  function saveUnit() {
+    const company = (document.getElementById("co-company") as HTMLInputElement).value.trim();
+    const cui = (document.getElementById("co-cui") as HTMLInputElement).value.trim();
+    if (!company && !cui) return;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ company, cui }));
+    } catch {
+      /* ignore */
+    }
+  }
+
+  loadUnit();
+
+  function direction(): CashOrderDirection {
+    const v = (document.querySelector('input[name="co-direction"]:checked') as HTMLInputElement)?.value;
+    return v === "incasare" ? "incasare" : "plata";
+  }
+
+  function pageSize(): "A4" | "A5" {
+    const v = (document.querySelector('input[name="co-page"]:checked') as HTMLInputElement)?.value;
+    return v === "A5" ? "A5" : "A4";
+  }
+
+  function syncBeneficiaryVisibility() {
+    const isPlata = direction() === "plata";
+    beneficiary.classList.toggle("hidden", !isPlata);
+  }
+
+  function updateWords() {
+    const parsed = parseRoNumber((document.getElementById("co-amount") as HTMLInputElement).value);
+    if (parsed.kind === "ok" && parsed.value >= 0) {
+      try {
+        wordsEl.value = amountInRomanianWords(parsed.value);
+      } catch {
+        wordsEl.value = "";
+      }
+    } else {
+      wordsEl.value = "";
+    }
+  }
+
+  document.querySelectorAll('input[name="co-direction"]').forEach((el) => {
+    el.addEventListener("change", syncBeneficiaryVisibility);
+  });
+  syncBeneficiaryVisibility();
+
+  document.getElementById("cash-order-tool")?.addEventListener("input", () => {
+    updateWords();
+    saveUnit();
+  });
+  updateWords();
+
+  function showError(msg: string) {
+    errEl.textContent = msg;
+    errEl.classList.remove("hidden");
+  }
+
+  function collect(): CashOrderPayload | null {
+    const company = (document.getElementById("co-company") as HTMLInputElement).value.trim();
+    const doc_number = (document.getElementById("co-number") as HTMLInputElement).value.trim();
+    const date = dateInput.value.trim();
+    const person_name = (document.getElementById("co-name") as HTMLInputElement).value.trim();
+    const person_role = (document.getElementById("co-role") as HTMLInputElement).value.trim();
+    const purpose = (document.getElementById("co-purpose") as HTMLInputElement).value.trim();
+    const amountParsed = parseRoNumber((document.getElementById("co-amount") as HTMLInputElement).value);
+
+    if (!company) {
+      showError("Completează unitatea (entitatea).");
+      return null;
+    }
+    if (!doc_number) {
+      showError("Completează numărul documentului.");
+      return null;
+    }
+    if (!date) {
+      showError("Completează data.");
+      return null;
+    }
+    if (!person_name) {
+      showError("Completează numele și prenumele.");
+      return null;
+    }
+    if (amountParsed.kind !== "ok" || amountParsed.value <= 0) {
+      showError("Suma trebuie să fie un număr pozitiv (ex. 1.234,50).");
+      return null;
+    }
+    if (!purpose) {
+      showError("Completează scopul încasării sau plății.");
+      return null;
+    }
+
+    errEl.classList.add("hidden");
+    saveUnit();
+
+    const payload: CashOrderPayload = {
+      company,
+      doc_number,
+      date,
+      direction: direction(),
+      person_name,
+      person_role: person_role || undefined,
+      amount: amountParsed.value,
+      amount_words: wordsEl.value.trim() || undefined,
+      purpose,
+    };
+    const cui = (document.getElementById("co-cui") as HTMLInputElement).value.trim();
+    if (cui) payload.company_tax_id = cui;
+
+    if (payload.direction === "plata") {
+      payload.beneficiary_id_type = (document.getElementById("co-id-type") as HTMLInputElement).value.trim() || undefined;
+      payload.beneficiary_id_series = (document.getElementById("co-id-series") as HTMLInputElement).value.trim() || undefined;
+      payload.beneficiary_id_number = (document.getElementById("co-id-number") as HTMLInputElement).value.trim() || undefined;
+    }
+
+    return payload;
+  }
+
+  function openDoc(action: "print" | "generate_pdf") {
+    const p = collect();
+    if (!p) return;
+    if (!downloadCashOrderPdfViaPrint(p, pageSize())) {
+      showError("Permite ferestrele pop-up pentru PDF sau print.");
+      return;
+    }
+    trackToolUsed("dispozitie_de_plata", action, { page: pageSize(), direction: p.direction });
+  }
+
+  document.getElementById("co-pdf")?.addEventListener("click", () => openDoc("generate_pdf"));
+  document.getElementById("co-print")?.addEventListener("click", () => openDoc("print"));
+</script>
+
+<style>
+  .co-words {
+    background: var(--color-surface-muted, #f8fafc);
+  }
+  .ut-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+  }
+  .ut-toggle-group {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+</style>
