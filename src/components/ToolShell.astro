@@ -47,17 +47,19 @@ const breadcrumbs = breadcrumbLinks(toolBreadcrumbs(heading, path));
 <Layout title={title} description={description} jsonLd={jsonLd}>
   <Navbar />
 
-  <header class="bg-primary pt-28 pb-14 md:pt-32">
-    <div class="site-container w-full">
-      <Breadcrumbs items={breadcrumbs} />
-      <h1 class="mt-3 font-display text-4xl italic text-white sm:text-5xl">{heading}</h1>
-      {lead && <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">{lead}</p>}
+  <header class="site-hero bg-primary">
+    <div class="site-container">
+      <div class="site-reading">
+        <Breadcrumbs items={breadcrumbs} />
+        <h1 class="mt-3 font-display text-4xl italic text-white sm:text-5xl">{heading}</h1>
+        {lead && <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">{lead}</p>}
+      </div>
     </div>
   </header>
 
   <main class="bg-surface-white py-14">
     <div class="site-container">
-      <div class="w-full max-w-4xl space-y-12">
+      <div class="site-reading space-y-12">
       <slot />
 
       {related.length > 0 && (
