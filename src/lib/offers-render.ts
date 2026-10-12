@@ -28,7 +28,7 @@ export interface OfferPromo {
   prior_lowest_cents: number | null;
   prior_days: number | null;
   promo_to: string | null;
-  /** Public Storage URL of the AI picture, or null (then the emoji shows). */
+  /** Public Storage URL when the store uploaded a product photo, or null (then the emoji shows). */
   image_url?: string | null;
   /** Optional text before the struck price, e.g. "Pret anterior" (generated flyers). */
   old_label?: string | null;
@@ -38,7 +38,7 @@ export interface OfferAnnouncement {
   title: string | null;
   body: string | null;
   ends_on: string | null;
-  /** Public Storage URL of the AI picture, or null (then the megaphone shows). */
+  /** Public Storage URL when the store uploaded an announcement image, or null (then the megaphone shows). */
   image_url?: string | null;
 }
 

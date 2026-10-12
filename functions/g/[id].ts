@@ -18,6 +18,7 @@ import { MOCK_DRAFTS } from "../../src/lib/generators/mock.ts";
 import { isDraftKind } from "../../src/lib/generators/validate.ts";
 import type { DraftRecord } from "../../src/lib/generators/types.ts";
 import { sendEvents } from "../../src/lib/mcp/analytics.ts";
+import { deletePublicDraft } from "../../src/lib/generators/delete-draft.ts";
 
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]"]);
 
@@ -46,6 +47,12 @@ function html(body: string, status: number, maxAge: number, method: string): Res
   });
 }
 
+const DELETE_HEADERS = {
+  "Content-Type": "text/plain; charset=utf-8",
+  "X-Robots-Tag": "noindex, nofollow",
+  "Cache-Control": "no-store",
+};
+
 export async function onRequest(context: {
   request: Request;
   params: Record<string, string | string[]>;
@@ -53,13 +60,26 @@ export async function onRequest(context: {
 }) {
   const { request, params } = context;
   const method = request.method;
+
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
+
+  if (method === "DELETE") {
+    const secret =
+      request.headers.get("x-delete-secret")?.trim() ||
+      new URL(request.url).searchParams.get("delete_secret")?.trim() ||
+      "";
+    const result = await deletePublicDraft(id ?? "", secret, rpc);
+    const status = result.ok ? 200 : result.status;
+    const body = result.ok ? "Document șters." : result.message;
+    return new Response(body, { status, headers: DELETE_HEADERS });
+  }
+
   if (method !== "GET" && method !== "HEAD") {
-    return new Response("Method Not Allowed", { status: 405, headers: { Allow: "GET, HEAD" } });
+    return new Response("Method Not Allowed", { status: 405, headers: { Allow: "DELETE, GET, HEAD" } });
   }
 
   const notFound = () => html(renderGeneratedNotFound(), 404, 60, method);
 
-  const id = Array.isArray(params.id) ? params.id[0] : params.id;
   if (!id || !ID_RE.test(id)) return notFound();
 
   const url = new URL(request.url);

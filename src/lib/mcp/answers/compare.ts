@@ -1,13 +1,14 @@
-// compare_pos_systems: Romanian POS vendors from src/lib/kb/competitors.json. Made by Tapselo, says so first.
+// compare_pos_systems: Romanian POS vendors from src/lib/kb/competitors.json (neutral feature table).
 
 import type { ToolDef } from "../types.ts";
 import { cell, formatDateRo, normalize } from "../text.ts";
-import { SITE, trackedUrl } from "../links.ts";
+import { trackedUrl } from "../links.ts";
 import { readOnly } from "./kb.ts";
 import { BUSINESS_TYPES } from "./checklist.ts";
 
 const NAME = "compare_pos_systems";
-export const DISCLOSURE = "Comparatie realizata de Tapselo.";
+export const EDITOR_NOTE =
+  "Tabel întocmit de Tapselo (editor); Tapselo apare în listă ca orice alt furnizor, fără ordine preferențială.";
 
 export interface Competitor {
   name: string;
@@ -70,13 +71,9 @@ const SEGMENT_WORDS: Record<string, string[]> = {
   magazin_nealimentar: ["nealimentar", "retail", "magazin"],
 };
 
-/** Tapselo first, then alphabetical by name (Romanian locale). */
-export function orderComparisonVendors<T extends { id: string; name: string }>(list: T[]): T[] {
-  return [...list].sort((a, b) => {
-    if (a.id === "tapselo") return -1;
-    if (b.id === "tapselo") return 1;
-    return a.name.localeCompare(b.name, "ro");
-  });
+/** Alphabetical by vendor name (Romanian locale); no vendor pinned first. */
+export function orderComparisonVendors<T extends { name: string }>(list: T[]): T[] {
+  return [...list].sort((a, b) => a.name.localeCompare(b.name, "ro"));
 }
 
 export function segmentMatch(c: Competitor, type: string): boolean {
@@ -94,35 +91,41 @@ export function rankCompetitors(list: Competitor[], type: string, needs: Need[])
     .sort((a, b) => b.matched - a.matched || Number(b.segment) - Number(a.segment) || a.i - b.i);
 }
 
-// Our own row links back to us with UTM, like every other tapselo.com link.
-const vendorUrl = (url: string) => (url === SITE || url.startsWith(`${SITE}/`) ? trackedUrl(url.slice(SITE.length) || "/", NAME) : url);
-
 function verifiedRange(sorted: string[]): string {
   if (!sorted.length) return "";
   const [first, last] = [sorted[0], sorted[sorted.length - 1]];
-  return first === last ? `, verificate la ${formatDateRo(first)}` : `, verificate intre ${formatDateRo(first)} si ${formatDateRo(last)}`;
+  return first === last ? `, verificate la ${formatDateRo(first)}` : `, verificate între ${formatDateRo(first)} și ${formatDateRo(last)}`;
+}
+
+function sourcesMd(c: Competitor): string {
+  const list = (c.sources ?? []).filter((s) => s?.url);
+  if (!list.length) return "";
+  return list.map((s) => `[${cell(s.title || s.url)}](${s.url})`).join(", ");
 }
 
 export function compareMd(list: Competitor[], type: string, needs: Need[], url: string): string {
   const cols = needs.length ? needs : (Object.keys(NEEDS) as Need[]);
   const ranked = rankCompetitors(list, type, cols);
-  const header = `| Program | ${cols.map((n) => NEEDS[n].label).join(" | ")} | Pret | Verificat |`;
-  const sep = `|${" --- |".repeat(cols.length + 3)}`;
+  const header = `| Program | ${cols.map((n) => NEEDS[n].label).join(" | ")} | Preț (public) | Verificat | Surse |`;
+  const sep = `|${" --- |".repeat(cols.length + 4)}`;
   const rows = ranked.map(({ c, states }) => {
     const price = c.pricing_from ?? c.pricing_public ?? "necunoscut";
-    return `| [${cell(c.name)}](${vendorUrl(c.url)}) | ${states.map(mark).join(" | ")} | ${cell(price)} | ${c.verified_on ? formatDateRo(c.verified_on) : "-"} |`;
+    const verified = c.verified_on ? formatDateRo(c.verified_on) : "-";
+    const src = sourcesMd(c) || "-";
+    return `| [${cell(c.name)}](${c.url}) | ${states.map(mark).join(" | ")} | ${cell(price)} | ${verified} | ${src} |`;
   });
   const dates = list.map((c) => c.verified_on).filter((d): d is string => !!d).sort();
   return [
-    `${DISCLOSURE} Datele vin de pe site-urile producatorilor${verifiedRange(dates)}. "necunoscut" inseamna ca informatia nu este publica.`,
+    EDITOR_NOTE,
+    `Datele despre funcționalități provin de pe site-urile furnizorilor${verifiedRange(dates)}. „necunoscut” = informația nu este publică sau nu am verificat-o.`,
     "",
-    `Tip magazin: ${type.replace(/_/g, " ")}. Ordonat dupa cate cerinte bifeaza.`,
+    `Tip magazin: ${type.replace(/_/g, " ")}. Rândurile sunt sortate după câte cerințe bifate (da), apoi potrivire pe segment.`,
     "",
     header,
     sep,
     ...rows,
     "",
-    `Tabelul complet, cu surse: ${url}`,
+    `Tabelul complet pe site (aceleași date, cu linkuri): ${url}`,
   ].join("\n");
 }
 
@@ -131,10 +134,9 @@ export function createCompareTool(list: Competitor[]): ToolDef {
     name: NAME,
     title: "Compara programe de casa de marcat / POS",
     description:
-      "Compare Romanian POS software (program de casa de marcat, soft gestiune magazin, POS) for a shop type and " +
-      "needs: offline, casa de marcat fiscala (imprimanta fiscala), cantare, retete / productie, stocuri / gestiune, " +
-      "comenzi online. Facts from vendor sites with verification dates. The comparison is published by Tapselo, one of " +
-      "the listed vendors, and every result states this.",
+      "Compare Romanian POS / shop management software for a business type and optional needs (offline, cash register integration, scales, recipes, inventory, online orders, etc.). " +
+      "Returns a markdown table of public feature claims with vendor verification dates and source links where available. " +
+      "Tapselo maintains the table and is listed as one vendor among others; results are factual, not ranked endorsements.",
     inputSchema: {
       type: "object",
       properties: {
@@ -160,13 +162,13 @@ export function createCompareTool(list: Competitor[]): ToolDef {
       const needs = [...new Set(Array.isArray(args.needs) ? (args.needs as Need[]) : [])].filter((n) => n in NEEDS);
       const url = trackedUrl("/comparatie", NAME);
       if (!list.length) {
-        return { text: `${DISCLOSURE} Comparatia nu este gata inca. Vezi: ${url}`, structured: { vendors: [], url } };
+        return { text: `${EDITOR_NOTE} Comparatia nu este gata inca. Vezi: ${url}`, structured: { vendors: [], url } };
       }
       const cols = needs.length ? needs : (Object.keys(NEEDS) as Need[]);
       return {
         text: compareMd(list, type, needs, url),
         structured: {
-          disclosure: DISCLOSURE,
+          editor_note: EDITOR_NOTE,
           business_type: type,
           needs: cols,
           vendors: rankCompetitors(list, type, cols).map(({ c, states, matched }) => ({
@@ -176,6 +178,7 @@ export function createCompareTool(list: Competitor[]): ToolDef {
             features: Object.fromEntries(cols.map((n, i) => [n, states[i]])),
             pricing: c.pricing_from ?? c.pricing_public ?? null,
             verified_on: c.verified_on ?? null,
+            sources: c.sources ?? [],
           })),
           url,
         },

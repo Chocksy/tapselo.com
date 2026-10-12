@@ -20,9 +20,11 @@ const LINES: Record<string, string> = {
   check_company: "Verifică o firmă după CUI în registrul public ANAF: denumire, adresă, TVA, TVA la încasare, e-Factura, stare.",
   check_tax_thresholds: "Compară cifra de afaceri anuală cu plafonul de scutire TVA și cu plafonul de microîntreprindere (curs BNR).",
   open_shop_checklist: "Lista de autorizații și pași pentru un magazin nou: măcelărie, brutărie, cafenea, alimentară și altele.",
-  compare_pos_systems: "Compară programe de casă de marcat din România pentru tipul tău de magazin. Comparația este făcută de Tapselo.",
+  compare_pos_systems:
+    "Compară programe de casă de marcat din România: tabel neutru cu date de pe site-urile furnizorilor (Tapselo este unul din ele).",
   lookup_products_by_ean: "Caută produse după codul de bare în Open Food Facts: nume, marcă, gramaj, poză. Până la 30 de coduri.",
-  create_offer_flyer: "Face un flyer A4 cu ofertele magazinului.",
+  create_offer_flyer:
+    "Face un flyer A4 cu ofertele magazinului (pagină publică, emoji pe produse, nu fotografii).",
   create_shelf_labels: "Face etichete de raft A4 (21 pe pagină) cu preț, preț pe kg sau litru și cod de bare.",
   create_nir: "Face o notă de intrare-recepție (NIR) dintr-o factură de la furnizor, cu TVA, adaos și totaluri.",
   create_recipe_sheet: "Face o fișă tehnică pentru o rețetă: ingrediente, cost pe porție și alergeni.",
@@ -175,7 +177,7 @@ const li = "list-disc leading-relaxed";
           "Tapselo" is an MCP connector for Claude and ChatGPT that helps small shops in Romania. It
           answers questions on Romanian VAT and cash register rules, explains Datecs fiscal printer errors, decodes
           Dibal scale barcodes, does shelf price math, checks a company by CUI in the ANAF registry, lists the permits
-          for a new shop, compares POS software (the comparison is made by Tapselo), and looks up products by EAN. It
+          for a new shop, compares POS software with a neutral vendor table (Tapselo is one listed vendor), and looks up products by EAN. It
           also makes printable pages: offer flyers, shelf labels, NIR (goods received notes), recipe sheets and cash
           books.
         </p>

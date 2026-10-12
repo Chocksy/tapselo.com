@@ -12,7 +12,7 @@ import { calculateShelfPrice, roundPriceCents } from "../src/lib/mcp/answers/she
 import { checkCompany, isValidCui, normalizeCui, parseAnafResponse, ANAF_URL } from "../src/lib/mcp/answers/company.ts";
 import { parseBnrEur, computeThresholds, createThresholdsTool, BNR_URL } from "../src/lib/mcp/answers/thresholds.ts";
 import { createChecklistTool, BUSINESS_TYPES, pageFor, type Checklist } from "../src/lib/mcp/answers/checklist.ts";
-import { createCompareTool, featureState, orderComparisonVendors, type Competitor } from "../src/lib/mcp/answers/compare.ts";
+import { createCompareTool, EDITOR_NOTE, featureState, orderComparisonVendors, type Competitor } from "../src/lib/mcp/answers/compare.ts";
 import { splitEans, mapPool, createProductsTool } from "../src/lib/mcp/answers/products.ts";
 import { findDatecsCode, searchDatecsText, createDatecsTool, datecsAnchor, type DatecsKb } from "../src/lib/mcp/answers/datecs.ts";
 import datecsJson from "../src/lib/kb/datecs-errors.json" with { type: "json" };
@@ -326,17 +326,16 @@ const VENDORS: Competitor[] = [
   { name: "Beta | Soft", url: "https://beta.example", segments: ["retail"], offline: "nu", fiscal_printers: true, scales: false, recipes_production: false, inventory: true, ecommerce_or_orders: false, verified_on: "2026-09-28" },
 ];
 
-test("orderComparisonVendors: Tapselo first", () => {
+test("orderComparisonVendors: alphabetical (Romanian)", () => {
   const ordered = orderComparisonVendors([
-    { id: "b", name: "Beta" },
-    { id: "tapselo", name: "Tapselo POS" },
-    { id: "a", name: "Alfa" },
+    { name: "Beta" },
+    { name: "Tapselo POS" },
+    { name: "Alfa" },
   ]);
-  assert.equal(ordered[0].id, "tapselo");
-  assert.deepEqual(ordered.slice(1).map((v) => v.id), ["a", "b"]);
+  assert.deepEqual(ordered.map((v) => v.name), ["Alfa", "Beta", "Tapselo POS"]);
 });
 
-test("compare_pos_systems: disclosure first, ranking, unknown as necunoscut", async () => {
+test("compare_pos_systems: editor note, ranking, unknown as necunoscut, plain vendor URLs", async () => {
   assert.equal(featureState(null), null);
   assert.equal(featureState("nu"), false);
   assert.equal(featureState("Datecs, Daisy"), true);
@@ -344,16 +343,17 @@ test("compare_pos_systems: disclosure first, ranking, unknown as necunoscut", as
   const tool = createCompareTool(VENDORS);
   const r = await tool.handler({ business_type: "brutarie_patiserie", needs: ["recipes", "offline"] }, stubFetch(() => new Response()));
   const lines = r.text.split("\n");
-  assert.ok(lines[0].startsWith("Comparatie realizata de Tapselo."));
-  assert.match(lines[0], /verificate intre 28\.09\.2026 si 01\.10\.2026/);
+  assert.ok(lines[0].startsWith(EDITOR_NOTE));
+  assert.match(r.text, /verificate între 28\.09\.2026 și 01\.10\.2026/);
   const table = lines.filter((l) => l.startsWith("| ["));
   assert.match(table[0], /Tapselo/); // 2 of 2 needs
-  assert.match(table[0], /\[Tapselo\]\(https:\/\/tapselo.com\/\?utm_source=ai-plugin&utm_medium=mcp&utm_campaign=compare_pos_systems\)/);
+  assert.match(table[0], /\[Tapselo\]\(https:\/\/tapselo.com\)/);
+  assert.doesNotMatch(table[0], /utm_campaign=compare_pos_systems/);
   assert.match(table[1], /\(https:\/\/alfa.example\)/);
   assert.match(table[1], /Alfa POS.*\| da \| nu \|/);
   assert.match(r.text, /Beta \\\| Soft/);
   assert.match(r.text, /\/comparatie\?utm_source=ai-plugin&utm_medium=mcp&utm_campaign=compare_pos_systems/);
-  assert.equal((r.structured as { disclosure: string }).disclosure, "Comparatie realizata de Tapselo.");
+  assert.equal((r.structured as { editor_note: string }).editor_note, EDITOR_NOTE);
 });
 
 test("lookup_products_by_ean: validation, pool concurrency, OFF parsing", async () => {

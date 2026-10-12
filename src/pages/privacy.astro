@@ -152,9 +152,11 @@ import { internalPath } from "../lib/internal-url.ts";
         </p>
         <h3 class="mt-6 font-bold text-primary">Ștergere și abuz</h3>
         <p class="mt-2 leading-relaxed text-text-secondary">
-          Ca să ștergem un document înainte de 30 de zile sau ca să raportezi o pagină, scrie la
+          Creatorul poate șterge documentul imediat cu secretul de ștergere din răspunsul uneltei (cerere HTTP
+          DELETE la adresa documentului, antet <code>X-Delete-Secret</code>). Pentru raportarea abuzului sau dacă nu
+          ai secretul, scrie la
           <EmailLink class="font-bold text-accent hover:text-accent-hover" />
-          cu linkul documentului. Îl ștergem după link.
+          cu linkul documentului.
         </p>
       </section>
 
