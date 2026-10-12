@@ -5,7 +5,7 @@ alter table public.public_tool_drafts
   add column if not exists delete_secret text;
 
 update public.public_tool_drafts
-   set delete_secret = encode(extensions.gen_random_bytes(24), 'base64')
+   set delete_secret = encode(extensions.gen_random_bytes(24), 'hex')
  where delete_secret is null;
 
 alter table public.public_tool_drafts
@@ -18,6 +18,9 @@ update public.public_tool_drafts
 
 alter table public.public_tool_drafts
   alter column expires_at set default (now() + interval '30 days');
+
+-- Return type changes text -> jsonb, so the old function must be dropped first.
+drop function if exists public.public_tool_create_draft(text, jsonb);
 
 create or replace function public.public_tool_create_draft(p_kind text, p_payload jsonb) returns jsonb
 language plpgsql volatile security definer
@@ -95,7 +98,7 @@ begin
 
   loop
     v_id := public_tool_new_id();
-    v_secret := encode(extensions.gen_random_bytes(24), 'base64');
+    v_secret := encode(extensions.gen_random_bytes(24), 'hex');
     insert into public_tool_drafts (id, kind, payload, delete_secret, expires_at)
     values (
       v_id,
