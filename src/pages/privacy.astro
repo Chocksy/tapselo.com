@@ -121,8 +121,9 @@ import { internalPath } from "../lib/internal-url.ts";
         <ul class="mt-2 space-y-2 pl-5 text-text-secondary">
           <li class="list-disc leading-relaxed">
             Documentele create (flyer, etichete de raft, NIR, fișă tehnică, registru de casă): datele trimise pentru
-            document, data creării și un număr de afișări. Le păstrăm 30 de zile. După expirare, o sarcină zilnică
-            le șterge din baza de date.
+            document, data creării și un număr de afișări. Flyerul, etichetele și fișa tehnică se păstrează 30 de zile;
+            NIR-ul și registrul de casă 7 zile (date mai sensibile). După expirare, o sarcină zilnică le șterge din baza
+            de date.
           </li>
           <li class="list-disc leading-relaxed">
             Răspunsurile la întrebări (reguli, erori, calcule, verificări) nu se salvează.
@@ -152,9 +153,11 @@ import { internalPath } from "../lib/internal-url.ts";
         </p>
         <h3 class="mt-6 font-bold text-primary">Ștergere și abuz</h3>
         <p class="mt-2 leading-relaxed text-text-secondary">
-          Ca să ștergem un document înainte de 30 de zile sau ca să raportezi o pagină, scrie la
+          Creatorul poate șterge documentul imediat cu secretul de ștergere din răspunsul uneltei (cerere HTTP
+          DELETE la adresa documentului, antet <code>X-Delete-Secret</code>). Pentru raportarea abuzului sau dacă nu
+          ai secretul, scrie la
           <EmailLink class="font-bold text-accent hover:text-accent-hover" />
-          cu linkul documentului. Îl ștergem după link.
+          cu linkul documentului.
         </p>
       </section>
 

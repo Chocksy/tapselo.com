@@ -5,6 +5,7 @@
 
 import { escapeHtml, formatDate } from "../offers-render.ts";
 import { trackedUrl } from "../mcp/links.ts";
+import { PUBLIC_TOOL_DRAFT_RETENTION_DAYS, retentionDaysLabel } from "./retention.ts";
 
 export { escapeHtml, formatDate };
 
@@ -57,9 +58,16 @@ function shellHref(kind: string, local: boolean): string {
     : trackedUrl("/", `g_${kind}`);
 }
 
+export const PUBLIC_PAGE_NOTICE =
+  "Această pagină este publică pentru oricine are linkul. Nu indexăm documentele în motoarele de căutare.";
+
 export function bannerHtml(kind: string, local = false): string {
   const href = shellHref(kind, local);
+  const publicLine = local
+    ? ""
+    : `<p class="g-public"><strong>Public:</strong> ${escapeHtml(PUBLIC_PAGE_NOTICE)}</p>`;
   return `<div class="g-banner no-print" role="note">
+${publicLine}
 <p>Document creat gratuit cu Tapselo, casa de marcat pentru magazine mici. <a href="${escapeHtml(href)}">Află mai mult</a></p>
 <button type="button" id="print-btn" class="g-print">Printează / Salvează PDF</button>
 </div>`;
@@ -70,7 +78,7 @@ export function footerHtml(kind: string, expiresAt: string | null | undefined, l
   const exp = formatDate(expiresAt);
   const abuse = local
     ? ""
-    : `\n<p class="g-abuse no-print">Pagină creată de un utilizator.${exp ? ` Expiră pe ${escapeHtml(exp)}.` : ""} Raportează abuz: <!--email_off--><a href="mailto:${ABUSE_EMAIL}">${ABUSE_EMAIL}</a><!--/email_off--></p>`;
+    : `\n<p class="g-abuse no-print">Pagină creată de un utilizator.${exp ? ` Expiră pe ${escapeHtml(exp)}.` : ""} Creatorul poate șterge documentul cu secretul primit la creare (cerere HTTP DELETE pe aceeași adresă). Raportează abuz: <!--email_off--><a href="mailto:${ABUSE_EMAIL}">${ABUSE_EMAIL}</a><!--/email_off--></p>`;
   return `<div class="g-footer">
 <p class="g-made">Generat cu <a href="${escapeHtml(href)}">tapselo.com</a></p>${abuse}
 </div>`;
@@ -82,6 +90,7 @@ export const SCRIPT_TAG = `<script>${PRINT_SCRIPT}</script>`;
 export const CHROME_CSS = `
 .g-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5rem 1rem;padding:.625rem 1rem;background:#0f172a;color:#e2e8f0;font:500 .9375rem/1.4 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;text-align:center}
 .g-banner p{margin:0}
+.g-public{flex:1 1 100%;max-width:42rem;font-size:.875rem;color:#cbd5e1}
 .g-banner a{color:#facc15;font-weight:700}
 .g-print{font:inherit;font-weight:800;padding:.5rem 1rem;border:0;border-radius:.5rem;background:#facc15;color:#0f172a;cursor:pointer}
 .g-print:hover{background:#fde047}
@@ -179,7 +188,7 @@ export function renderGeneratedNotFound(): string {
 <body>
 <main class="sheet">
 <h1 class="doc-title">Documentul nu a fost găsit</h1>
-<p>Linkul nu există sau documentul a expirat (documentele se păstrează 30 de zile).</p>
+<p>Linkul nu există sau documentul a expirat (documentele se păstrează ${retentionDaysLabel(PUBLIC_TOOL_DRAFT_RETENTION_DAYS)}).</p>
 <p><a href="${escapeHtml(trackedUrl("/", "g_not_found"))}">Mergi pe tapselo.com</a></p>
 </main>
 </body>

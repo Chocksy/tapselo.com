@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { renderDraft } from "../src/lib/generators/render.ts";
 import { MOCK_DRAFTS } from "../src/lib/generators/mock.ts";
-import { PRINT_SCRIPT, PRINT_SCRIPT_HASH, renderGeneratedNotFound } from "../src/lib/generators/page.ts";
+import { PRINT_SCRIPT, PRINT_SCRIPT_HASH, PUBLIC_PAGE_NOTICE, renderGeneratedNotFound } from "../src/lib/generators/page.ts";
 import { emojiFor, flyerImageUrl, flyerToOffers, hasPendingImages } from "../src/lib/generators/flyer.ts";
 import { ALLERGEN_NOTE } from "../src/lib/generators/recipe.ts";
 import { renderNir } from "../src/lib/generators/nir.ts";
@@ -26,6 +26,7 @@ test("every kind renders the shell: noindex, banner, print button, script, foote
     assert.equal(r.status, 200, k);
     const out = r.html;
     assert.match(out, /<meta name="robots" content="noindex/, k);
+    assert.match(out, new RegExp(PUBLIC_PAGE_NOTICE.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), k);
     assert.match(out, /Document creat gratuit cu Tapselo, casa de marcat pentru magazine mici\./, k);
     assert.match(out, new RegExp(`<a href="https://tapselo\\.com/\\?utm_source=ai-plugin&amp;utm_medium=mcp&amp;utm_campaign=g_${k}">Află mai mult</a>`), k);
     assert.match(out, /<button type="button" id="print-btn" class="g-print">Printează \/ Salvează PDF<\/button>/, k);
@@ -34,7 +35,7 @@ test("every kind renders the shell: noindex, banner, print button, script, foote
     assert.match(out, /Generat cu <a [^>]*>tapselo\.com<\/a>/, k);
     assert.match(
       out,
-      /<p class="g-abuse no-print">Pagină creată de un utilizator\. Expiră pe 31\.10\.2026\. Raportează abuz: <!--email_off--><a href="mailto:contact@tapselo\.com">contact@tapselo\.com<\/a><!--\/email_off--><\/p>/,
+      /<p class="g-abuse no-print">Pagină creată de un utilizator\. Expiră pe 31\.10\.2026\. Creatorul poate șterge documentul cu secretul primit la creare \(cerere HTTP DELETE pe aceeași adresă\)\. Raportează abuz: <!--email_off--><a href="mailto:contact@tapselo\.com">contact@tapselo\.com<\/a><!--\/email_off--><\/p>/,
       k,
     );
     assert.match(out, /@page\{size:A4/, k);

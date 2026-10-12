@@ -12,7 +12,7 @@ import { calculateShelfPrice, roundPriceCents } from "../src/lib/mcp/answers/she
 import { checkCompany, isValidCui, normalizeCui, parseAnafResponse, ANAF_URL } from "../src/lib/mcp/answers/company.ts";
 import { parseBnrEur, computeThresholds, createThresholdsTool, BNR_URL } from "../src/lib/mcp/answers/thresholds.ts";
 import { createChecklistTool, BUSINESS_TYPES, pageFor, type Checklist } from "../src/lib/mcp/answers/checklist.ts";
-import { createCompareTool, featureState, orderComparisonVendors, type Competitor } from "../src/lib/mcp/answers/compare.ts";
+import { createCompareTool, EDITOR_NOTE, featureState, orderComparisonVendors, type Competitor } from "../src/lib/mcp/answers/compare.ts";
 import { splitEans, mapPool, createProductsTool } from "../src/lib/mcp/answers/products.ts";
 import { findDatecsCode, searchDatecsText, createDatecsTool, datecsAnchor, type DatecsKb } from "../src/lib/mcp/answers/datecs.ts";
 import datecsJson from "../src/lib/kb/datecs-errors.json" with { type: "json" };
@@ -321,22 +321,61 @@ test("open_shop_checklist on the real shop-checklists.json: every business type,
 });
 
 const VENDORS: Competitor[] = [
-  { name: "Alfa POS", url: "https://alfa.example", segments: ["horeca"], offline: false, fiscal_printers: true, scales: null, recipes_production: true, inventory: true, ecommerce_or_orders: null, pricing_public: "da", pricing_from: "99 lei/luna", verified_on: "2026-09-29" },
-  { name: "Tapselo", url: "https://tapselo.com", segments: ["brutarie", "alimentar"], offline: true, fiscal_printers: ["Datecs"], scales: "Dibal", recipes_production: true, inventory: true, ecommerce_or_orders: true, pricing_public: null, pricing_from: null, verified_on: "2026-10-01" },
-  { name: "Beta | Soft", url: "https://beta.example", segments: ["retail"], offline: "nu", fiscal_printers: true, scales: false, recipes_production: false, inventory: true, ecommerce_or_orders: false, verified_on: "2026-09-28" },
+  {
+    name: "Alfa POS",
+    url: "https://alfa.example",
+    segments: ["horeca"],
+    offline: false,
+    fiscal_printers: true,
+    scales: null,
+    recipes_production: true,
+    inventory: true,
+    ecommerce_or_orders: null,
+    pricing_public: "da",
+    pricing_from: "99 lei/luna",
+    verified_on: "2026-09-29",
+    sources: [{ title: "Alfa", url: "https://alfa.example/features" }],
+  },
+  {
+    name: "Tapselo",
+    url: "https://tapselo.com",
+    segments: ["brutarie", "alimentar"],
+    offline: true,
+    fiscal_printers: ["Datecs"],
+    scales: "Dibal",
+    recipes_production: true,
+    inventory: true,
+    ecommerce_or_orders: true,
+    pricing_public: null,
+    pricing_from: null,
+    verified_on: "2026-10-01",
+    sources: [{ title: "Tapselo", url: "https://tapselo.com/features" }],
+  },
+  {
+    name: "Beta | Soft",
+    url: "https://beta.example",
+    segments: ["retail"],
+    offline: "nu",
+    fiscal_printers: true,
+    scales: false,
+    recipes_production: false,
+    inventory: true,
+    ecommerce_or_orders: false,
+    verified_on: "2026-09-28",
+    sources: [{ title: "Beta", url: "https://beta.example/pos" }],
+  },
 ];
 
-test("orderComparisonVendors: Tapselo first", () => {
+test("orderComparisonVendors: alphabetical (Romanian)", () => {
   const ordered = orderComparisonVendors([
-    { id: "b", name: "Beta" },
-    { id: "tapselo", name: "Tapselo POS" },
-    { id: "a", name: "Alfa" },
+    { name: "Beta" },
+    { name: "Tapselo POS" },
+    { name: "Alfa" },
   ]);
-  assert.equal(ordered[0].id, "tapselo");
-  assert.deepEqual(ordered.slice(1).map((v) => v.id), ["a", "b"]);
+  assert.deepEqual(ordered.map((v) => v.name), ["Alfa", "Beta", "Tapselo POS"]);
 });
 
-test("compare_pos_systems: disclosure first, ranking, unknown as necunoscut", async () => {
+test("compare_pos_systems: editor note, alphabetical table, per-fact source + verified", async () => {
   assert.equal(featureState(null), null);
   assert.equal(featureState("nu"), false);
   assert.equal(featureState("Datecs, Daisy"), true);
@@ -344,16 +383,17 @@ test("compare_pos_systems: disclosure first, ranking, unknown as necunoscut", as
   const tool = createCompareTool(VENDORS);
   const r = await tool.handler({ business_type: "brutarie_patiserie", needs: ["recipes", "offline"] }, stubFetch(() => new Response()));
   const lines = r.text.split("\n");
-  assert.ok(lines[0].startsWith("Comparatie realizata de Tapselo."));
-  assert.match(lines[0], /verificate intre 28\.09\.2026 si 01\.10\.2026/);
+  assert.ok(lines[0].startsWith(EDITOR_NOTE));
+  assert.match(r.text, /ordine alfabetică/);
   const table = lines.filter((l) => l.startsWith("| ["));
-  assert.match(table[0], /Tapselo/); // 2 of 2 needs
-  assert.match(table[0], /\[Tapselo\]\(https:\/\/tapselo.com\/\?utm_source=ai-plugin&utm_medium=mcp&utm_campaign=compare_pos_systems\)/);
-  assert.match(table[1], /\(https:\/\/alfa.example\)/);
-  assert.match(table[1], /Alfa POS.*\| da \| nu \|/);
+  assert.match(table[0], /Alfa POS/);
+  assert.match(table[2], /\[Tapselo\]\(https:\/\/tapselo.com\)/);
+  assert.doesNotMatch(table[2], /utm_campaign=compare_pos_systems/);
+  assert.match(r.text, /Retete: \*\*da\*\* — sursă: \[Tapselo\]\(https:\/\/tapselo.com\/features\); verificat: 01\.10\.2026/);
   assert.match(r.text, /Beta \\\| Soft/);
   assert.match(r.text, /\/comparatie\?utm_source=ai-plugin&utm_medium=mcp&utm_campaign=compare_pos_systems/);
-  assert.equal((r.structured as { disclosure: string }).disclosure, "Comparatie realizata de Tapselo.");
+  assert.equal((r.structured as { editor_note: string }).editor_note, EDITOR_NOTE);
+  assert.equal((r.structured as { ordering: string }).ordering, "alphabetical_by_name_ro");
 });
 
 test("lookup_products_by_ean: validation, pool concurrency, OFF parsing", async () => {

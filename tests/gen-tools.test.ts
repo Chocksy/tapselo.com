@@ -99,10 +99,16 @@ test("RPC failures map to friendly errors", async () => {
     assert.equal(r.isError, true);
     assert.equal(r.text, MSG_SERVICE);
   }
-  for (const data of [null, "", "bad id!", 42, { id: "Ab3dEf7hJk" }]) {
+  for (const data of [null, "", "bad id!", 42, { id: "short" }]) {
     r = await tool("create_cash_book").handler(structuredClone(MOCK_DRAFTS.cashbook.payload) as Record<string, unknown>, stubEnv({ ok: true, data }).env);
     assert.equal(r.isError, true, String(data));
   }
+  r = await tool("create_cash_book").handler(
+    structuredClone(MOCK_DRAFTS.cashbook.payload) as Record<string, unknown>,
+    stubEnv({ ok: true, data: { id: "Ab3dEf7hJk" } }).env,
+  );
+  assert.equal(r.isError, undefined);
+  assert.equal(r.structured?.id, "Ab3dEf7hJk");
 });
 
 const ASCII_RO = /(?<!\p{L})(pret|fara|achizitie|vanzare|incasari|inregistrari|plati|portie|portii|gasit|pagina|printeaza|salveaza|expira|atentie|fisa|tehnica|neexigibil|confirmati|campul|lipseste|corecteaza)(?!\p{L})/iu;
@@ -126,7 +132,13 @@ test("every answer is Romanian with diacritics", async () => {
   for (const [kind, name] of Object.entries(BY_KIND)) {
     const { env } = stubEnv({ ok: true, data: "Ab3dEf7hJk" });
     const r = await tool(name).handler(structuredClone(MOCK_DRAFTS[kind as keyof typeof BY_KIND].payload) as Record<string, unknown>, env);
-    assert.match(r.text, /Pagina se printează sau se salvează ca PDF cu butonul „Printează \/ Salvează PDF”\. Linkul expiră în 30 de zile\.$/, kind);
+    const exp =
+      kind === "nir" || kind === "cashbook"
+        ? /Linkul expiră în 7 zile\.$/
+        : /Linkul expiră în 30 de zile\.$/;
+    assert.match(r.text, /Pagina se printează sau se salvează ca PDF cu butonul „Printează \/ Salvează PDF”\./, kind);
+    assert.match(r.text, exp, kind);
+    assert.match(r.text, /~59[.,]\d+ biți de entropie/, kind);
     const summary = r.text.split("\n\nDocumentul:")[0];
     assert.doesNotMatch(summary, ASCII_RO, `${kind}: ${summary}`);
   }

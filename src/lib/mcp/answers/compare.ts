@@ -1,13 +1,14 @@
-// compare_pos_systems: Romanian POS vendors from src/lib/kb/competitors.json. Made by Tapselo, says so first.
+// compare_pos_systems: Romanian POS vendors from src/lib/kb/competitors.json (neutral feature table).
 
 import type { ToolDef } from "../types.ts";
 import { cell, formatDateRo, normalize } from "../text.ts";
-import { SITE, trackedUrl } from "../links.ts";
+import { trackedUrl } from "../links.ts";
 import { readOnly } from "./kb.ts";
 import { BUSINESS_TYPES } from "./checklist.ts";
 
 const NAME = "compare_pos_systems";
-export const DISCLOSURE = "Comparatie realizata de Tapselo.";
+export const EDITOR_NOTE =
+  "Tabel întocmit de Tapselo (editor); Tapselo apare în listă ca orice alt furnizor, fără ordine preferențială.";
 
 export interface Competitor {
   name: string;
@@ -60,69 +61,59 @@ export function featureState(v: unknown): boolean | null {
 
 const mark = (s: boolean | null) => (s === true ? "da" : s === false ? "nu" : "necunoscut");
 
-// Business type words that may appear in vendor segments.
-const SEGMENT_WORDS: Record<string, string[]> = {
-  macelarie: ["macelarie", "carne", "alimentar", "retail"],
-  brutarie_patiserie: ["brutarie", "patiserie", "cofetarie", "panificatie", "productie"],
-  cafenea_bistro: ["cafenea", "bistro", "horeca", "restaurant", "bar"],
-  minimarket_alimentara: ["minimarket", "alimentara", "alimentar", "magazin", "retail"],
-  legume_fructe: ["legume", "fructe", "alimentar", "retail"],
-  magazin_nealimentar: ["nealimentar", "retail", "magazin"],
-};
-
-/** Tapselo first, then alphabetical by name (Romanian locale). */
-export function orderComparisonVendors<T extends { id: string; name: string }>(list: T[]): T[] {
-  return [...list].sort((a, b) => {
-    if (a.id === "tapselo") return -1;
-    if (b.id === "tapselo") return 1;
-    return a.name.localeCompare(b.name, "ro");
-  });
+/** Alphabetical by vendor name (Romanian locale); no vendor pinned first. */
+export function orderComparisonVendors<T extends { name: string }>(list: T[]): T[] {
+  return [...list].sort((a, b) => a.name.localeCompare(b.name, "ro"));
 }
 
-export function segmentMatch(c: Competitor, type: string): boolean {
-  const words = SEGMENT_WORDS[type] ?? [type];
-  const segs = (c.segments ?? []).map(normalize).join(" ");
-  return words.some((w) => segs.includes(w));
+function sourcesMd(c: Competitor): string {
+  const list = (c.sources ?? []).filter((s) => s?.url);
+  if (!list.length) return "-";
+  return list.map((s) => `[${cell(s.title || s.url)}](${s.url})`).join(", ");
 }
 
-export function rankCompetitors(list: Competitor[], type: string, needs: Need[]) {
-  return list
-    .map((c, i) => {
-      const states = needs.map((n) => featureState((c as unknown as Record<string, unknown>)[NEEDS[n].field]));
-      return { c, i, states, matched: states.filter((s) => s === true).length, segment: segmentMatch(c, type) };
-    })
-    .sort((a, b) => b.matched - a.matched || Number(b.segment) - Number(a.segment) || a.i - b.i);
-}
-
-// Our own row links back to us with UTM, like every other tapselo.com link.
-const vendorUrl = (url: string) => (url === SITE || url.startsWith(`${SITE}/`) ? trackedUrl(url.slice(SITE.length) || "/", NAME) : url);
-
-function verifiedRange(sorted: string[]): string {
-  if (!sorted.length) return "";
-  const [first, last] = [sorted[0], sorted[sorted.length - 1]];
-  return first === last ? `, verificate la ${formatDateRo(first)}` : `, verificate intre ${formatDateRo(first)} si ${formatDateRo(last)}`;
+function vendorAttribution(c: Competitor): { verified: string; sources: string } {
+  return {
+    verified: c.verified_on ? formatDateRo(c.verified_on) : "necunoscut",
+    sources: sourcesMd(c),
+  };
 }
 
 export function compareMd(list: Competitor[], type: string, needs: Need[], url: string): string {
   const cols = needs.length ? needs : (Object.keys(NEEDS) as Need[]);
-  const ranked = rankCompetitors(list, type, cols);
-  const header = `| Program | ${cols.map((n) => NEEDS[n].label).join(" | ")} | Pret | Verificat |`;
-  const sep = `|${" --- |".repeat(cols.length + 3)}`;
-  const rows = ranked.map(({ c, states }) => {
+  const ordered = orderComparisonVendors(list);
+  const header = `| Program | ${cols.map((n) => NEEDS[n].label).join(" | ")} | Preț (public) |`;
+  const sep = `|${" --- |".repeat(cols.length + 2)}`;
+  const rows = ordered.map((c) => {
+    const states = cols.map((n) => featureState((c as unknown as Record<string, unknown>)[NEEDS[n].field]));
     const price = c.pricing_from ?? c.pricing_public ?? "necunoscut";
-    return `| [${cell(c.name)}](${vendorUrl(c.url)}) | ${states.map(mark).join(" | ")} | ${cell(price)} | ${c.verified_on ? formatDateRo(c.verified_on) : "-"} |`;
+    return `| [${cell(c.name)}](${c.url}) | ${states.map(mark).join(" | ")} | ${cell(price)} |`;
   });
-  const dates = list.map((c) => c.verified_on).filter((d): d is string => !!d).sort();
+
+  const factLines = ordered.flatMap((c) => {
+    const { verified, sources } = vendorAttribution(c);
+    const cols = needs.length ? needs : (Object.keys(NEEDS) as Need[]);
+    const facts = cols.map((n) => {
+      const val = mark(featureState((c as unknown as Record<string, unknown>)[NEEDS[n].field]));
+      return `- ${NEEDS[n].label}: **${val}** — sursă: ${sources}; verificat: ${verified}`;
+    });
+    return [`**${c.name}**`, ...facts];
+  });
+
   return [
-    `${DISCLOSURE} Datele vin de pe site-urile producatorilor${verifiedRange(dates)}. "necunoscut" inseamna ca informatia nu este publica.`,
+    EDITOR_NOTE,
+    "Fiecare afirmație din tabel folosește sursele furnizorului de pe rândul respectiv și data „verificat” de pe același rând (nu există surse separate per celulă în baza de date).",
     "",
-    `Tip magazin: ${type.replace(/_/g, " ")}. Ordonat dupa cate cerinte bifeaza.`,
+    `Tip magazin: ${type.replace(/_/g, " ")}. Programele sunt listate în ordine alfabetică (locale ro).`,
     "",
     header,
     sep,
     ...rows,
     "",
-    `Tabelul complet, cu surse: ${url}`,
+    "### Surse și date de verificare (per program)",
+    ...factLines,
+    "",
+    `Tabelul complet pe site: ${url}`,
   ].join("\n");
 }
 
@@ -131,10 +122,9 @@ export function createCompareTool(list: Competitor[]): ToolDef {
     name: NAME,
     title: "Compara programe de casa de marcat / POS",
     description:
-      "Compare Romanian POS software (program de casa de marcat, soft gestiune magazin, POS) for a shop type and " +
-      "needs: offline, casa de marcat fiscala (imprimanta fiscala), cantare, retete / productie, stocuri / gestiune, " +
-      "comenzi online. Facts from vendor sites with verification dates. The comparison is published by Tapselo, one of " +
-      "the listed vendors, and every result states this.",
+      "Compare Romanian POS / shop management software for a business type and optional needs (offline, cash register integration, scales, recipes, inventory, online orders, etc.). " +
+      "Returns a markdown table of public feature claims with vendor verification dates and source links where available. " +
+      "Tapselo maintains the table and is listed as one vendor among others; results are factual, not ranked endorsements.",
     inputSchema: {
       type: "object",
       properties: {
@@ -160,23 +150,39 @@ export function createCompareTool(list: Competitor[]): ToolDef {
       const needs = [...new Set(Array.isArray(args.needs) ? (args.needs as Need[]) : [])].filter((n) => n in NEEDS);
       const url = trackedUrl("/comparatie", NAME);
       if (!list.length) {
-        return { text: `${DISCLOSURE} Comparatia nu este gata inca. Vezi: ${url}`, structured: { vendors: [], url } };
+        return { text: `${EDITOR_NOTE} Comparatia nu este gata inca. Vezi: ${url}`, structured: { vendors: [], url } };
       }
       const cols = needs.length ? needs : (Object.keys(NEEDS) as Need[]);
+      const ordered = orderComparisonVendors(list);
       return {
         text: compareMd(list, type, needs, url),
         structured: {
-          disclosure: DISCLOSURE,
+          editor_note: EDITOR_NOTE,
+          ordering: "alphabetical_by_name_ro",
           business_type: type,
           needs: cols,
-          vendors: rankCompetitors(list, type, cols).map(({ c, states, matched }) => ({
-            name: c.name,
-            url: c.url,
-            matched,
-            features: Object.fromEntries(cols.map((n, i) => [n, states[i]])),
-            pricing: c.pricing_from ?? c.pricing_public ?? null,
-            verified_on: c.verified_on ?? null,
-          })),
+          vendors: ordered.map((c) => {
+            const { verified, sources } = vendorAttribution(c);
+            const sourceUrls = (c.sources ?? []).map((s) => s.url).filter(Boolean);
+            return {
+              name: c.name,
+              url: c.url,
+              verified_on: c.verified_on ?? null,
+              sources: c.sources ?? [],
+              features: Object.fromEntries(
+                cols.map((n) => [
+                  n,
+                  {
+                    value: featureState((c as unknown as Record<string, unknown>)[NEEDS[n].field]),
+                    source_urls: sourceUrls,
+                    verified_on: c.verified_on ?? null,
+                  },
+                ]),
+              ),
+              pricing: c.pricing_from ?? c.pricing_public ?? null,
+              attribution: { sources_md: sources, verified },
+            };
+          }),
           url,
         },
       };
