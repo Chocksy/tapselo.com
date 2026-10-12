@@ -1,0 +1,67 @@
+---
+import { internalPath } from "../../lib/internal-url.ts";
+---
+
+<article class="space-y-10 text-text-secondary">
+  <section aria-labelledby="disc-answer-title">
+    <h2 id="disc-answer-title" class="font-display text-2xl italic text-primary">Răspuns rapid</h2>
+    <p class="mt-4 text-lg leading-relaxed text-primary">
+      <strong>Prețul după o reducere de X% este prețul inițial înmulțit cu (1 − X/100).</strong>
+      Formula: <strong>preț nou = preț inițial × (1 − reducere%/100)</strong>; suma economisită = preț inițial − preț nou.
+    </p>
+    <p class="mt-4 leading-relaxed">
+      La reduceri succesive (ex. −20% apoi −10%), fiecare procent se aplică pe prețul rămas, nu pe prețul de la raft.
+      Reducerea efectivă totală este <strong>100 × (1 − (1 − p₁/100) × (1 − p₂/100) × …)</strong> — de exemplu 20% apoi 10% înseamnă
+      <strong>28%</strong> efectiv, nu 30%.
+    </p>
+  </section>
+
+  <section aria-labelledby="disc-examples-title">
+    <h2 id="disc-examples-title" class="font-display text-2xl italic text-primary">Exemple calculate</h2>
+    <div class="mt-4 space-y-6 leading-relaxed">
+      <div class="rounded-lg border border-border-light bg-surface p-5">
+        <h3 class="font-semibold text-primary">Exemplu 1 — 20% reducere de la 250 lei</h3>
+        <p class="mt-2">
+          Economii = 250 × 0,20 = <strong>50,00 lei</strong>. Preț nou = 250 − 50 = <strong>200,00 lei</strong> (sau 250 × 0,80).
+        </p>
+      </div>
+      <div class="rounded-lg border border-border-light bg-surface p-5">
+        <h3 class="font-semibold text-primary">Exemplu 2 — De la 199,99 lei la 149,99 lei</h3>
+        <p class="mt-2">
+          Economii = 199,99 − 149,99 = <strong>50,00 lei</strong>. Reducere = 50 ÷ 199,99 × 100 ≈ <strong>25,00%</strong> (rotunjit la sutimi).
+        </p>
+      </div>
+      <div class="rounded-lg border border-border-light bg-surface p-5">
+        <h3 class="font-semibold text-primary">Exemplu 3 — 20% apoi 10% pe 100 lei</h3>
+        <p class="mt-2">
+          După 20%: 80 lei. După 10% pe 80 lei: <strong>72,00 lei</strong>. Economii totale 28 lei → reducere efectivă
+          <strong>28%</strong> (nu 30%, pentru că a doua reducere nu se aplică pe cei 100 lei inițiali).
+        </p>
+      </div>
+      <div class="rounded-lg border border-border-light bg-surface p-5">
+        <h3 class="font-semibold text-primary">Exemplu 4 — Black Friday la raft</h3>
+        <p class="mt-2">
+          Eticheta arată „−30%” pe un produs de <strong>89,90 lei</strong>: preț promo = 89,90 × 0,70 = <strong>62,93 lei</strong>.
+          Dacă vrei prețul cu TVA după reducere, folosește și
+          <a href={internalPath("/unelte/calculator-tva/")} class="font-semibold text-accent underline-offset-2 hover:underline"
+            >calculatorul TVA</a
+          >
+          sau
+          <a
+            href={internalPath("/unelte/calculator-adaos-comercial/")}
+            class="font-semibold text-accent underline-offset-2 hover:underline">calculatorul de adaos</a
+          >
+          când porți de la costul de achiziție.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="disc-privacy-title">
+    <h2 id="disc-privacy-title" class="font-display text-2xl italic text-primary">Confidențialitate</h2>
+    <p class="mt-4 text-sm leading-relaxed">
+      Prețurile și procentele introduse rămân în browser. Analytics-ul Tapselo înregistrează doar că ai folosit calculatorul (și modul
+      ales), fără valorile tastate.
+    </p>
+  </section>
+</article>

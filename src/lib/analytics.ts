@@ -15,6 +15,7 @@ export type AnalyticsTool =
   | "generator_nir"
   | "generator_cod_de_bare"
   | "calculator_adaos"
+  | "calculator_reducere"
   | "verificare_cod_de_bare"
   | "verificare_cui"
   | "afise_obligatorii";
