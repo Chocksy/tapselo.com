@@ -1,0 +1,236 @@
+---
+import GuideShell from "../../components/GuideShell.astro";
+import { markdownToHtml } from "../../lib/markdown.ts";
+import { internalPath } from "../../lib/internal-url.ts";
+import {
+  breadcrumbJsonLd,
+  breadcrumbLinks,
+  canonicalUrl,
+  faqPageJsonLd,
+  type FaqItem,
+} from "../../lib/unelte/jsonld.ts";
+
+const path = "/ghid/registru-unic-de-control";
+const heading = "Registrul unic de control: cine îl ține, formatul legal și amenzile";
+const description =
+  "Registrul unic de control (RUC) este obligatoriu pentru firmele înmatriculate la ONRC. Legea 252/2003: unde se ține, cum se cumpără de la ANAF, ce notează inspectorii și amenzile din art. 7–8.";
+const verifiedOn = "2026-10-12";
+
+const body = `
+**Registrul unic de control (RUC)** este registrul în care se notează, la fiecare control, cine verifică firma, din ce instituție, în ce perioadă și ce act se încheie. Legea nr. 252/2003 îl impune persoanelor juridice înmatriculate la ONRC; îl ridicați de la unitatea fiscală din zona sediului social, îl păstrați la sediu și la punctele de lucru autorizate și îl prezentați la cererea oricărui organ de control.
+
+## Ce este registrul unic de control
+
+Potrivit **art. 2 alin. (1)** din Legea nr. 252/2003, registrul are scopul de a evidenția **toate controalele** desfășurate la contribuabil de organele de control specializate — financiar-fiscal, sanitar, fitosanitar, urbanism, calitate în construcții, protecția consumatorului, protecția muncii, inspecția muncii, protecția împotriva incendiilor și alte domenii prevăzute de lege.
+
+**Art. 2 alin. (2)** cere ca evidența să se facă cu **semnăturile** reprezentantului legal al contribuabilului și ale organului de control. Un singur registru centralizează vizitele tuturor instituțiilor, astfel încât un inspector nou vede istoricul controalelor legate de domeniul lui (**art. 3 alin. (3)**).
+
+## Cine trebuie să țină registrul
+
+**Art. 1 alin. (1):** contribuabilii **persoane juridice** înregistrate la Oficiul Național al Registrului Comerțului, autorizate potrivit legii, au obligația să țină registrul unic de control.
+
+**Art. 1 alin. (2):** celelalte categorii de contribuabili **pot** ține registrul, la alegere.
+
+Pentru un magazin organizat ca **SRL**, obligația este clară. Formele în care titularul este persoană fizică (de exemplu PFA sau II) nu sunt menționate la art. 1 alin. (1) ca persoane juridice; pentru ele nu am găsit în Legea 252/2003 o obligație directă — doar opțiunea de la alin. (2), dacă intră în categoria „celorlalte contribuabili”.
+
+**Unde se păstrează:** **art. 5 alin. (2)** — la **sediu social** și la **fiecare sediu secundar** pentru care s-au eliberat avize, autorizații și/sau acorduri de funcționare. Un magazin cu punct de lucru autorizat separat are nevoie de registru și acolo.
+
+**Art. 5 alin. (1):** registrul se numerotează, se sigilează și se păstrează de reprezentantul legal sau înlocuitorul acestuia.
+
+## Format fizic și regim electronic
+
+**Ce prevede legea în vigoare (forma consolidată pe legislatie.just.ro):**
+
+- **Art. 5 alin. (1)** descrie registrul ca document **numerotat și sigilat**, păstrat la unitate.
+- **Art. 6 alin. (1)** — registrul se **eliberează, contra cost**, de direcțiile generale ale finanțelor publice (structuri ANAF) din raza sediului social.
+- **Art. 10** — registrul unic de control **se tipărește** de Compania Națională „Imprimeria Națională” S.A., sub autoritatea Ministerului Finanțelor Publice.
+
+În textul consolidat al Legii nr. 252/2003 **nu există** dispoziție care să instituie un registru unic de control **electronic** sau online în locul registrului fizic. Nu am identificat pe Portalul Legislativ un act de modificare adoptat care să introducă format electronic; propunerile legislative din 2010 și 2022 pentru modificarea legii au fost **respinse** (nu schimbă textul în vigoare).
+
+**Concluzie pentru 2026:** obligația legală rămâne legată de **registrul fizic** achiziționat de la ANAF, conform art. 5–6 și 10. Orice aplicație sau procedură electronică ar necesita o lege nouă sau o modificare publicată în Monitorul Oficial — nu o presupunem în acest ghid.
+
+## Ce se înscrie în registru și cine completează
+
+### Înainte de control — organul de control
+
+**Art. 3 alin. (2):** înainte de începerea controlului, organul de control consemnează:
+
+- numele și prenumele persoanelor împuternicite;
+- unitatea de care aparțin;
+- numărul legitimației de control;
+- numărul și data delegației/ordinului de deplasare;
+- obiectivele controlului;
+- perioada controlului și perioada controlată;
+- temeiul legal al controlului.
+
+**Art. 3 alin. (4):** controlul **nu poate începe** decât după consemnarea acestor date în registru.
+
+**Art. 3 alin. (1):** contribuabilul are obligația de a **prezenta** registrul la cerere.
+
+**Art. 3 alin. (5):** dacă registrul nu este prezentat, verificarea se face oricum, iar cauzele neprezentării se notează în actul de control.
+
+### După control — organul de control
+
+**Art. 4:** după finalizare se înscriu obligatoriu **numărul și data actului de control** întocmit.
+
+### Reprezentantul firmei
+
+**Art. 2 alin. (2)** — semnătură la evidențierea controlului. Păstrarea registrului sigilat: **art. 5 alin. (1)**.
+
+**Art. 9** (pentru completitudine): neînscrierea elementelor de la art. 3 alin. (2) și art. 4 de către organele de control este **abatere disciplinară** pentru inspector, nu contravenție pentru comerciant.
+
+## Cum obții registrul de la ANAF
+
+**Art. 6 alin. (1):** registrul se eliberează **contra cost** de DGFP/structura ANAF din raza sediului social:
+
+- pe baza **certificatului de înregistrare** (comercianți);
+- pe baza **certificatului de înregistrare fiscală** (alte categorii de contribuabili).
+
+**Art. 6 alin. (3):** contribuabilii **nou-înființați** îl achiziționează în **30 de zile de la data înregistrării**.
+
+Întrebare–răspuns ANAF confirmă că, la **schimbarea sediului social**, nu este obligatoriu să cumpărați un registru nou — obligația de achiziție în 30 de zile se aplică contribuabililor nou-înființați.
+
+Unitățile ANAF publică, pe site-ul static, **programul de vânzare** și documentele cer la ghișeu (de exemplu certificat de înregistrare, certificat constatator pentru punct de lucru, delegație). Prețul este afișat local (exemplu ANAF Constanța: contravaloare RUC **30,25 lei** — suma poate diferi; verificați anunțul unității dumneavoastră).
+
+La **punct de lucru** separat, procedura ANAF din programul de vânzare cere de regulă și certificat constatator pentru sediul secundar — în linie cu **art. 5 alin. (2)**.
+
+## Amenzi pentru contribuabili
+
+**Art. 7** definește contravențiile:
+
+- **lit. a)** — neachiziționarea registrului de la DGFP din raza sediului social, în termenul din **art. 6 alin. (2) și (3)**;
+- **lit. b)** — neprezentarea registrului la solicitarea organelor de control (**art. 3 alin. (1)**).
+
+**Art. 8 alin. (1)** din Legea nr. 252/2003 stabilește amenzile în **lei vechi** (moneda din 2003). Pentru sumele aplicabile astăzi în lei (RON), Legea nr. 348/2004 privind denominarea monedei naționale stabilește raportul **10.000 lei vechi = 1 leu nou** (**art. 1 alin. (1)**) și prevede că sumele din actele normative emise înainte de 1 iulie 2005 se înlocuiesc prin **împărțire la 10.000** (**art. 5 alin. (5)**).
+
+| Faptă (art. 7) | Amenda (Legea 252/2003, art. 8 alin. (1)) | Echivalent în lei noi (Legea 348/2004, art. 1 alin. (1) și art. 5 alin. (5)) |
+| --- | --- | --- |
+| lit. a) — fără registru în termen | de la 5.000.000 la 10.000.000 lei vechi | **500–1.000 lei** (5.000.000–10.000.000 lei vechi) |
+| lit. b) — neprezentare la control | de la 10.000.000 la 20.000.000 lei vechi | **1.000–2.000 lei** (10.000.000–20.000.000 lei vechi) |
+
+**Art. 8 alin. (2):** constatarea și aplicarea sancțiunilor revin organelor de control specializate.
+
+**Art. 8 alin. (3):** dispozițiile se completează cu **OG nr. 2/2001** privind regimul juridic al contravențiilor, aprobată cu modificări prin Legea nr. 180/2002 (procedură de constatare, contestare etc.).
+
+## Legătura cu activitatea de magazin
+
+Registrul unic de control nu înlocuiește **registrul de casă** sau evidența vânzărilor — este doar jurnalul controalelor oficiale. Pentru încasări și plăți în numerar, vedeți ghidul despre [plafoanele de numerar](${internalPath("/ghid/plafoane-numerar")}) și unealta [registru de casă](${internalPath("/unelte/registru-de-casa")}).
+`;
+
+const faq: FaqItem[] = [
+  {
+    q: "Cine are obligația legală să țină registrul unic de control?",
+    a: "Persoanele juridice înmatriculate la ONRC și autorizate potrivit legii (art. 1 alin. (1) Legea 252/2003). Alți contribuabili pot opta (art. 1 alin. (2)).",
+  },
+  {
+    q: "Unde trebuie păstrat registrul?",
+    a: "La sediul social și la fiecare sediu secundar pentru care există avize, autorizații sau acorduri de funcționare (art. 5 alin. (2)).",
+  },
+  {
+    q: "Există registrul unic de control electronic obligatoriu?",
+    a: "Nu în Legea 252/2003 în forma consolidată pe legislatie.just.ro: legea reglementează registrul tipărit, numerotat și sigilat (art. 5, 6, 10). Nu am găsit act modificator adoptat care să instituie format electronic.",
+  },
+  {
+    q: "În cât timp trebuie cumpărat registrul după înființarea firmei?",
+    a: "În 30 de zile de la data înregistrării (art. 6 alin. (3)), de la structura ANAF din raza sediului social (art. 6 alin. (1)).",
+  },
+  {
+    q: "Trebuie registru nou dacă mut sediul social?",
+    a: "Legea nu impune achiziția unui registru nou la schimbarea sediului; ANAF confirmă că obligația de cumpărare în 30 de zile este pentru contribuabilii nou-înființați.",
+  },
+  {
+    q: "Ce se scrie în registru înainte de control?",
+    a: "Datele inspectorilor, delegația, obiectivele, perioadele și temeiul legal (art. 3 alin. (2)); controlul nu poate începe fără aceste înscrieri (art. 3 alin. (4)).",
+  },
+  {
+    q: "Care sunt amenzile pentru firme?",
+    a: "Art. 7–8 Legea 252/2003: neachiziționarea în termen — 500–1.000 lei (5.000.000–10.000.000 lei vechi, art. 8 alin. (1)); neprezentarea la control — 1.000–2.000 lei (10.000.000–20.000.000 lei vechi). Conversia: Legea 348/2004, art. 1 alin. (1) și art. 5 alin. (5).",
+  },
+  {
+    q: "De unde cumpăr registrul și ce documente cer?",
+    a: "De la unitatea ANAF din raza sediului social, contra cost (art. 6). Procedura și actele cerute (certificat înregistrare, constatator pentru punct de lucru etc.) sunt publicate în programul de vânzare al unității fiscale.",
+  },
+];
+
+const crumbs = [
+  { name: "Acasă", path: "/" },
+  { name: "Ghid pentru magazine", path: "/ghid/" },
+  { name: heading, path },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: heading,
+    description,
+    dateModified: verifiedOn,
+    inLanguage: "ro-RO",
+    url: canonicalUrl(path),
+    mainEntityOfPage: canonicalUrl(path),
+    author: {
+      "@type": "Organization",
+      name: "Tapselo",
+      url: "https://tapselo.com",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Tapselo",
+      url: "https://tapselo.com",
+    },
+  },
+  faqPageJsonLd(faq),
+  breadcrumbJsonLd(crumbs),
+];
+
+const sources = [
+  {
+    title: "Legea nr. 252/2003 privind registrul unic de control (forma consolidată)",
+    url: "https://legislatie.just.ro/Public/DetaliiDocument/44478",
+  },
+  {
+    title: "Legea nr. 348/2004 privind denominarea monedei naționale (conversie amenzi)",
+    url: "https://legislatie.just.ro/Public/DetaliiDocument/53757",
+  },
+  {
+    title: "OG nr. 2/2001 privind regimul juridic al contravențiilor (completare art. 8 alin. (3) Legea 252/2003)",
+    url: "https://legislatie.just.ro/Public/DetaliiDocument/29779",
+  },
+  {
+    title: "ANAF — Întrebare–răspuns: achiziție RUC, sediu social, punct de lucru",
+    url: "https://chat.anaf.ro/ANAFI.nsf/0/85ABB956125AC786C2257E9000484B15?OpenDocument=",
+  },
+  {
+    title: "ANAF — Program vânzare RUC (exemplu: documente și contravaloare)",
+    url: "https://static.anaf.ro/static/10/Galati/Constanta/Program_vanzare_RUC-REF.pdf",
+  },
+];
+---
+
+<GuideShell
+  title="Registrul unic de control (RUC): obligații, amenzi, ANAF | Ghid Tapselo"
+  description={description}
+  heading={heading}
+  lead="Firmele (persoane juridice) înmatriculate la ONRC trebuie să cumpere registrul unic de control de la ANAF, să îl țină la sediu și la punctele de lucru autorizate și să îl arate inspectorilor înainte de fiecare control — altfel riscați amenzile din art. 7–8 ale Legii 252/2003."
+  sources={sources}
+  verifiedOn={verifiedOn}
+  campaign="registru-unic-de-control"
+  breadcrumbs={breadcrumbLinks(crumbs)}
+  ctaTitle="Evidența zilnică a magazinului, fără birocrație inutilă"
+  ctaBody="Tapselo te ajută cu vânzările, stocurile și documentele de casă — ca la control să ai ordine în operațiuni, nu doar registrul unic completat de inspector."
+  jsonLd={jsonLd}
+>
+  <article class="kb-prose" set:html={markdownToHtml(body)} />
+
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Întrebări frecvente</h2>
+    <div class="mt-6 space-y-6">
+      {faq.map((item) => (
+        <div class="rounded-xl border border-border-light p-5">
+          <h3 class="text-lg font-semibold text-primary">{item.q}</h3>
+          <p class="mt-2 leading-relaxed text-text-secondary">{item.a}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+</GuideShell>
