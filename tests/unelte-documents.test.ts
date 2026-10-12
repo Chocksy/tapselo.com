@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { cashbookHtml, nirHtml, warehouseCardHtml } from "../src/lib/unelte/document-export.ts";
+import { cashbookHtml, cashOrderHtml, nirHtml, warehouseCardHtml } from "../src/lib/unelte/document-export.ts";
 
 const EVIL = `"><script>window.__xss=1</script><img src=x onerror=alert(1)>`;
 
@@ -42,6 +42,39 @@ test("local NIR: NIR number and date, received quantities, no abuse line", () =>
   assert.match(html, /<td class="num">10<\/td>\n<td class="num">9<\/td>\n<td class="num">5,00<\/td>\n<td class="num">45,00<\/td>/);
   assert.match(html, /Diferențe la recepție/);
   assert.doesNotMatch(html, /Raportează abuz|Expiră pe/);
+});
+
+test("local dispoziție de plată: cod 14-4-4, PLATĂ, sumă în litere, UTM unelte", () => {
+  const html = cashOrderHtml({
+    company: "Magazin Ana SRL",
+    company_tax_id: "RO123",
+    doc_number: "7",
+    date: "2026-10-12",
+    direction: "plata",
+    person_name: "Ion Popescu",
+    person_role: "Administrator",
+    amount: 150,
+    purpose: "Avans deplasare",
+  });
+  assert.match(html, /14-4-4/);
+  assert.match(html, /DISPOZIȚIE DE PLATĂ/);
+  assert.match(html, /utm_source=unelte&amp;utm_medium=document&amp;utm_campaign=g_cash_order/);
+  assert.match(html, /Date suplimentare privind beneficiarul/);
+  assert.match(html, /o sută cincizeci lei/);
+});
+
+test("local dispoziție de încasare: ÎNCASARE, fără verso beneficiar", () => {
+  const html = cashOrderHtml({
+    company: "Magazin Ana SRL",
+    doc_number: "2",
+    date: "2026-10-12",
+    direction: "incasare",
+    person_name: "Maria Ionescu",
+    amount: 50,
+    purpose: "Restituire avans",
+  });
+  assert.match(html, /DISPOZIȚIE DE ÎNCASARE/);
+  assert.doesNotMatch(html, /Date suplimentare privind beneficiarul/);
 });
 
 test("local fișă de magazie: cod 14-3-8, stoc rulat, UTM unelte", () => {
