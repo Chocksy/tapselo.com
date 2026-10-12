@@ -5,7 +5,7 @@ import path from "node:path";
 const baseUrl = process.env.MOCKUP_BASE_URL ?? "http://127.0.0.1:4321";
 const outDir = process.env.ARTIFACT_DIR ?? "/opt/cursor/artifacts";
 
-const variants = ["a", "b", "c"];
+const variants = ["a", "b", "c", "d"];
 const widths = [1280, 390];
 
 await mkdir(outDir, { recursive: true });
