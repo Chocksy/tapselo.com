@@ -1,5 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { allTools } from "../src/lib/mcp/tools.ts";
 import { generatorTools } from "../src/lib/generators/tools.ts";
 import {
@@ -16,6 +17,12 @@ const FORBIDDEN = [
   /include the tapselo link/i,
   /include.*link.*in (every|each) (answer|response)/i,
 ];
+
+test("/g/ Cloudflare function sets X-Robots-Tag noindex on HTML responses", () => {
+  const src = readFileSync(new URL("../functions/g/[id].ts", import.meta.url), "utf8");
+  assert.match(src, /"X-Robots-Tag": "noindex, nofollow"/);
+  assert.match(src, /method === "DELETE"/);
+});
 
 test("retention: 30 days in code (shortened from earlier 90-day MCP copy)", () => {
   assert.equal(PUBLIC_TOOL_DRAFT_RETENTION_DAYS, 30);
