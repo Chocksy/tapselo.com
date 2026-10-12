@@ -1,0 +1,48 @@
+---
+// Sticky “Pe pagină” sidebar for long /ghid/ articles (desktop only).
+---
+
+<aside class="guide-page-toc max-lg:hidden" aria-label="Cuprins" data-guide-page-toc hidden>
+  <nav class="guide-page-toc__nav rounded-xl border border-border-light bg-surface-white p-5">
+    <p class="text-sm font-bold text-primary">Pe pagină</p>
+    <ul class="guide-page-toc__list mt-2 space-y-1" role="list"></ul>
+  </nav>
+</aside>
+
+<script>
+  import { initGuidePageToc } from "../lib/guide-page-toc.client.ts";
+
+  initGuidePageToc();
+</script>
+
+<style>
+  .guide-page-toc {
+    position: sticky;
+    top: 5.5rem;
+    max-height: calc(100vh - 6.5rem);
+    overflow-y: auto;
+    align-self: start;
+  }
+
+  .guide-page-toc__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .guide-page-toc__item--h3 {
+    padding-left: 0.75rem;
+  }
+
+  .guide-page-toc__link {
+    display: block;
+    line-height: 1.35;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .guide-page-toc__link.is-active {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+</style>

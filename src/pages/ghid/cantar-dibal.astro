@@ -21,15 +21,6 @@ const verified = dibal.map((e) => e.verified_on).sort().at(-1) ?? null;
   verifiedOn={verified}
   campaign="cantar-dibal"
 >
-  <nav class="rounded-xl border border-border-light p-5">
-    <p class="text-sm font-bold text-primary">Pe pagină</p>
-    <ul class="mt-2 space-y-1 pl-5 text-sm">
-      {dibal.map((e) => (
-        <li class="list-disc"><a href={`#${anchor(e.page, e.id)}`} class="text-accent hover:text-accent-hover">{e.title}</a></li>
-      ))}
-    </ul>
-  </nav>
-
   {dibal.map((e) => (
     <section id={anchor(e.page, e.id)}>
       <h2 class="font-display text-3xl italic text-primary">{e.title}</h2>
