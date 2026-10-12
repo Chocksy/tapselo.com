@@ -10,7 +10,7 @@ import PricingGratisMockup from "../../components/mockups/PricingGratisMockup.as
   <script is:inline>
     (() => {
       const v = new URLSearchParams(window.location.search).get("variant")?.toLowerCase();
-      if (v === "b" || v === "c" || v === "a") {
+      if (v === "b" || v === "c" || v === "a" || v === "d") {
         const target = `/mockups/pricing-gratis/${v}${window.location.search.includes("variant=") ? "" : window.location.search}`;
         if (window.location.pathname !== `/mockups/pricing-gratis/${v}`) {
           window.location.replace(target);

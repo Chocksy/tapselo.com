@@ -90,14 +90,40 @@ const planPriceFadedClass =
         </div>
       )}
 
-      <div class:list={["grid gap-6 lg:grid-cols-3", (variant === "a" || variant === "b") && fadedLayerClass, variant === "b" && "rounded-2xl"]}>
+      <div
+        class:list={[
+          "grid gap-6 lg:grid-cols-3",
+          (variant === "a" || variant === "b" || variant === "d") && fadedLayerClass,
+          variant === "b" && "rounded-2xl",
+        ]}
+      >
         {plans.map((plan) => (
           <div
             class:list={[
-              "relative flex flex-col overflow-hidden rounded-xl border bg-surface-white p-8 transition-shadow duration-300",
+              "relative flex flex-col rounded-xl border bg-surface-white p-8 transition-shadow duration-300",
+              variant === "d" ? "overflow-visible" : "overflow-hidden",
               plan.featured ? "border-accent ring-1 ring-accent" : "border-border",
             ]}
           >
+            {variant === "d" && (
+              <div
+                class="pointer-events-none absolute z-20 -left-3 -top-3 sm:-left-3.5 sm:-top-3.5"
+                style="transform: rotate(-13deg);"
+                aria-hidden="true"
+              >
+                <div
+                  class="flex items-center justify-center border-[3px] border-cash/55 bg-cash/[0.13] px-2.5 py-1 shadow-[0_0_0_1px_rgba(16,185,129,0.2)] sm:px-3 sm:py-1.5"
+                >
+                  <span
+                    class="font-display text-base font-normal italic leading-none tracking-[0.14em] text-cash sm:text-lg"
+                    style="-webkit-text-stroke: 1px rgba(15, 23, 42, 0.1);"
+                  >
+                    GRATIS
+                  </span>
+                </div>
+              </div>
+            )}
+
             {variant === "c" && (
               <div class="pointer-events-none absolute right-0 top-0 z-10 h-24 w-24 overflow-hidden" aria-hidden="true">
                 <div
@@ -109,7 +135,7 @@ const planPriceFadedClass =
               </div>
             )}
 
-            <div>
+            <div class:list={[variant === "d" && "relative z-0 pt-7 sm:pt-6"]}>
               <h3 class="text-lg font-bold text-primary">Tapselo {plan.name}</h3>
               <p class="mt-1 text-sm text-text-secondary">{plan.note}</p>
               {variant === "c" ? (

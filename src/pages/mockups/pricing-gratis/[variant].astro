@@ -4,7 +4,7 @@ import PricingGratisMockup from "../../../components/mockups/PricingGratisMockup
 import { parsePricingGratisVariant, type PricingGratisVariant } from "../../../lib/mockups/pricing-gratis-variant.ts";
 
 export function getStaticPaths() {
-  return (["a", "b", "c"] as PricingGratisVariant[]).map((variant) => ({
+  return (["a", "b", "c", "d"] as PricingGratisVariant[]).map((variant) => ({
     params: { variant },
     props: { variant },
   }));
@@ -20,6 +20,7 @@ const labels: Record<PricingGratisVariant, string> = {
   a: "Variantă A — ștampilă diagonală",
   b: "Variantă B — overlay frosted",
   c: "Variantă C — panglici pe carduri",
+  d: "Variantă D — ștampilă discretă pe fiecare plan",
 };
 ---
 
