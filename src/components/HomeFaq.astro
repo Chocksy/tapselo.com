@@ -1,0 +1,45 @@
+---
+import { internalPath } from "../lib/internal-url.ts";
+import { homepageFaq } from "../lib/homepage-faq.ts";
+---
+
+<section id="faq" class="bg-surface-white py-24 border-t border-border">
+  <div class="site-container max-w-3xl">
+    <h2 class="animate-on-scroll font-display text-4xl italic text-primary sm:text-5xl">
+      Întrebări frecvente
+    </h2>
+    <p class="animate-on-scroll animate-delay-100 mt-4 text-lg leading-relaxed text-text-secondary">
+      Răspunsuri scurte despre casa de marcat, offline și prețuri.
+    </p>
+
+    <dl class="animate-on-scroll mt-10 space-y-8">
+      {
+        homepageFaq.map((item) => (
+          <div class="rounded-xl border border-border bg-surface p-6 md:p-7">
+            <dt class="text-lg font-bold text-primary">{item.q}</dt>
+            <dd class="mt-3 text-base leading-relaxed text-text-secondary">
+              {item.q === "Tapselo funcționează fără internet?" ? (
+                <>
+                  Da, pentru vânzarea la casă: programul POS rulează pe calculator (Windows, macOS sau Linux),
+                  emite bonul fiscal la imprimanta legată local și salvează vânzările pe dispozitiv când pică
+                  internetul. La reconectare, datele se sincronizează în contul Tapselo. Aplicațiile de inventar pe
+                  Android sau iPhone sunt doar pentru gestiune — nu înlocuiesc casa de marcat. Conectarea AMEF
+                  către ANAF rămâne obligația ta, conform legii; detalii în{" "}
+                  <a
+                    href={internalPath("/ghid/articole/casa-de-marcat-fara-internet/")}
+                    class="font-semibold text-accent hover:underline"
+                  >
+                    ghidul casa de marcat fără internet
+                  </a>
+                  .
+                </>
+              ) : (
+                item.a
+              )}
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
