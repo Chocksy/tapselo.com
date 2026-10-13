@@ -187,7 +187,6 @@ function page(f: Frame): string {
 <link rel="canonical" href="${c}" />
 <meta name="theme-color" content="${THEME_COLOR[f.theme]}" />
 <link rel="icon" href="/favicon.ico" sizes="any" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png" />
