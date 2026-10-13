@@ -11,7 +11,10 @@ export function canonicalUrl(path: string): string {
 
 export interface FaqItem {
   q: string;
+  /** Plain text for FAQPage JSON-LD (and default UI when `aHtml` is omitted). */
   a: string;
+  /** Trusted HTML for on-page FAQ answer only. */
+  aHtml?: string;
 }
 
 export interface Crumb {

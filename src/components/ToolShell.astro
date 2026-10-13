@@ -82,7 +82,11 @@ const breadcrumbs = breadcrumbLinks(toolBreadcrumbs(heading, path));
             {faq.map((item) => (
               <div>
                 <h3 class="text-lg font-semibold text-primary">{item.q}</h3>
-                <p class="mt-2 leading-relaxed text-text-secondary">{item.a}</p>
+                {item.aHtml ? (
+                  <p class="mt-2 leading-relaxed text-text-secondary" set:html={item.aHtml} />
+                ) : (
+                  <p class="mt-2 leading-relaxed text-text-secondary">{item.a}</p>
+                )}
               </div>
             ))}
           </div>
