@@ -1,7 +1,9 @@
 ---
+import ChromeAddButton from "../ChromeAddButton.astro";
+
 interface Props {
   anafApi: string;
-  /** Chrome Web Store URL when published; placeholder until then. */
+  /** Chrome Web Store listing URL. */
   extensionStoreUrl?: string;
 }
 
@@ -43,22 +45,21 @@ const showExtension = extensionStoreUrl.length > 0;
     <div class="ut-result" id="cui-result"></div>
   </div>
 
-  {showExtension ? (
-    <p class="mt-8 text-sm text-text-secondary">
-      Preferi verificarea direct din browser, fără să deschizi pagina?
-      <a
+  {showExtension && (
+    <div
+      class="mt-8 flex flex-col gap-4 rounded-lg border border-border-light bg-surface p-4 sm:flex-row sm:items-center sm:justify-between"
+      id="cui-extension-cta"
+    >
+      <p class="text-sm leading-relaxed text-text-secondary">
+        Preferi verificarea direct din browser? Extensia „Verificare CUI ANAF” citește CUI-ul selectat sau introdus în popup și afișează aceleași date ANAF.
+      </p>
+      <ChromeAddButton
         href={extensionStoreUrl}
-        class="font-semibold text-accent hover:text-accent-hover"
-        rel="noopener noreferrer"
-      >
-        Instalează extensia Chrome Tapselo
-      </a>
-      .
-    </p>
-  ) : (
-    <p class="mt-8 text-sm text-text-secondary" id="cui-ext-placeholder">
-      Extensia Chrome pentru verificare rapidă din meniul contextual va fi disponibilă în Chrome Web Store în curând.
-    </p>
+        variant="card"
+        ctaId="unelte-verificare-cui-chrome-card"
+        class="shrink-0"
+      />
+    </div>
   )}
 </section>
 

@@ -53,6 +53,7 @@ const breadcrumbs = breadcrumbLinks(toolBreadcrumbs(heading, path));
         <Breadcrumbs items={breadcrumbs} />
         <h1 class="mt-3 font-display text-4xl italic text-white sm:text-5xl">{heading}</h1>
         {lead && <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">{lead}</p>}
+        <slot name="hero-actions" />
       </div>
     </div>
   </header>

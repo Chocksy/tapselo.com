@@ -1,9 +1,12 @@
 ---
 import ToolShell from "../../components/ToolShell.astro";
+import ChromeAddButton from "../../components/ChromeAddButton.astro";
 import CuiLookupTool from "../../components/unelte/CuiLookupTool.astro";
+import { VERIFICARE_CUI_CHROME_WEB_STORE_URL } from "../../lib/verificare-cui-extension.ts";
 import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
 
 const path = "/unelte/verificare-cui/";
+const chromeStoreUrl = VERIFICARE_CUI_CHROME_WEB_STORE_URL;
 const heading = "Verificare CUI ANAF";
 
 const faq = [
@@ -21,7 +24,7 @@ const faq = [
   },
   {
     q: "Există extensie Chrome?",
-    a: "Da — extensia Tapselo „Verificare CUI ANAF” permite verificarea din meniul contextual pe text selectat sau din popup. Linkul din Chrome Web Store apare aici imediat ce publicarea este finalizată.",
+    a: `Da — extensia gratuită Tapselo „Verificare CUI ANAF” verifică codul fiscal din meniul contextual (click dreapta pe text selectat) sau din fereastra extensiei. O găsești în Chrome Web Store: ${chromeStoreUrl}`,
   },
 ];
 
@@ -52,5 +55,11 @@ const jsonLd = toolJsonLd({
   jsonLd={jsonLd}
   faq={faq}
 >
-  <CuiLookupTool anafApi="/api" />
+  <div slot="hero-actions" class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+    <ChromeAddButton href={chromeStoreUrl} variant="hero" ctaId="unelte-verificare-cui-chrome-hero" />
+    <p class="text-sm text-text-on-primary/70 sm:max-w-md">
+      Extensie gratuită: verifică CUI-ul din orice pagină, fără să deschizi unealta web.
+    </p>
+  </div>
+  <CuiLookupTool anafApi="/api" extensionStoreUrl={chromeStoreUrl} />
 </ToolShell>
