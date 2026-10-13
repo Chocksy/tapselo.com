@@ -3,6 +3,7 @@ import ToolShell from "../../components/ToolShell.astro";
 import ChromeAddButton from "../../components/ChromeAddButton.astro";
 import CuiLookupTool from "../../components/unelte/CuiLookupTool.astro";
 import { VERIFICARE_CUI_CHROME_WEB_STORE_URL } from "../../lib/verificare-cui-extension.ts";
+import { internalPath } from "../../lib/internal-url.ts";
 import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
 
 const path = "/unelte/verificare-cui/";
@@ -59,6 +60,11 @@ const jsonLd = toolJsonLd({
     <ChromeAddButton href={chromeStoreUrl} variant="hero" ctaId="unelte-verificare-cui-chrome-hero" />
     <p class="text-sm text-text-on-primary/70 sm:max-w-md">
       Extensie gratuită: verifică CUI-ul din orice pagină, fără să deschizi unealta web.
+      <a
+        href={internalPath("/extensii/verificare-cui/confidentialitate/")}
+        class="font-semibold text-white underline underline-offset-2 hover:text-accent-light"
+        >Politica de confidențialitate a extensiei</a
+      >.
     </p>
   </div>
   <CuiLookupTool anafApi="/api" extensionStoreUrl={chromeStoreUrl} />

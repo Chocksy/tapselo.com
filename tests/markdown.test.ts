@@ -27,6 +27,13 @@ test("markdown: h2/h3 headings with ids and tables", () => {
   assert.equal(slugifyHeading("Cine trebuie să țină registrul"), "cine-trebuie-sa-tina-registrul");
 });
 
+test("markdown: email_off passes through for Cloudflare", () => {
+  assert.equal(
+    inlineMd("Contact: <!--email_off-->suport@example.ro<!--/email_off-->"),
+    "Contact: <!--email_off-->suport@example.ro<!--/email_off-->",
+  );
+});
+
 test("markdown: escapes HTML and refuses unsafe links", () => {
   assert.equal(inlineMd('<script>alert(1)</script> "x"'), "&lt;script&gt;alert(1)&lt;/script&gt; &quot;x&quot;");
   assert.doesNotMatch(inlineMd("[click](javascript:alert(1))"), /href|javascript:alert\(1\)\)/);

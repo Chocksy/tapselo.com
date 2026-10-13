@@ -1,7 +1,7 @@
 [
   {
     "id": "cote-tva-casa-de-marcat",
-    "title": "Cotele de TVA 21% și 11% și grupele de TVA din casa de marcat",
+    "title": "TVA 21% și 11%: grupe în casa de marcat",
     "summary": "Din 1 august 2025 cota standard de TVA este 21%, iar cota redusă unică este 11%. Casa de marcat trebuie reprogramată pe noile cote.",
     "body": "Din **1 august 2025** (Legea 141/2025) în România există două cote de TVA:\n\n- **21%**, cota standard, pentru majoritatea produselor;\n- **11%**, cota redusă unică, pentru alimentele din lista de la art. 291 Cod fiscal, apa (NC 2201), serviciile de restaurant și catering (fără alcool și fără băuturile NC 2202), medicamente, cărți și alte excepții.\n\nAtenție la alimente: **nu** intră la 11% băuturile alcoolice, băuturile din NC 2202 (răcoritoare, sucuri cu adaos), alimentele cu **zahăr adăugat de cel puțin 10 g/100 g** și suplimentele alimentare. De aceea unele produse de patiserie, biscuiții sau cozonacul pot fi la 21%. Verificați fiecare produs după codul NC și rețetă.\n\n**Casa de marcat.** Grupele de TVA (literele A, B, C...) se programează de service-ul autorizat. Legea nu impune ce literă primește ce cotă; practica uzuală este A = 21%, B = 11%. Verificați cu service-ul ce grupe are casa dumneavoastră și asigurați-vă că fiecare produs din nomenclator are grupa corectă. O grupă greșită înseamnă TVA greșit pe bon și în raportul Z.\n\nCe face Tapselo: fiecare produs are o cotă de TVA mapată pe grupa fiscală a imprimantei, iar bonul se emite direct cu grupa corectă.\n\nDacă nu sunteți sigur de încadrarea unui produs, verificați cu contabilul.",
     "keywords": [
@@ -84,7 +84,7 @@
   },
   {
     "id": "microintreprindere-2026",
-    "title": "Microîntreprinderea în 2026: plafon 100.000 EUR și impozit 1%",
+    "title": "Microîntreprindere 2026: plafon și impozit 1%",
     "summary": "Din 2026 impozitul pe veniturile microîntreprinderilor are o singură cotă, 1%, iar plafonul de venituri este 100.000 EUR.",
     "body": "Prin OUG 89/2025 (MO 1203/24.12.2025), regimul de microîntreprindere se schimbă de la **1 ianuarie 2026**:\n\n- **cotă unică de impozit: 1%** din venituri;\n- **plafon de venituri: 100.000 EUR**, calculat la cursul BNR de la închiderea exercițiului financiar precedent. Cursul BNR din 31.12.2025 a fost 5,0985 lei/EUR, adică aproximativ **509.850 lei**;\n- firma trebuie să aibă **cel puțin un salariat**;\n- veniturile întreprinderilor legate se adună pentru verificarea plafonului.\n\nDacă depășiți plafonul în cursul anului, firma trece la **impozit pe profit** începând cu trimestrul în care a avut loc depășirea și nu mai revine la regimul de micro.\n\nSfat practic: un magazin cu vânzări de peste 1.400 lei pe zi în medie ajunge aproape de plafon într-un an. Urmăriți cumulat vânzările (fără TVA) din rapoartele Z și discutați cu contabilul înainte de depășire.\n\nAu existat modificări ulterioare ale acestor reguli în 2026; verificați cu contabilul situația exactă a firmei dumneavoastră.",
     "keywords": [
@@ -124,7 +124,7 @@
   },
   {
     "id": "plafoane-numerar",
-    "title": "Plafoanele de numerar: 5.000 lei pe zi și 50.000 lei în casă",
+    "title": "Plafoane numerar: 5.000 lei/zi, 50.000 casă",
     "summary": "Legea 70/2015 limitează încasările și plățile în numerar între firme și soldul de numerar din casierie la sfârșitul zilei.",
     "body": "Legea 70/2015 (forma în vigoare din 1 ianuarie 2026) stabilește limite pentru numerar:\n\n- **Între firme:** încasări de cel mult **5.000 lei pe zi de la același partener** (10.000 lei pentru cash & carry). Plăți de cel mult 5.000 lei pe persoană și **10.000 lei pe zi în total**. Este interzisă fragmentarea unei facturi de peste 5.000 lei în mai multe plăți cash.\n- **Cu persoane fizice:** cel mult **10.000 lei pe zi de la aceeași persoană**.\n- **Soldul casieriei:** la sfârșitul zilei, maxim **50.000 lei** (500.000 lei pentru cash & carry, supermarketuri și hipermarketuri). Surplusul se depune la bancă în cel mult **2 zile lucrătoare**.\n\nAmenda pentru depășire este **25% din suma care depășește plafonul**, minim 500 lei.\n\nDin 2026 (Legea 239/2025), firmele trebuie să aibă cont de plăți, iar plata se poate face și prin mijloace moderne de plată. Acceptarea cardului ajută la respectarea plafoanelor.\n\nUnele surse secundare dau alte valori pentru plățile persoanelor fizice; verificați cu contabilul.",
     "keywords": [
@@ -158,9 +158,9 @@
   },
   {
     "id": "garantie-sgr-bon-fiscal",
-    "title": "Garanția SGR de 0,50 lei: bonul fiscal și înregistrarea la RetuRO",
+    "title": "SGR 0,50 lei: bon fiscal și RetuRO",
     "summary": "Ambalajele de băuturi din SGR au o garanție de 0,50 lei, afișată separat la raft și pe bonul fiscal. Comerciantul trebuie să fie înregistrat la RetuRO.",
-    "body": "Sistemul de garanție-returnare (HG 1074/2021) se aplică ambalajelor de băuturi din plastic, sticlă și metal marcate cu sigla SGR.\n\n**Ce trebuie să facă magazinul:**\n\n- **Înregistrare** în baza de date RetuRO (art. 5) și contract cu administratorul.\n- **Garanția este 0,50 lei** pe ambalaj, separată de preț. Afișați-o **distinct la raft și pe bonul fiscal** (art. 6 și art. 12).\n- **Primiți înapoi orice ambalaj SGR**, chiar fără bon, și returnați garanția în numerar sau voucher (art. 13). Punctul de returnare poate fi la cel mult 150 m de magazin, cu același program.\n- **Raportați** în aplicația RetuRO și păstrați evidența ambalajelor.\n- Magazinele sub 200 m² se pot asocia pentru un punct comun de returnare. HoReCa percepe garanția doar pentru băuturile luate la pachet.\n\n**Amenzi:** neînregistrarea se sancționează cu 20.000-40.000 lei; lipsa afișării distincte a garanției, cu 16.000-30.000 lei.\n\n**TVA:** garanția nu face parte din prețul produsului. Tratamentul TVA nu este scris explicit în Codul fiscal; verificați cu contabilul.\n\nCe face Tapselo: garanția SGR apare automat pe un rând separat al bonului fiscal, lângă produsul cu ambalaj SGR.\n\nAjutor RetuRO: suport@returosgr.ro, telefon 031.9003.",
+    "body": "Sistemul de garanție-returnare (HG 1074/2021) se aplică ambalajelor de băuturi din plastic, sticlă și metal marcate cu sigla SGR.\n\n**Ce trebuie să facă magazinul:**\n\n- **Înregistrare** în baza de date RetuRO (art. 5) și contract cu administratorul.\n- **Garanția este 0,50 lei** pe ambalaj, separată de preț. Afișați-o **distinct la raft și pe bonul fiscal** (art. 6 și art. 12).\n- **Primiți înapoi orice ambalaj SGR**, chiar fără bon, și returnați garanția în numerar sau voucher (art. 13). Punctul de returnare poate fi la cel mult 150 m de magazin, cu același program.\n- **Raportați** în aplicația RetuRO și păstrați evidența ambalajelor.\n- Magazinele sub 200 m² se pot asocia pentru un punct comun de returnare. HoReCa percepe garanția doar pentru băuturile luate la pachet.\n\n**Amenzi:** neînregistrarea se sancționează cu 20.000-40.000 lei; lipsa afișării distincte a garanției, cu 16.000-30.000 lei.\n\n**TVA:** garanția nu face parte din prețul produsului. Tratamentul TVA nu este scris explicit în Codul fiscal; verificați cu contabilul.\n\nCe face Tapselo: garanția SGR apare automat pe un rând separat al bonului fiscal, lângă produsul cu ambalaj SGR.\n\nAjutor RetuRO: <!--email_off-->suport@returosgr.ro<!--/email_off-->, telefon 031.9003.",
     "keywords": [
       "sgr",
       "garantie",
@@ -253,7 +253,7 @@
   {
     "id": "e-factura-b2b-b2c",
     "title": "e-Factura: facturi B2B și B2C în RO e-Factura",
-    "summary": "Facturile emise către firme și către persoane fizice se transmit în RO e-Factura în 5 zile lucrătoare. Bonul fiscal care îndeplinește condițiile de factură simplificată este exceptat.",
+    "summary": "Facturile B2B și B2C se transmit în RO e-Factura în 5 zile lucrătoare. Bonul fiscal care îndeplinește condițiile de factură simplificată este exceptat.",
     "body": "**Ce se transmite:** toate facturile emise de firmele stabilite în România, atât către **firme (B2B)**, cât și către **persoane fizice (B2C)**, se încarcă în sistemul **RO e-Factura**.\n\n**Termen:** din 1 ianuarie 2026, **5 zile lucrătoare** de la emitere, pentru B2B și B2C.\n\n**Bonul fiscal:** nu trebuie transmis în e-Factura. Un bon fiscal care îndeplinește condițiile de **factură simplificată** (art. 319 Cod fiscal: are codul fiscal al cumpărătorului și valoarea se încadrează în limita legală) este exceptat. Limita pentru factura simplificată este stabilită în Codul fiscal; surse secundare indică 100 EUR. Verificați cu contabilul.\n\n**Amenzi:**\n- factura care nu este transmisă în e-Factura: **15% din valoarea facturii**;\n- transmitere întârziată: 1.000-2.500 lei la firmele mici.\n\n**Persoane fizice cu CNP:** regulile pentru clienții identificați prin CNP s-au schimbat de mai multe ori în 2026. Verificați cu contabilul situația actuală.\n\nSfat practic: la casă, când un client firmă cere factură pentru o sumă mare, emiteți factura din programul de facturare și transmiteți-o în e-Factura. Pentru sume mici, bonul cu CUI poate fi suficient.",
     "keywords": [
       "e-factura",
@@ -357,7 +357,7 @@
   },
   {
     "id": "pret-redus-30-zile",
-    "title": "Reducerile de preț: prețul anterior este cel mai mic din ultimele 30 de zile",
+    "title": "Reduceri: prețul anterior, 30 zile",
     "summary": "La orice anunț de reducere, prețul tăiat trebuie să fie cel mai mic preț practicat în ultimele 30 de zile.",
     "body": "Când anunțați o reducere de preț, HG 947/2000 (art. 4^1, introdus prin HG 686/2022) cere să afișați și **prețul anterior**.\n\n**Prețul anterior** este **cel mai mic preț practicat în ultimele 30 de zile** înainte de reducere.\n\n**Excepții:**\n- **produse perisabile** (care se alterează rapid): perioada este de **10 zile**;\n- **produse noi** în magazin: perioada este cea de la începutul vânzării, dacă este mai scurtă;\n- **reduceri progresive** în aceeași campanie: prețul anterior este cel dinaintea primei reduceri.\n\n**Exemplu:** o cafea a costat 30 lei, apoi 25 lei timp de o săptămână, apoi iar 30 lei. Dacă o puneți acum la 22 lei, prețul tăiat trebuie să fie **25 lei**, nu 30 lei.\n\n**Amenzi:** 5.000-30.000 lei.\n\nSfat practic: păstrați istoricul prețurilor pentru fiecare produs. La un control ANPC trebuie să puteți arăta de unde vine prețul tăiat.\n\nCe face Tapselo: pagina de oferte calculează prețul tăiat din istoricul de prețuri, cu 30 de zile sau 10 zile pentru produsele marcate perisabile.",
     "keywords": [
@@ -392,7 +392,7 @@
   },
   {
     "id": "nir-nota-receptie",
-    "title": "NIR: nota de recepție și constatare de diferențe",
+    "title": "NIR: notă de recepție și diferențe",
     "summary": "NIR-ul se întocmește la primirea mărfii. Este obligatoriu pentru mărfurile din magazine evidențiate la preț de vânzare și pentru diferențe la recepție.",
     "body": "**NIR** (Nota de recepție și constatare de diferențe, cod 14-3-1A) este documentul care confirmă că marfa a intrat în gestiune. Este reglementat de OMFP 2634/2015.\n\n**Când este obligatoriu:**\n- pentru mărfurile din **magazinele cu amănuntul evidențiate la preț de vânzare** (cu TVA);\n- când există **diferențe** între factură/aviz și ce ați primit efectiv;\n- pentru mărfuri primite **fără documente** de însoțire;\n- pentru produse **cumpărate de la persoane fizice**.\n\n**Ce conține:** furnizorul, documentul de însoțire, cantitățile din document și cele primite, prețul de achiziție, adaosul, TVA-ul și prețul de vânzare. Se semnează de comisia de recepție sau de gestionar.\n\n**De ce contează la casă:** NIR-ul stabilește prețul de vânzare și stocul de pornire. Fără NIR-uri corecte, stocul nu se potrivește cu vânzările din rapoartele Z, iar diferențele apar la inventar și în SAF-T.\n\nSfat practic: faceți NIR-ul în ziua recepției, înainte să puneți marfa la raft.\n\nCe face Tapselo: recepția mărfii în Tapselo generează NIR-ul și actualizează stocul și prețul de vânzare.",
     "keywords": [
@@ -467,7 +467,7 @@
   },
   {
     "id": "alergeni-1169-2011",
-    "title": "Alergenii la produsele nepreambalate (Reg. UE 1169/2011)",
+    "title": "Alergeni la produse nepreambalate",
     "summary": "La produsele vândute nepreambalate, informația despre cei 14 alergeni trebuie să fie vizibilă la locul de vânzare: pe eticheta de preț, la raft sau în meniu.",
     "body": "Regulamentul (UE) 1169/2011 enumeră **14 alergeni** (anexa II): cereale cu gluten, crustacee, ouă, pește, arahide, soia, lapte (inclusiv lactoză), fructe cu coajă lemnoasă, țelină, muștar, susan, dioxid de sulf și sulfiți, lupin, moluște.\n\n**Produsele preambalate** au alergenii pe etichetă, evidențiați în lista de ingrediente.\n\n**Produsele nepreambalate** (carne la tejghea, pâine, prăjituri, mâncare gătită) sunt reglementate de **Ordinul ANPC 163/2021**:\n- informația trebuie să fie **disponibilă direct la locul de vânzare**, vizibilă, lizibilă și ușor accesibilă;\n- la raft, în vitrina frigorifică sau pe eticheta de preț, după denumirea produsului, scrieți **„conține: ...”** urmat de alergeni;\n- la restaurante și cafenele, alergenii apar în **meniu, panou, afiș sau ecran**;\n- la vânzarea la distanță (comenzi online sau telefonice), informația trebuie dată **înainte de cumpărare**.\n\nOrdinul ANPC 201/2022 cere în plus, în meniuri, ingredientele și informațiile nutriționale.\n\nSfat practic: țineți o fișă cu rețeta fiecărui produs făcut în laborator și actualizați eticheta când schimbați furnizorul unui ingredient.",
     "keywords": [
@@ -507,8 +507,8 @@
   },
   {
     "id": "e-transport",
-    "title": "RO e-Transport: transportul de bunuri cu risc fiscal ridicat",
-    "summary": "Transporturile rutiere de bunuri cu risc fiscal ridicat peste 500 kg sau 10.000 lei, cu vehicule de minimum 2,5 tone, se declară în RO e-Transport și primesc un cod UIT.",
+    "title": "RO e-Transport: bunuri cu risc fiscal ridicat",
+    "summary": "Transporturile rutiere de bunuri cu risc fiscal ridicat peste 500 kg sau 10.000 lei, cu vehicule de min. 2,5 t, se declară în RO e-Transport și primesc cod UIT.",
     "body": "**RO e-Transport** (OUG 41/2022) monitorizează transporturile rutiere de **bunuri cu risc fiscal ridicat (BRFR)**.\n\n**Când trebuie declarat:** vehicul cu masă maximă autorizată de **minimum 2,5 tone**, încărcat cu BRFR cu **masa brută peste 500 kg** sau **valoarea peste 10.000 lei**, pentru cel puțin o partidă de bunuri.\n\n**Ce bunuri:** lista inițială (2022) include legume (NC 0701-0714), fructe (NC 0801-0814), băuturi și oțet (NC 2201-2208), sare și materiale de construcții, îmbrăcăminte, încălțăminte, fier și oțel. Lista a fost modificată ulterior; verificați lista actuală pe anaf.ro.\n\n**Cine declară:** furnizorul sau beneficiarul, **nu transportatorul**. Declarantul obține un **cod UIT** din SPV înainte de plecare și îl dă transportatorului.\n\n**La magazin:**\n- dacă vă aduceți singur marfa de la depozit sau en-gros peste prag, verificați cine a generat codul UIT;\n- dacă **vindeți** unui client BRFR peste 500 kg sau peste 10.000 lei, iar marfa pleacă pe drum, **magazinul** trebuie să obțină codul UIT și să ceară clientului datele vehiculului (răspunsul ANAF nr. 35).\n\nTransportul fără cod UIT se sancționează conform OUG 41/2022. Verificați cu contabilul dacă activitatea dumneavoastră intră sub aceste reguli.",
     "keywords": [
       "e-transport",
