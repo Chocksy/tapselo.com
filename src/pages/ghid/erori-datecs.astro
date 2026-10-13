@@ -1,4 +1,5 @@
 ---
+import { internalPath } from "../../lib/internal-url.ts";
 // /ghid/erori-datecs: Datecs error codes from src/lib/kb/datecs-errors.json.
 // Hint groups first (practical steps), then every code with an anchor per row (datecsAnchor).
 import GuideShell from "../../components/GuideShell.astro";
@@ -60,6 +61,8 @@ const hintAnchor = (key: string) => `pasi-${key.replace(/[^A-Za-z0-9]+/g, "-").t
     <h2 class="font-display text-3xl italic text-primary">Toate codurile</h2>
     <p class="mt-3 text-text-secondary">
       Dacă nu ai pași pentru codul tău, notează codul complet și sună service-ul autorizat sau furnizorul programului de vânzare.
+      Dacă eroarea apare la transmiterea raportului Z, vezi ghidul despre
+      <a href={internalPath("/ghid/articole/casa-de-marcat-fara-internet/")} class="text-accent hover:text-accent-hover">casa de marcat fără conexiune la internet</a>.
     </p>
     {[...groups].map(([group, codes]) => (
       <div class="mt-8 overflow-x-auto">
