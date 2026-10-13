@@ -8,6 +8,10 @@ interface Props {
   noindex?: boolean;
   /** Extra JSON-LD objects (WebApplication, Article, HowTo, FAQPage, BreadcrumbList, …). */
   jsonLd?: Record<string, unknown>[];
+  /** ISO date for article:published_time (articles only). */
+  publishedTime?: string;
+  /** ISO date for article:modified_time (articles only). */
+  modifiedTime?: string;
 }
 
 const {
@@ -15,6 +19,8 @@ const {
   description = "Casa de marcat care merge și fără internet. Cu bon fiscal, cântar integrat și rapoarte inteligente. Gata în 20 de minute, pe orice calculator.",
   noindex = false,
   jsonLd = [],
+  publishedTime,
+  modifiedTime,
 } = Astro.props;
 
 const siteUrl = "https://tapselo.com";
@@ -50,6 +56,8 @@ const ogImageUrl = `${siteUrl}/og-image.jpg`;
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="ro_RO" />
     <meta property="og:site_name" content="Tapselo POS" />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
