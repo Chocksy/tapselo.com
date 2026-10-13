@@ -3,7 +3,7 @@
     "id": "deschide-macelarie",
     "business_type": "macelarie",
     "title": "Cum deschizi o măcelărie",
-    "summary": "Pașii pentru o măcelărie de vânzare cu amănuntul în 2026: firmă cu CAEN Rev.3 4722, înregistrare sanitar-veterinară la DSVSA (unitate cu număr VA), acord de la primărie și casă de marcat conectată la ANAF.",
+    "summary": "Pași pentru o măcelărie în 2026: CAEN 4722, înregistrare DSVSA (număr VA), acord de la primărie și casă de marcat conectată la ANAF.",
     "caen": [
       {
         "code": "4722",
@@ -243,8 +243,8 @@
   {
     "id": "deschide-brutarie-patiserie",
     "business_type": "brutarie_patiserie",
-    "title": "Cum deschizi o brutărie sau patiserie",
-    "summary": "Pașii pentru o brutărie sau patiserie cu producție proprie și vânzare în magazin: CAEN Rev.3 1071 și 4724, înregistrare pentru siguranța alimentelor la DSVSA, acord de la primărie, casă de marcat și, la volume mari, verificare la mediu.",
+    "title": "Brutărie sau patiserie: deschidere",
+    "summary": "Pași pentru brutărie sau patiserie cu producție: CAEN 1071/4724, DSVSA, acord primărie, casă de marcat; la volume mari, verificări suplimentare.",
     "caen": [
       {
         "code": "1071",
@@ -480,8 +480,8 @@
   {
     "id": "deschide-cafenea-bistro",
     "business_type": "cafenea_bistro",
-    "title": "Cum deschizi o cafenea sau un bistro",
-    "summary": "Pașii pentru o cafenea sau un bistro în 2026: CAEN Rev.3 5630 și 5611, înregistrare DSVSA ca unitate de alimentație publică, autorizație de alimentație publică de la primărie, casă de marcat și obligațiile SGR pentru HoReCa.",
+    "title": "Cafenea sau bistro: deschidere",
+    "summary": "Pași pentru cafenea sau bistro în 2026: CAEN 5630/5611, DSVSA, autorizație alimentație publică, casă de marcat și SGR pentru HoReCa.",
     "caen": [
       {
         "code": "5630",
@@ -705,8 +705,8 @@
   {
     "id": "deschide-minimarket-alimentara",
     "business_type": "minimarket_alimentara",
-    "title": "Cum deschizi un minimarket sau o alimentară",
-    "summary": "Pașii pentru un magazin alimentar mic în 2026: CAEN Rev.3 4711, înregistrare DSVSA ca magazin alimentar, acord de la primărie, casă de marcat și punct de returnare SGR.",
+    "title": "Minimarket sau alimentară: deschidere",
+    "summary": "Pași pentru magazin alimentar mic: CAEN 4711, DSVSA, acord primărie, casă de marcat și punct de returnare SGR.",
     "caen": [
       {
         "code": "4711",
@@ -915,8 +915,8 @@
   {
     "id": "deschide-legume-fructe",
     "business_type": "legume_fructe",
-    "title": "Cum deschizi un magazin de legume și fructe",
-    "summary": "Pașii pentru un magazin de legume și fructe în 2026: CAEN Rev.3 4721, înregistrare pentru siguranța alimentelor la DSVSA, acord de la primărie și casă de marcat.",
+    "title": "Magazin legume și fructe: deschidere",
+    "summary": "Pași pentru magazin legume și fructe: CAEN 4721, înregistrare DSVSA, acord primărie și casă de marcat.",
     "caen": [
       {
         "code": "4721",
@@ -1116,8 +1116,8 @@
   {
     "id": "deschide-magazin-nealimentar",
     "business_type": "magazin_nealimentar",
-    "title": "Cum deschizi un magazin nealimentar",
-    "summary": "Pașii pentru un magazin nealimentar mic în 2026: coduri CAEN Rev.3 potrivite (4712, 4752, 4755, 4778), acord de la primărie, verificare ISU și casă de marcat conectată la ANAF.",
+    "title": "Magazin nealimentar: deschidere",
+    "summary": "Pași pentru magazin nealimentar mic: CAEN potrivit (4712, 4752, 4755, 4778), acord primărie, verificare ISU și casă de marcat la ANAF.",
     "caen": [
       {
         "code": "4712",

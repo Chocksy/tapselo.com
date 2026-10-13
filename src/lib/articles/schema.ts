@@ -1,5 +1,7 @@
 // Support articles: validate src/lib/kb/articles.json and build JSON-LD for /ghid/articole/*.
 
+import { markdownToPlainText } from "../markdown.ts";
+
 const SITE = "https://tapselo.com";
 const PUBLISHER = {
   "@type": "Organization" as const,
@@ -225,7 +227,7 @@ export function buildArticleJsonLd(article: SupportArticle, all: SupportArticle[
       mainEntity: article.faq.map((f) => ({
         "@type": "Question",
         name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
+        acceptedAnswer: { "@type": "Answer", text: markdownToPlainText(f.a) },
       })),
     });
   }

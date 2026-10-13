@@ -1,4 +1,5 @@
 import { internalPath } from "../internal-url.ts";
+import { markdownToPlainText } from "../markdown.ts";
 
 const SITE = "https://tapselo.com";
 
@@ -63,7 +64,7 @@ export function faqPageJsonLd(faq: FaqItem[]): Record<string, unknown> {
     mainEntity: faq.map((item) => ({
       "@type": "Question",
       name: item.q,
-      acceptedAnswer: { "@type": "Answer", text: item.a },
+      acceptedAnswer: { "@type": "Answer", text: markdownToPlainText(item.a) },
     })),
   };
 }

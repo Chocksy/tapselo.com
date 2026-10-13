@@ -23,8 +23,19 @@ export function slugifyHeading(title: string): string {
   return base || "section";
 }
 
-/** Inline markdown on one line of raw text; returns HTML. */
-export function inlineMd(raw: string): string {
+const EMAIL_OFF_RE = /<!--email_off-->([\s\S]*?)<!--\/email_off-->/g;
+
+/** Plain text for JSON-LD / meta: strip markdown without rendering HTML. */
+export function markdownToPlainText(raw: string): string {
+  let s = String(raw ?? "");
+  s = s.replace(EMAIL_OFF_RE, (_, inner) => inner.trim());
+  s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, "$1");
+  s = s.replace(/\*\*([^*]+?)\*\*/g, "$1");
+  s = s.replace(/`([^`]+)`/g, "$1");
+  return s.replace(/\s+/g, " ").trim();
+}
+
+function inlineMdCore(raw: string): string {
   const out: string[] = [];
   const re = /`([^`]+)`|\[([^\]]+)\]\(([^)\s]+)\)/g;
   let last = 0;
@@ -47,6 +58,21 @@ export function inlineMd(raw: string): string {
   }
   out.push(bold(escapeHtml(raw.slice(last))));
   return out.join("");
+}
+
+/** Inline markdown on one line of raw text; returns HTML. */
+export function inlineMd(raw: string): string {
+  const placeholders: string[] = [];
+  const masked = raw.replace(EMAIL_OFF_RE, (_, inner) => {
+    const i = placeholders.length;
+    placeholders.push(`<!--email_off-->${escapeHtml(inner.trim())}<!--/email_off-->`);
+    return `\x00EMAILOFF${i}\x00`;
+  });
+  let html = inlineMdCore(masked);
+  for (let i = 0; i < placeholders.length; i++) {
+    html = html.replace(`\x00EMAILOFF${i}\x00`, placeholders[i]);
+  }
+  return html;
 }
 
 const bold = (html: string) => html.replace(/\*\*([^*]+?)\*\*/g, "<strong>$1</strong>");
