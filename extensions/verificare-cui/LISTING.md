@@ -13,7 +13,8 @@ Selectează un CUI pe orice pagină și vezi firma, adresa, statusul TVA și Reg
 Verifici rapid orice firmă din România fără să părăsești pagina în care lucrezi.
 
 **CUI din pagină sau din popup**
-- Meniu contextual „Verifică CUI la ANAF” pe textul selectat (facturi, e-mailuri, ERP).
+- Meniu contextual „Verifică CUI la ANAF” pe textul selectat: card discret în pagină (fără scanare automată a site-ului).
+- Scurtătură opțională (Ctrl+Shift+U / ⌘⇧U) pentru aceeași verificare pe selecție.
 - Câmp CUI în popup, cu sau fără prefix RO și verificare a cifrei de control.
 
 **Date din ANAF (PlatitorTvaRest v9)**
@@ -41,6 +42,8 @@ Productivity
 | Permission | Why |
 |------------|-----|
 | `contextMenus` | „Verifică CUI la ANAF” pe selecția de text. |
+| `activeTab` | Acces la tab-ul curent doar după acțiunea ta (meniu / scurtătură), pentru injectarea cardului. |
+| `scripting` | Injectare punctuală a scriptului cardului (fără content script permanent pe toate site-urile). |
 | `storage` | Cache local (~24 h) al răspunsurilor ANAF per CUI; nu trimitem CUI-uri la Tapselo. |
 | `https://webservicesp.anaf.ro/*` | Apel direct POST către serviciul public ANAF PlatitorTvaRest v9. |
 | `https://tapselo.com/*` | API public `/api/barcodes/{ean}` pentru tab-ul de cod de bare (fără preț). |

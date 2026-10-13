@@ -40,15 +40,39 @@ body {
   flex: 1;
   border: 1px solid var(--border);
   background: #fff;
+  color: var(--fg);
+  color-scheme: light;
   border-radius: 0.375rem 0.375rem 0 0;
   padding: 0.35rem 0.5rem;
   cursor: pointer;
+  font: inherit;
+}
+
+.tab:not(.active) {
+  color: #475569;
 }
 
 .tab.active {
   border-bottom-color: var(--bg);
   font-weight: 600;
   color: var(--accent);
+}
+
+@media (prefers-color-scheme: dark) {
+  .tab {
+    background: #1e293b;
+    border-color: #334155;
+    color: #e2e8f0;
+  }
+
+  .tab:not(.active) {
+    color: #94a3b8;
+  }
+
+  .tab.active {
+    background: var(--bg);
+    color: #60a5fa;
+  }
 }
 
 .panel {

@@ -14,7 +14,7 @@ const description =
   <main class="bg-surface-white py-24">
     <article class="mx-auto max-w-3xl px-6 prose prose-neutral">
       <h1 class="font-display text-4xl italic text-primary">Confidențialitate — extensia Verificare CUI ANAF</h1>
-      <p class="text-text-secondary">Ultima actualizare: 9 octombrie 2026</p>
+      <p class="text-text-secondary">Ultima actualizare: 13 octombrie 2026</p>
 
       <h2>Ce face extensia</h2>
       <p>
@@ -38,9 +38,18 @@ const description =
         numărul de cereri.
       </p>
 
+      <h2>Verificare în pagină (opt-in)</h2>
+      <p>
+        Dacă folosești meniul contextual sau scurtătura din extensie, injectăm temporar un card mic lângă selecția ta
+        pentru a afișa datele ANAF. Nu scanăm automat paginile și nu rulăm script în fundal pe site-uri fără acțiunea ta.
+        Cardul se închide cu Esc, clic în afara lui sau butonul de închidere.
+      </p>
+
       <h2>Permisiuni Chrome</h2>
       <ul>
         <li><strong>contextMenus</strong> — „Verifică CUI la ANAF” pe textul selectat.</li>
+        <li><strong>activeTab</strong> — acces la tab-ul activ doar după meniu contextual sau scurtătură.</li>
+        <li><strong>scripting</strong> — injectare punctuală a cardului în pagină (fără content script permanent).</li>
         <li><strong>storage</strong> — cache local opțional pentru răspunsuri ANAF.</li>
         <li><strong>host_permissions</strong> — doar <code>webservicesp.anaf.ro</code> și <code>tapselo.com</code> (API cod de bare).</li>
       </ul>

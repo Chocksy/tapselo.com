@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Verificare CUI ANAF – firmă, TVA și e-Factura | Tapselo",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Selectează un CUI pe orice pagină și vezi firma, adresa, statusul TVA și Registrul RO e-Factura, direct din datele publice ANAF.",
   "action": {
     "default_title": "Verificare CUI ANAF",
@@ -23,7 +23,16 @@
     "service_worker": "background.js",
     "type": "module"
   },
-  "permissions": ["contextMenus", "storage"],
+  "permissions": ["contextMenus", "storage", "activeTab", "scripting"],
+  "commands": {
+    "lookup-selection-cui": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+U",
+        "mac": "Command+Shift+U"
+      },
+      "description": "Verifică CUI selectat la ANAF (card în pagină)"
+    }
+  },
   "host_permissions": ["https://webservicesp.anaf.ro/*", "https://tapselo.com/*"],
   "homepage_url": "https://tapselo.com/unelte/verificare-cui/?utm_source=chrome_extension&utm_medium=extension&utm_campaign=verificare_cui"
 }
