@@ -56,10 +56,3 @@ $("bc-form").addEventListener("submit", async (e) => {
   $("bc-result").hidden = false;
 });
 
-chrome.storage.session.get(["pendingCui"], (data) => {
-  if (data.pendingCui) {
-    $("cui-input").value = data.pendingCui;
-    chrome.storage.session.remove(["pendingCui", "pendingSource"]);
-    $("cui-form").requestSubmit();
-  }
-});
