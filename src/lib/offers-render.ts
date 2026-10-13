@@ -186,8 +186,11 @@ function page(f: Frame): string {
 <meta name="robots" content="noindex, nofollow" />
 <link rel="canonical" href="${c}" />
 <meta name="theme-color" content="${THEME_COLOR[f.theme]}" />
-<link rel="icon" type="image/png" sizes="192x192" href="/favicon.png" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="${c}" />
