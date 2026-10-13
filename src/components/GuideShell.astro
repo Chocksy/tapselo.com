@@ -24,6 +24,9 @@ interface Props {
   lead?: string;
   sources?: { title: string; url?: string }[];
   verifiedOn?: string | null;
+  /** Last content update (YYYY-MM-DD); shown as „Actualizat” and emitted as article:modified_time. */
+  updatedOn?: string | null;
+  publishedOn?: string | null;
   /** Identifies this page in PostHog cta_click (data-tapselo-cta). */
   campaign: string;
   breadcrumb?: boolean;
@@ -47,6 +50,8 @@ const {
   lead,
   sources = [],
   verifiedOn,
+  updatedOn,
+  publishedOn,
   campaign,
   breadcrumb = true,
   breadcrumbs,
@@ -71,7 +76,13 @@ const a4200CheckerUrl = internalPath(A4200_CHECKER_PATH);
 const ctaLocation = `ghid-${campaign}`;
 ---
 
-<Layout title={title} description={description} jsonLd={jsonLd}>
+<Layout
+  title={title}
+  description={description}
+  jsonLd={jsonLd}
+  publishedTime={publishedOn ?? undefined}
+  modifiedTime={updatedOn ?? undefined}
+>
   <Navbar />
 
   <header class="site-hero bg-primary">
@@ -86,7 +97,13 @@ const ctaLocation = `ghid-${campaign}`;
         )}
         <h1 class="mt-3 font-display text-4xl italic text-white sm:text-5xl">{heading}</h1>
         {lead && <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">{lead}</p>}
-        {verifiedOn && <p class="mt-6 text-sm text-text-on-primary/50">Verificat la {formatDateRo(verifiedOn)}</p>}
+        {(updatedOn || verifiedOn) && (
+          <p class="mt-6 text-sm text-text-on-primary/50">
+            {updatedOn && <span>Actualizat: <time datetime={updatedOn}>{formatDateRo(updatedOn)}</time></span>}
+            {updatedOn && verifiedOn && <span aria-hidden="true"> · </span>}
+            {verifiedOn && <span>Verificat la {formatDateRo(verifiedOn)}</span>}
+          </p>
+        )}
       </div>
     </div>
   </header>

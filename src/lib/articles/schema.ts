@@ -22,6 +22,8 @@ export type SupportArticle = {
   title: string;
   description: string;
   type: ArticleType;
+  /** First-ship date (YYYY-MM-DD), optional; used for datePublished. */
+  published?: string;
   updated: string;
   verifiedOn: string;
   sources: ArticleSource[];
@@ -130,6 +132,7 @@ function validateArticle(raw: unknown, index: number): SupportArticle {
     title: isNonEmptyString(o.title, `${field}.title`),
     description: isNonEmptyString(o.description, `${field}.description`),
     type: type as ArticleType,
+    published: o.published === undefined ? undefined : isIsoDate(o.published, `${field}.published`),
     updated: isIsoDate(o.updated, `${field}.updated`),
     verifiedOn: isIsoDate(o.verifiedOn, `${field}.verifiedOn`),
     sources,
@@ -184,6 +187,7 @@ export function buildArticleJsonLd(article: SupportArticle, all: SupportArticle[
     "@type": "Article",
     headline: article.title,
     description: article.description,
+    ...(article.published ? { datePublished: article.published } : {}),
     dateModified: article.updated,
     inLanguage: "ro-RO",
     url,
