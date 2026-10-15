@@ -1,11 +1,13 @@
 // Support articles: validate src/lib/kb/articles.json and build JSON-LD for /ghid/articole/*.
 
 import { markdownToPlainText } from "../markdown.ts";
+import { OPERATOR_LEGAL_NAME } from "../../data/site.ts";
 
 const SITE = "https://tapselo.com";
 const PUBLISHER = {
   "@type": "Organization" as const,
   name: "Tapselo",
+  legalName: OPERATOR_LEGAL_NAME,
   url: SITE,
   logo: `${SITE}/logo.png`,
 };

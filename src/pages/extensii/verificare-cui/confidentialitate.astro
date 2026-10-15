@@ -3,6 +3,7 @@ import Layout from "../../../layouts/Layout.astro";
 import Navbar from "../../../components/Navbar.astro";
 import Footer from "../../../components/Footer.astro";
 import { internalPath } from "../../../lib/internal-url.ts";
+import OperatorLine from "../../../components/OperatorLine.astro";
 
 const title = "Confidențialitate — extensia Verificare CUI ANAF | Tapselo";
 const description =
@@ -62,6 +63,7 @@ const description =
       </p>
 
       <h2>Contact</h2>
+      <OperatorLine class="text-sm text-text-secondary not-prose" />
       <p>
         Pentru întrebări despre această extensie, scrie-ne din
         <a href={internalPath("/#contact")}>formularul de contact</a> Tapselo sau consultă
