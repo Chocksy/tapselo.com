@@ -8,6 +8,7 @@ import {
   articleLinks,
   guideHubLinks,
 } from "../lib/site-directory.ts";
+import OperatorLine from "./OperatorLine.astro";
 
 const navClass = "text-sm font-medium text-text-on-primary/60 transition-colors hover:text-white";
 const colTitle = "text-xs font-bold uppercase tracking-wide text-text-on-primary/50";
@@ -88,6 +89,7 @@ const colLink = "text-sm text-text-on-primary/60 transition-colors hover:text-wh
     </div>
 
     <div class="mt-8 flex flex-col items-center gap-3 text-center">
+      <OperatorLine />
       <p class="text-sm text-text-on-primary/40">&copy; 2026 Tapselo. Toate drepturile rezervate.</p>
       <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
         <a href={internalPath("/privacy")} class="text-xs text-text-on-primary/40 transition-colors hover:text-white">Confidențialitate</a>

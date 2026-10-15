@@ -1,0 +1,11 @@
+---
+import { operatorLineText } from "../data/site.ts";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = "text-xs text-text-on-primary/40" } = Astro.props;
+---
+
+<p class:list={["leading-relaxed", className]}>{operatorLineText()}</p>

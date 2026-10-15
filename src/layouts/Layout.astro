@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import PostHog from "../components/PostHog.astro";
+import { OPERATOR_LEGAL_NAME } from "../data/site.ts";
 
 interface Props {
   title?: string;
@@ -86,6 +87,7 @@ const ogImageUrl = `${siteUrl}/og-image.jpg`;
       "author": {
         "@type": "Organization",
         "name": "Tapselo",
+        "legalName": OPERATOR_LEGAL_NAME,
         "url": siteUrl,
         "logo": `${siteUrl}/logo.png`,
         "contactPoint": {

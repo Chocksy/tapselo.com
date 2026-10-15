@@ -1,5 +1,6 @@
 ---
 import GuideShell from "../../components/GuideShell.astro";
+import { OPERATOR_LEGAL_NAME } from "../../data/site.ts";
 import { markdownToHtml } from "../../lib/markdown.ts";
 import { internalPath } from "../../lib/internal-url.ts";
 import {
@@ -171,11 +172,13 @@ const jsonLd = [
     author: {
       "@type": "Organization",
       name: "Tapselo",
+      legalName: OPERATOR_LEGAL_NAME,
       url: "https://tapselo.com",
     },
     publisher: {
       "@type": "Organization",
       name: "Tapselo",
+      legalName: OPERATOR_LEGAL_NAME,
       url: "https://tapselo.com",
     },
   },

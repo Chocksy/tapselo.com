@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import EmailLink from "../components/EmailLink.astro";
 import { internalPath } from "../lib/internal-url.ts";
+import OperatorLine from "../components/OperatorLine.astro";
 ---
 
 <Layout
@@ -30,6 +31,7 @@ import { internalPath } from "../lib/internal-url.ts";
     <div class="site-container site-reading space-y-12">
       <section>
         <h2 class="font-display text-3xl italic text-primary">Cine suntem</h2>
+        <OperatorLine class="mt-4 text-sm text-text-secondary" />
         <p class="mt-4 leading-relaxed text-text-secondary">
           Tapselo POS este operat de <strong class="font-bold text-primary">Ciocanel Razvan Tudor PFA</strong>,
           România. Pentru orice întrebare despre acești termeni, scrie-ne la
