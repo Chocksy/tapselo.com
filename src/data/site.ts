@@ -1,5 +1,5 @@
-/** TODO: Replace {{PFA_CUI}} with the real CUI before merge. */
-export const PFA_CUI = "{{PFA_CUI}}";
+/** CUI of Ciocanel Razvan Tudor PFA (public, verified in the ANAF register). */
+export const PFA_CUI = "33352046";
 
 /** Legal operator name exactly as registered (no diacritics until confirmed). */
 export const OPERATOR_LEGAL_NAME = "Ciocanel Razvan Tudor PFA";
