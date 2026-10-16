@@ -33,7 +33,8 @@ export type ToolAction =
   | "print"
   | "download_png"
   | "download_svg"
-  | "print_sheet";
+  | "print_sheet"
+  | "download_blank";
 
 export type A4200CheckResult = "ok" | "errors";
 

@@ -7,6 +7,26 @@
     Completezi datele pe modelul <strong class="text-primary">14-4-4</strong> (OMFP nr. 2.634/2015). Suma în litere se calculează automat. Print sau PDF din browser — nimic nu pleacă pe server.
   </p>
 
+  <div id="co-blank" class="mt-4 flex items-center gap-4 rounded-lg border border-border-light bg-surface-elevated p-3">
+    <a href="/unelte/formulare/dispozitie-de-plata-incasare-14-4-4-a4.pdf" data-co-blank="a4" class="shrink-0" aria-label="Formular necompletat A4 (PDF)">
+      <img
+        src="/unelte/formulare/dispozitie-de-plata-incasare-14-4-4-preview.png"
+        width="600"
+        height="743"
+        alt="Model dispoziție de plată / încasare 14-4-4 necompletat"
+        decoding="async"
+        class="h-auto w-24 rounded border border-border-light bg-white sm:w-28"
+      />
+    </a>
+    <p class="text-sm text-text-secondary">
+      <strong class="text-primary">Descarcă formularul necompletat (PDF):</strong>
+      <a href="/unelte/formulare/dispozitie-de-plata-incasare-14-4-4-a4.pdf" download data-co-blank="a4" class="font-semibold text-accent hover:underline">A4</a>
+      /
+      <a href="/unelte/formulare/dispozitie-de-plata-incasare-14-4-4-a5.pdf" download data-co-blank="a5" class="font-semibold text-accent hover:underline">A5</a>
+      <span class="block mt-1">Modelul 14-4-4 gol, de completat de mână. Varianta A5 are verso pentru datele beneficiarului.</span>
+    </p>
+  </div>
+
   <div id="cash-order-tool" class="mt-6 space-y-4">
     <fieldset class="ut-toggle-group">
       <legend class="ut-label">Tip document</legend>
@@ -102,7 +122,7 @@
     </fieldset>
 
     <p class="text-sm text-text-secondary">
-      Confidențialitate: valorile din formular rămân în browser. În analytics înregistrăm doar acțiunea (print / PDF), fără sume sau nume.
+      Confidențialitate: valorile din formular rămân în browser. În analytics înregistrăm doar acțiunea (print / PDF / formular gol), fără sume sau nume.
     </p>
 
     <p class="ut-err hidden" id="co-err" role="alert"></p>
@@ -267,6 +287,12 @@
     }
     trackToolUsed("dispozitie_de_plata", action, { page: pageSize(), direction: p.direction });
   }
+
+  document.querySelectorAll<HTMLAnchorElement>("[data-co-blank]").forEach((a) => {
+    a.addEventListener("click", () => {
+      trackToolUsed("dispozitie_de_plata", "download_blank", { format: a.dataset.coBlank === "a5" ? "a5" : "a4" });
+    });
+  });
 
   document.getElementById("co-pdf")?.addEventListener("click", () => openDoc("generate_pdf"));
   document.getElementById("co-print")?.addEventListener("click", () => openDoc("print"));

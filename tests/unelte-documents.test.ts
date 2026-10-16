@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { cashbookHtml, cashOrderHtml, nirHtml, warehouseCardHtml } from "../src/lib/unelte/document-export.ts";
+import { readFileSync } from "node:fs";
+import { BLANK_CASH_ORDER } from "../src/lib/generators/cash-order.ts";
 
 const EVIL = `"><script>window.__xss=1</script><img src=x onerror=alert(1)>`;
 
@@ -122,5 +124,41 @@ test("local documents escape every user field", () => {
     assert.doesNotMatch(main(html), /<script>window|<img src=x/);
     assert.match(main(html), /&lt;script&gt;window\.__xss=1&lt;\/script&gt;/);
     assert.equal(html.split("<script>").length - 1, 1);
+  }
+});
+
+test("dispoziție 14-4-4 necompletată: structura modelului, fără date, A4 și A5", () => {
+  for (const size of ["A4", "A5"] as const) {
+    const html = cashOrderHtml({ ...BLANK_CASH_ORDER, company: "NU APARE", person_name: "NU APARE", amount: 999 }, size, true);
+    assert.match(html, new RegExp(`@page\\{size:${size};`));
+    assert.match(html, /Cod formular 14-4-4/);
+    assert.match(html, /DISPOZIȚIE DE\*\)/);
+    assert.match(html, /Se va înscrie „ÎNCASARE” sau „PLATĂ”, după caz/);
+    for (const label of [
+      "Entitatea:",
+      "Numele și prenumele",
+      "Funcția (calitatea)",
+      "Suma (în cifre)",
+      "Suma (în litere)",
+      "Scopul încasării/plății",
+      "Conducătorul entității",
+      "Compartiment financiar-contabil",
+      "Date suplimentare privind beneficiarul sumei",
+      "Actul de identitate",
+      "Am primit suma de",
+      "CASIER",
+      "Plătit/încasat suma de",
+    ]) {
+      assert.ok(html.includes(label), `${size}: lipsește ${label}`);
+    }
+    assert.doesNotMatch(html, /NU APARE|999|Cod de identificare fiscală/);
+  }
+});
+
+test("dispoziție necompletată: formularele statice există în public/unelte/formulare", () => {
+  for (const name of ["a4.pdf", "a5.pdf", "preview.png"]) {
+    const buf = readFileSync(new URL(`../public/unelte/formulare/dispozitie-de-plata-incasare-14-4-4-${name}`, import.meta.url));
+    assert.ok(buf.length > 1000 && buf.length < 200_000, `${name}: ${buf.length} B`);
+    if (name.endsWith(".pdf")) assert.equal(buf.subarray(0, 5).toString(), "%PDF-");
   }
 });

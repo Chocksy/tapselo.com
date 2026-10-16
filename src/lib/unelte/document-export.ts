@@ -66,8 +66,8 @@ export function downloadWarehouseCardBlankPdfViaPrint(payload: WarehouseCardPayl
   return openPrintHtml(warehouseCardHtml(payload, true));
 }
 
-export function cashOrderHtml(payload: CashOrderPayload, pageSize: "A4" | "A5" = "A4"): string {
-  return renderCashOrder(payload, { ...LOCAL_DRAFT, kind: "cash_order" }, { local: true, pageSize });
+export function cashOrderHtml(payload: CashOrderPayload, pageSize: "A4" | "A5" = "A4", blank = false): string {
+  return renderCashOrder(payload, { ...LOCAL_DRAFT, kind: "cash_order" }, { local: true, pageSize, blank });
 }
 
 export function downloadCashOrderPdfViaPrint(payload: CashOrderPayload, pageSize: "A4" | "A5" = "A4"): boolean {
