@@ -38,3 +38,11 @@ test("isAnalyticsEnabled is false on localhost and in Astro dev", () => {
   assert.equal(isAnalyticsEnabled("tapselo.com", true), false);
   assert.equal(isAnalyticsEnabled("tapselo.com", false), true);
 });
+
+test("toolUsedProperties: descărcarea formularului gol trimite doar unealta, acțiunea și formatul", () => {
+  assert.deepEqual(toolUsedProperties("dispozitie_de_plata", "download_blank", { format: "a5" }), {
+    tool: "dispozitie_de_plata",
+    action: "download_blank",
+    format: "a5",
+  });
+});

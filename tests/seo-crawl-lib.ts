@@ -48,9 +48,13 @@ function normalizeInternalPath(href: string): { path: string; hash: string } {
   return { path: u.pathname, hash: u.hash };
 }
 
-/** Paths that should end with / (every HTML page except root). */
+/** Static downloads served as files (e.g. /unelte/formulare/*.pdf), not HTML pages. */
+const STATIC_FILE = /\.(pdf|png|jpe?g|webp|svg|zip|xlsx|csv)$/i;
+
+/** Paths that should end with / (every HTML page except root and static files). */
 export function needsTrailingSlash(pathname: string): boolean {
   if (pathname === "/") return false;
+  if (STATIC_FILE.test(pathname)) return false;
   return !pathname.endsWith("/");
 }
 
