@@ -34,13 +34,13 @@ export interface Competitor {
 export const NEEDS = {
   offline: { field: "offline", label: "Offline" },
   fiscal_printer: { field: "fiscal_printers", label: "Casa de marcat" },
-  scales: { field: "scales", label: "Cantare" },
-  recipes: { field: "recipes_production", label: "Retete" },
+  scales: { field: "scales", label: "Cântare" },
+  recipes: { field: "recipes_production", label: "Rețete" },
   inventory: { field: "inventory", label: "Stocuri" },
   orders: { field: "ecommerce_or_orders", label: "Comenzi" },
-  receiving_photo: { field: "receiving_photo", label: "Receptie din foto" },
-  fiscal_p7b: { field: "fiscal_p7b_archive", label: "Arhiva .p7b" },
-  customer_offers: { field: "customer_offers", label: "Oferte clienti" },
+  receiving_photo: { field: "receiving_photo", label: "Recepție din foto" },
+  fiscal_p7b: { field: "fiscal_p7b_archive", label: "Arhivă .p7b" },
+  customer_offers: { field: "customer_offers", label: "Oferte clienți" },
   ai_tools: { field: "ai_assistant", label: "Asistent AI" },
 } as const;
 export type Need = keyof typeof NEEDS;
