@@ -4,11 +4,35 @@
  * 1. Validates Turnstile token (bot protection)
  * 2. Calls the email relay Worker to send via Cloudflare Email Routing
  *
- * Environment variables (set in Pages dashboard):
+ * Environment variables / bindings (set in Pages dashboard):
  *   TURNSTILE_SECRET_KEY - Cloudflare Turnstile secret
+ *   EMAIL_RELAY          - (optional) service binding -> tapselo-email-relay.
+ *                          When present it is used instead of the public URL,
+ *                          so the Worker's workers.dev route can be disabled.
+ *   EMAIL_RELAY_SECRET   - (optional) shared secret sent as X-Relay-Secret.
+ *                          Only needed for the fallback (URL + secret) setup.
  */
 
-const EMAIL_RELAY_URL = "https://tapselo-email-relay.ciocanel-razvan.workers.dev";
+export const EMAIL_RELAY_URL = "https://tapselo-email-relay.ciocanel-razvan.workers.dev";
+
+/**
+ * POST the payload to the relay Worker. Prefers the EMAIL_RELAY service
+ * binding (not reachable from the internet); falls back to the public URL so
+ * the deploy order (code first, binding second) never breaks the form.
+ */
+export async function sendToEmailRelay(env, payload, fetchImpl = fetch) {
+  const headers = { "Content-Type": "application/json" };
+  if (env && env.EMAIL_RELAY_SECRET) headers["X-Relay-Secret"] = env.EMAIL_RELAY_SECRET;
+  const init = { method: "POST", headers, body: JSON.stringify(payload) };
+
+  if (env && env.EMAIL_RELAY && typeof env.EMAIL_RELAY.fetch === "function") {
+    console.log("contact: email relay via service binding");
+    // Host is ignored by service bindings; the path/method/body are what matter.
+    return env.EMAIL_RELAY.fetch(new Request("https://email-relay.internal/", init));
+  }
+  console.log("contact: email relay via public URL");
+  return fetchImpl(EMAIL_RELAY_URL, init);
+}
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -60,10 +84,11 @@ export async function onRequestPost(context) {
     }
 
     // Send email via the relay Worker
-    const emailResult = await fetch(EMAIL_RELAY_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, phone: phone || "", message }),
+    const emailResult = await sendToEmailRelay(env, {
+      name,
+      email,
+      phone: phone || "",
+      message,
     });
 
     const emailData = await emailResult.json();
