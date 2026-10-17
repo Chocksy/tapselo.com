@@ -278,7 +278,7 @@
     "ai_assistant": null,
     "pricing_public": "Preturi publicate pe site, abonament lunar sau licenta unica, fara TVA",
     "pricing_from": "de la €42/lună (VilicoPOS Mini)",
-    "notes": "Soft HoReCa modular (POS, gestiune, tableta ospatar, bucatarie, webshop) care poate rula in mod offline. Compatibil cu majoritatea caselor de marcat omologate si cu cantare electronice, are retetar cu descarcare automata a ingredientelor si integreaza Glovo si TapTasty. Exista si licenta unica (VilicoPOS de la €286), preturile nu includ TVA.",
+    "notes": "Soft HoReCa modular (POS, gestiune, tableta ospatar, bucatarie, webshop) care poate rula in mod offline. Compatibil cu majoritatea caselor de marcat fiscale si cu cantare electronice, are retetar cu descarcare automata a ingredientelor si integreaza Glovo si TapTasty. Exista si licenta unica (VilicoPOS de la €286), preturile nu includ TVA.",
     "sources": [
       {
         "title": "VilicoRest - site oficial",

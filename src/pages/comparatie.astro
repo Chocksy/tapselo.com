@@ -7,6 +7,13 @@ import { formatDateRo } from "../lib/mcp/text.ts";
 import { vendorLogoPath } from "../lib/kb/vendor-logos.ts";
 import competitorsJson from "../lib/kb/competitors.json";
 import { internalPath } from "../lib/internal-url.ts";
+import { canonicalUrl, faqPageJsonLd } from "../lib/unelte/jsonld.ts";
+import {
+  COMPARATIE_AUTHOR as author,
+  COMPARATIE_FAQ as faq,
+  COMPARATIE_PUBLISHED_ON as publishedOn,
+  COMPARATIE_UPDATED_ON as updatedOn,
+} from "../data/comparatie-page.ts";
 
 const vendors = orderComparisonVendors(competitorsJson as (Competitor & { id: string })[]);
 const needs = Object.entries(NEEDS) as [keyof typeof NEEDS, { field: string; label: string }][];
@@ -29,19 +36,71 @@ const structuredList = {
     url: v.url,
   })),
 };
+
+const pageHeading = "Comparație programe de casă de marcat";
+// No author / Person while the byline is a placeholder (see src/data/comparatie-page.ts).
+const webPageLd: Record<string, unknown> = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: pageHeading,
+  url: canonicalUrl("/comparatie/"),
+  inLanguage: "ro",
+  datePublished: publishedOn,
+  dateModified: updatedOn,
+  publisher: { "@type": "Organization", name: "Tapselo", url: "https://tapselo.com" },
+  ...(author.isPlaceholder
+    ? {}
+    : {
+        author: {
+          "@type": "Person",
+          name: author.name,
+          jobTitle: author.role,
+          ...(author.linkedin ? { sameAs: [author.linkedin] } : {}),
+        },
+      }),
+};
+const initials = author.isPlaceholder
+  ? "?"
+  : author.name.split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toUpperCase();
 ---
 
 <GuideShell
   title="Comparație POS și casă de marcat pentru magazine | Tapselo"
   description="Comparație programe POS și casă de marcat în România: offline, fiscal, cântare, stocuri, recepție marfă, arhivă .p7b și asistent AI. Date publice de la producători, cu surse."
-  heading="Comparație programe de casă de marcat"
+  heading={pageHeading}
   lead="Ce știe fiecare program, după informațiile publice de pe site-ul producătorului."
   ctaTitle="Vrei să vezi Tapselo la lucru?"
   verifiedOn={dates.at(-1) ?? null}
+  publishedOn={publishedOn}
+  updatedOn={updatedOn}
+  jsonLd={[webPageLd, faqPageJsonLd(faq)]}
   campaign="comparatie"
   breadcrumb={false}
 >
   <script type="application/ld+json" set:html={JSON.stringify(structuredList)} />
+
+  <div class:list={["author-byline", author.isPlaceholder && "author-byline--placeholder"]} data-author-placeholder={author.isPlaceholder ? "true" : undefined}>
+    {author.photo ? (
+      <img src={author.photo} alt="" width={48} height={48} class="author-photo" loading="lazy" decoding="async" />
+    ) : (
+      <span class="author-photo author-initials" aria-hidden="true">{initials}</span>
+    )}
+    <div class="text-sm leading-snug">
+      <p class="text-primary">
+        De <strong>{author.name}</strong>, {author.role}
+        {author.linkedin ? (
+          <> · <a href={author.linkedin} rel="noopener author" target="_blank" class="text-accent hover:underline">LinkedIn</a></>
+        ) : author.isPlaceholder ? (
+          <> · <span class="text-text-muted">[LinkedIn — de completat]</span></>
+        ) : null}
+      </p>
+      <p class="mt-1 text-text-muted">
+        Publicat: <time datetime={publishedOn}>{formatDateRo(publishedOn)}</time>
+        <span aria-hidden="true"> · </span>
+        Actualizat: <time datetime={updatedOn}>{formatDateRo(updatedOn)}</time>
+      </p>
+    </div>
+  </div>
 
   <p class="rounded-xl border border-ticket bg-ticket-light p-4 text-sm text-primary">
     Pagina este făcută de Tapselo, unul dintre producătorii din tabel. Datele vin de pe site-urile producătorilor, verificate la {range}.
@@ -54,6 +113,24 @@ const structuredList = {
     <a href={internalPath("/ghid/articole/casa-de-marcat-fara-internet/")} class="font-semibold text-accent hover:underline">emite bonuri o casă de marcat fără internet</a>
     și ce trebuie transmis la ANAF.
   </p>
+
+  <section id="cum-am-comparat">
+    <h2 class="font-display text-3xl italic text-primary">Cum am comparat programele de casă de marcat</h2>
+    <p class="mt-3 text-text-secondary">
+      Am verificat fiecare program după aceleași criterii, folosind informațiile publice de pe site-ul producătorului.
+      Data verificării apare pe rândul „Verificat” din tabel și la fiecare producător.
+    </p>
+    <ol class="mt-4 list-decimal space-y-2 pl-6 text-text-secondary">
+      <li><strong class="text-primary">Funcționează offline:</strong> poți vinde și emite bon fără internet?</li>
+      <li><strong class="text-primary">Casa de marcat:</strong> lucrează cu case de marcat sau imprimante fiscale?</li>
+      <li><strong class="text-primary">Funcțiile pentru magazin:</strong> cântare, rețete, stocuri, comenzi și recepția mărfii din poza facturii.</li>
+      <li><strong class="text-primary">Ce face în plus:</strong> arhiva .p7b a casei de marcat, oferte pentru clienți și asistent AI.</li>
+      <li><strong class="text-primary">Prețul public de pornire,</strong> așa cum apare pe site-ul producătorului. Unii producători afișează prețul în euro, alții fără TVA, iar unii nu publică prețuri.</li>
+    </ol>
+    <p class="mt-4 text-text-secondary">
+      Tapselo este produsul nostru; l-am inclus după aceleași criterii. Dacă o informație s-a schimbat, scrie-ne și o corectăm.
+    </p>
+  </section>
 
   <nav aria-label="Filtre">
     <p class="text-sm font-bold text-primary">Sari la criteriu:</p>
@@ -192,9 +269,48 @@ const structuredList = {
       })}
     </div>
   </section>
+
+  <section id="intrebari-frecvente">
+    <h2 class="font-display text-3xl italic text-primary">Întrebări frecvente</h2>
+    <dl class="mt-6 space-y-6">
+      {faq.map((item) => (
+        <div>
+          <dt class="font-bold text-primary">{item.q}</dt>
+          <dd class="mt-2 leading-relaxed text-text-secondary">{item.a}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
 </GuideShell>
 
 <style>
+  .author-byline {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .author-byline--placeholder {
+    outline: 2px dashed var(--color-danger);
+    outline-offset: 6px;
+    border-radius: 0.5rem;
+  }
+  .author-photo {
+    width: 48px;
+    height: 48px;
+    border-radius: 9999px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .author-initials {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    font-weight: 700;
+    box-shadow: 0 0 0 1px var(--color-border-light);
+  }
+
   .sr-only {
     position: absolute;
     width: 1px;
