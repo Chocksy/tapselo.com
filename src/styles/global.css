@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap');
+@import "@fontsource/instrument-serif/latin-ext-400-italic.css";
 @import "@fontsource-variable/geist/index.css";
 @import "tailwindcss";
 
@@ -28,9 +28,11 @@
 
   --color-text: #0f172a;
   --color-text-secondary: #475569;
-  --color-text-muted: #94a3b8;
+  --color-text-muted: #64748b;
   --color-text-on-dark: #e2e8f0;
-  --color-text-on-primary: #cbd5e1;
+  --color-text-on-primary: #d8dee9;
+  --color-text-on-primary-muted: #94a3b8;
+  --color-text-on-primary-faint: #64748b;
 
   --color-success: #10b981;
   --color-warning: #f59e0b;

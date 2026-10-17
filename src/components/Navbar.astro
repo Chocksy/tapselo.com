@@ -1,6 +1,7 @@
 ---
 import { Menu, X } from "@lucide/astro";
 import { internalPath } from "../lib/internal-url.ts";
+import SiteLogo from "./SiteLogo.astro";
 
 const links = [
   [internalPath("/#features"), "Funcții"],
@@ -15,7 +16,7 @@ const links = [
 <nav class="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur-sm border-b border-white/10">
   <div class="site-container flex items-center justify-between py-3.5">
     <a href="/" class="flex items-center gap-2.5 text-base font-bold text-white">
-      <img src="/logo.png" alt="Tapselo" class="h-8 w-8 rounded" />
+      <SiteLogo class="h-8 w-8 rounded" />
       Tapselo
     </a>
 

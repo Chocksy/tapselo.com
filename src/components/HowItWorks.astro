@@ -114,9 +114,9 @@ const code = ["A", "7", "K", "2", "9", "Q"];
 
       <!-- Steps -->
       <div class="lg:order-1 lg:col-span-5">
-        <ol class="hiw-steps" role="tablist" aria-orientation="vertical" aria-label="Pașii de pornire">
+        <div class="hiw-steps" role="tablist" aria-orientation="vertical" aria-label="Pașii de pornire">
           {steps.map((s, i) => (
-            <li class:list={["hiw-step animate-on-scroll", i === 1 && "animate-delay-100", i === 2 && "animate-delay-200", i === 0 && "is-active"]} data-step={i} data-duration={s.duration}>
+            <div class:list={["hiw-step animate-on-scroll", i === 1 && "animate-delay-100", i === 2 && "animate-delay-200", i === 0 && "is-active"]} data-step={i} data-duration={s.duration}>
               {i < steps.length - 1 && <span class="hiw-rail" aria-hidden="true"><span></span></span>}
               <button
                 type="button"
@@ -137,9 +137,9 @@ const code = ["A", "7", "K", "2", "9", "Q"];
                   <span class="hiw-more"><span><span class="hiw-p">{s.text}</span></span></span>
                 </span>
               </button>
-            </li>
+            </div>
           ))}
-        </ol>
+        </div>
       </div>
     </div>
   </div>
