@@ -1,23 +1,34 @@
 /**
  * Email relay Worker — receives form data, sends email
  * via Cloudflare send_email binding → ciocanel.razvan@gmail.com
+ *
+ * Only meant to be called server-side by the tapselo-com Pages Function
+ * (functions/api/contact.js), preferably through a service binding with the
+ * workers.dev route disabled (see wrangler.toml). No CORS: browsers must
+ * never call this directly; the Turnstile check lives in contact.js.
+ *
+ * Optional fallback hardening: if the RELAY_SHARED_SECRET Worker secret is
+ * set, every request must carry a matching X-Relay-Secret header.
  */
 import { EmailMessage } from "cloudflare:email";
 
+function secretMatches(provided, expected) {
+  const enc = new TextEncoder();
+  const a = enc.encode(provided || "");
+  const b = enc.encode(expected);
+  if (a.byteLength !== b.byteLength) return false;
+  return crypto.subtle.timingSafeEqual(a, b);
+}
+
 export default {
   async fetch(request, env) {
-    if (request.method === "OPTIONS") {
-      return new Response(null, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST",
-          "Access-Control-Allow-Headers": "Content-Type",
-        },
-      });
-    }
-
     if (request.method !== "POST") {
       return Response.json({ error: "Method not allowed" }, { status: 405 });
+    }
+
+    if (env.RELAY_SHARED_SECRET &&
+        !secretMatches(request.headers.get("X-Relay-Secret"), env.RELAY_SHARED_SECRET)) {
+      return Response.json({ error: "Forbidden" }, { status: 403 });
     }
 
     try {
