@@ -184,8 +184,9 @@
       "title": "Cum scoți raportul Z pe Datecs FP-70",
       "description": "Închiderea zilei fiscale pe imprimanta Datecs FP-70 / seria FP: raport Z din mod autonom sau din DUDE, fără bon deschis, și ce faci dacă apare eroare.",
       "type": "howto",
-      "updated": "2026-10-07",
-      "verifiedOn": "2026-10-07",
+      "published": "2026-10-07",
+      "updated": "2026-10-18",
+      "verifiedOn": "2026-10-18",
       "tags": [
         "Datecs",
         "Raport Z",
@@ -199,41 +200,63 @@
       ],
       "sources": [
         {
-          "title": "Datecs — Manual de utilizare FP-700 (seria FP, mod autonom)",
-          "url": "https://www.datecs.ro/imprimanta-fiscala-datecs-fp700.html"
+          "title": "Datecs — Manual de utilizare imprimantă fiscală FP-700 (PDF; pag. 6, 17, 18, 25)",
+          "url": "https://www.datecs.ro/getFile/mbs5d090a4e3542d.html"
+        },
+        {
+          "title": "Datecs — Coduri eroare AMEF Datecs (PDF)",
+          "url": "https://www.datecs.ro/getFile/mbs5f4612fe46e90.html"
         },
         {
           "title": "HG 479/2003 — norme aparate de marcat electronice fiscale",
           "url": "https://legislatie.just.ro/Public/DetaliiDocument/156065"
-        },
-        {
-          "title": "ANAF — Material informativ AMEF",
-          "url": "https://static.anaf.ro/static/10/Galati/Vrancea/Material-informativ-AMEF.pdf"
         }
       ],
       "steps": [
         {
           "name": "Închide orice bon deschis",
-          "text": "Raportul Z se emite când nu există bon fiscal sau nefiscal deschis. Finalizați sau anulați vânzarea din DUDE / programul POS înainte de a merge în modul autonom."
+          "text": "Modul autonom e disponibil doar când nu există bon fiscal sau nefiscal deschis (manual Datecs FP-700, pag. 17). Dacă vinzi din DUDE sau din programul POS, finalizează ori anulează bonul acolo."
         },
         {
-          "name": "Intră în modul autonom",
-          "text": "Opriți comunicarea cu PC-ul sau ieșiți din vânzare astfel încât imprimanta să accepte comenzi de la tastatură. Pe seria FP documentată de Datecs, meniul autonom listează explicit tipărirea raportului Z."
+          "name": "Apasă ▼ (săgeată jos)",
+          "text": "Pe afișaj apare „RAP.FISCALE – CONTINUATI? NU” (pag. 6 și 17)."
         },
         {
-          "name": "Tipărește raportul Z",
-          "text": "Apăsați tasta dedicată Raport Z sau, din meniul principal, alegeți opțiunea de tipărire raport Z și confirmați cu DA. Imprimanta listează totalurile pe cote și închide ziua fiscală în memorie."
+          "name": "Apasă BACK",
+          "text": "Ca să schimbi din „NU” în „DA” (pag. 17)."
         },
         {
-          "name": "Păstrează dovada și verifică transmiterea",
-          "text": "Ruperea raportului Z rămâne în magazin; verificați că AMEF este online conform cerințelor legale. Dacă transmisia la distanță a eșuat, păstrați fișierele lunii pentru A4200."
+          "name": "Apasă FEED/ENTER pentru confirmare",
+          "text": "Imprimanta tipărește raportul Z, iar afișajul revine la „FP-700 IS READY” (pag. 17). Pe FP-700 nu există tastă TOTAL; confirmarea se face cu FEED/ENTER (lista butoanelor, pag. 6)."
         },
         {
-          "name": "Dacă apare o eroare Datecs",
-          "text": "Notează codul de pe display și caută-l în ghidul de erori Datecs (de exemplu lipsă hârtie, 24 de ore fără Z sau raport Z necesar înainte de operație)."
+          "name": "Păstrează raportul Z",
+          "text": "Normele cer păstrarea lui 5 ani (HG 479/2003, art. 65 alin. 1)."
         }
       ],
-      "body": "**Raportul Z** închide ziua fiscală și resetează totalurile zilnice în AMEF. Legislația cere emiterea lui înainte de expirarea a **24 de ore** de la primul bon al zilei (vezi normele la HG 479/2003, art. 34, în forma consolidată).\n\n**Datecs FP-70** face parte din familia de **imprimante fiscale FP** cu mod autonom. Datecs publică procedura detaliată pentru **FP-700** (același mod autonom: meniu principal → tipărire raport Z, sau tasta dedicată **Rapoarte Z** pe panoul frontal). Dacă eticheta de pe echipament arată FP-700 în loc de FP-70, folosiți manualul FP-700 de pe [datecs.ro](https://www.datecs.ro/imprimanta-fiscala-datecs-fp700.html).\n\n**Din program (DUDE / POS)**\n\n- Majoritatea aplicațiilor trimit comanda de închidere Z la sfârșitul programului.\n- În documentația tehnică Datecs, raportul Z corespunde comenzii **69 (45H)** cu parametrul pentru închidere Z (spre deosebire de raportul X, care nu închide ziua).\n\n**Nu confundați raportul Z cu raportul X.** Raportul **X** este informativ, **nu** închide ziua și nu înlocuiește transmiterea lunară.\n\n**Dacă nu puteți emite Z**\n\n- Căutați codul în [Erori casa de marcat Datecs](/ghid/erori-datecs) — de exemplu mesajele despre **24 de ore fără raport Z** sau **rulați raport Z înaintea acestei operațiuni**.\n- După ce ziua este închisă corect, exportați fișierele lunii pentru ANAF: [Export .p7b](/ghid/articole/export-p7b-anaf) și verificați setul cu [Verificare A4200](/ghid/verificare-a4200).\n\nVânzarea cu internet întrerupt: [Casa de marcat fără internet](/ghid/articole/casa-de-marcat-fara-internet).\n\n[Tapselo](/) poate solicita raportul Z din POS și vă avertizează când se apropie limita de 24 de ore."
+      "faq": [
+        {
+          "q": "Ce tastă confirmă raportul Z pe FP-700?",
+          "a": "Confirmarea se face cu **FEED/ENTER**, după **▼** și **BACK** când afișajul arată „RAP.FISCALE – CONTINUATI? DA”. Pe FP-700 **nu există tastă TOTAL** (manual Datecs FP-700, pag. 6 și 17)."
+        },
+        {
+          "q": "Diferența raport X / raport Z",
+          "a": "Raportul **Z** închide ziua fiscală și resetează totalurile zilnice în AMEF. Raportul **X** este doar informativ și **nu** închide ziua. Din mod autonom: Z = **▼ → BACK → FEED/ENTER** (pag. 17); X = **▲ → BACK → FEED/ENTER** (pag. 18)."
+        },
+        {
+          "q": "Ce fac dacă apare «Au trecut 24 ore fara Raport Z!»?",
+          "a": "Mesajul sau codul **-111024** înseamnă că au trecut 24 de ore de la primul bon fără raport Z (HG 479/2003, art. 34 lit. l). Scoți raportul Z (pașii din secțiunea «Pași rezumați»), apoi poți continua vânzarea (manual pag. 25; coduri pag. 8)."
+        },
+        {
+          "q": "Cât păstrez raportul Z?",
+          "a": "Raportul Z se păstrează **5 ani** (HG 479/2003, art. 65 alin. 1)."
+        },
+        {
+          "q": "Am FP-70 sau FP-700?",
+          "a": "Citiți eticheta de pe echipament. Multe unități din familia FP folosesc același mod autonom documentat în manualul **Datecs FP-700**. Dacă eticheta arată FP-700, folosiți pașii de mai sus și manualul oficial Datecs (PDF în lista de surse)."
+        }
+      ],
+      "body": "**Raportul Z pe Datecs FP-70 / FP-700 se scoate din modul autonom în 3 pași:** apeși **▼** (pe afișaj apare „RAP.FISCALE – CONTINUATI? NU”), apeși **BACK** ca să schimbi pe „DA”, apoi **FEED/ENTER** pentru confirmare. Imprimanta tipărește raportul Z, închide ziua fiscală și revine la „FP-700 IS READY”. Înainte, niciun bon nu trebuie să fie deschis.\n\n**Raportul Z** închide ziua fiscală și resetează totalurile zilnice în AMEF. Legislația interzice emiterea bonului fiscal fără raport Z dacă au trecut **24 de ore** de la primul bon al zilei (HG 479/2003, art. 34 lit. l, forma consolidată). Raportul Z conține totalurile și TVA-ul pe cote (art. 64 alin. (2) lit. h)).\n\n**Datecs FP-70** face parte din familia de imprimante fiscale **FP** cu mod autonom. Procedura detaliată este în manualul **Datecs FP-700** (vezi sursele de mai jos). Dacă eticheta arată FP-700, folosiți același ghid.\n\n### Ce apare pe afișaj (text)\n\n1. „RAP.FISCALE – CONTINUATI? NU” — după **▼**\n2. „RAP.FISCALE – CONTINUATI? DA” — după **BACK**\n3. „FP-700 IS READY” — după **FEED/ENTER** și tipărirea raportului Z\n\n## Mesaje de eroare la raportul Z\n\n| Pe afișaj / cod | Ce înseamnă | Ce faci |\n| --- | --- | --- |\n| „Efectuați Raportul Z” / -111024 „Au trecut 24 ore fara Raport Z!” | au trecut 24 de ore de la primul bon fără Z (HG 479/2003, art. 34 lit. l) | scoți raportul Z (pașii din secțiunea «Pași rezumați»), apoi continui vânzarea (manual pag. 25; coduri pag. 8) |\n| „Lipsă hârtie!” / -100403 | s-a terminat rola | schimbi rola (pag. 6, §4.2), apoi reiei |\n| „Capac hârtie deschis!” | capacul nu e închis | apeși capacul până se închide (pag. 25) |\n| „Bon deschis” / -111015 | un bon a rămas deschis | închizi sau anulezi bonul (din program sau MENIU → 7 Închidere bon / 8 Anulare bon, pag. 17) |\n| -104000 „Rulati Raport Z inaintea acestei operatiuni” | operația cere zi închisă | scoți raportul Z întâi (coduri pag. 3) |\n| -100114 „MF plina” / „Service!” | memoria fiscală e plină | anunți unitatea de service acreditată; normele cer anunțarea distribuitorului, a service-ului și a organului fiscal (HG 479/2003, art. 66 alin. 1) |\n\n**Raport X** (informativ, nu închide ziua): **▲ → BACK → FEED/ENTER** (manual FP-700, pag. 18).\n\n**Din calculator (DUDE / POS)**\n\n- În DUDE: **Reports → Daily closure** (manual FP-700, pag. 13), sau comanda de închidere Z din programul POS.\n- Majoritatea aplicațiilor trimit închiderea Z la sfârșitul programului.\n\n**Dacă nu puteți emite Z**\n\n- Căutați codul în [Erori casa de marcat Datecs](/ghid/erori-datecs).\n- După închiderea corectă a zilei, exportați fișierele lunii: [Export .p7b](/ghid/articole/export-p7b-anaf) și [Verificare A4200](/ghid/verificare-a4200).\n- Vânzare fără internet: [Casa de marcat fără internet](/ghid/articole/casa-de-marcat-fara-internet).\n\n[Tapselo](/) rulează pe **Windows, macOS sau Linux** (telefonul e pentru inventar) și poate trimite comanda de raport Z din programul POS."
     },
     {
       "slug": "casa-de-marcat-fara-internet",

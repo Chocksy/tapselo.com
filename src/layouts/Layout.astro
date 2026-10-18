@@ -27,6 +27,8 @@ const {
 const siteUrl = "https://tapselo.com";
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 const ogImageUrl = `${siteUrl}/og-image.jpg`;
+const tapseloAppDescription =
+  "Casa de marcat care merge și fără internet. Cu bon fiscal, cântar integrat și rapoarte inteligente. Gata în 20 de minute, pe Windows, macOS sau Linux.";
 ---
 
 <!doctype html>
@@ -74,15 +76,14 @@ const ogImageUrl = `${siteUrl}/og-image.jpg`;
       "@type": "SoftwareApplication",
       "name": "Tapselo POS",
       "applicationCategory": "BusinessApplication",
-      "operatingSystem": "Linux",
-      "description": description,
+      "operatingSystem": "Windows, macOS, Linux",
+      "description": tapseloAppDescription,
       "url": siteUrl,
       "image": ogImageUrl,
       "offers": {
         "@type": "Offer",
-        "price": "0",
         "priceCurrency": "RON",
-        "description": "Demo gratuit"
+        "description": "gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA"
       },
       "author": {
         "@type": "Organization",
