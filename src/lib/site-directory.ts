@@ -28,6 +28,7 @@ export const guideHubLinks: SiteLink[] = [
   { href: internalPath("/ghid/cantar-dibal"), label: "Cântar Dibal" },
   { href: internalPath("/ghid/articole"), label: "Articole de suport" },
   { href: internalPath("/comparatie"), label: "Comparație POS" },
+  { href: internalPath("/comparatie/cel-mai-bun-program-casa-de-marcat"), label: "Cel mai bun program de casă de marcat" },
 ];
 
 export const ruleGuideLinks: SiteLink[] = [

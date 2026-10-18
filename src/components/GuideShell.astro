@@ -41,6 +41,8 @@ interface Props {
   contentWidth?: "reading" | "full";
   /** Sticky “Pe pagină” TOC from article headings (desktop). Default: /ghid/ articles except hubs. */
   pageToc?: boolean;
+  /** Passed to Layout; false drops the site-wide SoftwareApplication JSON-LD. */
+  appJsonLd?: boolean;
 }
 
 const {
@@ -62,7 +64,9 @@ const {
   jsonLd = [],
   contentWidth = "full",
   pageToc: pageTocProp,
+  appJsonLd = true,
 } = Astro.props;
+const hasByline = Astro.slots.has("byline");
 const contentInnerClass = contentWidth === "reading" ? "site-reading" : "w-full";
 const pageToc = pageTocProp ?? defaultGhidPageToc(Astro.url.pathname);
 const guideLayoutClass =
@@ -82,6 +86,7 @@ const ctaLocation = `ghid-${campaign}`;
   jsonLd={jsonLd}
   publishedTime={publishedOn ?? undefined}
   modifiedTime={updatedOn ?? undefined}
+  appJsonLd={appJsonLd}
 >
   <Navbar />
 
@@ -97,7 +102,9 @@ const ctaLocation = `ghid-${campaign}`;
         )}
         <h1 class="mt-3 font-display text-4xl italic text-white sm:text-5xl">{heading}</h1>
         {lead && <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">{lead}</p>}
-        {(updatedOn || verifiedOn) && (
+        {hasByline ? (
+          <div class="mt-6 text-sm text-text-on-primary"><slot name="byline" /></div>
+        ) : (updatedOn || verifiedOn) && (
           <p class="mt-6 text-sm text-text-on-primary-muted">
             {updatedOn && <span>Actualizat: <time datetime={updatedOn}>{formatDateRo(updatedOn)}</time></span>}
             {updatedOn && verifiedOn && <span aria-hidden="true"> · </span>}

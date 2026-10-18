@@ -13,6 +13,8 @@ interface Props {
   publishedTime?: string;
   /** ISO date for article:modified_time (articles only). */
   modifiedTime?: string;
+  /** Site-wide SoftwareApplication JSON-LD; off on vendor comparison pages. */
+  appJsonLd?: boolean;
 }
 
 const {
@@ -22,6 +24,7 @@ const {
   jsonLd = [],
   publishedTime,
   modifiedTime,
+  appJsonLd = true,
 } = Astro.props;
 
 const siteUrl = "https://tapselo.com";
@@ -71,6 +74,7 @@ const tapseloAppDescription =
     <meta name="twitter:image" content={ogImageUrl} />
 
     <!-- Structured Data -->
+    {appJsonLd && (
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
@@ -99,6 +103,7 @@ const tapseloAppDescription =
         }
       }
     })} />
+    )}
     {jsonLd.map((block) => (
       <script type="application/ld+json" set:html={JSON.stringify(block)} />
     ))}

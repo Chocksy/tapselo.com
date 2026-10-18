@@ -1,0 +1,21 @@
+---
+// Visible placeholder for content Razvan still has to supply. The build fails while any
+// rendered `data-todo` remains (see src/lib/build/todo-guard.ts), so none can ship.
+interface Props {
+  /** Slot id from the content brief, e.g. "TODO-FOTO". */
+  id: string;
+  inline?: boolean;
+  tone?: "light" | "dark";
+}
+const { id, inline = false, tone = "light" } = Astro.props;
+const Tag = inline ? "span" : "div";
+---
+
+<Tag
+  data-todo={id}
+  class:list={[
+    "todo-slot rounded-md border-2 border-dashed text-sm",
+    inline ? "inline-block px-2 py-0.5" : "block p-4",
+    tone === "dark" ? "border-ticket/70 text-ticket-light" : "border-ticket bg-ticket-light/60 text-primary",
+  ]}
+><slot /></Tag>

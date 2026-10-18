@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { articleLastmodByPath, parseArticlesFile } from './src/lib/articles/schema.ts';
 import { anafCuiDevProxyPlugin } from './src/lib/cui-anaf/vite-dev-proxy.ts';
+import { todoGuard } from './src/lib/build/todo-guard.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const articlesRaw = JSON.parse(readFileSync(join(__dirname, 'src/lib/kb/articles.json'), 'utf8'));
@@ -17,6 +18,7 @@ export default defineConfig({
   site: 'https://tapselo.com',
   output: 'static',
   integrations: [
+    todoGuard(),
     sitemap({
       // Shopper pages (store sign-up, store privacy, confirm, unsubscribe) are noindex.
       filter: (page) => !/^\/(c|p|g|o|confirmare|dezabonare)\//.test(new URL(page).pathname),

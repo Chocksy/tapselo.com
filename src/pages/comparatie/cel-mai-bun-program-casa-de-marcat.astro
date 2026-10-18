@@ -1,0 +1,566 @@
+---
+// /comparatie/cel-mai-bun-program-casa-de-marcat/: best-of shortlist (TAP-BESTOF-GAP).
+// Copy is verbatim from cross-app-seo/tapselo/tap-bestof-2026-10-18.md §4; do not reword.
+import { Linkedin } from "@lucide/astro";
+import GuideShell from "../../components/GuideShell.astro";
+import TodoSlot from "../../components/TodoSlot.astro";
+import FloatingCta from "../../components/FloatingCta.astro";
+import { internalPath } from "../../lib/internal-url.ts";
+import { formatDateRo } from "../../lib/mcp/text.ts";
+import {
+  breadcrumbJsonLd,
+  breadcrumbLinks,
+  canonicalUrl,
+  faqPageJsonLd,
+  type Crumb,
+  type FaqItem,
+} from "../../lib/unelte/jsonld.ts";
+
+const PATH = "/comparatie/cel-mai-bun-program-casa-de-marcat/";
+const PAGE_URL = canonicalUrl(PATH);
+const TITLE = "Cel mai bun program de casă de marcat 2026: lista scurtă | Tapselo";
+const HEADING = "Cel mai bun program de casă de marcat în 2026: lista scurtă pentru magazine";
+const DESCRIPTION =
+  "7 programe de casă de marcat pentru magazine, comparate pe aceleași criterii: vânzare fără internet, case și cântare compatibile, preț public. Cu surse.";
+
+/** Set both on publish (YYYY-MM-DD, the merge/deploy day); UPDATED only changes with the content. */
+const PUBLISHED: string | null = null;
+const UPDATED: string | null = PUBLISHED;
+const VERIFIED = "2026-10-18";
+
+/** Fill when Razvan supplies them; sameAs/image are emitted only once set. */
+const AUTHOR = {
+  name: "Răzvan Ciocanel",
+  role: "fondator Tapselo",
+  linkedin: null as string | null,
+  photo: null as string | null,
+};
+
+const DEMO = "https://app.tapselo.com/?demo=1";
+const APP = "https://app.tapselo.com";
+
+const vendors = [
+  { id: "tapselo", name: "Tapselo" },
+  { id: "smartbill-pos", name: "SmartBill POS" },
+  { id: "oblio", name: "Oblio" },
+  { id: "noxta", name: "Noxta" },
+  { id: "freyapos", name: "FreyaPOS" },
+  { id: "conexa", name: "Conexa (POB Soft)" },
+  { id: "selectsoft", name: "Selectsoft Retail – POS Magazin" },
+];
+
+const faq: FaqItem[] = [
+  {
+    q: "Care este cel mai bun program de casă de marcat pentru un magazin mic?",
+    a: "Depinde de echipamente și de cât de des pică internetul. Pentru un magazin alimentar cu calculator, Datecs FP-700 și cântar Dibal, recomandăm Tapselo (produsul nostru). Pentru vânzare de pe telefon Android, uită-te la SmartBill POS sau Noxta.",
+  },
+  {
+    q: "Ce program de casă de marcat merge fără internet?",
+    a: "Pe paginile verificate la 18.10.2026, vânzarea fără internet e documentată la Tapselo, SmartBill POS, Noxta și FreyaPOS (până la 7 zile). La Oblio, Conexa și Selectsoft nu am găsit informația, așa că întreabă producătorul.",
+  },
+  {
+    q: "Cât costă un program de casă de marcat?",
+    a: "Prețurile publice pornesc de la 0 RON la Noxta (plan Free, 30 de plăți pe zi) și 29 €/an la Oblio, iar SmartBill POS costă 10,9 €/lună + TVA. Tapselo e gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA. FreyaPOS, Conexa și Selectsoft au preț la cerere.",
+  },
+  {
+    q: "Ce diferență e între programul de casă de marcat și casa de marcat?",
+    a: "Programul e aplicația în care scanezi și încasezi. Casa de marcat (AMEF) e aparatul fiscal care emite bonul și transmite datele la ANAF. Ai nevoie de amândouă, iar conectarea casei la ANAF rămâne obligația ta.",
+  },
+  {
+    q: "Pot folosi programul de casă de marcat pe telefon?",
+    a: "Da, la unele. SmartBill POS scrie că merge pe Android, Noxta pe Android și iOS, iar Conexa pe iPad și Android. Casa Tapselo rulează pe Windows, macOS și Linux; pe Android și iPhone, Tapselo e doar pentru inventar.",
+  },
+  {
+    q: "Ce case de marcat merg cu Tapselo?",
+    a: "Azi e testată imprimanta fiscală Datecs FP-700, conectată pe USB. Daisy și Tremol sunt anunțate „în curând”. Dacă ai alt model, scrie-ne și verificăm.",
+  },
+  {
+    q: "Cum mut produsele din programul vechi?",
+    a: "Întreabă producătorul ce format acceptă. De exemplu, Selectsoft scrie că importă produsele din Excel sau CSV, iar la Oblio importi stocul inițial când activezi Stocuri. În Tapselo, importul produselor din programul vechi e inclus în ambele planuri.",
+  },
+];
+
+const crumbs: Crumb[] = [
+  { name: "Acasă", path: "/" },
+  { name: "Comparație", path: "/comparatie/" },
+  { name: "Cel mai bun program de casă de marcat", path: PATH },
+];
+
+const article = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: HEADING,
+  description: DESCRIPTION,
+  inLanguage: "ro-RO",
+  mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
+  // Unfilled dates stay as placeholders so the TODO build guard fails.
+  datePublished: PUBLISHED ?? "{DATA_PUBLICARE_ISO}",
+  dateModified: UPDATED ?? "{DATA_ACTUALIZARE_ISO}",
+  author: {
+    "@type": "Person",
+    name: AUTHOR.name,
+    jobTitle: AUTHOR.role,
+    worksFor: { "@type": "Organization", name: "Tapselo", url: "https://tapselo.com/" },
+    ...(AUTHOR.linkedin ? { sameAs: [AUTHOR.linkedin] } : {}),
+    ...(AUTHOR.photo ? { image: AUTHOR.photo } : {}),
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "Tapselo",
+    url: "https://tapselo.com/",
+    logo: { "@type": "ImageObject", url: "https://tapselo.com/logo.png" },
+  },
+};
+
+const itemList = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Cele mai bune programe de casă de marcat în 2026",
+  itemListOrder: "https://schema.org/ItemListOrderAscending",
+  numberOfItems: vendors.length,
+  itemListElement: vendors.map((v, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: v.name,
+    url: `${PAGE_URL}#${v.id}`,
+  })),
+};
+
+const jsonLd = [article, faqPageJsonLd(faq), breadcrumbJsonLd(crumbs), itemList];
+const ext = { rel: "noopener", target: "_blank" };
+---
+
+<GuideShell
+  title={TITLE}
+  description={DESCRIPTION}
+  heading={HEADING}
+  campaign="bestof-program-casa-de-marcat"
+  breadcrumbs={breadcrumbLinks(crumbs)}
+  publishedOn={PUBLISHED}
+  updatedOn={UPDATED}
+  ctaTitle="Vezi cum vinde Tapselo când pică netul."
+  ctaBody="Bon pe Datecs FP-700, produs la kg din cântarul Dibal, apoi sincronizare când revine internetul."
+  ctaHref={DEMO}
+  jsonLd={jsonLd}
+  appJsonLd={false}
+  pageToc={false}
+>
+  <Fragment slot="byline">
+    <p class="flex flex-wrap items-center gap-x-2 gap-y-2">
+      {AUTHOR.photo ? (
+        <img src={AUTHOR.photo} alt={AUTHOR.name} width={48} height={48} class="h-12 w-12 rounded-full object-cover" />
+      ) : null}
+      <span>De <strong class="text-white">{AUTHOR.name}</strong>, {AUTHOR.role}</span>
+      <span aria-hidden="true">·</span>
+      {AUTHOR.linkedin ? (
+        <a href={AUTHOR.linkedin} target="_blank" rel="noopener me" aria-label={`${AUTHOR.name} pe LinkedIn`} class="inline-flex text-text-on-primary hover:text-white">
+          <Linkedin class="h-4 w-4" aria-hidden="true" />
+        </a>
+      ) : (
+        <TodoSlot id="TODO-LINKEDIN" inline tone="dark">[TODO-LINKEDIN: link profil LinkedIn]</TodoSlot>
+      )}
+      {!AUTHOR.photo && (
+        <>
+          <span aria-hidden="true">·</span>
+          <TodoSlot id="TODO-FOTO" inline tone="dark">[TODO-FOTO: fotografie Răzvan Ciocanel, pătrat, min. 240×240 px]</TodoSlot>
+        </>
+      )}
+    </p>
+    <p class="mt-2 text-text-on-primary-muted">
+      Publicat: {PUBLISHED ? <time datetime={PUBLISHED}>{formatDateRo(PUBLISHED)}</time> : <TodoSlot id="TODO-DATA_PUBLICARE" inline tone="dark">{"{DATA_PUBLICARE}"}</TodoSlot>}
+      <span aria-hidden="true"> · </span>
+      Actualizat: {UPDATED ? <time datetime={UPDATED}>{formatDateRo(UPDATED)}</time> : <TodoSlot id="TODO-DATA_ACTUALIZARE" inline tone="dark">{"{DATA_ACTUALIZARE}"}</TodoSlot>}
+      <span aria-hidden="true"> · </span>
+      Fapte verificate la <time datetime={VERIFIED}>{formatDateRo(VERIFIED)}</time>
+    </p>
+  </Fragment>
+
+  <article class="kb-prose bestof space-y-10" data-bestof>
+    <div id="bestof-intro" class="space-y-4">
+      <p class="rounded-xl border border-ticket bg-ticket-light p-4 text-sm text-primary">
+        Tapselo este produsul nostru. L-am pus în listă după aceleași criterii ca pe celelalte programe, iar datele despre ceilalți producători vin doar de pe site-urile lor, cu link la fiecare informație.
+      </p>
+      <p>
+        Dacă ai un magazin alimentar mic, cu un calculator la tejghea, o casă de marcat Datecs FP-700, un cântar Dibal și un internet care mai pică, cel mai bun program de casă de marcat din lista noastră este Tapselo. Îl facem noi, așa că mai jos explicăm exact după ce criterii l-am pus primul. Pentru alte situații alegerea se schimbă: SmartBill POS dacă vrei să vinzi de pe telefon Android, Oblio dacă vrei cel mai mic preț public, Noxta dacă ai sub 30 de plăți pe zi.
+      </p>
+    </div>
+
+    <section>
+      <h2 class="kb-h2">Pe scurt</h2>
+      <ul class="bestof-cards">
+        <li><strong>Niciun program nu e cel mai bun pentru toată lumea.</strong> Ordinea de mai jos e făcută pentru un magazin alimentar mic, cu una sau două case, calculator la tejghea, cântar și internet instabil. Dacă ai un restaurant sau vinzi doar de pe telefon, citește direct tabelul „<a href="#ce-program-ti-se-potriveste">Ce program ți se potrivește</a>”.</li>
+        <li><strong>Vânzarea fără internet e documentată de patru producători:</strong> Tapselo, SmartBill POS, Noxta și FreyaPOS (FreyaPOS scrie „până la 7 zile”). La Oblio, Conexa și Selectsoft nu am găsit informația pe paginile verificate, ceea ce nu înseamnă că lipsește. Întreabă producătorul înainte.</li>
+        <li><strong>Prețurile publice diferă mult.</strong> Oblio cere 29 €/an, SmartBill POS 10,9 €/lună + TVA, Noxta are un plan de 0 RON limitat la 30 de plăți pe zi, iar Tapselo e gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA. FreyaPOS, Conexa și Selectsoft dau prețul la cerere.</li>
+        <li><strong>Pornește de la casa de marcat pe care o ai deja.</strong> Tapselo e testat azi doar cu Datecs FP-700 pe USB. SmartBill POS, Oblio, Noxta și Conexa menționează mai multe mărci, așa că verifică modelul tău pe lista fiecăruia.</li>
+        <li><strong>Programul nu te scapă de obligațiile casei de marcat.</strong> Conectarea casei de marcat la ANAF e obligația ta, oricare ar fi programul (OUG 28/1999, art. 3¹ alin. (4)). Programul doar trimite vânzarea către casă.</li>
+      </ul>
+    </section>
+
+    <p>
+      Până alegi un program, poți folosi uneltele noastre pentru magazin direct în browser, fără cont Tapselo: <a href={internalPath("/unelte/")} data-tapselo-cta="bestof-leadmagnet">calculator TVA, generator NIR, registru de casă și altele</a>.
+    </p>
+
+    <aside class="bestof-cta" aria-label="Demo Tapselo">
+      <p class="bestof-cta__title">Vezi cum vinde Tapselo când pică netul.</p>
+      <p>Bon pe Datecs FP-700, produs la kg din cântarul Dibal, apoi sincronizare când revine internetul.</p>
+      <p class="bestof-cta__actions">
+        <a href={DEMO} data-tapselo-cta="bestof-mid" class="bestof-btn bestof-btn--primary">Încearcă demo-ul</a>
+        <a href={internalPath("/demo/")} data-tapselo-cta="bestof-mid" class="bestof-btn bestof-btn--secondary">Programează o prezentare</a>
+      </p>
+    </aside>
+
+    <section>
+      <h2 class="kb-h2">Ce este un program de casă de marcat (și ce nu este)</h2>
+      <p>Un program de casă de marcat (îi mai spui program POS sau soft de vânzare) este aplicația de pe calculator, tabletă sau telefon în care scanezi produsele și încasezi. Programul trimite vânzarea către casa de marcat fiscală (AMEF), iar casa tipărește bonul fiscal. Cele mai multe programe țin și lista de produse, prețurile, stocul și rapoartele de vânzări, iar unele lucrează și cu cântarul.</p>
+      <p>Ce nu este:</p>
+      <ul>
+        <li><strong>Nu este casa de marcat.</strong> Bonul fiscal îl emite aparatul fiscal, de exemplu o imprimantă fiscală Datecs. Programul doar îi trimite datele vânzării. Ai nevoie de amândouă.</li>
+        <li><strong>Nu este terminalul de plată cu cardul.</strong> Când am căutat „soft POS” și „aplicație POS” pe Google (18.10.2026), primele rezultate au fost aplicațiile băncilor care transformă telefonul în terminal de card. Acelea încasează cardul, nu emit bon fiscal.</li>
+        <li><strong>Nu este neapărat un „sistem POS” la cheie.</strong> Un sistem POS e de obicei pachetul de echipamente (calculator cu ecran tactil, casă de marcat, cititor de coduri, sertar) plus programul. Poți lua doar programul și folosi echipamentele pe care le ai.</li>
+        <li><strong>Nu te scapă de obligațiile față de ANAF.</strong> OUG 28/1999, art. 3¹ alin. (4), spune că operatorii economici „au obligația de a asigura conectarea la distanță a aparatelor de marcat electronice fiscale, în vederea transmiterii de date fiscale către Agenția Națională de Administrare Fiscală”. Regula e aceeași oricare ar fi programul. Ce faci când casa rămâne fără internet găsești în <a href={internalPath("/ghid/articole/casa-de-marcat-fara-internet/")}>ghidul casa de marcat fără internet</a>.</li>
+        <li><strong>Nu e neapărat un program de gestiune complet.</strong> Unele programe includ stocuri, NIR și inventar, altele le vând separat sau doar în planurile mai scumpe. Dacă te interesează mai ales stocurile, vezi și <a href={internalPath("/program-gestiune-magazin/")}>programul de gestiune pentru magazin</a>.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="kb-h2">Cum am ales programele</h2>
+      <p><strong>Situația de referință:</strong> un magazin alimentar mic, cu una sau două case, un calculator la tejghea, o casă de marcat fiscală, un cântar pentru produsele la kg și un internet care mai pică. Ordinea din listă arată cât de bine se potrivește fiecare program cu situația asta. Nu e o notă generală.</p>
+      <p><strong>Ce programe am inclus:</strong> programe care emit bonuri prin casa de marcat fiscală în magazine din România și au pagini publice despre asta. Am lăsat deoparte programele făcute în principal pentru restaurante (de exemplu Ebriza, boogiT sau VilicoRest). Le găsești în <a href={internalPath("/comparatie/")}>comparația completă</a>.</p>
+      <p><strong>Criteriile, aceleași pentru toți:</strong></p>
+      <ol>
+        <li><strong>Vânzare fără internet:</strong> producătorul scrie sau nu, pe site, că poți emite bonuri când pică netul.</li>
+        <li><strong>Case de marcat:</strong> ce mărci de case fiscale menționează producătorul.</li>
+        <li><strong>Cântar:</strong> producătorul menționează sau nu legătura cu cântarul.</li>
+        <li><strong>Preț public pentru prima casă:</strong> suma de pe site, exact cum o scrie producătorul (lei sau euro, pe lună sau pe an, cu sau fără TVA). Nu am convertit valute și nu am estimat prețurile care nu sunt publice.</li>
+        <li><strong>Pe ce rulează vânzarea:</strong> Windows, macOS, Linux, Android, iOS sau browser.</li>
+        <li><strong>Stocuri și NIR:</strong> incluse în planul de bază, într-un plan mai scump sau deloc.</li>
+        <li><strong>Probă sau plan gratuit:</strong> câte zile și în ce condiții.</li>
+      </ol>
+      <p><strong>Cum am verificat:</strong> am citit paginile publice ale fiecărui producător pe 18.10.2026. Fiecare informație are linkul și data în secțiunea „<a href="#surse">Surse</a>” de la final. Nu am făcut conturi la ceilalți producători și nu am folosit note de pe site-uri de recenzii. Când o pagină nu spune nimic despre un criteriu, am scris „nu e menționat”, nu „nu”. Despre Tapselo am scris doar ce apare pe tapselo.com.</p>
+      <p><strong>Ce am testat noi:</strong> testul practic cu Tapselo (bon pe Datecs FP-700, produs la kg din cântarul Dibal, vânzare cu internetul oprit) îl documentăm cu capturi de ecran în secțiunea despre Tapselo. <TodoSlot id="TODO-TEST" inline>[TODO-TEST: dacă testul cu capturi nu e făcut până la publicare, înlocuiește fraza cu: „Încă nu am publicat un test practic cu capturi; informațiile despre Tapselo vin din documentația de pe tapselo.com.”]</TodoSlot></p>
+      <p><strong>Transparență:</strong> Tapselo e produsul nostru, iar autorul paginii este fondatorul Tapselo. Dacă vezi o informație depășită, scrie-ne la <a href="mailto:contact@tapselo.com">contact@tapselo.com</a> și o corectăm. Recitim toate sursele cel puțin o dată la 90 de zile și schimbăm data de actualizare doar când schimbăm conținutul.</p>
+    </section>
+
+    <section>
+      <h2 class="kb-h2">Cele mai bune programe de casă de marcat în 2026</h2>
+      <p>Mai jos sunt cele 7 programe, în ordinea potrivirii cu situația de referință. La fiecare găsești ce face, cât costă după site-ul producătorului și pentru cine se potrivește. Prețurile sunt cele afișate pe 18.10.2026, iar mențiunea despre TVA e cea a producătorului. Dacă situația ta e alta, sari la tabelul „<a href="#ce-program-ti-se-potriveste">Ce program ți se potrivește</a>”.</p>
+
+      <div id="tapselo" class="bestof-vendor">
+        <h3 class="kb-h3">1. Tapselo, cel mai bun pentru magazinul alimentar mic cu calculator la tejghea și internet instabil</h3>
+        <p>Tapselo e programul nostru, făcut pentru magazine alimentare mici, băcănii și brutării. Casa de marcat rulează pe calculator cu Windows, macOS sau Linux (există și o imagine Tapselo pentru kiosk, pe Linux). Telefonul Android sau iPhone îl folosești doar pentru inventar și recepția de marfă, nu pentru bon fiscal.</p>
+        <p><strong>Fără internet:</strong> când pică netul, vânzarea continuă. Bonul fiscal iese la imprimanta legată local, vânzările rămân pe calculator și se sincronizează în panoul de administrare când revine conexiunea.</p>
+        <p><strong>Echipamente testate, conform tapselo.com:</strong> imprimanta fiscală Datecs FP-700 conectată pe USB (bon fiscal, raport X și Z, jurnal electronic, export .p7b pentru ANAF), cântarul Dibal în rețea, testat pe D-900, unde prețurile pleacă singure în cântar (PLU 1-999), și orice cititor de coduri de bare pe USB. Daisy și Tremol sunt anunțate „în curând”.</p>
+        <p><strong>Inclus în ambele planuri:</strong> recepția de marfă din poza facturii (confirmi liniile, iar NIR-ul și stocul se completează), inventarul cu telefonul, rețetele și producția, rapoartele de vânzări și importul produselor din programul vechi.</p>
+        <p><strong>Limitări de știut:</strong> Tapselo nu merge încă cu terminale de card, sertar de bani, imprimante pe rețea sau Bluetooth. Nu are aplicație de casă pe telefon.</p>
+        <p><strong>Preț:</strong> gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA (79 lei pentru o casă, 129 lei pentru două case). Te anunțăm cu 30 de zile înainte de trecerea la tarif.</p>
+        <div class="bestof-shots">
+          <TodoSlot id="TODO-SCREENSHOT-1">[TODO-SCREENSHOT-1: ecranul de vânzare Tapselo pe calculator, cu un bon în lucru (un produs la bucată + un produs la kg)]</TodoSlot>
+          <TodoSlot id="TODO-SCREENSHOT-2">[TODO-SCREENSHOT-2: bonul fiscal tipărit pe Datecs FP-700 din Tapselo (fotografie, datele firmei acoperite)]</TodoSlot>
+          <TodoSlot id="TODO-SCREENSHOT-3">[TODO-SCREENSHOT-3: raport Z pe FP-700 din Tapselo (fotografie a raportului tipărit)]</TodoSlot>
+          <TodoSlot id="TODO-SCREENSHOT-4">[TODO-SCREENSHOT-4: vânzare cu internetul oprit: ecranul casei cu indicatorul offline, apoi panoul de administrare după reconectare, cu aceeași vânzare]</TodoSlot>
+          <TodoSlot id="TODO-SCREENSHOT-5">[TODO-SCREENSHOT-5: produs la kg: eticheta din cântarul Dibal D-900 și linia citită pe casă]</TodoSlot>
+        </div>
+        <p>Poți vedea fluxul în <a href={DEMO} data-tapselo-cta="bestof-inline">demo-ul Tapselo</a>.</p>
+        <p class="bestof-fit"><strong>Potrivit pentru:</strong> magazine alimentare, băcănii și brutării cu una sau două case, care vând la kg și nu vor să se oprească atunci când pică netul. Nu e alegerea potrivită dacă vrei să încasezi cu POS bancar legat de program sau dacă ai altă casă de marcat decât Datecs FP-700, singura testată azi.</p>
+      </div>
+
+      <div id="smartbill-pos" class="bestof-vendor">
+        <h3 class="kb-h3">2. SmartBill POS, cel mai bun pentru vânzare de pe telefon sau tabletă Android și pentru cine folosește deja SmartBill</h3>
+        <p>SmartBill POS e aplicația de vânzare a SmartBill, care scrie pe site că are „Peste 170.000 de clienti” (pentru toate produsele sale). Conform SmartBill, aplicația „Functioneaza pe PC cu Windows si pe dispozitive mobile cu Android” și poate fi folosită la casa fixă sau mobil, la masă ori la stand.</p>
+        <p><strong>Fără internet:</strong> SmartBill scrie că POS-ul „functioneaza atat offline, cat si online”. Dacă e conectat la SmartBill Gestiune și rămâi fără net, poți emite în continuare bonuri, iar acestea se trimit automat în cloud când revine conexiunea.</p>
+        <p><strong>Echipamente:</strong> pe pagina de prețuri scrie „Se leaga la casa de marcat si la cantar”, cu posibilitatea de a folosi sertarul de bani și „Integrare POS Bancar”. Configurarea caselor de marcat și a cântarului e descrisă în centrul de ajutor SmartBill POS.</p>
+        <p><strong>Preț (pagina de prețuri SmartBill):</strong> POS 10,9 €/lună + TVA. POS + Gestiune 27,22 €/lună + TVA, care adaugă NIR, gestiuni, inventar și integrare cu magazinul online. Un utilizator suplimentar costă 3,5 €/lună + TVA. Poți încerca 30 de zile. Firmele aflate în primul an de la înființare au 12 luni de SmartBill POS gratuit, dacă îl folosesc conectat la SmartBill Facturare sau Gestiune. SmartBill are și o campanie în care casa de marcat Daisy Compact S e oferită gratuit la abonarea la SmartBill POS, prin partenerul Zeus Services.</p>
+        <p><strong>Ecosistem:</strong> POS-ul se poate lega de SmartBill Gestiune (e-Factura, stocuri, oricâte stații), de magazine online și de SmartBill Conta.</p>
+        <p class="bestof-fit"><strong>Potrivit pentru:</strong> magazine care vor să vândă de pe telefon sau tabletă Android, au POS bancar legat de program ori folosesc deja SmartBill Facturare sau Gestiune. Merită comparat cu atenție dacă ai nevoie de stocuri, pentru că acestea sunt în planul POS + Gestiune.</p>
+      </div>
+
+      <div id="oblio" class="bestof-vendor">
+        <h3 class="kb-h3">3. Oblio, cel mai bun pentru cel mai mic preț public, cu facturare și stocuri</h3>
+        <p>Oblio pornește de la facturare și declară că „Peste 150.000 de firme il folosesc deja”. Modulul Stocuri + Producție e inclus gratuit în abonament, iar din el emiți bonuri fiscale. Oblio scrie: „Adaugi o casa de marcat Datecs, Tremol sau Daisy in 30 de secunde”, cu „o interfata prietenoasa pentru POS”. Integrarea cu Datecs e „Valabil doar daca ati activat Oblio Stocuri” și cere un plugin instalat pe calculator.</p>
+        <p><strong>Stocuri:</strong> NIR, notă de transfer, bon de consum, inventar, rețetar și „Inventar mobil” cu telefonul. Are integrări cu WooCommerce, Prestashop, Opencart și eMAG și exportă datele în Saga, WinMentor și Ciel.</p>
+        <p><strong>Preț (pagina „Cât costă”):</strong> „€ 29 / an” („doar 2.49 € / luna”), un singur abonament, cu facturi, utilizatori, firme și puncte de lucru nelimitate. Pagina nu precizează dacă prețul include TVA. Poți încerca 1 an gratuit.</p>
+        <p><strong>Ce nu am găsit:</strong> pe paginile verificate (Stocuri, Cât costă, integrarea Datecs) nu apare vânzarea fără internet și nici cântarul. Dacă sunt importante pentru tine, întreabă Oblio înainte.</p>
+        <p class="bestof-fit"><strong>Potrivit pentru:</strong> firme care au nevoie mai ales de facturare și stocuri, cu bon fiscal din același program, la cel mai mic preț public din listă. Mai puțin potrivit dacă vinzi la kg sau dacă internetul din magazin pică des, până nu confirmi cu Oblio cum se comportă.</p>
+      </div>
+
+      <div id="noxta" class="bestof-vendor">
+        <h3 class="kb-h3">4. Noxta, cel mai bun pentru afaceri foarte mici care vor să înceapă de la 0 lei</h3>
+        <p>Noxta (Riveat Software SRL, Arad) e o aplicație de vânzare pentru cafenele, restaurante, magazine și saloane. Emite bonul fiscal prin case Datecs sau Tremol. Pe pagina principală scrie „Android + iOS + Windows”.</p>
+        <p><strong>Fără internet:</strong> Noxta scrie că „vinzi și fără internet”. Vânzările se salvează pe dispozitiv și, pe planurile cu cloud, se sincronizează automat când revine conexiunea.</p>
+        <p><strong>Preț (pagina de prețuri Noxta, fără TVA):</strong> planul Free costă 0 RON și include „1 dispozitiv, 30 plăți/zi, bon fiscal și funcționare offline”. Starter costă 149 RON/lună (sau 1.488 RON/an). Professional costă 349 RON/lună (sau 3.490 RON/an) și adaugă 3 dispozitive, gestiune de stocuri, furnizori și NIR. Business costă 599 RON/lună. Planurile plătite au 14 zile de test, fără card.</p>
+        <p><strong>De știut:</strong> Starter e descris „Pentru localuri mici, cu servire la masă”, iar gestiunea de stocuri începe de la Professional. Pe paginile verificate nu apare cântarul.</p>
+        <p class="bestof-fit"><strong>Potrivit pentru:</strong> afaceri foarte mici, cu sub 30 de plăți pe zi, care vor să emită bon fiscal de pe telefon, tabletă sau PC fără să plătească de la început. Pentru un magazin cu stoc și NIR, compară prețul planului Professional cu celelalte variante.</p>
+      </div>
+
+      <div id="freyapos" class="bestof-vendor">
+        <h3 class="kb-h3">5. FreyaPOS, cel mai bun pentru rețele de magazine care vor offline mai lung și programe de fidelizare</h3>
+        <p>FreyaPOS are o soluție dedicată pentru retail. Pe pagina de retail scrie că programul „Funcționează offline până la 7 zile” și că „Integrează o gamă largă de cântare și cititoare de coduri de bare”. Mai menționează „Integrare cu casa de marcat, programe contabilitate – SAGA, OMC, WinMentor”, încasare cash, card sau hibrid, programe de fidelizare, promoții și integrare cu METRO.</p>
+        <p><strong>Exemplu declarat de Freya:</strong> Radic Star a implementat Freya Shop în rețeaua sa de magazine, iar Freya scrie că gestionarea centralizată a stocurilor și comenzile automate către furnizori „au redus pierderile cu 30%”.</p>
+        <p><strong>Suport:</strong> asistență hardware și software telefonic, online și la sediul clientului, conform paginii.</p>
+        <p><strong>Preț:</strong> nu e publicat. Pe site găsești doar butonul „Cere ofertă”, așa că prețul e la cerere.</p>
+        <p class="bestof-fit"><strong>Potrivit pentru:</strong> magazine sau rețele de magazine care vor un furnizor care face și implementarea, cu offline de până la 7 zile, cântare și fidelizare. Pentru un singur magazin mic, cere oferta pentru scenariul tău exact înainte să compari.</p>
+      </div>
+
+      <div id="conexa" class="bestof-vendor">
+        <h3 class="kb-h3">6. Conexa (POB Soft), cel mai bun pentru magazine care vor să vândă de pe laptop, iPad sau Android, cu mai multe mărci de case</h3>
+        <p>Conexa (POB Soft, POINT OF BUSINESS SOFTWARE S.R.L.) e o platformă de vânzare și gestiune pentru retail și HoReCa. Pe site scrie că funcționează pe „laptop Windows, tabletă iPad sau Android, ori telefon mobil” și că „ne conectăm direct la casele de marcat AMEF existente (Datecs, Tremol, Custom, Daisy), cititoare de coduri de bare și cântare comerciale”.</p>
+        <p><strong>Ce mai include, conform site-ului:</strong> stocuri care scad automat la fiecare bon sau factură, facturi trimise în SPV ANAF, conturi de utilizatori nelimitate și export către Saga, WinMentor, NextUp, SmartBill și Nexus.</p>
+        <p><strong>Preț:</strong> nu e afișat pe pagina principală. Conexa scrie că dimensionează licențierea „în funcție de complexitatea fluxurilor tale”, deci prețul e la cerere.</p>
+        <p><strong>Ce nu am găsit:</strong> pe pagina principală nu apare vânzarea fără internet.</p>
+        <p class="bestof-fit"><strong>Potrivit pentru:</strong> magazine care vor să vândă de pe dispozitive diferite (inclusiv iPad) și au case Datecs, Tremol, Custom sau Daisy. E o alegere bună și dacă vor implementare asistată și o legătură directă cu contabilitatea.</p>
+      </div>
+
+      <div id="selectsoft" class="bestof-vendor">
+        <h3 class="kb-h3">7. Selectsoft Retail – POS Magazin, cel mai bun pentru magazine care vor legătură strânsă cu contabilitatea și importul facturilor</h3>
+        <p>Selectsoft scrie că Retail – POS Magazin „poate fi folosit de către orice magazin alimentar, nealimentar, brutărie și patiserie, aprozare, florării și pet-shop”, dar și de alte tipuri de magazine. Programul se conectează la „case de marcat sau imprimante fiscale, POS bancar, cititoare coduri de bare, imprimante, display-uri, cântare electronice cu etichetare sau preluare automată a greutății”.</p>
+        <p><strong>Ce mai include, conform site-ului:</strong> recepții importate automat din SPV după e-Facturile primite, sincronizare cu facturile METRO Cash &amp; Carry, integrare cu SAGA, WinMentor, Ciel și alte programe de contabilitate, import din Excel sau CSV al produselor și stocului inițial, plus recepție și inventar de pe dispozitive Android.</p>
+        <p><strong>Preț:</strong> nu e afișat. Selectsoft are un calculator pe site care trimite „o ofertă de preț estimativă” după ce completezi formularul, deci prețul e la cerere.</p>
+        <p><strong>Ce nu am găsit:</strong> pe pagina produsului nu apare vânzarea fără internet.</p>
+        <p class="bestof-fit"><strong>Potrivit pentru:</strong> magazine care primesc multe facturi (inclusiv de la METRO) și vor ca recepția și contabilitatea să meargă automat. Merită luat în calcul și dacă ai nevoie de POS bancar și cântar cu etichetare în același program.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="kb-h2">Comparație una lângă alta</h2>
+      <p>Același set de criterii pentru toate programele: vânzare fără internet, case de marcat, cântar, preț public, sisteme, stocuri și probă. „Nu e menționat” înseamnă că nu am găsit informația pe paginile verificate la 18.10.2026, nu că funcția lipsește.</p>
+      <div class="table-scroll">
+        <table class="kb-table bestof-table">
+          <caption>Programe de casă de marcat pentru magazine: date de pe site-urile producătorilor, verificate la 18.10.2026</caption>
+          <thead>
+            <tr>
+              <th scope="col">Program</th>
+              <th scope="col">Vânzare fără internet</th>
+              <th scope="col">Pe ce rulează vânzarea</th>
+              <th scope="col">Case de marcat menționate</th>
+              <th scope="col">Cântar</th>
+              <th scope="col">POS bancar legat de program</th>
+              <th scope="col">Stocuri și NIR</th>
+              <th scope="col">Preț public (cum îl scrie producătorul)</th>
+              <th scope="col">Probă / plan gratuit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="is-tapselo">
+              <th scope="row">Tapselo <small>(produsul nostru)</small></th>
+              <td>Da: vânzări salvate local, sincronizare la revenire</td>
+              <td>Windows, macOS, Linux; Android și iPhone doar pentru inventar</td>
+              <td>Datecs FP-700 pe USB; Daisy, Tremol „în curând”</td>
+              <td>Dibal în rețea (testat pe D-900)</td>
+              <td>Nu încă</td>
+              <td>Da, în ambele planuri (recepție din poza facturii, NIR)</td>
+              <td>gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA</td>
+              <td>Beta, fără card</td>
+            </tr>
+            <tr>
+              <th scope="row">SmartBill POS</th>
+              <td>Da (conectat la Gestiune, bonurile se trimit în cloud la revenire)</td>
+              <td>PC cu Windows; telefon și tabletă Android</td>
+              <td>„Se leaga la casa de marcat” (detalii în centrul de ajutor SmartBill POS)</td>
+              <td>Da</td>
+              <td>Da</td>
+              <td>În planul POS + Gestiune</td>
+              <td>POS 10,9 €/lună + TVA; POS + Gestiune 27,22 €/lună + TVA</td>
+              <td>30 de zile; 12 luni pentru firme în primul an (cu condiții)</td>
+            </tr>
+            <tr>
+              <th scope="row">Oblio</th>
+              <td>Nu e menționat</td>
+              <td>Online, de pe orice dispozitiv; plugin pentru casa de marcat pe calculator</td>
+              <td>Datecs, Tremol, Daisy</td>
+              <td>Nu e menționat</td>
+              <td>Nu e menționat</td>
+              <td>Da, modulul Stocuri + Producție inclus</td>
+              <td>29 €/an (TVA nespecificat)</td>
+              <td>1 an</td>
+            </tr>
+            <tr>
+              <th scope="row">Noxta</th>
+              <td>Da</td>
+              <td>Android, iOS, Windows</td>
+              <td>Datecs, Tremol</td>
+              <td>Nu e menționat</td>
+              <td>Nu e menționat</td>
+              <td>De la planul Professional (349 RON/lună)</td>
+              <td>Free 0 RON (30 de plăți/zi); Starter 149 RON/lună; fără TVA</td>
+              <td>Free fără termen; 14 zile pe planurile plătite</td>
+            </tr>
+            <tr>
+              <th scope="row">FreyaPOS</th>
+              <td>Da, „până la 7 zile”</td>
+              <td>Nu e menționat pe pagina de retail</td>
+              <td>„Integrare cu casa de marcat” (mărci nemenționate)</td>
+              <td>Da</td>
+              <td>Nu e menționat (încasare cash, card, hibrid)</td>
+              <td>Da</td>
+              <td>Preț la cerere</td>
+              <td>Nu e menționat</td>
+            </tr>
+            <tr>
+              <th scope="row">Conexa (POB Soft)</th>
+              <td>Nu e menționat</td>
+              <td>Laptop Windows, iPad, Android, telefon</td>
+              <td>Datecs, Tremol, Custom, Daisy</td>
+              <td>Da</td>
+              <td>Nu e menționat</td>
+              <td>Da</td>
+              <td>Preț la cerere</td>
+              <td>Nu e menționat</td>
+            </tr>
+            <tr>
+              <th scope="row">Selectsoft Retail – POS Magazin</th>
+              <td>Nu e menționat</td>
+              <td>Nu e menționat; Android pentru recepție și inventar</td>
+              <td>„case de marcat sau imprimante fiscale” (mărci nemenționate)</td>
+              <td>Da (cu etichetare sau preluare automată a greutății)</td>
+              <td>Da</td>
+              <td>Da (recepții din SPV)</td>
+              <td>Preț la cerere (calculator de ofertă estimativă)</td>
+              <td>Nu e menționat</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Vrei toate criteriile, inclusiv rețete, comenzi și arhiva .p7b, pentru 10 producători? Vezi <a href={internalPath("/comparatie/")}>comparația completă a programelor de casă de marcat</a>.</p>
+    </section>
+
+    <section id="ce-program-ti-se-potriveste">
+      <h2 class="kb-h2">Ce program ți se potrivește</h2>
+      <div class="table-scroll">
+        <table class="kb-table bestof-table bestof-table--fit">
+          <thead>
+            <tr>
+              <th scope="col">Situația ta</th>
+              <th scope="col">Uită-te întâi la</th>
+              <th scope="col">De ce</th>
+              <th scope="col">Ce verifici înainte</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Magazin alimentar mic, calculator la tejghea, Datecs FP-700, cântar Dibal, internet instabil</th>
+              <td>Tapselo</td>
+              <td>Vânzare fără internet, Dibal testat, recepție din poza facturii</td>
+              <td>Să nu ai nevoie de POS bancar legat de program sau de sertar</td>
+            </tr>
+            <tr>
+              <th scope="row">Vinzi de pe telefon sau tabletă, la tejghea, la stand sau la masă</th>
+              <td>SmartBill POS, Noxta, Conexa</td>
+              <td>Toate trei scriu că rulează pe Android (Noxta și Conexa și pe iOS sau iPad)</td>
+              <td>Dacă modelul tău de casă de marcat e pe lista lor</td>
+            </tr>
+            <tr>
+              <th scope="row">Folosești deja SmartBill Facturare sau Gestiune</th>
+              <td>SmartBill POS</td>
+              <td>Preia produse, prețuri și stocuri din contul SmartBill</td>
+              <td>Dacă ai nevoie de planul POS + Gestiune</td>
+            </tr>
+            <tr>
+              <th scope="row">Vrei cel mai mic preț public, cu facturare și stocuri</th>
+              <td>Oblio</td>
+              <td>29 €/an, Stocuri + Producție incluse</td>
+              <td>Cum se comportă când pică netul (întreabă-i)</td>
+            </tr>
+            <tr>
+              <th scope="row">Ai sub 30 de plăți pe zi și vrei să începi fără abonament</th>
+              <td>Noxta Free</td>
+              <td>0 RON, bon fiscal și offline incluse</td>
+              <td>Limita de 30 de plăți/zi; stocurile sunt doar de la Professional</td>
+            </tr>
+            <tr>
+              <th scope="row">Mai multe magazine, implementare asistată, fidelizare, contabilitate legată</th>
+              <td>FreyaPOS, Conexa, Selectsoft</td>
+              <td>Ofertă după nevoi, cântare, integrări cu contabilitatea</td>
+              <td>Cere ofertă scrisă pentru același scenariu de la fiecare</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="kb-h3">Cum alegi în 5 pași</h3>
+      <ol>
+        <li><strong>Notează ce casă de marcat ai</strong> (marca și modelul) și verifică dacă apare pe lista producătorului. Dacă ai un Datecs, ghidul nostru despre <a href={internalPath("/ghid/erori-datecs/")}>erorile Datecs</a> și cel despre <a href={internalPath("/ghid/articole/raport-z-datecs-fp-70/")}>raportul Z pe Datecs FP-70</a> te ajută la test.</li>
+        <li><strong>Oprește internetul la test.</strong> Emite un bon, pornește iar netul și verifică ce apare în cont după reconectare.</li>
+        <li><strong>Dacă vinzi la kg, testează un produs cu eticheta de la cântar.</strong> Vezi cum se configurează <a href={internalPath("/ghid/cantar-dibal/")}>cântarul Dibal</a>.</li>
+        <li><strong>Cere prețul pentru scenariul tău</strong>: câte case, câte magazine, câți utilizatori. Verifică dacă suma include TVA și ce intră în plan (stocuri, NIR, inventar).</li>
+        <li><strong>Verifică ce poți muta din programul vechi</strong>: lista de produse, codurile de bare, prețurile. Dacă deschizi acum magazinul, vezi și ghidul pentru <a href={internalPath("/ghid/deschide-minimarket-alimentara/")}>deschiderea unui minimarket</a>.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2 class="kb-h2">Întrebări frecvente</h2>
+      <div class="bestof-faq">
+        {faq.map((item) => (
+          <details open>
+            <summary>{item.q}</summary>
+            <p>{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <h2 class="kb-h2">Încearcă Tapselo pe calculatorul tău</h2>
+      <p>Dacă ai un magazin alimentar mic și vrei să vinzi și când pică netul, încearcă Tapselo pe calculatorul tău. Casa rulează pe Windows, macOS sau Linux și pornește de pe un stick USB în aproximativ 20 de minute. Prețurile pleacă singure în cântarul Dibal, iar marfa intră în stoc din poza facturii. Tapselo e gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA, și te anunțăm cu 30 de zile înainte de trecerea la tarif. Nu ai nevoie de card ca să începi. Poți <a href={DEMO} data-tapselo-cta="bestof-final-text">încerca demo-ul acum</a> sau <a href={internalPath("/demo/")} data-tapselo-cta="bestof-final-text">programa o prezentare</a> pentru magazinul tău.</p>
+    </section>
+
+    <aside id="bestof-final-cta" class="bestof-cta bestof-cta--final" aria-label="Începe cu Tapselo">
+      <p class="bestof-cta__title">Vinde și când pică netul.</p>
+      <p>Tapselo: gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA.</p>
+      <p class="bestof-cta__actions">
+        <a href={APP} data-tapselo-cta="bestof-final" class="bestof-btn bestof-btn--primary">Începe acum</a>
+        <a href={DEMO} data-tapselo-cta="bestof-final" class="bestof-btn bestof-btn--secondary">Încearcă demo-ul</a>
+        <a href={internalPath("/#echipamente")} data-tapselo-cta="bestof-final" class="bestof-btn bestof-btn--secondary">Vezi echipamentele compatibile</a>
+      </p>
+    </aside>
+
+    <section id="surse">
+      <h2 class="kb-h2">Surse</h2>
+      <p>Toate verificate la 18.10.2026.</p>
+      <ul>
+        <li>Tapselo: <a href="https://tapselo.com/">tapselo.com</a> (echipamente, prețuri, întrebări frecvente); <a href="https://tapselo.com/program-gestiune-magazin/">program gestiune magazin</a></li>
+        <li>SmartBill POS: <a href="https://www.smartbill.ro/produse/pos" {...ext}>smartbill.ro/produse/pos</a>; <a href="https://www.smartbill.ro/preturi/vanzare-cu-casa-marcat" {...ext}>prețuri program vânzare cu casa de marcat</a>; <a href="https://www.smartbill.ro/case-marcat-gratis" {...ext}>campania casă de marcat gratis</a>; <a href="https://ajutorpos.smartbill.ro/collection/548-instalare-si-configurare-smartbill-pos" {...ext}>centrul de ajutor SmartBill POS: instalare și configurare</a></li>
+        <li>Oblio: <a href="https://www.oblio.eu/stocuri" {...ext}>stocuri</a>; <a href="https://www.oblio.eu/cat-costa" {...ext}>cât costă</a>; <a href="https://www.oblio.eu/integrari/datecs" {...ext}>integrare Datecs</a></li>
+        <li>Noxta: <a href="https://noxta.ro/" {...ext}>noxta.ro</a>; <a href="https://noxta.ro/pricing" {...ext}>prețuri</a></li>
+        <li>FreyaPOS: <a href="https://freyapos.ro/solutii/software-pentru-retail/" {...ext}>soft gestiune magazin (retail)</a></li>
+        <li>Conexa (POB Soft): <a href="https://conexa.software/" {...ext}>conexa.software</a></li>
+        <li>Selectsoft: <a href="https://selectsoft.ro/solutii-software/soft-pos-magazin/" {...ext}>Retail – POS Magazin</a>; <a href="https://selectsoft.ro/calculator-de-preturi/" {...ext}>calculator de prețuri</a></li>
+        <li>Legislație: <a href="https://legislatie.just.ro/Public/DetaliiDocument/17431" {...ext}>OUG 28/1999, art. 3¹ alin. (4), pe legislatie.just.ro</a></li>
+      </ul>
+    </section>
+
+    <TodoSlot id="TODO-OG-IMAGE">[TODO-OG-IMAGE: OG image for this page, a real screenshot or a plain text card. No fabricated UI.]</TodoSlot>
+  </article>
+
+  <FloatingCta href={DEMO} label="Încearcă demo-ul" cta="bestof-float" startId="bestof-intro" hideId="bestof-final-cta" />
+</GuideShell>
+
+<style>
+  .bestof-cards { list-style: none !important; padding-left: 0 !important; display: grid; gap: 0.75rem; }
+  .bestof-cards li { margin: 0 !important; border: 1px solid var(--color-border-light); border-radius: 0.75rem; background: var(--color-surface-elevated); padding: 1rem 1.125rem; }
+  .bestof-cta { border-radius: 0.75rem; background: var(--color-primary); color: var(--color-text-on-primary); padding: 1.5rem; }
+  .bestof-cta > * + * { margin-top: 0.5rem; }
+  .bestof-cta__title { font-family: var(--font-display); font-style: italic; font-size: 1.75rem; line-height: 1.2; color: #fff; }
+  .bestof-cta__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem !important; }
+  .kb-prose .bestof-btn { display: inline-block; border-radius: 0.375rem; padding: 0.625rem 1.25rem; font-size: 0.875rem; font-weight: 700; text-decoration: none; transition: background-color 0.15s; }
+  .kb-prose .bestof-btn--primary { background: var(--color-accent); color: #fff; }
+  .kb-prose .bestof-btn--primary:hover { background: var(--color-accent-hover); color: #fff; }
+  .kb-prose .bestof-btn--secondary { border: 1px solid rgb(255 255 255 / 0.4); color: #fff; }
+  .kb-prose .bestof-btn--secondary:hover { background: rgb(255 255 255 / 0.1); color: #fff; }
+  .bestof-vendor { margin-top: 2rem; }
+  .bestof-vendor > * + * { margin-top: 1rem; }
+  .bestof-shots { display: grid; gap: 0.75rem; }
+  .bestof-fit { border-left: 4px solid var(--color-cash); background: var(--color-cash-light); border-radius: 0.5rem; padding: 0.875rem 1rem; color: var(--color-primary); }
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; border: 1px solid var(--color-border-light); border-radius: 0.75rem; background: var(--color-surface-white); }
+  .bestof-table { min-width: 64rem; border-collapse: separate; border-spacing: 0; }
+  .bestof-table--fit { min-width: 44rem; }
+  .bestof-table caption { caption-side: top; text-align: left; padding: 0.75rem; font-size: 0.875rem; color: var(--color-text-muted); }
+  .bestof-table td { min-width: 8.5rem; }
+  .bestof-table th[scope="row"] { position: sticky; left: 0; z-index: 1; background: var(--color-surface-white); min-width: 9rem; max-width: 12rem; box-shadow: 1px 0 0 var(--color-border-light); }
+  .bestof-table thead th:first-child { position: sticky; left: 0; z-index: 2; box-shadow: 1px 0 0 var(--color-border-light); }
+  .bestof-table tr.is-tapselo th, .bestof-table tr.is-tapselo td { background: var(--color-accent-light); }
+  .bestof-table tr.is-tapselo small { display: block; font-weight: 500; color: var(--color-text-muted); }
+  .bestof-faq { display: grid; gap: 0.75rem; }
+  .bestof-faq details { border: 1px solid var(--color-border-light); border-radius: 0.75rem; padding: 1rem 1.125rem; background: var(--color-surface-white); }
+  .bestof-faq summary { cursor: pointer; font-weight: 600; color: var(--color-primary); }
+  .bestof-faq details > p { margin-top: 0.5rem; }
+</style>
