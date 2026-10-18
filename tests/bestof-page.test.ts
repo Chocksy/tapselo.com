@@ -91,3 +91,20 @@ test("todo guard flags placeholders and passes clean HTML", async () => {
   assert.equal(hits[0].page, join("a", "index.html"));
   assert.ok(hits[0].matches.includes("{DATA_PUBLICARE"));
 });
+
+test("title, no GuideShell CTA box, OG image falls back to the site default", async () => {
+  const { html } = await page();
+  const title = /<title>([^<]*)<\/title>/.exec(html)?.[1] ?? "";
+  assert.equal(decode(title), "Cel mai bun program de casă de marcat în 2026 | Tapselo");
+  assert.equal(decode(title).length, 55);
+  assert.ok(!html.includes('data-tapselo-cta="ghid-bestof-program-casa-de-marcat"'), "GuideShell CTA should be off");
+  assert.ok(!text(html).includes("Vezi cum funcționează"), "GuideShell CTA button text found");
+  assert.match(html, /<meta property="og:image" content="https:\/\/tapselo\.com\/og-image\.jpg"/);
+  assert.match(html, /<meta name="twitter:image" content="https:\/\/tapselo\.com\/og-image\.jpg"/);
+  assert.match(html, /data-todo="TODO-OG-IMAGE"/);
+});
+
+test("other GuideShell pages keep the built-in CTA", async () => {
+  const other = await readFile(join(process.cwd(), "dist/program-gestiune-magazin/index.html"), "utf8");
+  assert.ok(other.includes('data-tapselo-cta="ghid-program-gestiune-magazin"'));
+});

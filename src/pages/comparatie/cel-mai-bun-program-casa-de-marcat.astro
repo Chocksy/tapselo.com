@@ -18,7 +18,7 @@ import {
 
 const PATH = "/comparatie/cel-mai-bun-program-casa-de-marcat/";
 const PAGE_URL = canonicalUrl(PATH);
-const TITLE = "Cel mai bun program de casă de marcat 2026: lista scurtă | Tapselo";
+const TITLE = "Cel mai bun program de casă de marcat în 2026 | Tapselo";
 const HEADING = "Cel mai bun program de casă de marcat în 2026: lista scurtă pentru magazine";
 const DESCRIPTION =
   "7 programe de casă de marcat pentru magazine, comparate pe aceleași criterii: vânzare fără internet, case și cântare compatibile, preț public. Cu surse.";
@@ -35,6 +35,9 @@ const AUTHOR = {
   linkedin: null as string | null,
   photo: null as string | null,
 };
+
+/** Absolute URL of the page's OG image once supplied (real screenshot or plain text card). */
+const OG_IMAGE: string | null = null;
 
 const DEMO = "https://app.tapselo.com/?demo=1";
 const APP = "https://app.tapselo.com";
@@ -110,6 +113,7 @@ const article = {
     url: "https://tapselo.com/",
     logo: { "@type": "ImageObject", url: "https://tapselo.com/logo.png" },
   },
+  ...(OG_IMAGE ? { image: [OG_IMAGE] } : {}),
 };
 
 const itemList = {
@@ -138,9 +142,8 @@ const ext = { rel: "noopener", target: "_blank" };
   breadcrumbs={breadcrumbLinks(crumbs)}
   publishedOn={PUBLISHED}
   updatedOn={UPDATED}
-  ctaTitle="Vezi cum vinde Tapselo când pică netul."
-  ctaBody="Bon pe Datecs FP-700, produs la kg din cântarul Dibal, apoi sincronizare când revine internetul."
-  ctaHref={DEMO}
+  showCta={false}
+  ogImage={OG_IMAGE ?? undefined}
   jsonLd={jsonLd}
   appJsonLd={false}
   pageToc={false}
@@ -528,7 +531,7 @@ const ext = { rel: "noopener", target: "_blank" };
       </ul>
     </section>
 
-    <TodoSlot id="TODO-OG-IMAGE">[TODO-OG-IMAGE: OG image for this page, a real screenshot or a plain text card. No fabricated UI.]</TodoSlot>
+    {!OG_IMAGE && <TodoSlot id="TODO-OG-IMAGE">[TODO-OG-IMAGE: OG image for this page, a real screenshot or a plain text card. No fabricated UI.]</TodoSlot>}
   </article>
 
   <FloatingCta href={DEMO} label="Încearcă demo-ul" cta="bestof-float" startId="bestof-intro" hideId="bestof-final-cta" />

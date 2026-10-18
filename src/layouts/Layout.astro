@@ -15,6 +15,8 @@ interface Props {
   modifiedTime?: string;
   /** Site-wide SoftwareApplication JSON-LD; off on vendor comparison pages. */
   appJsonLd?: boolean;
+  /** Absolute og:image/twitter:image URL for this page; defaults to the site OG image. */
+  ogImage?: string;
 }
 
 const {
@@ -25,11 +27,13 @@ const {
   publishedTime,
   modifiedTime,
   appJsonLd = true,
+  ogImage,
 } = Astro.props;
 
 const siteUrl = "https://tapselo.com";
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
-const ogImageUrl = `${siteUrl}/og-image.jpg`;
+const defaultOgImageUrl = `${siteUrl}/og-image.jpg`;
+const ogImageUrl = ogImage ?? defaultOgImageUrl;
 const tapseloAppDescription =
   "Casa de marcat care merge și fără internet. Cu bon fiscal, cântar integrat și rapoarte inteligente. Gata în 20 de minute, pe Windows, macOS sau Linux.";
 ---
@@ -83,7 +87,7 @@ const tapseloAppDescription =
       "operatingSystem": "Windows, macOS, Linux",
       "description": tapseloAppDescription,
       "url": siteUrl,
-      "image": ogImageUrl,
+      "image": defaultOgImageUrl,
       "offers": {
         "@type": "Offer",
         "priceCurrency": "RON",
