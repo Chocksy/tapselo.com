@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import PostHog from "../components/PostHog.astro";
+import SiteMascot from "../components/SiteMascot.astro";
 import { OPERATOR_LEGAL_NAME, PFA_CUI } from "../data/site.ts";
 
 interface Props {
@@ -17,6 +18,8 @@ interface Props {
   appJsonLd?: boolean;
   /** Absolute og:image/twitter:image URL for this page; defaults to the site OG image. */
   ogImage?: string;
+  /** Fixed corner mascot (marketing pages). Shopper pages pass false. */
+  mascot?: boolean;
 }
 
 const {
@@ -28,6 +31,7 @@ const {
   modifiedTime,
   appJsonLd = true,
   ogImage,
+  mascot = true,
 } = Astro.props;
 
 const siteUrl = "https://tapselo.com";
@@ -138,5 +142,6 @@ const tapseloAppDescription =
       });
 
     </script>
+    {mascot && <SiteMascot />}
   </body>
 </html>

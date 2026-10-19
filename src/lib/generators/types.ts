@@ -75,6 +75,45 @@ export interface NirPayload {
   supplier_tax_id?: string;
 }
 
+/** One row of the Borderou de achiziție (form 14-4-13): Produsul, Cod, U/M, Cantitate, Preț unitar de achiziție. */
+export interface PurchaseSlipLine {
+  name: string;
+  code?: string;
+  unit: string;
+  quantity: number;
+  /** Purchase price per unit, lei (the individual seller charges no VAT). */
+  unit_price: number;
+}
+
+/** Borderou de achiziție (cod 14-4-13, OMFP nr. 2.634/2015) for goods bought from individuals. */
+export interface PurchaseSlipPayload {
+  /** Entitatea (buyer) and the header fields of the model. */
+  company: string;
+  company_tax_id?: string;
+  /** Numărul de înmatriculare în Registrul comerțului/anul */
+  company_trade_register?: string;
+  company_address?: string;
+  company_county?: string;
+  doc_number: string;
+  /** YYYY-MM-DD */
+  date: string;
+  /** The individual who sells (not on model 14-4-13; Anexa 1 pct. 2 asks for the parties). */
+  seller_name: string;
+  seller_address?: string;
+  seller_id_type?: string;
+  seller_id_series?: string;
+  seller_id_number?: string;
+  seller_cnp?: string;
+  lines: PurchaseSlipLine[];
+  /**
+   * Optional income tax withheld at source, percent of the total (e.g. 10 under art. 115 alin. (1)
+   * lit. a) Codul fiscal for the income in art. 114 alin. (2) lit. m^2)). Left out when not applicable.
+   */
+  withholding_percent?: number;
+  buyer_name?: string;
+  storekeeper_name?: string;
+}
+
 export interface RecipeIngredient {
   name: string;
   quantity: number;
@@ -153,6 +192,56 @@ export interface CashOrderPayload {
   beneficiary_date?: string;
 }
 
+/** One party block of the 14-3-6A header (furnizor or cumpărător). */
+export interface AvizParty {
+  /** Denumirea, forma juridică */
+  name: string;
+  /** Nr. de înmatriculare în Registrul comerțului/anul */
+  trade_register?: string;
+  /** Cod de identificare fiscală */
+  tax_id?: string;
+  /** Capitalul social, după caz (Norme generale, pct. 3) */
+  share_capital?: string;
+  /** Sediul (localitatea, str., nr.) */
+  address?: string;
+  /** Județul */
+  county?: string;
+}
+
+export interface AvizLine {
+  /** Specificația (produse, ambalaje etc.) */
+  name: string;
+  unit: string;
+  /** Cantitatea livrată */
+  quantity: number;
+  /** Prețul unitar fără TVA, lei. Optional: the values may sit in another document. */
+  unit_price?: number;
+}
+
+/** Aviz de însoțire a mărfii (form 14-3-6A, OMFP 2634/2015). */
+export interface AvizPayload {
+  supplier: AvizParty;
+  buyer: AvizParty;
+  doc_number: string;
+  /** YYYY-MM-DD */
+  date: string;
+  lines: AvizLine[];
+  /** "Fără factură", "Pentru prelucrare la terți" or the reason no invoice was issued. */
+  mention?: string;
+  delegate_name?: string;
+  delegate_id_series?: string;
+  delegate_id_number?: string;
+  delegate_id_issuer?: string;
+  /** Mijlocul de transport (ex. autoutilitară) */
+  vehicle?: string;
+  /** Nr. mijlocului de transport */
+  vehicle_number?: string;
+  /** YYYY-MM-DD */
+  dispatch_date?: string;
+  /** HH:MM */
+  dispatch_time?: string;
+}
+
 export interface PayloadByKind {
   flyer: FlyerPayload;
   labels: LabelsPayload;
@@ -161,6 +250,7 @@ export interface PayloadByKind {
   cashbook: CashbookPayload;
   warehouse_card: WarehouseCardPayload;
   cash_order: CashOrderPayload;
+  aviz: AvizPayload;
 }
 
 export type ImageStatus = "pending" | "ready" | "failed" | "skipped";
