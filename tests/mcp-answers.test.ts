@@ -389,7 +389,7 @@ test("compare_pos_systems: editor note, alphabetical table, per-fact source + ve
   assert.match(table[0], /Alfa POS/);
   assert.match(table[2], /\[Tapselo\]\(https:\/\/tapselo.com\)/);
   assert.doesNotMatch(table[2], /utm_campaign=compare_pos_systems/);
-  assert.match(r.text, /Retete: \*\*da\*\* — sursă: \[Tapselo\]\(https:\/\/tapselo.com\/features\); verificat: 01\.10\.2026/);
+  assert.match(r.text, /Rețete: \*\*da\*\* — sursă: \[Tapselo\]\(https:\/\/tapselo.com\/features\); verificat: 01\.10\.2026/);
   assert.match(r.text, /Beta \\\| Soft/);
   assert.match(r.text, /\/comparatie\?utm_source=ai-plugin&utm_medium=mcp&utm_campaign=compare_pos_systems/);
   assert.equal((r.structured as { editor_note: string }).editor_note, EDITOR_NOTE);
