@@ -52,7 +52,7 @@ import HeroMascot from "./HeroMascot.tsx";
              only hydrates (and only loads its JS) for wide screens with a mouse and no
              reduced-motion preference; everyone else gets one static frame.
              To remove: delete this block, the HeroMascot import, src/components/HeroMascot.tsx,
-             public/mascots/ and (if unused elsewhere) the react/page-mascot deps. -->
+             public/mascots/ and (if unused elsewhere) the preact/@astrojs/preact/page-mascot deps. -->
         <div class="pointer-events-none absolute bottom-full right-6 -mb-7 hidden md:block [&_button]:pointer-events-auto">
           <HeroMascot
             client:media="(min-width: 768px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)"

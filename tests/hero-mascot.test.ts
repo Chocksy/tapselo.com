@@ -41,3 +41,13 @@ test("built homepage renders the mascot island with a static frame and no React 
   assert.match(html, /chef-directions\.webp/);
   assert.doesNotMatch(html, /<link rel="modulepreload"/);
 });
+
+test("mascot island renders with Preact compat, not React", () => {
+  const pkg = JSON.parse(read("package.json"));
+  const deps = { ...pkg.dependencies, ...pkg.devDependencies };
+  assert.ok(deps["@astrojs/preact"] && deps.preact && deps["page-mascot"]);
+  assert.equal(deps["@astrojs/react"], undefined);
+  assert.equal(deps.react, undefined);
+  assert.equal(deps["react-dom"], undefined);
+  assert.match(read("astro.config.mjs"), /preact\(\{ compat: true \}\)/);
+});
