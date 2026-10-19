@@ -1,9 +1,11 @@
 import { renderCashbook } from "../generators/cashbook.ts";
+import { renderAviz } from "../generators/aviz.ts";
 import { renderCashOrder } from "../generators/cash-order.ts";
 import { renderNir } from "../generators/nir.ts";
 import { renderPurchaseSlip } from "../generators/purchase-slip.ts";
 import { renderWarehouseCard } from "../generators/warehouse-card.ts";
 import type {
+  AvizPayload,
   CashbookPayload,
   CashOrderPayload,
   DraftRecord,
@@ -82,4 +84,12 @@ export function cashOrderHtml(payload: CashOrderPayload, pageSize: "A4" | "A5" =
 
 export function downloadCashOrderPdfViaPrint(payload: CashOrderPayload, pageSize: "A4" | "A5" = "A4"): boolean {
   return openPrintHtml(cashOrderHtml(payload, pageSize));
+}
+
+export function avizHtml(payload: AvizPayload, pageSize: "A4" | "A5" = "A4", blank = false): string {
+  return renderAviz(payload, { ...LOCAL_DRAFT, kind: "aviz" }, { local: true, pageSize, blank });
+}
+
+export function downloadAvizPdfViaPrint(payload: AvizPayload, pageSize: "A4" | "A5" = "A4"): boolean {
+  return openPrintHtml(avizHtml(payload, pageSize));
 }

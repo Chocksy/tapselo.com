@@ -1,0 +1,425 @@
+---
+const parties = [
+  { k: "sup", legend: "Furnizor (expeditor)" },
+  { k: "buy", legend: "Cumpărător (destinatar)" },
+];
+---
+
+<section class="ut-card" aria-labelledby="aviz-title">
+  <h2 id="aviz-title" class="font-display text-2xl italic text-primary">Generator aviz de însoțire a mărfii</h2>
+  <p class="mt-2 text-sm text-text-secondary">
+    Completezi datele pe modelul <strong class="text-primary">14-3-6A</strong> (OMFP nr. 2.634/2015). Valoarea și totalul se calculează automat. Print sau PDF din browser — nimic nu pleacă pe server.
+  </p>
+
+  <div id="aviz-blank" class="mt-4 flex items-center gap-4 rounded-lg border border-border-light bg-surface-elevated p-3">
+    <a href="/unelte/formulare/aviz-de-insotire-a-marfii-14-3-6a-a4.pdf" data-aviz-blank="a4" class="shrink-0" aria-label="Formular necompletat A4 (PDF)">
+      <img
+        src="/unelte/formulare/aviz-de-insotire-a-marfii-14-3-6a-preview.png"
+        width="600"
+        height="736"
+        alt="Model aviz de însoțire a mărfii 14-3-6A necompletat"
+        loading="lazy"
+        decoding="async"
+        class="h-auto w-24 rounded border border-border-light bg-white sm:w-28"
+      />
+    </a>
+    <p class="text-sm text-text-secondary">
+      <strong class="text-primary">Descarcă avizul necompletat (PDF):</strong>
+      <a href="/unelte/formulare/aviz-de-insotire-a-marfii-14-3-6a-a4.pdf" download data-aviz-blank="a4" class="font-semibold text-accent hover:underline">A4</a>
+      /
+      <a href="/unelte/formulare/aviz-de-insotire-a-marfii-14-3-6a-a5.pdf" download data-aviz-blank="a5" class="font-semibold text-accent hover:underline">A5</a>
+      <span class="block mt-1">Modelul 14-3-6A gol, de completat de mână: furnizor, cumpărător, produse, date privind expediția.</span>
+    </p>
+  </div>
+
+  <div id="aviz-tool" class="mt-6 space-y-6">
+    <div class="grid gap-6 md:grid-cols-2">
+      {
+        parties.map(({ k, legend }) => (
+          <fieldset class="aviz-party space-y-3">
+            <legend class="text-base font-semibold text-primary">{legend}</legend>
+            <div>
+              <label class="ut-label" for={`av-${k}-name`}>Denumirea, forma juridică</label>
+              <input class="ut-input" id={`av-${k}-name`} type="text" maxlength="120" autocomplete={k === "sup" ? "organization" : "off"} />
+            </div>
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div>
+                <label class="ut-label" for={`av-${k}-cui`}>Cod de identificare fiscală</label>
+                <input class="ut-input" id={`av-${k}-cui`} type="text" maxlength="20" placeholder="RO12345678" autocomplete="off" />
+              </div>
+              <div>
+                <label class="ut-label" for={`av-${k}-reg`}>Nr. Registrul comerțului/anul</label>
+                <input class="ut-input" id={`av-${k}-reg`} type="text" maxlength="40" placeholder="J00/000/2026" autocomplete="off" />
+              </div>
+            </div>
+            <div>
+              <label class="ut-label" for={`av-${k}-addr`}>Sediul (localitatea, str., nr.)</label>
+              <input class="ut-input" id={`av-${k}-addr`} type="text" maxlength="160" />
+            </div>
+            <div class={k === "sup" ? "grid gap-3 sm:grid-cols-2" : ""}>
+              <div>
+                <label class="ut-label" for={`av-${k}-county`}>Județul</label>
+                <input class="ut-input" id={`av-${k}-county`} type="text" maxlength="40" />
+              </div>
+              {k === "sup" && (
+                <div>
+                  <label class="ut-label" for="av-sup-capital">Capital social (după caz)</label>
+                  <input class="ut-input" id="av-sup-capital" type="text" maxlength="40" placeholder="ex. 200 lei" />
+                </div>
+              )}
+            </div>
+          </fieldset>
+        ))
+      }
+    </div>
+    <p class="ut-hint">La transferul între gestiunile aceleiași firme, la cumpărător treci tot firma ta, cu adresa gestiunii care primește marfa.</p>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="av-number">Număr aviz</label>
+        <input class="ut-input" id="av-number" type="text" maxlength="30" placeholder="1" />
+      </div>
+      <div>
+        <label class="ut-label" for="av-date">Data</label>
+        <input class="ut-input" id="av-date" type="date" />
+      </div>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="av-case">De ce emiți aviz, nu factură</label>
+        <select class="ut-select" id="av-case">
+          <option value="ulterior" selected>Livrare; factura se emite ulterior</option>
+          <option value="transfer">Transfer între gestiunile firmei</option>
+          <option value="gratuit">Bunuri cedate gratuit (mostre, promoționale)</option>
+          <option value="prelucrare">Trimis pentru prelucrare la terți</option>
+          <option value="alta">Altă situație</option>
+        </select>
+      </div>
+      <div>
+        <label class="ut-label" for="av-mention">Mențiunea de pe aviz</label>
+        <input class="ut-input" id="av-mention" type="text" maxlength="120" />
+      </div>
+    </div>
+
+    <div class="ut-table-wrap">
+      <table class="ut-table ut-stack" id="av-table">
+        <thead>
+          <tr>
+            <th scope="col">Specificația (produse, ambalaje)</th>
+            <th scope="col">U/M</th>
+            <th scope="col">Cantitatea livrată</th>
+            <th scope="col">Preț unitar fără TVA (opțional)</th>
+            <th scope="col"><span class="sr-only">Acțiuni</span></th>
+          </tr>
+        </thead>
+        <tbody id="av-rows"></tbody>
+      </table>
+    </div>
+    <p class="ut-hint">Prețurile pot lipsi de pe aviz dacă se regăsesc în alt document justificativ (de exemplu factura). Completează-le pe toate liniile sau pe niciuna.</p>
+    <button type="button" class="ut-btn ut-btn-secondary" id="av-add-row">+ Linie</button>
+
+    <div class="ut-result" id="av-summary" aria-live="polite"></div>
+
+    <fieldset class="space-y-3 rounded-lg border border-border-light bg-surface-muted/40 p-4">
+      <legend class="px-1 text-sm font-semibold text-primary">Date privind expediția (opțional)</legend>
+      <div class="grid gap-3 sm:grid-cols-2">
+        <div>
+          <label class="ut-label" for="av-del-name">Numele delegatului</label>
+          <input class="ut-input" id="av-del-name" type="text" maxlength="120" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="ut-label" for="av-del-series">CI seria</label>
+            <input class="ut-input" id="av-del-series" type="text" maxlength="10" />
+          </div>
+          <div>
+            <label class="ut-label" for="av-del-number">nr.</label>
+            <input class="ut-input" id="av-del-number" type="text" maxlength="20" />
+          </div>
+        </div>
+        <div>
+          <label class="ut-label" for="av-del-issuer">CI eliberat/ă de</label>
+          <input class="ut-input" id="av-del-issuer" type="text" maxlength="80" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="ut-label" for="av-vehicle">Mijlocul de transport</label>
+            <input class="ut-input" id="av-vehicle" type="text" maxlength="60" placeholder="autoutilitară" />
+          </div>
+          <div>
+            <label class="ut-label" for="av-vehicle-number">nr.</label>
+            <input class="ut-input" id="av-vehicle-number" type="text" maxlength="20" placeholder="B-00-XXX" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="ut-label" for="av-disp-date">Data expedierii</label>
+            <input class="ut-input" id="av-disp-date" type="date" />
+          </div>
+          <div>
+            <label class="ut-label" for="av-disp-time">Ora</label>
+            <input class="ut-input" id="av-disp-time" type="time" />
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="aviz-toggle">
+      <legend class="ut-label">Format print</legend>
+      <div class="flex flex-wrap gap-3">
+        <label class="aviz-radio"><input type="radio" name="av-page" value="A4" checked /> A4</label>
+        <label class="aviz-radio"><input type="radio" name="av-page" value="A5" /> A5</label>
+      </div>
+    </fieldset>
+
+    <p class="text-sm text-text-secondary">
+      Confidențialitate: valorile din formular rămân în browser. Salvăm local doar datele furnizorului, ca să nu le reintroduci. În analytics înregistrăm doar acțiunea (print / PDF / formular gol).
+    </p>
+
+    <p class="ut-err hidden" id="av-err" role="alert"></p>
+
+    <div class="flex flex-wrap gap-3">
+      <button type="button" class="ut-btn ut-btn-primary" id="av-pdf">Salvează PDF</button>
+      <button type="button" class="ut-btn ut-btn-secondary" id="av-print">Printează</button>
+    </div>
+  </div>
+</section>
+
+<script>
+  import type { AvizLine, AvizParty, AvizPayload } from "../../lib/generators/types.ts";
+  import { AVIZ_MENTIONS, avizTotal } from "../../lib/generators/aviz.ts";
+  import { escapeHtml, fmtLei } from "../../lib/generators/page.ts";
+  import { parseRoNumber } from "../../lib/unelte/parse.ts";
+  import { localIsoDate } from "../../lib/unelte/dates.ts";
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
+  import { downloadAvizPdfViaPrint } from "../../lib/unelte/document-export.ts";
+
+  const STORAGE_KEY = "tapselo_aviz_supplier";
+  const PARTY_FIELDS = ["name", "cui", "reg", "addr", "county"] as const;
+  const input = (id: string) => document.getElementById(id) as HTMLInputElement;
+  const text = (id: string) => input(id).value.trim();
+  const tbody = document.getElementById("av-rows") as HTMLTableSectionElement;
+  const errEl = document.getElementById("av-err") as HTMLElement;
+  const summaryEl = document.getElementById("av-summary") as HTMLElement;
+  const caseEl = document.getElementById("av-case") as HTMLSelectElement;
+  const mentionEl = input("av-mention");
+  if (!input("av-date").value) input("av-date").value = localIsoDate();
+
+  const CASE_MENTION: Record<string, string> = {
+    ulterior: "Factura se emite ulterior",
+    transfer: AVIZ_MENTIONS.transfer,
+    gratuit: AVIZ_MENTIONS.gratuit,
+    prelucrare: AVIZ_MENTIONS.prelucrare,
+    alta: "",
+  };
+  let lastAuto = "";
+  function syncMention() {
+    const next = CASE_MENTION[caseEl.value] ?? "";
+    // Keep text the user typed; replace only the mention we filled in ourselves.
+    if (!mentionEl.value.trim() || mentionEl.value === lastAuto) mentionEl.value = next;
+    lastAuto = next;
+    mentionEl.placeholder = caseEl.value === "alta" ? "Motivul pentru care nu emiți factură" : "";
+  }
+  caseEl.addEventListener("change", syncMention);
+  syncMention();
+
+  function loadSupplier() {
+    try {
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null") as Record<string, string> | null;
+      if (!data) return;
+      for (const f of [...PARTY_FIELDS, "capital"]) if (data[f]) input(`av-sup-${f}`).value = data[f];
+    } catch {
+      /* ignore */
+    }
+  }
+  function saveSupplier() {
+    const data: Record<string, string> = {};
+    for (const f of [...PARTY_FIELDS, "capital"]) {
+      const v = text(`av-sup-${f}`);
+      if (v) data[f] = v;
+    }
+    if (!Object.keys(data).length) return;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch {
+      /* ignore */
+    }
+  }
+  loadSupplier();
+
+  const FIELDS = [
+    { f: "name", label: "Specificația", placeholder: "Denumire produs", maxlength: 120, mode: "text" },
+    { f: "unit", label: "U/M", placeholder: "buc", maxlength: 20, mode: "text" },
+    { f: "qty", label: "Cantitatea livrată", placeholder: "1", maxlength: 20, mode: "decimal" },
+    { f: "price", label: "Preț unitar fără TVA", placeholder: "opțional", maxlength: 20, mode: "decimal" },
+  ] as const;
+
+  function renumber() {
+    tbody.querySelectorAll("tr").forEach((tr, i) => {
+      FIELDS.forEach(({ f, label }) => tr.querySelector(`[data-f="${f}"]`)?.setAttribute("aria-label", `${label}, linia ${i + 1}`));
+      tr.querySelector("[data-del]")?.setAttribute("aria-label", `Șterge linia ${i + 1}`);
+    });
+  }
+
+  function addRow() {
+    const tr = document.createElement("tr");
+    for (const { f, label, placeholder, maxlength, mode } of FIELDS) {
+      const td = document.createElement("td");
+      td.dataset.label = label;
+      if (f === "name") td.dataset.wide = "";
+      const el = document.createElement("input");
+      el.dataset.f = f;
+      el.placeholder = placeholder;
+      el.maxLength = maxlength;
+      el.inputMode = mode;
+      td.append(el);
+      tr.append(td);
+    }
+    const delTd = document.createElement("td");
+    const del = document.createElement("button");
+    del.type = "button";
+    del.className = "ut-del";
+    del.dataset.del = "";
+    del.textContent = "Șterge";
+    del.addEventListener("click", () => {
+      tr.remove();
+      renumber();
+      renderSummary();
+    });
+    delTd.append(del);
+    tr.append(delTd);
+    tbody.append(tr);
+    renumber();
+  }
+  addRow();
+  document.getElementById("av-add-row")?.addEventListener("click", addRow);
+
+  type Lines = { ok: true; lines: AvizLine[] } | { ok: false; error: string };
+
+  function collectLines(): Lines {
+    const lines: AvizLine[] = [];
+    for (const [i, tr] of [...tbody.querySelectorAll("tr")].entries()) {
+      const v = (f: string) => (tr.querySelector(`[data-f="${f}"]`) as HTMLInputElement).value.trim();
+      const name = v("name");
+      const qty = parseRoNumber(v("qty"), 3);
+      const price = parseRoNumber(v("price"));
+      if (!name && qty.kind === "empty" && price.kind === "empty") continue;
+      if (!name) return { ok: false, error: `Linia ${i + 1} nu are specificația (denumirea).` };
+      if (qty.kind !== "ok" || !(qty.value > 0)) return { ok: false, error: `Cantitatea de pe linia ${i + 1} nu este validă.` };
+      if (price.kind === "invalid") return { ok: false, error: `Prețul de pe linia ${i + 1} nu este valid (ex. 4,50).` };
+      const line: AvizLine = { name, unit: v("unit") || "buc", quantity: qty.value };
+      if (price.kind === "ok") line.unit_price = price.value;
+      lines.push(line);
+    }
+    if (!lines.length) return { ok: false, error: "Adaugă cel puțin o linie de marfă." };
+    const priced = lines.filter((l) => l.unit_price !== undefined).length;
+    if (priced && priced !== lines.length) return { ok: false, error: "Completează prețul pe toate liniile sau pe niciuna." };
+    return { ok: true, lines };
+  }
+
+  function renderSummary() {
+    const r = collectLines();
+    if (!r.ok) {
+      summaryEl.innerHTML = `<p class="text-sm text-text-secondary">${escapeHtml(r.error)}</p>`;
+      return;
+    }
+    const total = avizTotal(r.lines);
+    summaryEl.innerHTML = `<dl>
+      <dt>Linii</dt><dd>${r.lines.length}</dd>
+      <dt>Total fără TVA</dt><dd>${total === null ? "fără prețuri pe aviz" : fmtLei(total)}</dd>
+    </dl>`;
+  }
+  const tool = document.getElementById("aviz-tool");
+  tool?.addEventListener("input", renderSummary);
+  tool?.addEventListener("input", saveSupplier);
+  renderSummary();
+
+  function showError(msg: string): null {
+    errEl.textContent = msg;
+    errEl.classList.remove("hidden");
+    return null;
+  }
+
+  function party(k: "sup" | "buy"): AvizParty {
+    const p: AvizParty = { name: text(`av-${k}-name`) };
+    const opt = (key: keyof AvizParty, id: string) => {
+      const v = text(id);
+      if (v) p[key] = v;
+    };
+    opt("tax_id", `av-${k}-cui`);
+    opt("trade_register", `av-${k}-reg`);
+    opt("address", `av-${k}-addr`);
+    opt("county", `av-${k}-county`);
+    if (k === "sup") opt("share_capital", "av-sup-capital");
+    return p;
+  }
+
+  function collect(): AvizPayload | null {
+    const supplier = party("sup");
+    const buyer = party("buy");
+    const doc_number = text("av-number");
+    const date = input("av-date").value;
+    if (!supplier.name) return showError("Completează denumirea furnizorului.");
+    if (!buyer.name) return showError("Completează denumirea cumpărătorului (la transfer, firma ta).");
+    if (!doc_number || !date) return showError("Completează numărul și data avizului.");
+    const r = collectLines();
+    if (!r.ok) return showError(r.error);
+    errEl.classList.add("hidden");
+    saveSupplier();
+    const payload: AvizPayload = { supplier, buyer, doc_number, date, lines: r.lines };
+    const optional = {
+      mention: text("av-mention"),
+      delegate_name: text("av-del-name"),
+      delegate_id_series: text("av-del-series"),
+      delegate_id_number: text("av-del-number"),
+      delegate_id_issuer: text("av-del-issuer"),
+      vehicle: text("av-vehicle"),
+      vehicle_number: text("av-vehicle-number"),
+      dispatch_date: input("av-disp-date").value,
+      dispatch_time: input("av-disp-time").value,
+    };
+    for (const [k, v] of Object.entries(optional)) if (v) (payload as unknown as Record<string, string>)[k] = v;
+    return payload;
+  }
+
+  function pageSize(): "A4" | "A5" {
+    return (document.querySelector('input[name="av-page"]:checked') as HTMLInputElement)?.value === "A5" ? "A5" : "A4";
+  }
+
+  function openDoc(action: "print" | "generate_pdf") {
+    const p = collect();
+    if (!p) return;
+    if (!downloadAvizPdfViaPrint(p, pageSize())) {
+      showError("Permite ferestrele pop-up pentru PDF sau print.");
+      return;
+    }
+    trackToolUsed("generator_aviz", action, { page: pageSize() });
+  }
+
+  document.querySelectorAll<HTMLAnchorElement>("[data-aviz-blank]").forEach((a) => {
+    a.addEventListener("click", () => {
+      trackToolUsed("generator_aviz", "download_blank", { format: a.dataset.avizBlank === "a5" ? "a5" : "a4" });
+    });
+  });
+  document.getElementById("av-pdf")?.addEventListener("click", () => openDoc("generate_pdf"));
+  document.getElementById("av-print")?.addEventListener("click", () => openDoc("print"));
+</script>
+
+<style>
+  .aviz-party,
+  .aviz-toggle {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+  }
+  .aviz-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+  }
+</style>

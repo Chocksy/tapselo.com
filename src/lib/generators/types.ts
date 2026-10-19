@@ -192,6 +192,56 @@ export interface CashOrderPayload {
   beneficiary_date?: string;
 }
 
+/** One party block of the 14-3-6A header (furnizor or cumpărător). */
+export interface AvizParty {
+  /** Denumirea, forma juridică */
+  name: string;
+  /** Nr. de înmatriculare în Registrul comerțului/anul */
+  trade_register?: string;
+  /** Cod de identificare fiscală */
+  tax_id?: string;
+  /** Capitalul social, după caz (Norme generale, pct. 3) */
+  share_capital?: string;
+  /** Sediul (localitatea, str., nr.) */
+  address?: string;
+  /** Județul */
+  county?: string;
+}
+
+export interface AvizLine {
+  /** Specificația (produse, ambalaje etc.) */
+  name: string;
+  unit: string;
+  /** Cantitatea livrată */
+  quantity: number;
+  /** Prețul unitar fără TVA, lei. Optional: the values may sit in another document. */
+  unit_price?: number;
+}
+
+/** Aviz de însoțire a mărfii (form 14-3-6A, OMFP 2634/2015). */
+export interface AvizPayload {
+  supplier: AvizParty;
+  buyer: AvizParty;
+  doc_number: string;
+  /** YYYY-MM-DD */
+  date: string;
+  lines: AvizLine[];
+  /** "Fără factură", "Pentru prelucrare la terți" or the reason no invoice was issued. */
+  mention?: string;
+  delegate_name?: string;
+  delegate_id_series?: string;
+  delegate_id_number?: string;
+  delegate_id_issuer?: string;
+  /** Mijlocul de transport (ex. autoutilitară) */
+  vehicle?: string;
+  /** Nr. mijlocului de transport */
+  vehicle_number?: string;
+  /** YYYY-MM-DD */
+  dispatch_date?: string;
+  /** HH:MM */
+  dispatch_time?: string;
+}
+
 export interface PayloadByKind {
   flyer: FlyerPayload;
   labels: LabelsPayload;
@@ -200,6 +250,7 @@ export interface PayloadByKind {
   cashbook: CashbookPayload;
   warehouse_card: WarehouseCardPayload;
   cash_order: CashOrderPayload;
+  aviz: AvizPayload;
 }
 
 export type ImageStatus = "pending" | "ready" | "failed" | "skipped";
