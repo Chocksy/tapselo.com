@@ -2,7 +2,7 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
-import react from '@astrojs/react';
+import preact from '@astrojs/preact';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
@@ -18,7 +18,8 @@ export default defineConfig({
   site: 'https://tapselo.com',
   output: 'static',
   integrations: [
-    react(),
+    // compat aliases react/react-dom to preact/compat so page-mascot runs unchanged.
+    preact({ compat: true }),
     sitemap({
       // Shopper pages (store sign-up, store privacy, confirm, unsubscribe) are noindex.
       filter: (page) => !/^\/(c|p|g|o|confirmare|dezabonare)\//.test(new URL(page).pathname),

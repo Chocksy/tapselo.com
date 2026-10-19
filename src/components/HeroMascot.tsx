@@ -1,7 +1,9 @@
 // Cursor-following mascot in the homepage hero (prototype).
 // Built on page-mascot (MIT © Kamran Ahmed, https://github.com/nilbuild/page-mascot);
 // see THIRD_PARTY_NOTICES.md. To remove the mascot, see the note in Hero.astro.
-import { useEffect, useRef, useState } from "react";
+// Rendered with Preact: page-mascot's `react` imports resolve to preact/compat
+// (preact({ compat: true }) in astro.config.mjs).
+import { useEffect, useRef, useState } from "preact/hooks";
 import { Mascot } from "page-mascot";
 
 export const MASCOT_LABEL = "Mascota Tapselo: un vânzător prietenos lângă casa de marcat";
