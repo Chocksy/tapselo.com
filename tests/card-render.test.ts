@@ -1,7 +1,7 @@
 // Run: npm test (node --test, native TypeScript type stripping, no dependencies).
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { renderCardPage, renderCardNotFound, levelLook, formatPct, pointsLabel, TOKEN_RE, type CardPayload } from "../src/lib/card-render.ts";
+import { renderCardPage, renderCardNotFound, levelLook, formatPct, pointsLabel, TOKEN_RE, WALLET_PASS_URL, walletPassUrl, type CardPayload } from "../src/lib/card-render.ts";
 import { MOCK_CARD, MOCK_CARD_VARIANTS } from "../src/lib/card-mock.ts";
 import { eanCheckDigit, isValidEan13 } from "../src/lib/ean13.ts";
 
@@ -90,6 +90,23 @@ test("escapes hostile text everywhere", () => {
   assert.doesNotMatch(out, /<script>alert/);
   assert.doesNotMatch(out, /<img src=x/);
   assert.match(out, /&lt;script&gt;alert\(1\)&lt;\/script&gt;/);
+});
+
+test("Apple Wallet button: only for Apple devices, token encoded", () => {
+  const token = "AbCdEfGhIjKlMnOpQrStUv";
+  const apple = renderCardPage(MOCK_CARD, { token, isApple: true });
+  assert.match(apple, new RegExp(`<a class="wallet" href="${WALLET_PASS_URL}\\?token=${token}">Adauga in Apple Wallet</a>`));
+  // The button sits under the card, after the barcode panel.
+  assert.ok(apple.indexOf('class="wallet"') > apple.indexOf('class="code"'));
+  assert.doesNotMatch(renderCardPage(MOCK_CARD, { token, isApple: false }), /Apple Wallet/);
+  assert.doesNotMatch(renderCardPage(MOCK_CARD, { token }), /Apple Wallet/);
+  assert.doesNotMatch(renderCardPage(MOCK_CARD), /Apple Wallet/);
+  assert.doesNotMatch(renderCardPage(MOCK_CARD, { isApple: true }), /Apple Wallet/);
+
+  assert.equal(walletPassUrl("a+b/c&d=e"), `${WALLET_PASS_URL}?token=a%2Bb%2Fc%26d%3De`);
+  const odd = renderCardPage(MOCK_CARD, { token: `x"&<y>`, isApple: true });
+  assert.match(odd, /href="[^"]*\?token=x%22%26%3Cy%3E"/);
+  assert.doesNotMatch(odd, /<y>/);
 });
 
 test("not found page", () => {

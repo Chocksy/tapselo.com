@@ -24,6 +24,20 @@ export const TOKEN_RE = /^[A-Za-z0-9_-]{22}$/;
 
 const SITE = "https://tapselo.com";
 
+/** The pos repo edge function that builds and signs the Apple Wallet pass. */
+export const WALLET_PASS_URL = "https://rhatutvdltsbhidghfhh.supabase.co/functions/v1/wallet-pass";
+
+/** Options from the request: functions/card/[token].ts sets isApple from the User-Agent. */
+export interface CardPageOptions {
+  token?: string;
+  isApple?: boolean;
+}
+
+/** The .pkpass download link for one card token. */
+export function walletPassUrl(token: string): string {
+  return `${WALLET_PASS_URL}?token=${encodeURIComponent(token)}`;
+}
+
 /** from/to: bar and theme colours; metal: the brushed-metal card face (design pick A1). */
 interface LevelLook {
   from: string;
@@ -126,6 +140,8 @@ body{margin:0;font-family:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe U
 .bar{margin:.75rem 0 .625rem;height:.625rem;border-radius:999px;background:#e5e7eb;overflow:hidden}
 .bar span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--from),var(--to))}
 .next{margin:0;font-size:1rem;color:#334155}
+.wallet{display:flex;align-items:center;justify-content:center;min-height:3rem;max-width:20rem;margin:1rem auto 0;padding:.75rem 1.5rem;border-radius:999px;background:#000;color:#fff;font-size:1.0625rem;font-weight:700;text-decoration:none;box-shadow:0 6px 16px -8px rgba(15,23,42,.6)}
+.wallet:focus-visible{outline:3px solid #2563eb;outline-offset:3px}
 .tip{margin:1rem .25rem 0;text-align:center;font-size:.9375rem;color:#475569}
 .made{margin:1.5rem 0 0;text-align:center;font-size:.8125rem;color:#94a3b8}
 .made a{color:#64748b;font-weight:700;text-decoration:none}
@@ -134,7 +150,7 @@ body{margin:0;font-family:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe U
 .nf p{margin:0;font-size:1.0625rem;color:#475569}
 `;
 
-export function renderCardPage(p: CardPayload): string {
+export function renderCardPage(p: CardPayload, opts: CardPageOptions = {}): string {
   const shop = (p.shop_name ?? "").trim() || "Magazinul";
   const first = (p.first_name ?? "").trim();
   const code = String(p.card_code ?? "").trim();
@@ -174,13 +190,19 @@ ${coins}<p class="pts">${escapeHtml(pointsLabel(points))}</p>
 </section>`;
   }
 
+  // Apple devices only (CSP has no script, so the check runs on the server).
+  const wallet =
+    opts.isApple && opts.token
+      ? `<a class="wallet" href="${escapeHtml(walletPassUrl(opts.token))}">Adauga in Apple Wallet</a>\n`
+      : "";
+
   const body = `<p class="shop">${escapeHtml(shop)}</p>
 <section class="card${look === NEUTRAL ? " neutral" : ""}" style="${vars}" aria-label="Card de client">
 <div class="card-top"><p class="lvl">${escapeHtml(label)}</p>${first ? `<p class="who">${escapeHtml(first)}</p>` : ""}</div>
 <div class="code">${codeHtml}</div>
 <p class="scan">Arata codul la casa</p>
 </section>
-${box}
+${wallet}${box}
 <p class="tip">Pastreaza linkul: adauga pagina pe ecranul principal</p>`;
 
   return page(`Card ${shop}`, look.from, body);

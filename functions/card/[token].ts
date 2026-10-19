@@ -8,12 +8,18 @@
  * public_card returns null for an unknown, revoked or erased card.
  * Any failure (null, function missing, network) renders the friendly not-found page.
  * Local check without the RPC: http://localhost:8788/card/AAAAAAAAAAAAAAAAAAAAAA?mock=1
- * (ignored on other hosts); add &variant=off|top|bronz for the other states.
+ * (ignored on other hosts); add &variant=off|top|bronz for the other states,
+ * and &apple=1 to show the Apple Wallet button.
+ *
+ * The "Adauga in Apple Wallet" link shows only for iPhone, iPad and Mac
+ * User-Agents. The page has no script (CSP), so the check runs here.
  */
 
 import { rpc } from "../../src/lib/supabase-public.ts";
 import { renderCardPage, renderCardNotFound, TOKEN_RE, type CardPayload } from "../../src/lib/card-render.ts";
 import { MOCK_CARD, MOCK_CARD_VARIANTS } from "../../src/lib/card-mock.ts";
+
+const APPLE_UA_RE = /iPhone|iPad|Macintosh/;
 
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]"]);
 
@@ -58,11 +64,12 @@ export async function onRequest(context: { request: Request; params: Record<stri
   if (url.searchParams.get("mock") === "1" && LOCAL_HOSTS.has(url.hostname)) {
     const variant = url.searchParams.get("variant") ?? "";
     const mock = Object.hasOwn(MOCK_CARD_VARIANTS, variant) ? MOCK_CARD_VARIANTS[variant] : MOCK_CARD;
-    return html(renderCardPage(mock), 200, method);
+    return html(renderCardPage(mock, { token, isApple: url.searchParams.get("apple") === "1" }), 200, method);
   }
 
   const res = await rpc<CardPayload | null>("public_card", { p_token: token });
   if (!res.ok || !res.data || typeof res.data !== "object" || !res.data.card_code) return notFound();
 
-  return html(renderCardPage(res.data), 200, method);
+  const isApple = APPLE_UA_RE.test(request.headers.get("User-Agent") ?? "");
+  return html(renderCardPage(res.data, { token, isApple }), 200, method);
 }
