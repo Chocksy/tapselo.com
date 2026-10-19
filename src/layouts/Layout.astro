@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import PostHog from "../components/PostHog.astro";
+import SiteMascot from "../components/SiteMascot.astro";
 import { OPERATOR_LEGAL_NAME, PFA_CUI } from "../data/site.ts";
 
 interface Props {
@@ -13,6 +14,8 @@ interface Props {
   publishedTime?: string;
   /** ISO date for article:modified_time (articles only). */
   modifiedTime?: string;
+  /** Fixed corner mascot (marketing pages). Shopper pages pass false. */
+  mascot?: boolean;
 }
 
 const {
@@ -22,11 +25,14 @@ const {
   jsonLd = [],
   publishedTime,
   modifiedTime,
+  mascot = true,
 } = Astro.props;
 
 const siteUrl = "https://tapselo.com";
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 const ogImageUrl = `${siteUrl}/og-image.jpg`;
+const tapseloAppDescription =
+  "Casa de marcat care merge și fără internet. Cu bon fiscal, cântar integrat și rapoarte inteligente. Gata în 20 de minute, pe Windows, macOS sau Linux.";
 ---
 
 <!doctype html>
@@ -74,15 +80,14 @@ const ogImageUrl = `${siteUrl}/og-image.jpg`;
       "@type": "SoftwareApplication",
       "name": "Tapselo POS",
       "applicationCategory": "BusinessApplication",
-      "operatingSystem": "Linux",
-      "description": description,
+      "operatingSystem": "Windows, macOS, Linux",
+      "description": tapseloAppDescription,
       "url": siteUrl,
       "image": ogImageUrl,
       "offers": {
         "@type": "Offer",
-        "price": "0",
         "priceCurrency": "RON",
-        "description": "Demo gratuit"
+        "description": "gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA"
       },
       "author": {
         "@type": "Organization",
@@ -103,7 +108,6 @@ const ogImageUrl = `${siteUrl}/og-image.jpg`;
     ))}
 
     <meta name="generator" content={Astro.generator} />
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   </head>
   <body class="font-sans antialiased">
     <PostHog />
@@ -128,50 +132,7 @@ const ogImageUrl = `${siteUrl}/og-image.jpg`;
         });
       });
 
-      // Contact form submission
-      const form = document.getElementById("contact-form");
-      form?.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById("submit-btn");
-        const status = document.getElementById("form-status");
-        const turnstileInput = form.querySelector('[name="cf-turnstile-response"]');
-
-        btn.disabled = true;
-        btn.textContent = "Se trimite...";
-        status.className = "hidden";
-
-        try {
-          const res = await fetch("/api/contact", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              name: form.querySelector("#name").value,
-              email: form.querySelector("#email").value,
-              phone: form.querySelector("#phone").value || "",
-              message: form.querySelector("#message").value,
-              turnstileToken: turnstileInput?.value || "",
-            }),
-          });
-
-          const data = await res.json();
-
-          if (data.success) {
-            status.className = "rounded-md p-3 text-sm font-medium bg-green-50 text-green-700 border border-green-200";
-            status.textContent = data.message;
-            form.reset();
-            if (window.turnstile) window.turnstile.reset();
-          } else {
-            status.className = "rounded-md p-3 text-sm font-medium bg-red-50 text-red-700 border border-red-200";
-            status.textContent = data.error || "Eroare. Încearcă din nou.";
-          }
-        } catch {
-          status.className = "rounded-md p-3 text-sm font-medium bg-red-50 text-red-700 border border-red-200";
-          status.textContent = "Eroare de rețea. Încearcă din nou.";
-        }
-
-        btn.disabled = false;
-        btn.textContent = "Trimite mesajul";
-      });
     </script>
+    {mascot && <SiteMascot />}
   </body>
 </html>

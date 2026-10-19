@@ -13,6 +13,7 @@ export type AnalyticsTool =
   | "calculator_tva"
   | "registru_casa"
   | "generator_nir"
+  | "borderou_achizitie"
   | "generator_cod_de_bare"
   | "calculator_adaos"
   | "calculator_reducere"
@@ -20,7 +21,8 @@ export type AnalyticsTool =
   | "verificare_cui"
   | "afise_obligatorii"
   | "fisa_de_magazie"
-  | "dispozitie_de_plata";
+  | "dispozitie_de_plata"
+  | "generator_aviz";
 
 export type ToolAction =
   | "check"

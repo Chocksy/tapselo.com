@@ -12,7 +12,7 @@ const { title, wide = false } = Astro.props;
 const width = wide ? "max-w-3xl" : "max-w-xl";
 ---
 
-<Layout title={title} description={title} noindex>
+<Layout title={title} description={title} noindex mascot={false}>
   <header class="bg-primary">
     <div class={`mx-auto ${width} px-5 py-4`}>
       <p id="shell-store" class="text-lg font-bold text-white">&nbsp;</p>

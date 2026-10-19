@@ -2,6 +2,13 @@ name = "tapselo-email-relay"
 main = "index.js"
 compatibility_date = "2024-09-23"
 
+# Not reachable from the internet: the tapselo-com Pages project calls this
+# Worker through the EMAIL_RELAY service binding instead.
+# Do NOT `wrangler deploy` this until the binding is live on Pages production
+# (see PLAN step c), or the contact form will lose its relay.
+workers_dev = false
+preview_urls = false
+
 [[send_email]]
 name = "SEND_EMAIL"
 destination_address = "ciocanel.razvan@gmail.com"

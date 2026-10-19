@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
+import preact from '@astrojs/preact';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
@@ -17,6 +18,8 @@ export default defineConfig({
   site: 'https://tapselo.com',
   output: 'static',
   integrations: [
+    // compat aliases react/react-dom to preact/compat so page-mascot runs unchanged.
+    preact({ compat: true }),
     sitemap({
       // Shopper pages (store sign-up, store privacy, confirm, unsubscribe) are noindex.
       filter: (page) => !/^\/(c|p|g|o|confirmare|dezabonare)\//.test(new URL(page).pathname),
@@ -31,10 +34,23 @@ export default defineConfig({
     }),
   ],
   vite: {
-    plugins: [tailwindcss(), anafCuiDevProxyPlugin()],
+    plugins: [
+      tailwindcss(),
+      anafCuiDevProxyPlugin(),
+      // Bundle page-mascot in every server environment (ssr + Astro's prerender env, which
+      // ignores `vite.ssr`) so the preact/compat alias for `react` applies there too.
+      // CI installs with --legacy-peer-deps, so page-mascot's react peer is never installed.
+      {
+        name: 'page-mascot-no-external',
+        configEnvironment(name) {
+          if (name !== 'client') return { resolve: { noExternal: ['page-mascot'] } };
+        },
+      },
+    ],
     optimizeDeps: {
       exclude: ['xmllint-wasm'],
     },
+
     assetsInclude: ['**/*.wasm'],
   }
 });

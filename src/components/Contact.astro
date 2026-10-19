@@ -99,16 +99,27 @@ import { Mail, Phone, Clock } from "@lucide/astro";
           </div>
 
           <!-- Cloudflare Turnstile -->
-          <div class="cf-turnstile" data-sitekey="0x4AAAAAACtT6gLbdqQrMEwT" data-theme="light"></div>
+          <div
+            id="contact-turnstile"
+            class="cf-turnstile"
+            data-sitekey="0x4AAAAAACtT6gLbdqQrMEwT"
+            data-theme="light"
+            data-callback="tapseloTurnstileOk"
+            data-expired-callback="tapseloTurnstileExpired"
+            data-timeout-callback="tapseloTurnstileTimeout"
+            data-error-callback="tapseloTurnstileError"
+          ></div>
 
-          <div id="form-status" class="hidden rounded-md p-3 text-sm font-medium"></div>
+          <div id="form-status" class="hidden rounded-md p-3 text-sm font-medium" role="status" aria-live="polite"></div>
 
           <button
             type="submit"
             id="submit-btn"
+            disabled
+            aria-busy="true"
             class="w-full rounded-md bg-accent py-3.5 text-base font-bold text-white transition-all hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/25 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Trimite mesajul
+            Se verifică…
           </button>
           <p class="text-center text-xs text-text-muted">
             Protejat de Cloudflare. Datele tale sunt în siguranță.
@@ -118,3 +129,155 @@ import { Mail, Phone, Clock } from "@lucide/astro";
     </div>
   </div>
 </section>
+
+<!-- Callbacks are defined before api.js loads so Turnstile can always find them. -->
+<script is:inline>
+  (() => {
+    const form = document.getElementById("contact-form");
+    if (!form) return;
+    const btn = document.getElementById("submit-btn");
+    const status = document.getElementById("form-status");
+    const widget = document.getElementById("contact-turnstile");
+
+    const LABEL_READY = "Trimite mesajul";
+    const LABEL_VERIFYING = "Se verifică…";
+    const LABEL_SENDING = "Se trimite…";
+    const TOKEN_WAIT_MS = 30000;
+
+    let token = "";
+    let sending = false;
+    let waiters = [];
+    let turnstileErrorShown = false;
+
+    const okClass = "rounded-md p-3 text-sm font-medium bg-green-50 text-green-700 border border-green-200";
+    const errClass = "rounded-md p-3 text-sm font-medium bg-red-50 text-red-700 border border-red-200";
+
+    function setButton(state) {
+      // state: "verifying" | "ready" | "sending"
+      btn.disabled = state !== "ready";
+      btn.setAttribute("aria-busy", state === "ready" ? "false" : "true");
+      btn.textContent = state === "ready" ? LABEL_READY : state === "sending" ? LABEL_SENDING : LABEL_VERIFYING;
+    }
+
+    function showStatus(cls, text) {
+      status.className = cls;
+      status.textContent = text;
+    }
+
+    function hideStatus() {
+      status.className = "hidden";
+      status.textContent = "";
+    }
+
+    function resolveWaiters(value) {
+      const pending = waiters;
+      waiters = [];
+      pending.forEach((fn) => fn(value));
+    }
+
+    function waitForToken(ms) {
+      if (token) return Promise.resolve(token);
+      return new Promise((resolve) => {
+        const timer = setTimeout(() => {
+          waiters = waiters.filter((fn) => fn !== done);
+          resolve("");
+        }, ms);
+        function done(value) {
+          clearTimeout(timer);
+          resolve(value);
+        }
+        waiters.push(done);
+      });
+    }
+
+    function resetTurnstile() {
+      token = "";
+      if (!sending) setButton("verifying");
+      try {
+        if (window.turnstile) window.turnstile.reset(widget);
+      } catch {}
+    }
+
+    window.tapseloTurnstileOk = (value) => {
+      token = value || "";
+      if (!token) return;
+      if (turnstileErrorShown) {
+        turnstileErrorShown = false;
+        hideStatus();
+      }
+      if (!sending) setButton("ready");
+      resolveWaiters(token);
+    };
+
+    window.tapseloTurnstileExpired = () => {
+      // Tokens expire after ~5 min; Turnstile refreshes on its own
+      // (refresh-expired: auto) and calls tapseloTurnstileOk again.
+      token = "";
+      if (!sending) setButton("verifying");
+    };
+
+    window.tapseloTurnstileTimeout = () => {
+      // An interactive challenge was left unanswered: start a fresh one.
+      resetTurnstile();
+    };
+
+    window.tapseloTurnstileError = () => {
+      // Turnstile keeps retrying by itself (retry: auto); a later success clears this.
+      token = "";
+      if (!sending) setButton("verifying");
+      turnstileErrorShown = true;
+      showStatus(errClass, "Verificarea de securitate nu a reușit încă. Dacă butonul rămâne inactiv, reîncarcă pagina.");
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (sending) return;
+      sending = true;
+      hideStatus();
+      turnstileErrorShown = false;
+
+      try {
+        // A fast submit can arrive before Turnstile has a token: wait for it
+        // instead of sending an empty token and showing an error.
+        let t = token;
+        if (!t) {
+          setButton("verifying");
+          t = await waitForToken(TOKEN_WAIT_MS);
+        }
+        if (!t) {
+          showStatus(errClass, "Verificarea de securitate durează prea mult. Încearcă din nou.");
+          return;
+        }
+
+        setButton("sending");
+        const res = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: form.querySelector("#name").value,
+            email: form.querySelector("#email").value,
+            phone: form.querySelector("#phone").value || "",
+            message: form.querySelector("#message").value,
+            turnstileToken: t,
+          }),
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          showStatus(okClass, data.message);
+          form.reset();
+        } else {
+          showStatus(errClass, data.error || "Eroare. Încearcă din nou.");
+        }
+      } catch {
+        showStatus(errClass, "Eroare de rețea. Încearcă din nou.");
+      } finally {
+        sending = false;
+        // A Turnstile token is single-use: always get a fresh one after a send attempt.
+        resetTurnstile();
+      }
+    });
+  })();
+</script>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>

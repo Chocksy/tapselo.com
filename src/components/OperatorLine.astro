@@ -5,7 +5,7 @@ interface Props {
   class?: string;
 }
 
-const { class: className = "text-xs text-text-on-primary/40" } = Astro.props;
+const { class: className = "text-xs text-text-on-primary-muted" } = Astro.props;
 ---
 
 <p class:list={["leading-relaxed", className]}>{operatorLineText()}</p>

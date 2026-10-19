@@ -1,0 +1,208 @@
+---
+import ToolShell from "../../components/ToolShell.astro";
+import BorderouAchizitieTool from "../../components/unelte/BorderouAchizitieTool.astro";
+import { internalPath } from "../../lib/internal-url.ts";
+import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
+
+const path = "/unelte/generator-borderou-de-achizitie/";
+const heading = "Borderou de achiziție de la persoane fizice";
+
+const SRC = {
+  anexa1: "https://legislatie.just.ro/Public/DetaliiDocument/286044",
+  anexa2: "https://legislatie.just.ro/Public/DetaliiDocument/286045",
+  anexa3: "https://legislatie.just.ro/Public/DetaliiDocument/286046",
+  lege145: "https://legislatie.just.ro/Public/DetaliiDocument/162616",
+  codFiscal: "https://legislatie.just.ro/Public/DetaliiDocument/171282",
+  norme: "https://legislatie.just.ro/Public/DetaliiDocument/307847",
+};
+
+const faq = [
+  {
+    q: "Ce este borderoul de achiziție?",
+    a: "Este documentul cu codul 14-4-13 din OMFP nr. 2.634/2015 pentru bunurile cumpărate de la persoane fizice. Normele spun că servește ca document de înregistrare în gestiune a bunurilor, ca document justificativ în contabilitate pentru valoarea lor și pentru justificarea sumelor plătite persoanelor fizice.",
+  },
+  {
+    q: "Cine întocmește borderoul și când?",
+    a: "Potrivit normelor din Anexa nr. 2 la OMFP nr. 2.634/2015, borderoul „se întocmește de către persoana care efectuează aprovizionarea cu bunuri de la persoane fizice, în momentul achiziției”. Modelul are semnăturile achizitorului și gestionarului; generatorul adaugă și un loc pentru semnătura vânzătorului.",
+  },
+  {
+    q: "Am nevoie și de NIR pentru marfa cumpărată de la persoane fizice?",
+    a: "Normele pentru NIR (cod 14-3-1A) prevăd nota de recepție inclusiv pentru bunurile materiale procurate de la persoane fizice, iar Anexa nr. 1 spune că borderoul se înregistrează în contabilitate numai dacă se face dovada intrării în gestiune a bunurilor. Poți genera NIR-ul cu generatorul nostru de NIR.",
+  },
+  {
+    q: "Pot folosi borderoul când cumpăr legume sau fructe de la un producător agricol?",
+    a: "Legea nr. 145/2014 cere carnetul de comercializare pentru orice vânzare de produse agricole de către producătorii agricoli persoane fizice (cu excepția comerțului cu amănuntul în piețe, târguri și piețe ambulante) și interzice folosirea borderoului 14-4-13/b pentru aceste achiziții. Întreabă contabilul ce documente interne mai întocmești pe lângă carnet.",
+  },
+  {
+    q: "Trebuie să rețin impozit din suma plătită vânzătorului?",
+    a: "Depinde de bun. Codul fiscal tratează veniturile din vânzarea bunurilor mobile din patrimoniul personal ca neimpozabile (art. 62 lit. m)) și prevede impozit de 10% reținut la sursă pentru metalele feroase și neferoase din patrimoniul personal predate ca deșeuri (art. 114 alin. (2) lit. m²) și art. 115). De aceea câmpul de impozit e opțional; stabilește regimul cu contabilul.",
+  },
+  {
+    q: "Pot descărca borderou de achiziție PDF gratuit?",
+    a: "Da. Generatorul este gratuit și fără cont: completezi formularul și salvezi PDF A4 sau A5 din fereastra de printare. Poți descărca și modelul 14-4-13 necompletat, ca să-l completezi de mână.",
+  },
+  {
+    q: "Datele vânzătorului sunt trimise pe internet?",
+    a: "Nu. Documentul se generează local, în browser. Salvăm local doar datele entității, ca să nu le reintroduci; numele vânzătorului, actul de identitate și CNP-ul nu se salvează și nu ajung în analytics.",
+  },
+];
+
+const jsonLd = toolJsonLd({
+  path,
+  heading,
+  appName: "Generator borderou de achiziție Tapselo",
+  description:
+    "Generator gratuit borderou de achiziție 14-4-13 pentru bunuri cumpărate de la persoane fizice: valori și total calculate, PDF A4/A5 și formular necompletat.",
+  faq,
+});
+
+const link = "font-semibold text-accent hover:underline";
+---
+
+<ToolShell
+  title="Borderou de achiziție — model 14-4-13 PDF gratuit | Tapselo"
+  description="Generator borderou de achiziție de la persoane fizice, cod 14-4-13 (OMFP 2634/2015): produse, cantități, prețuri și total; PDF A4/A5, print și model necompletat."
+  heading={heading}
+  path={path}
+  lead="Cumperi marfă de la o persoană fizică? Completezi borderoul de achiziție pe modelul oficial 14-4-13 — valorile și totalul se calculează singure — apoi printezi sau salvezi PDF, local în browser."
+  campaign="borderou-de-achizitie"
+  ctaTitle="De la achiziție la stoc"
+  ctaBody="În Tapselo, recepția mărfii (NIR) intră în stoc, iar casa de marcat rulează pe Windows, macOS sau Linux; telefonul îl folosești pentru inventar. Tapselo e gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA."
+  related={[
+    { href: "/unelte/generator-nir/", label: "Generator NIR (nota de recepție)" },
+    { href: "/unelte/dispozitie-de-plata/", label: "Dispoziție de plată" },
+    { href: "/ghid/nir-nota-receptie", label: "Ghid NIR: nota de recepție" },
+  ]}
+  jsonLd={jsonLd}
+  faq={faq}
+>
+  <BorderouAchizitieTool />
+
+  <article class="site-prose prose-tapselo space-y-8 text-text-secondary leading-relaxed">
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Când folosești borderoul de achiziție</h2>
+      <p>
+        <strong class="text-primary">Borderoul de achiziție</strong> (cod <strong class="text-primary">14-4-13</strong>, OMFP nr. 2.634/2015)
+        este documentul pentru bunurile cumpărate de la <strong class="text-primary">persoane fizice</strong> — de exemplu marfă second-hand,
+        obiecte sau materiale aduse la magazin de clienți care nu emit factură. Normele spun că îl întocmește persoana care face aprovizionarea,
+        „în momentul achiziției” (<a href={SRC.anexa2} class={link}>Anexa nr. 2, cod 14-4-13</a>).
+      </p>
+      <p>
+        Pentru <strong class="text-primary">produse agricole</strong> cumpărate de la producători agricoli persoane fizice, regula e alta:
+        Legea nr. 145/2014 cere carnetul de comercializare și interzice borderoul 14-4-13/b „de la producători individuali”
+        (<a href={SRC.lege145} class={link}>Legea nr. 145/2014, art. 10 și art. 20</a>).
+      </p>
+      <p>
+        Preferi hârtia? <a href="#bor-blank" class={link}>Descarcă formularul necompletat (PDF, A4 sau A5)</a> din generatorul de mai sus.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Cum se completează modelul 14-4-13</h2>
+      <p>Modelul din Anexa nr. 3 la OMFP nr. 2.634/2015 are următoarele rubrici, pe care generatorul le reproduce:</p>
+      <ul class="list-disc space-y-2 pl-5">
+        <li><strong class="text-primary">Entitatea</strong>, codul de identificare fiscală, numărul de înmatriculare în Registrul comerțului/anul, sediul și județul;</li>
+        <li><strong class="text-primary">Numărul și data</strong> borderoului;</li>
+        <li>tabelul cu <strong class="text-primary">Produsul, Cod, U/M, Cantitate, Preț unitar de achiziție și Valoarea achiziției</strong>, plus rândul TOTAL;</li>
+        <li><strong class="text-primary">Semnătura achizitorului</strong> și <strong class="text-primary">semnătura gestionarului</strong>.</li>
+      </ul>
+      <p>
+        Modelul nu are rubrici pentru vânzător. Pentru că Anexa nr. 1 cere ca orice document justificativ să menționeze „părțile care participă
+        la efectuarea operațiunii economico-financiare (când este cazul)”, generatorul adaugă separat, marcat ca rubrică suplimentară, blocul
+        <strong class="text-primary">Vânzător (persoană fizică)</strong>: numele obligatoriu, iar domiciliul, actul de identitate și CNP-ul opțional.
+        Completează doar datele pe care ți le cere contabilul.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Impozitul: când îl reții și când nu</h2>
+      <p>Câmpul „Impozit pe venit reținut la sursă” este opțional, pentru că regimul depinde de ce cumperi. Ce spune legea:</p>
+      <ul class="list-disc space-y-2 pl-5">
+        <li>
+          <strong class="text-primary">Bunuri din patrimoniul personal</strong>: veniturile din transferul dreptului de proprietate asupra bunurilor
+          mobile din patrimoniul personal sunt neimpozabile (<a href={SRC.codFiscal} class={link}>Codul fiscal, art. 62 lit. m)</a>).
+        </li>
+        <li>
+          <strong class="text-primary">Metale feroase și neferoase predate ca deșeuri</strong>, din patrimoniul personal: impozit de 10% pe venitul brut,
+          reținut la sursă de plătitor, impozit final, plătit până pe 25 a lunii următoare (<a href={SRC.codFiscal} class={link}>art. 114 alin. (2) lit. m²) și art. 115</a>).
+        </li>
+        <li>
+          <strong class="text-primary">Produse agricole</strong>: impozitul pe venitul din activități agricole se stabilește pe norme de venit și îl
+          calculează contribuabilul (<a href={SRC.codFiscal} class={link}>art. 103–107</a>), nu cumpărătorul.
+        </li>
+        <li>
+          <strong class="text-primary">Bunuri prelucrate sau cumpărate pentru revânzare</strong> de către vânzător: normele le tratează ca venituri
+          din activități independente, iar cumpărătorul „va solicita documente care atestă proveniența bunurilor respective”
+          (<a href={SRC.norme} class={link}>Normele Codului fiscal, titlul IV pct. 6 alin. (5)</a>).
+        </li>
+      </ul>
+      <p>
+        Dacă introduci un procent, documentul arată valoarea achiziției, impozitul reținut (rotunjit la bani) și suma de plată vânzătorului.
+        Generatorul nu decide regimul fiscal în locul tău — verifică încadrarea cu contabilul.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">După borderou: NIR-ul</h2>
+      <p>
+        Borderoul singur nu ajunge în contabilitate: Anexa nr. 1 la OMFP nr. 2.634/2015 spune că documentele pe bază de borderou de achiziție
+        „pot fi înregistrate în contabilitate numai în cazul în care se face dovada intrării în gestiune a bunurilor respective”, iar normele
+        NIR-ului (cod 14-3-1A) îl prevăd și pentru „bunurile materiale procurate de la persoane fizice”. Generează nota de recepție cu
+        <a href={internalPath("/unelte/generator-nir/")} class={link}>generatorul de NIR</a>, iar dacă plătești în numerar din casierie, poți folosi
+        <a href={internalPath("/unelte/dispozitie-de-plata/")} class={link}>dispoziția de plată</a>.
+      </p>
+    </section>
+
+    <section id="surse">
+      <h2 class="font-display text-2xl italic text-primary">Surse</h2>
+      <p class="text-sm">Citate din textele consolidate de pe legislatie.just.ro (diacriticele sunt normalizate la ș/ț).</p>
+      <ul class="list-disc space-y-3 pl-5 text-sm">
+        <li>
+          <a href={SRC.anexa2} class={link}>OMFP nr. 2.634/2015, Anexa nr. 2</a> — cod 14-4-13: „Borderoul de achiziție servește ca: document de
+          înregistrare în gestiune a bunurilor cumpărate de la persoane fizice; document justificativ de înregistrare în contabilitate a valorii
+          bunurilor cumpărate; document pentru justificarea sumelor primite ca avans spre decontare pentru achiziții sau pentru decontarea sumelor
+          plătite pentru achiziții de la persoane fizice. Borderoul de achiziție se întocmește de către persoana care efectuează aprovizionarea cu
+          bunuri de la persoane fizice, în momentul achiziției.”
+        </li>
+        <li>
+          <a href={SRC.anexa3} class={link}>OMFP nr. 2.634/2015, Anexa nr. 3</a> — modelul 14-4-13: Entitatea, Codul de identificare fiscală, Numărul
+          de înmatriculare în Registrul comerțului/anul, Sediul, Județul; „BORDEROU DE ACHIZIȚIE nr. … data …”; Produsul, Cod, U/M, Cantitate, Preț
+          unitar de achiziție, Valoarea achiziției, TOTAL; Semnătura achizitorului, Semnătura gestionarului.
+        </li>
+        <li>
+          <a href={SRC.anexa1} class={link}>OMFP nr. 2.634/2015, Anexa nr. 1</a> — pct. 2: documentele justificative cuprind, între altele,
+          „menționarea părților care participă la efectuarea operațiunii economico-financiare (când este cazul)”; pct. 6: „Documentele justificative
+          provenite din tranzacții/operațiuni de cumpărare a unor bunuri de la persoane fizice, pe bază de borderou de achiziție/carnet de
+          comercializare, pot fi înregistrate în contabilitate numai în cazul în care se face dovada intrării în gestiune a bunurilor respective.”
+        </li>
+        <li>
+          <a href={SRC.lege145} class={link}>Legea nr. 145/2014</a> — art. 10 alin. (3): carnetul se folosește „pentru orice fel de vânzare de produse
+          agricole, în orice cantitate și structură sortimentală, indiferent de calitatea cumpărătorului”, cu excepția comerțului cu amănuntul în piețe
+          agroalimentare, târguri și piețe ambulante; art. 20 interzice borderoul 14-4-13/b pentru achizițiile de la producători agricoli persoane fizice.
+        </li>
+        <li>
+          <a href={SRC.codFiscal} class={link}>Codul fiscal (Legea nr. 227/2015)</a> — art. 62 lit. m): neimpozabile sunt „veniturile primite ca urmare
+          a transferului dreptului de proprietate asupra bunurilor imobile și mobile din patrimoniul personal”; art. 114 alin. (2) lit. m²): „veniturile
+          de orice fel, în bani sau în natură, primite ca urmare a predării metalelor feroase și neferoase și aliajelor acestora, din patrimoniul personal,
+          încadrate ca deșeuri potrivit legii”; art. 115 alin. (1): „Impozitul pe venit se calculează prin reținere la sursă la momentul acordării
+          veniturilor de către plătitorii de venituri, prin aplicarea asupra venitului brut a unei cote de: a) 10%”; art. 107: impozitul pe venitul din
+          activități agricole se calculează de contribuabil, pe baza normei anuale de venit.
+        </li>
+        <li>
+          <a href={SRC.norme} class={link}>HG nr. 1/2016 — Normele metodologice ale Codului fiscal</a>, titlul IV pct. 6 alin. (5): pentru bunurile
+          prelucrate sau procurate în scopul revânzării, „consignatarul/cumpărătorul va solicita documente care atestă proveniența bunurilor respective,
+          precum și cele care atestă desfășurarea unei activități independente. Nu se încadrează în aceste prevederi bunurile din patrimoniul personal.”
+        </li>
+      </ul>
+      <p class="text-sm">Informațiile au caracter general și nu înlocuiesc sfatul contabilului.</p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Confidențialitate</h2>
+      <p class="text-sm">
+        Datele vânzătorului, produsele și sumele rămân pe dispozitivul tău. Opțional, salvăm local în browser doar datele entității (denumire, CIF,
+        Registrul comerțului, sediu, județ). Analytics-ul Tapselo înregistrează doar acțiunea (print, generate_pdf sau download_blank), fără câmpuri din formular.
+      </p>
+    </section>
+  </article>
+</ToolShell>

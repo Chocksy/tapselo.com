@@ -8,11 +8,13 @@ import {
   Calculator,
   ClipboardList,
   FileCheck,
+  HandCoins,
   NotebookPen,
   Package,
   Percent,
   ScanBarcode,
   ScrollText,
+  Truck,
 } from "@lucide/astro";
 import GuideShell from "../components/GuideShell.astro";
 import { A4200_CHECKER_PATH } from "../lib/articles/schema.ts";
@@ -78,12 +80,28 @@ const tools = [
       "Notă de recepție și constatare de diferențe din datele facturii: liniile de marfă, TVA, adaos, PDF printabil pentru semnături.",
   },
   {
+    href: internalPath("/unelte/generator-aviz-de-insotire"),
+    title: "Aviz de însoțire a mărfii",
+    icon: Truck,
+    action: "Deschide generatorul",
+    description:
+      "Model 14-3-6A: furnizor, cumpărător, produse, delegat și mijloc de transport, mențiunea „Fără factură” după caz. PDF A4/A5 sau model gol.",
+  },
+  {
     href: internalPath("/unelte/fisa-de-magazie"),
     title: "Fișă de magazie",
     icon: Package,
     action: "Deschide generatorul",
     description:
       "Model 14-3-8: intrări, ieșiri și stoc calculat automat pe produs și magazie. Print, PDF sau foaie goală — în browser.",
+  },
+  {
+    href: internalPath("/unelte/generator-borderou-de-achizitie"),
+    title: "Borderou de achiziție",
+    icon: HandCoins,
+    action: "Deschide generatorul",
+    description:
+      "Model 14-4-13 pentru marfa cumpărată de la persoane fizice: produse, cantități, prețuri și total, impozit reținut opțional. PDF A4/A5 sau model gol.",
   },
   {
     href: internalPath("/unelte/calculator-adaos-comercial"),
@@ -130,7 +148,7 @@ const tools = [
 
 <GuideShell
   title="Unelte gratuite pentru comercianți | Tapselo"
-  description="Unelte gratuite Tapselo: calculator TVA, verificare și generator cod de bare, registru de casă, generator NIR, adaos comercial și verificare A4200 — în browser, în română."
+  description="Unelte gratuite Tapselo: calculator TVA, verificare și generator cod de bare, registru de casă, generator NIR, aviz de însoțire, adaos comercial și verificare A4200 — în browser, în română."
   heading="Unelte gratuite"
   lead="Instrumente care rulează în browserul tău. Nu colectăm conținutul documentelor pe care le generezi local. Pentru verificarea CUI în registrul public ANAF (TVA, e-Factura), folosește unealta Verificare CUI din listă."
   ctaTitle="Vrei mai puțină muncă manuală la casă?"

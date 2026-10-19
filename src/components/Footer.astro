@@ -9,17 +9,18 @@ import {
   guideHubLinks,
 } from "../lib/site-directory.ts";
 import OperatorLine from "./OperatorLine.astro";
+import SiteLogo from "./SiteLogo.astro";
 
-const navClass = "text-sm font-medium text-text-on-primary/60 transition-colors hover:text-white";
-const colTitle = "text-xs font-bold uppercase tracking-wide text-text-on-primary/50";
-const colLink = "text-sm text-text-on-primary/60 transition-colors hover:text-white";
+const navClass = "text-sm font-medium text-text-on-primary-muted transition-colors hover:text-white";
+const colTitle = "text-xs font-bold uppercase tracking-wide text-text-on-primary-muted";
+const colLink = "text-sm text-text-on-primary-muted transition-colors hover:text-white";
 ---
 
 <footer class="border-t border-white/10 bg-primary py-12">
   <div class="site-container">
     <div class="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
       <div class="flex shrink-0 items-center gap-2 self-start">
-        <img src="/logo.png" alt="Tapselo" class="h-7 w-7 rounded" />
+        <SiteLogo class="h-7 w-7 rounded" />
         <span class="text-sm font-bold text-white">Tapselo POS</span>
       </div>
 
@@ -81,7 +82,7 @@ const colLink = "text-sm text-text-on-primary/60 transition-colors hover:text-wh
         href="https://github.com/Chocksy/tapselo-pos"
         target="_blank"
         rel="noopener noreferrer"
-        class="text-text-on-primary/40 transition-colors hover:text-white"
+        class="text-text-on-primary-muted transition-colors hover:text-white"
         aria-label="GitHub repository"
       >
         <Github class="h-4 w-4" />
@@ -90,17 +91,17 @@ const colLink = "text-sm text-text-on-primary/60 transition-colors hover:text-wh
 
     <div class="mt-8 flex flex-col items-center gap-3 text-center">
       <OperatorLine />
-      <p class="text-sm text-text-on-primary/40">&copy; 2026 Tapselo. Toate drepturile rezervate.</p>
+      <p class="text-sm text-text-on-primary-muted">&copy; 2026 Tapselo. Toate drepturile rezervate.</p>
       <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-        <a href={internalPath("/privacy")} class="text-xs text-text-on-primary/40 transition-colors hover:text-white">Confidențialitate</a>
-        <span class="text-xs text-text-on-primary/20">&middot;</span>
-        <a href={internalPath("/extensii/verificare-cui/confidentialitate/")} class="text-xs text-text-on-primary/40 transition-colors hover:text-white">Extensie Verificare CUI</a>
-        <span class="text-xs text-text-on-primary/20">&middot;</span>
-        <a href={internalPath("/data-deletion")} class="text-xs text-text-on-primary/40 transition-colors hover:text-white">Ștergerea datelor</a>
-        <span class="text-xs text-text-on-primary/20">&middot;</span>
-        <a href={internalPath("/terms")} class="text-xs text-text-on-primary/40 transition-colors hover:text-white">Termeni</a>
-        <span class="text-xs text-text-on-primary/20">&middot;</span>
-        <a href={internalPath("/dpa")} class="text-xs text-text-on-primary/40 transition-colors hover:text-white">Acord de prelucrare a datelor</a>
+        <a href={internalPath("/privacy")} class="text-xs text-text-on-primary-muted transition-colors hover:text-white">Confidențialitate</a>
+        <span class="text-xs text-text-on-primary-faint" aria-hidden="true">&middot;</span>
+        <a href={internalPath("/extensii/verificare-cui/confidentialitate/")} class="text-xs text-text-on-primary-muted transition-colors hover:text-white">Extensie Verificare CUI</a>
+        <span class="text-xs text-text-on-primary-faint" aria-hidden="true">&middot;</span>
+        <a href={internalPath("/data-deletion")} class="text-xs text-text-on-primary-muted transition-colors hover:text-white">Ștergerea datelor</a>
+        <span class="text-xs text-text-on-primary-faint" aria-hidden="true">&middot;</span>
+        <a href={internalPath("/terms")} class="text-xs text-text-on-primary-muted transition-colors hover:text-white">Termeni</a>
+        <span class="text-xs text-text-on-primary-faint" aria-hidden="true">&middot;</span>
+        <a href={internalPath("/dpa")} class="text-xs text-text-on-primary-muted transition-colors hover:text-white">Acord de prelucrare a datelor</a>
       </div>
     </div>
   </div>
