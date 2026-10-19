@@ -75,6 +75,45 @@ export interface NirPayload {
   supplier_tax_id?: string;
 }
 
+/** One row of the Borderou de achiziție (form 14-4-13): Produsul, Cod, U/M, Cantitate, Preț unitar de achiziție. */
+export interface PurchaseSlipLine {
+  name: string;
+  code?: string;
+  unit: string;
+  quantity: number;
+  /** Purchase price per unit, lei (the individual seller charges no VAT). */
+  unit_price: number;
+}
+
+/** Borderou de achiziție (cod 14-4-13, OMFP nr. 2.634/2015) for goods bought from individuals. */
+export interface PurchaseSlipPayload {
+  /** Entitatea (buyer) and the header fields of the model. */
+  company: string;
+  company_tax_id?: string;
+  /** Numărul de înmatriculare în Registrul comerțului/anul */
+  company_trade_register?: string;
+  company_address?: string;
+  company_county?: string;
+  doc_number: string;
+  /** YYYY-MM-DD */
+  date: string;
+  /** The individual who sells (not on model 14-4-13; Anexa 1 pct. 2 asks for the parties). */
+  seller_name: string;
+  seller_address?: string;
+  seller_id_type?: string;
+  seller_id_series?: string;
+  seller_id_number?: string;
+  seller_cnp?: string;
+  lines: PurchaseSlipLine[];
+  /**
+   * Optional income tax withheld at source, percent of the total (e.g. 10 under art. 115 alin. (1)
+   * lit. a) Codul fiscal for the income in art. 114 alin. (2) lit. m^2)). Left out when not applicable.
+   */
+  withholding_percent?: number;
+  buyer_name?: string;
+  storekeeper_name?: string;
+}
+
 export interface RecipeIngredient {
   name: string;
   quantity: number;

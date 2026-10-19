@@ -16,6 +16,7 @@ export const toolLinks: SiteLink[] = [
   { href: internalPath("/unelte/generator-nir"), label: "Generator NIR" },
   { href: internalPath("/unelte/generator-aviz-de-insotire"), label: "Aviz de însoțire a mărfii" },
   { href: internalPath("/unelte/fisa-de-magazie"), label: "Fișă de magazie" },
+  { href: internalPath("/unelte/generator-borderou-de-achizitie"), label: "Borderou de achiziție" },
   { href: internalPath("/unelte/calculator-adaos-comercial"), label: "Calculator adaos comercial" },
   { href: internalPath("/unelte/calculator-reducere"), label: "Calculator reducere" },
   { href: internalPath("/unelte/generator-cod-de-bare"), label: "Generator cod de bare" },

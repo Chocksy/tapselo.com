@@ -3,7 +3,8 @@
 // by headless Chrome. Re-run for a form after changing its renderer in src/lib/generators/:
 //   node --experimental-strip-types scripts/build-blank-forms.mjs            (every form)
 //   node --experimental-strip-types scripts/build-blank-forms.mjs aviz       (one form)
-// Forms: dispozitie (cod 14-4-4, cash-order.ts), aviz (cod 14-3-6A, aviz.ts).
+// Forms: dispozitie (cod 14-4-4, cash-order.ts), aviz (cod 14-3-6A, aviz.ts),
+// borderou (cod 14-4-13, purchase-slip.ts).
 // Env: CHROME_PATH (default /usr/local/bin/google-chrome).
 
 import { mkdirSync, statSync } from "node:fs";
@@ -12,7 +13,8 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "playwright-core";
 import { BLANK_AVIZ } from "../src/lib/generators/aviz.ts";
 import { BLANK_CASH_ORDER } from "../src/lib/generators/cash-order.ts";
-import { avizHtml, cashOrderHtml } from "../src/lib/unelte/document-export.ts";
+import { BLANK_PURCHASE_SLIP } from "../src/lib/generators/purchase-slip.ts";
+import { avizHtml, cashOrderHtml, purchaseSlipHtml } from "../src/lib/unelte/document-export.ts";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "public/unelte/formulare");
@@ -23,6 +25,7 @@ const PREVIEW_WIDTH = 600;
 const FORMS = {
   dispozitie: { base: "dispozitie-de-plata-incasare-14-4-4", html: (size) => cashOrderHtml(BLANK_CASH_ORDER, size, true) },
   aviz: { base: "aviz-de-insotire-a-marfii-14-3-6a", html: (size) => avizHtml(BLANK_AVIZ, size, true) },
+  borderou: { base: "borderou-de-achizitie-14-4-13", html: (size) => purchaseSlipHtml(BLANK_PURCHASE_SLIP, size, true) },
 };
 
 const names = process.argv.slice(2);

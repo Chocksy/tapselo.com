@@ -1,0 +1,365 @@
+---
+---
+
+<section class="ut-card" aria-labelledby="bor-title">
+  <h2 id="bor-title" class="font-display text-2xl italic text-primary">Generator borderou de achiziție</h2>
+  <p class="mt-2 text-sm text-text-secondary">
+    Completezi modelul <strong class="text-primary">14-4-13</strong> (OMFP nr. 2.634/2015) pentru marfa cumpărată de la o persoană fizică. Valorile și totalul se calculează singure. Print sau PDF din browser — nimic nu pleacă pe server.
+  </p>
+
+  <div id="bor-blank" class="mt-4 flex items-center gap-4 rounded-lg border border-border-light bg-surface-elevated p-3">
+    <a href="/unelte/formulare/borderou-de-achizitie-14-4-13-a4.pdf" data-bor-blank="a4" class="shrink-0" aria-label="Borderou de achiziție necompletat A4 (PDF)">
+      <img
+        src="/unelte/formulare/borderou-de-achizitie-14-4-13-preview.png"
+        width="600"
+        height="785"
+        alt="Model borderou de achiziție 14-4-13 necompletat"
+        loading="lazy"
+        decoding="async"
+        class="h-auto w-24 rounded border border-border-light bg-white sm:w-28"
+      />
+    </a>
+    <p class="text-sm text-text-secondary">
+      <strong class="text-primary">Descarcă formularul necompletat (PDF):</strong>
+      <a href="/unelte/formulare/borderou-de-achizitie-14-4-13-a4.pdf" download data-bor-blank="a4" class="font-semibold text-accent hover:underline">A4</a>
+      /
+      <a href="/unelte/formulare/borderou-de-achizitie-14-4-13-a5.pdf" download data-bor-blank="a5" class="font-semibold text-accent hover:underline">A5</a>
+      <span class="block mt-1">Modelul 14-4-13 gol, de completat de mână, cu rubrica suplimentară pentru vânzător.</span>
+    </p>
+  </div>
+
+  <div id="bor-tool" class="mt-6 space-y-4">
+    <fieldset class="space-y-4">
+      <legend class="ut-label">Entitatea (cumpărătorul)</legend>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label class="ut-label" for="bor-company">Denumirea entității</label>
+          <input class="ut-input" id="bor-company" type="text" maxlength="120" autocomplete="organization" />
+        </div>
+        <div>
+          <label class="ut-label" for="bor-cif">Codul de identificare fiscală</label>
+          <input class="ut-input" id="bor-cif" type="text" maxlength="20" placeholder="RO12345678" autocomplete="off" />
+        </div>
+        <div>
+          <label class="ut-label" for="bor-rc">Nr. Registrul comerțului/anul (opțional)</label>
+          <input class="ut-input" id="bor-rc" type="text" maxlength="40" placeholder="J00/0000/2026" autocomplete="off" />
+        </div>
+        <div>
+          <label class="ut-label" for="bor-county">Județul (opțional)</label>
+          <input class="ut-input" id="bor-county" type="text" maxlength="40" />
+        </div>
+      </div>
+      <div>
+        <label class="ut-label" for="bor-address">Sediul — localitatea, str., număr (opțional)</label>
+        <input class="ut-input" id="bor-address" type="text" maxlength="160" autocomplete="street-address" />
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label class="ut-label" for="bor-number">Nr. borderou</label>
+          <input class="ut-input" id="bor-number" type="text" maxlength="30" placeholder="1" />
+        </div>
+        <div>
+          <label class="ut-label" for="bor-date">Data</label>
+          <input class="ut-input" id="bor-date" type="date" />
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="space-y-4 rounded-lg border border-border-light bg-surface-muted/40 p-4">
+      <legend class="px-1 text-sm font-semibold text-primary">Vânzătorul (persoană fizică)</legend>
+      <p class="ut-hint">Modelul 14-4-13 nu are rubrici pentru vânzător; le adăugăm separat, pentru că normele cer menționarea părților operațiunii. Completează doar ce îți cere contabilul.</p>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label class="ut-label" for="bor-seller">Numele și prenumele</label>
+          <input class="ut-input" id="bor-seller" type="text" maxlength="120" autocomplete="off" />
+        </div>
+        <div>
+          <label class="ut-label" for="bor-seller-address">Domiciliul (opțional)</label>
+          <input class="ut-input" id="bor-seller-address" type="text" maxlength="160" autocomplete="off" />
+        </div>
+        <div>
+          <label class="ut-label" for="bor-id-type">Act de identitate (opțional)</label>
+          <input class="ut-input" id="bor-id-type" type="text" maxlength="40" placeholder="CI" autocomplete="off" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="ut-label" for="bor-id-series">Seria</label>
+            <input class="ut-input" id="bor-id-series" type="text" maxlength="10" autocomplete="off" />
+          </div>
+          <div>
+            <label class="ut-label" for="bor-id-number">Nr.</label>
+            <input class="ut-input" id="bor-id-number" type="text" maxlength="20" autocomplete="off" />
+          </div>
+        </div>
+        <div>
+          <label class="ut-label" for="bor-cnp">CNP (opțional)</label>
+          <input class="ut-input" id="bor-cnp" type="text" inputmode="numeric" maxlength="13" autocomplete="off" />
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="ut-table-wrap">
+      <table class="ut-table ut-stack" id="bor-table">
+        <thead>
+          <tr>
+            <th scope="col">Produsul</th>
+            <th scope="col">Cod</th>
+            <th scope="col">U/M</th>
+            <th scope="col">Cantitate</th>
+            <th scope="col">Preț unitar de achiziție</th>
+            <th scope="col"><span class="sr-only">Acțiuni</span></th>
+          </tr>
+        </thead>
+        <tbody id="bor-rows"></tbody>
+      </table>
+    </div>
+    <button type="button" class="ut-btn ut-btn-secondary" id="bor-add-row">+ Linie</button>
+
+    <div>
+      <label class="ut-label" for="bor-tax">Impozit pe venit reținut la sursă, % (opțional)</label>
+      <input class="ut-input sm:max-w-[12rem]" id="bor-tax" type="text" inputmode="decimal" placeholder="lasă gol" aria-describedby="bor-tax-hint" />
+      <p class="ut-hint" id="bor-tax-hint">
+        Lasă gol dacă nu reții impozit. Codul fiscal prevede reținerea la sursă de 10% de exemplu pentru metalele feroase și neferoase din patrimoniul personal, predate ca deșeuri (art. 114 alin. (2) lit. m<sup>2</sup>) și art. 115). Bunurile mobile din patrimoniul personal sunt venit neimpozabil (art. 62 lit. m)). Verifică regimul cu contabilul — vezi <a href="#surse" class="font-semibold text-accent hover:underline">Surse</a>.
+      </p>
+    </div>
+
+    <div class="ut-result" id="bor-summary" aria-live="polite"></div>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="bor-buyer">Achizitorul — nume (opțional)</label>
+        <input class="ut-input" id="bor-buyer" type="text" maxlength="80" autocomplete="name" />
+      </div>
+      <div>
+        <label class="ut-label" for="bor-keeper">Gestionarul — nume (opțional)</label>
+        <input class="ut-input" id="bor-keeper" type="text" maxlength="80" />
+      </div>
+    </div>
+
+    <fieldset class="ut-toggle-group">
+      <legend class="ut-label">Format print</legend>
+      <div class="flex flex-wrap gap-3">
+        <label class="ut-radio">
+          <input type="radio" name="bor-page" value="A4" checked />
+          A4
+        </label>
+        <label class="ut-radio">
+          <input type="radio" name="bor-page" value="A5" />
+          A5
+        </label>
+      </div>
+    </fieldset>
+
+    <p class="text-sm text-text-secondary">
+      Confidențialitate: valorile din formular rămân în browser. Salvăm local doar datele entității (fără vânzător sau CNP). În analytics înregistrăm doar acțiunea (print / PDF / formular gol).
+    </p>
+
+    <p class="ut-err hidden" id="bor-err" role="alert"></p>
+
+    <div class="flex flex-wrap gap-3">
+      <button type="button" class="ut-btn ut-btn-primary" id="bor-pdf">Salvează PDF</button>
+      <button type="button" class="ut-btn ut-btn-secondary" id="bor-print">Printează</button>
+    </div>
+  </div>
+</section>
+
+<script>
+  import type { PurchaseSlipLine, PurchaseSlipPayload } from "../../lib/generators/types.ts";
+  import { purchaseSlipTotals } from "../../lib/generators/purchase-slip.ts";
+  import { escapeHtml, fmtLei } from "../../lib/generators/page.ts";
+  import { parseRoNumber } from "../../lib/unelte/parse.ts";
+  import { localIsoDate } from "../../lib/unelte/dates.ts";
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
+  import { downloadPurchaseSlipPdfViaPrint } from "../../lib/unelte/document-export.ts";
+
+  const STORAGE_KEY = "tapselo_purchase_slip_unit";
+  const UNIT_FIELDS = { company: "bor-company", cif: "bor-cif", rc: "bor-rc", address: "bor-address", county: "bor-county" } as const;
+  const tbody = document.getElementById("bor-rows") as HTMLTableSectionElement;
+  const errEl = document.getElementById("bor-err") as HTMLElement;
+  const summaryEl = document.getElementById("bor-summary") as HTMLElement;
+  const input = (id: string) => document.getElementById(id) as HTMLInputElement;
+  const text = (id: string) => input(id).value.trim();
+  if (!input("bor-date").value) input("bor-date").value = localIsoDate();
+
+  try {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}") as Record<string, string>;
+    for (const [k, id] of Object.entries(UNIT_FIELDS)) if (data[k]) input(id).value = data[k];
+  } catch {
+    /* ignore */
+  }
+
+  function saveUnit() {
+    const data = Object.fromEntries(Object.entries(UNIT_FIELDS).map(([k, id]) => [k, text(id)]));
+    if (!data.company && !data.cif) return;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch {
+      /* ignore */
+    }
+  }
+
+  const FIELDS = [
+    { f: "name", label: "Produsul", placeholder: "Denumire", maxlength: 80, mode: "text", wide: true },
+    { f: "code", label: "Cod", placeholder: "", maxlength: 30, mode: "text", wide: false },
+    { f: "unit", label: "U/M", placeholder: "kg", maxlength: 20, mode: "text", wide: false },
+    { f: "qty", label: "Cantitate", placeholder: "1", maxlength: 20, mode: "decimal", wide: false },
+    { f: "price", label: "Preț unitar de achiziție", placeholder: "0", maxlength: 20, mode: "decimal", wide: false },
+  ] as const;
+
+  function renumber() {
+    tbody.querySelectorAll("tr").forEach((tr, i) => {
+      FIELDS.forEach(({ f, label }) => tr.querySelector(`[data-f="${f}"]`)?.setAttribute("aria-label", `${label}, linia ${i + 1}`));
+      tr.querySelector("[data-del]")?.setAttribute("aria-label", `Șterge linia ${i + 1}`);
+    });
+  }
+
+  function addRow() {
+    const tr = document.createElement("tr");
+    for (const { f, label, placeholder, maxlength, mode, wide } of FIELDS) {
+      const td = document.createElement("td");
+      td.dataset.label = label;
+      if (wide) td.dataset.wide = "";
+      const el = document.createElement("input");
+      el.dataset.f = f;
+      el.placeholder = placeholder;
+      el.maxLength = maxlength;
+      el.inputMode = mode;
+      td.append(el);
+      tr.append(td);
+    }
+    const delTd = document.createElement("td");
+    const del = document.createElement("button");
+    del.type = "button";
+    del.className = "ut-del";
+    del.dataset.del = "";
+    del.textContent = "Șterge";
+    del.addEventListener("click", () => {
+      tr.remove();
+      renumber();
+      renderSummary();
+    });
+    delTd.append(del);
+    tr.append(delTd);
+    tbody.append(tr);
+    renumber();
+  }
+  addRow();
+  document.getElementById("bor-add-row")?.addEventListener("click", addRow);
+
+  type Lines = { ok: true; lines: PurchaseSlipLine[]; tax?: number } | { ok: false; error: string };
+
+  function collectLines(): Lines {
+    const tax = parseRoNumber(input("bor-tax").value);
+    if (tax.kind === "invalid" || (tax.kind === "ok" && tax.value >= 100)) return { ok: false, error: "Procentul de impozit nu este valid (ex. 10)." };
+    const lines: PurchaseSlipLine[] = [];
+    for (const [i, tr] of [...tbody.querySelectorAll("tr")].entries()) {
+      const v = (f: string) => (tr.querySelector(`[data-f="${f}"]`) as HTMLInputElement).value.trim();
+      const name = v("name");
+      const qty = parseRoNumber(v("qty"), 3);
+      const price = parseRoNumber(v("price"));
+      if (!name && qty.kind === "empty" && price.kind === "empty") continue;
+      if (!name) return { ok: false, error: `Linia ${i + 1} nu are denumire.` };
+      if (qty.kind !== "ok" || !(qty.value > 0)) return { ok: false, error: `Cantitatea de pe linia ${i + 1} nu este validă.` };
+      if (price.kind !== "ok") return { ok: false, error: `Prețul de achiziție de pe linia ${i + 1} nu este valid (ex. 4,50).` };
+      const line: PurchaseSlipLine = { name, unit: v("unit") || "buc", quantity: qty.value, unit_price: price.value };
+      const code = v("code");
+      if (code) line.code = code;
+      lines.push(line);
+    }
+    if (!lines.length) return { ok: false, error: "Adaugă cel puțin o linie de marfă." };
+    return { ok: true, lines, tax: tax.kind === "ok" && tax.value > 0 ? tax.value : undefined };
+  }
+
+  function renderSummary() {
+    const r = collectLines();
+    if (!r.ok) {
+      summaryEl.innerHTML = `<p class="text-sm text-text-secondary">${escapeHtml(r.error)}</p>`;
+      return;
+    }
+    const t = purchaseSlipTotals({ lines: r.lines, withholding_percent: r.tax });
+    summaryEl.innerHTML = `<dl>
+      <dt>Valoarea achiziției (TOTAL)</dt><dd>${fmtLei(t.total)}</dd>
+      ${r.tax ? `<dt>Impozit reținut la sursă (${escapeHtml(String(r.tax).replace(".", ","))}%)</dt><dd>${fmtLei(t.withholding)}</dd><dt>Suma de plată vânzătorului</dt><dd>${fmtLei(t.net_payable)}</dd>` : ""}
+    </dl>`;
+  }
+  const tool = document.getElementById("bor-tool");
+  tool?.addEventListener("input", () => {
+    renderSummary();
+    saveUnit();
+  });
+  tool?.addEventListener("change", renderSummary);
+  renderSummary();
+
+  function pageSize(): "A4" | "A5" {
+    return (document.querySelector('input[name="bor-page"]:checked') as HTMLInputElement)?.value === "A5" ? "A5" : "A4";
+  }
+
+  function showError(msg: string) {
+    errEl.textContent = msg;
+    errEl.classList.remove("hidden");
+  }
+
+  function collect(): PurchaseSlipPayload | null {
+    const company = text("bor-company");
+    const doc_number = text("bor-number");
+    const date = input("bor-date").value;
+    const seller_name = text("bor-seller");
+    if (!company) {
+      showError("Completează denumirea entității.");
+      return null;
+    }
+    if (!doc_number || !date) {
+      showError("Completează numărul și data borderoului.");
+      return null;
+    }
+    if (!seller_name) {
+      showError("Completează numele vânzătorului (persoana fizică).");
+      return null;
+    }
+    const r = collectLines();
+    if (!r.ok) {
+      showError(r.error);
+      return null;
+    }
+    errEl.classList.add("hidden");
+    saveUnit();
+    const payload: PurchaseSlipPayload = { company, doc_number, date, seller_name, lines: r.lines };
+    const optional = {
+      company_tax_id: "bor-cif",
+      company_trade_register: "bor-rc",
+      company_address: "bor-address",
+      company_county: "bor-county",
+      seller_address: "bor-seller-address",
+      seller_id_type: "bor-id-type",
+      seller_id_series: "bor-id-series",
+      seller_id_number: "bor-id-number",
+      seller_cnp: "bor-cnp",
+      buyer_name: "bor-buyer",
+      storekeeper_name: "bor-keeper",
+    } as const;
+    for (const [key, id] of Object.entries(optional)) {
+      const v = text(id);
+      if (v) payload[key as keyof typeof optional] = v;
+    }
+    if (r.tax) payload.withholding_percent = r.tax;
+    return payload;
+  }
+
+  function openDoc(action: "print" | "generate_pdf") {
+    const p = collect();
+    if (!p) return;
+    if (!downloadPurchaseSlipPdfViaPrint(p, pageSize())) {
+      showError("Permite ferestrele pop-up pentru PDF sau print.");
+      return;
+    }
+    trackToolUsed("borderou_achizitie", action, { page: pageSize(), withholding: !!p.withholding_percent });
+  }
+
+  document.querySelectorAll<HTMLAnchorElement>("[data-bor-blank]").forEach((a) => {
+    a.addEventListener("click", () => {
+      trackToolUsed("borderou_achizitie", "download_blank", { format: a.dataset.borBlank === "a5" ? "a5" : "a4" });
+    });
+  });
+  document.getElementById("bor-pdf")?.addEventListener("click", () => openDoc("generate_pdf"));
+  document.getElementById("bor-print")?.addEventListener("click", () => openDoc("print"));
+</script>

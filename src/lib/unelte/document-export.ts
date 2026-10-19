@@ -2,6 +2,7 @@ import { renderCashbook } from "../generators/cashbook.ts";
 import { renderAviz } from "../generators/aviz.ts";
 import { renderCashOrder } from "../generators/cash-order.ts";
 import { renderNir } from "../generators/nir.ts";
+import { renderPurchaseSlip } from "../generators/purchase-slip.ts";
 import { renderWarehouseCard } from "../generators/warehouse-card.ts";
 import type {
   AvizPayload,
@@ -9,6 +10,7 @@ import type {
   CashOrderPayload,
   DraftRecord,
   NirPayload,
+  PurchaseSlipPayload,
   WarehouseCardPayload,
 } from "../generators/types.ts";
 import { cashbookXlsx, downloadBlob, XLSX_MIME } from "./spreadsheet.ts";
@@ -50,6 +52,14 @@ export function downloadCashbookExcel(payload: CashbookPayload, filename?: strin
 
 export function downloadNirPdfViaPrint(payload: NirPayload): boolean {
   return openPrintHtml(nirHtml(payload));
+}
+
+export function purchaseSlipHtml(payload: PurchaseSlipPayload, pageSize: "A4" | "A5" = "A4", blank = false): string {
+  return renderPurchaseSlip(payload, { ...LOCAL_DRAFT, kind: "purchase_slip" }, { local: true, pageSize, blank });
+}
+
+export function downloadPurchaseSlipPdfViaPrint(payload: PurchaseSlipPayload, pageSize: "A4" | "A5" = "A4"): boolean {
+  return openPrintHtml(purchaseSlipHtml(payload, pageSize));
 }
 
 export function downloadCashbookPdfViaPrint(payload: CashbookPayload): boolean {
