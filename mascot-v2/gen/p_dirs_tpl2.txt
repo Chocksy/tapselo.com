@@ -1,0 +1,11 @@
+The attached image is a 3x3 sprite sheet template: the same chibi Romanian shopkeeper (short dark-brown hair, thick dark moustache, white shirt collar, cherry-red apron with a red-yellow-blue folk stripe and a small golden cash-register badge) drawn identically in all nine cells. Redraw it as a sprite sheet of NINE HEAD DIRECTIONS.
+
+KEEP EXACTLY: the cell layout, each character's size and position in its cell, the wide empty margins around every character, the transparent background, the art style (cute storybook sticker art, bold black outlines, white eye catchlights, pink cheek blush, warm saturated colours), the colours and every marking. The neck, shirt collar, apron and shoulders must stay the EXACT SAME SHAPE in the EXACT SAME POSITION in all nine cells -- the body always faces the viewer. Only the HEAD rotates on top of the unchanging body; the face keeps the same calm friendly expression in every cell.
+
+The turns are GENTLE: about 25-30 degrees, a three-quarter view at most. The face, both eyes and the moustache stay clearly visible in EVERY cell. NEVER draw a full side profile and NEVER show the back of the head. The body never turns.
+Each cell is the character LOOKING TOWARD a point:
+Row 1, left to right: looking up and to the viewer's left (chin slightly raised, head turned a little to the viewer's left, eyes up-left); looking straight up (chin raised, face still toward the viewer, eyes up); looking up and to the viewer's right.
+Row 2: head turned a little to the viewer's left, eyes left (nose and moustache shift left); looking straight at the viewer (exactly like the template); head turned a little to the viewer's right, eyes right.
+Row 3: looking down and to the viewer's left (chin slightly lowered, face still visible, eyes down-left); looking down (chin lowered, eyes down, face still visible); looking down and to the viewer's right.
+
+Nothing may touch or cross a cell boundary. NO floating symbols of any kind. No text, no labels, no borders, no drop shadows, no background colour. PNG with a real transparent background.

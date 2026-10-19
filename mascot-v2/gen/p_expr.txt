@@ -1,0 +1,21 @@
+The attached image is a 3x3 head-direction sprite sheet. Produce the MATCHING EXPRESSIONS sheet for that same character, in the same colour sticker style. The character is a cute chibi Romanian shopkeeper: a friendly young man with short neat dark-brown hair, warm brown eyes, a thick dark moustache, a kind smile, a white shirt collar, and a cherry-red apron with a red-yellow-blue folk embroidery stripe across the bib and a small golden cash-register badge on the bib. Copy the character from the attached image exactly: the same colours, the same markings, the same fur or surface detail, the same line weight. Every marking visible in the attached sheet must appear here too. Do not restyle, simplify or redraw it.
+
+NOT head directions. The character faces STRAIGHT AT THE VIEWER in all nine cells, head perfectly straight. The only thing that changes between cells is the FACE, plus one small floating symbol in three of them.
+
+CRITICAL: same art style, same palette, same line weight, same proportions, and EXACTLY THE SAME SIZE AND POSITION IN THE CELL as the attached sheet. The chest and shoulders must be the same drawing, the same width, and the same height off the bottom of the cell as in the attached sheet, identical in all nine cells here. If the two sheets do not line up the character visibly jumps, so match them.
+
+Wide margin on all four sides, nothing touching a cell edge including the floating symbols, and clear empty space below the shoulders.
+
+The nine expressions, left to right, top to bottom:
+1. Eyes closed as two upward curved arcs. No symbol.
+2. Same closed arc eyes, plus one clearly visible SMALL RED HEART floating in the empty space above the head. The heart must be present.
+3. Same closed arc eyes, plus THREE SMALL YELLOW SPARKLE STARS above the head.
+4. Eyes wide open and very round, mouth open in a small round O of surprise.
+5. Starstruck: both eyes drawn as bright star shapes, big happy smile.
+6. Eyes closed arcs, strong pink blush on both cheeks.
+7. Eyes closed sleeping curves, plus a small blue "z z z" above the head.
+8. Both eyes drawn as spiral swirls, wavy wobbly mouth. Dizzy.
+9. Eyes closed arcs, mouth wide open in a big happy grin.
+
+No text, no labels, no borders, no drop shadows, no background colour.
+Square image, at least 1024x1024, PNG WITH A REAL ALPHA CHANNEL. The background must be genuinely transparent, not white.

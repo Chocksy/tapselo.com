@@ -1,0 +1,10 @@
+The attached image is a 3x3 sprite sheet template: the same chibi Romanian shopkeeper (short dark-brown hair, thick dark moustache, white shirt collar, cherry-red apron with a red-yellow-blue folk stripe and a small golden cash-register badge) drawn identically in all nine cells. Redraw it as a sprite sheet of NINE HEAD DIRECTIONS.
+
+KEEP EXACTLY: the cell layout, each character's size and position in its cell, the wide empty margins around every character, the transparent background, the art style (cute storybook sticker art, bold black outlines, white eye catchlights, pink cheek blush, warm saturated colours), the colours and every marking. The neck, shirt collar, apron and shoulders must stay the EXACT SAME SHAPE in the EXACT SAME POSITION in all nine cells -- the body always faces the viewer. Only the HEAD rotates on top of the unchanging body; the face keeps the same calm friendly expression in every cell.
+
+Turn the whole head clearly in each cell, do not just move the eyes: looking left swings the nose and moustache to the viewer's left and brings the far ear and cheek into view; looking up tilts the chin up and shows more of the jaw underside; looking down tilts the face down so more of the hair top shows.
+Row 1: up-left, up, up-right.
+Row 2: left (facing the viewer's left), straight at the viewer, right (facing the viewer's right).
+Row 3: down-left, down, down-right.
+
+Nothing may touch or cross a cell boundary. NO floating symbols of any kind. No text, no labels, no borders, no drop shadows, no background colour. PNG with a real transparent background.

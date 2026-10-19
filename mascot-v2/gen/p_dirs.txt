@@ -1,0 +1,23 @@
+The attached image is the reference character. Copy this exact character -- same face, hair, moustache, colours, apron, stripe and badge.
+
+Generate a 3x3 grid sprite sheet of a cute chibi Romanian shopkeeper: a friendly young man with short neat dark-brown hair, warm brown eyes, a thick dark moustache, a kind smile, a white shirt collar, and a cherry-red apron with a red-yellow-blue folk embroidery stripe across the bib and a small golden cash-register badge on the bib. Cute storybook sticker art: clean bold black outlines with some weight variation, big expressive eyes each with a bright white catchlight, soft pink cheek blush, and warm saturated colours. Give it several tones per colour -- a lighter muzzle or belly, a darker shaded edge, coloured inner ears -- and a textured, tufted silhouette wherever the character has fur or hair, rather than a smooth blob. Charming and playful, full of small appealing details. Not flat, not plain, not minimal. No photorealism, no heavy 3D gloss, no airbrushed gradients.
+
+This sheet is NINE HEAD DIRECTIONS, not expressions -- the face keeps the same calm expression in every cell and only the direction the head is TURNED changes.
+
+LAYOUT: 3 columns by 3 rows, evenly spaced, fully transparent background. Each drawing is head plus upper shoulders, centred in its cell, same character and same head size in all nine cells.
+
+FRAMING: a PORTRAIT BUST. Head, neck and shoulders only. NO arms, NO hands, NO legs, NO lower body. The shoulders are the lowest thing in the cell.
+
+PROPORTIONS: a BIG HEAD chibi that still has a real body. The head is large and dominant, and the shoulders are roughly TWO THIRDS the width of the head -- narrower than the head, but clearly there. Do NOT draw a floating head.
+
+THE RULE THAT MATTERS MOST: draw the BODY ONCE and reuse it. The neck, chest and shoulders must be the EXACT SAME SHAPE in the EXACT SAME POSITION in all nine cells, identical pixels if you can. The body always faces the viewer. Do NOT redraw the body in profile when the head turns. Only the head rotates, on top of an unchanging body.
+
+MARGINS -- this is what goes wrong most often, so follow it literally: each character must sit ENTIRELY INSIDE its own cell with a wide empty gap on all four sides. Draw it at roughly 75% of the cell height, centred, leaving clear empty space above the head AND below the shoulders. The shoulders must STOP WELL SHORT of the bottom edge of the cell -- do not let the body run off the bottom or bleed into the cell underneath. Nothing may touch or cross a cell boundary. Shrink the character equally in every cell if that is what it takes.
+
+Turn the whole head clearly, do not just move the eyes: looking left swings the nose or muzzle left and brings the far ear or cheek into view.
+Row 1: up-left, up, up-right. Row 2: left, straight at the viewer, right.
+Row 3: down-left, down, down-right.
+
+NO hearts, NO sparkles, NO "zzz", NO spiral eyes -- no floating symbols of any kind.
+No text, no labels, no borders, no drop shadows, no background colour.
+Square image, at least 1024x1024, PNG WITH A REAL ALPHA CHANNEL. The background must be genuinely transparent, not white.
