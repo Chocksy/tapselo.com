@@ -6,7 +6,7 @@
 // - "Ascunde mascota" hides it for this visit (sessionStorage) and shows a small
 //   "Arată mascota" peek button in the same spot to bring it back.
 // - Horizontally aligned with the right edge of .site-container (72rem + padding).
-// - Steps aside when the footer is on screen; sits above #57's floating CTA if present.
+// - Steps aside when the footer is on screen.
 // Switch character in src/data/mascot.ts. To remove: drop <SiteMascot /> from Layout.astro.
 import MascotIsland from "./MascotIsland.tsx";
 import { ACTIVE_MASCOT, MASCOT_HIDDEN_KEY, MASCOT_SIZE } from "../data/mascot.ts";
@@ -75,7 +75,7 @@ import { ACTIVE_MASCOT, MASCOT_HIDDEN_KEY, MASCOT_SIZE } from "../data/mascot.ts
     position: fixed;
     right: var(--mascot-right);
     bottom: var(--mascot-bottom);
-    /* Below the navbar (z-50), #57's floating CTA (z-40), modals and banners. */
+    /* Below the navbar (z-50), modals and banners. */
     z-index: 30;
     transition: opacity 200ms ease, transform 200ms ease;
   }
@@ -84,11 +84,6 @@ import { ACTIVE_MASCOT, MASCOT_HIDDEN_KEY, MASCOT_SIZE } from "../data/mascot.ts
     .site-mascot-peek { display: block; }
     .site-mascot[hidden],
     .site-mascot-peek[hidden] { display: none; }
-  }
-  /* Draft PR #57's floating CTA (bottom bar, or bottom-right rail at 1400px+): sit above it. */
-  :global(body:has(.floating-cta:not([hidden]))) .site-mascot,
-  :global(body:has(.floating-cta:not([hidden]))) .site-mascot-peek {
-    bottom: calc(var(--mascot-bottom) + 5.5rem);
   }
   .site-mascot.is-away,
   .site-mascot-peek.is-away {
