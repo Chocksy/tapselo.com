@@ -13,6 +13,7 @@ export type AnalyticsTool =
   | "calculator_tva"
   | "registru_casa"
   | "generator_nir"
+  | "borderou_achizitie"
   | "generator_cod_de_bare"
   | "calculator_adaos"
   | "calculator_reducere"
