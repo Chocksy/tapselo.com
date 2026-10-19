@@ -34,10 +34,23 @@ export default defineConfig({
     }),
   ],
   vite: {
-    plugins: [tailwindcss(), anafCuiDevProxyPlugin()],
+    plugins: [
+      tailwindcss(),
+      anafCuiDevProxyPlugin(),
+      // Bundle page-mascot in every server environment (ssr + Astro's prerender env, which
+      // ignores `vite.ssr`) so the preact/compat alias for `react` applies there too.
+      // CI installs with --legacy-peer-deps, so page-mascot's react peer is never installed.
+      {
+        name: 'page-mascot-no-external',
+        configEnvironment(name) {
+          if (name !== 'client') return { resolve: { noExternal: ['page-mascot'] } };
+        },
+      },
+    ],
     optimizeDeps: {
       exclude: ['xmllint-wasm'],
     },
+
     assetsInclude: ['**/*.wasm'],
   }
 });
