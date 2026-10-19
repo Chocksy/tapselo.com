@@ -475,6 +475,51 @@ test("generator NIR: received quantity, PDF popup, escaping", async () => {
   await ctx.close();
 });
 
+test("borderou de achiziție: seller, totals with withholding, A5 popup, blank forms, escaping", async () => {
+  const { ctx, page, errors } = await phonePage();
+  await open(page, "/unelte/generator-borderou-de-achizitie/");
+  await page.fill("#bor-company", "Magazin Exemplu SRL");
+  await page.fill("#bor-cif", "RO00000000");
+  await page.fill("#bor-number", "7");
+  await page.fill("#bor-seller", EVIL);
+  await page.fill("#bor-cnp", "0000000000000");
+  const row = page.locator("#bor-rows tr").first();
+  await row.locator('[data-f="name"]').fill("Cupru (deșeu)");
+  await row.locator('[data-f="unit"]').fill("kg");
+  await row.locator('[data-f="qty"]').fill("12,5");
+  await row.locator('[data-f="price"]').fill("31,20");
+  await page.fill("#bor-tax", "10");
+  const summary = await page.textContent("#bor-summary");
+  assert.match(summary, /390,00/);
+  assert.match(summary, /39,00/);
+  assert.match(summary, /351,00/);
+  await page.check('input[name="bor-page"][value="A5"]');
+
+  const popup = await popupFrom(page, "#bor-pdf");
+  const doc = await popup.content();
+  assert.equal(await popup.textContent(".doc-title"), "Borderou de achiziție");
+  assert.match(doc, /<main class="sheet a5">/);
+  assert.match(doc, /nr\. 7 data /);
+  assert.match(doc, /Suma de plată vânzătorului<\/td><td class="num">351,00 lei/);
+  assert.equal(await popup.evaluate(() => window.__xss), undefined);
+  await assertPrintButtonWorks(popup);
+  await popup.close();
+
+  const saved = await page.evaluate(() => localStorage.getItem("tapselo_purchase_slip_unit") ?? "");
+  assert.match(saved, /Magazin Exemplu SRL/);
+  assert.doesNotMatch(saved, /0000000000000|onerror/, "seller data and CNP are never stored");
+  for (const href of await page.locator("[data-bor-blank]").evaluateAll((as) => as.map((a) => a.getAttribute("href")))) {
+    const res = await page.request.get(`${base}${href}`);
+    assert.equal(res.status(), 200, href);
+  }
+
+  await page.fill("#bor-seller", "");
+  await page.click("#bor-pdf");
+  assert.match(await page.textContent("#bor-err"), /vânzătorului/);
+  assert.deepEqual(errors, []);
+  await ctx.close();
+});
+
 test("calculator adaos: 20% food cap with rounding, reverse mode, poster opt-in", async () => {
   const { ctx, page, errors } = await phonePage();
   await open(page, "/unelte/calculator-adaos-comercial/");

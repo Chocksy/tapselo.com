@@ -1,6 +1,7 @@
 ---
 import ToolShell from "../../components/ToolShell.astro";
 import NirGeneratorTool from "../../components/unelte/NirGeneratorTool.astro";
+import { internalPath } from "../../lib/internal-url.ts";
 import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
 
 const path = "/unelte/generator-nir/";
@@ -42,9 +43,18 @@ const jsonLd = toolJsonLd({
   campaign="generator-nir"
   ctaTitle="NIR din poză de factură, în Tapselo"
   ctaBody="Fotografiezi factura la recepție și Tapselo completează liniile, stocul și NIR-ul — fără rescriere în Excel."
-  related={[{ href: "/ghid/nir-nota-receptie", label: "NIR: nota de recepție și constatare de diferențe" }]}
+  related={[
+    { href: "/ghid/nir-nota-receptie", label: "NIR: nota de recepție și constatare de diferențe" },
+    { href: "/unelte/generator-aviz-de-insotire/", label: "Generator aviz de însoțire a mărfii" },
+  ]}
   jsonLd={jsonLd}
   faq={faq}
 >
   <NirGeneratorTool />
+
+  <p class="text-sm text-text-secondary">
+    Cumperi marfă de la persoane fizice? Normele OMFP nr. 2.634/2015 prevăd NIR-ul și pentru bunurile procurate de la persoane fizice;
+    documentul de achiziție este
+    <a href={internalPath("/unelte/generator-borderou-de-achizitie/")} class="font-semibold text-accent hover:underline">borderoul de achiziție (14-4-13)</a>.
+  </p>
 </ToolShell>
