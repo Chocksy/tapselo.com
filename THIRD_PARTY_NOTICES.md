@@ -2,9 +2,11 @@
 
 ## page-mascot
 
-Used for the cursor-following mascot in the homepage hero (`src/components/HeroMascot.tsx`,
-npm package `page-mascot`). The placeholder sprite sheets in `public/mascots/chef-*.webp`
-are the library's ready-made "chef" character, resized for this site.
+Used for the cursor-following corner mascot (`src/components/SiteMascot.astro`,
+`src/components/MascotIsland.tsx`, npm package `page-mascot`). The fallback sprite sheets in
+`public/mascots/chef-*.webp` are the library's ready-made "chef" character, resized for this
+site. The custom `shopkeeper-*.webp` sheets were drawn for Tapselo following the library's
+sheet spec and built with its page-mascot skill scripts.
 
 Source: https://github.com/nilbuild/page-mascot
 
