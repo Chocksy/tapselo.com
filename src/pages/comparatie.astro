@@ -38,7 +38,6 @@ const structuredList = {
 };
 
 const pageHeading = "Comparație programe de casă de marcat";
-// No author / Person while the byline is a placeholder (see src/data/comparatie-page.ts).
 const webPageLd: Record<string, unknown> = {
   "@context": "https://schema.org",
   "@type": "WebPage",
@@ -48,20 +47,14 @@ const webPageLd: Record<string, unknown> = {
   datePublished: publishedOn,
   dateModified: updatedOn,
   publisher: { "@type": "Organization", name: "Tapselo", url: "https://tapselo.com" },
-  ...(author.isPlaceholder
-    ? {}
-    : {
-        author: {
-          "@type": "Person",
-          name: author.name,
-          jobTitle: author.role,
-          ...(author.linkedin ? { sameAs: [author.linkedin] } : {}),
-        },
-      }),
+  author: {
+    "@type": "Person",
+    name: author.name,
+    jobTitle: author.role,
+    ...(author.linkedin ? { sameAs: [author.linkedin] } : {}),
+  },
 };
-const initials = author.isPlaceholder
-  ? "?"
-  : author.name.split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toUpperCase();
+const initials = author.name.split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toUpperCase();
 ---
 
 <GuideShell
@@ -79,7 +72,7 @@ const initials = author.isPlaceholder
 >
   <script type="application/ld+json" set:html={JSON.stringify(structuredList)} />
 
-  <div class:list={["author-byline", author.isPlaceholder && "author-byline--placeholder"]} data-author-placeholder={author.isPlaceholder ? "true" : undefined}>
+  <div class="author-byline">
     {author.photo ? (
       <img src={author.photo} alt="" width={48} height={48} class="author-photo" loading="lazy" decoding="async" />
     ) : (
@@ -90,8 +83,6 @@ const initials = author.isPlaceholder
         De <strong>{author.name}</strong>, {author.role}
         {author.linkedin ? (
           <> · <a href={author.linkedin} rel="noopener author" target="_blank" class="text-accent hover:underline">LinkedIn</a></>
-        ) : author.isPlaceholder ? (
-          <> · <span class="text-text-muted">[LinkedIn — de completat]</span></>
         ) : null}
       </p>
       <p class="mt-1 text-text-muted">
@@ -288,11 +279,6 @@ const initials = author.isPlaceholder
     display: flex;
     align-items: center;
     gap: 0.75rem;
-  }
-  .author-byline--placeholder {
-    outline: 2px dashed var(--color-danger);
-    outline-offset: 6px;
-    border-radius: 0.5rem;
   }
   .author-photo {
     width: 48px;

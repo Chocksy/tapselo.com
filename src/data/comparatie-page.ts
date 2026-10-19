@@ -1,18 +1,11 @@
 // /comparatie/: byline, dates and FAQ in one place.
 
-/**
- * Author byline for /comparatie/.
- *
- * TODO(TAP-BESTOF-GAP-53): replace the placeholders with the real name, role, photo and LinkedIn URL
- * once Razvan confirms them, then set `isPlaceholder: false`. While `isPlaceholder` is true the page
- * shows the placeholders (clearly marked) and does NOT emit an `author` / Person in the JSON-LD.
- */
+/** Author byline for /comparatie/ (confirmed by Razvan, 2026-10-19). Also emitted as the WebPage `author` Person. */
 export const COMPARATIE_AUTHOR = {
-  isPlaceholder: true,
-  /** Full name, e.g. "Prenume Nume". */
-  name: "[NUME AUTOR — de completat]",
+  /** Full name. */
+  name: "Razvan Ciocanel",
   /** Short role shown after the name. */
-  role: "[ROL — de completat]",
+  role: "Fondator Tapselo",
   /** Path under /public (e.g. "/authors/nume.jpg"), or null to show the initials circle. */
   photo: null as string | null,
   /** Full https://www.linkedin.com/in/... URL, or null to hide the link. */
