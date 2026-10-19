@@ -3,7 +3,6 @@
 // Copy is verbatim from cross-app-seo/tapselo/tap-bestof-2026-10-18.md §4; do not reword.
 import { Linkedin } from "@lucide/astro";
 import GuideShell from "../../components/GuideShell.astro";
-import FloatingCta from "../../components/FloatingCta.astro";
 import { internalPath } from "../../lib/internal-url.ts";
 import { formatDateRo } from "../../lib/mcp/text.ts";
 import {
@@ -173,7 +172,7 @@ const ext = { rel: "noopener", target: "_blank" };
   </Fragment>
 
   <article class="kb-prose bestof space-y-10" data-bestof>
-    <div id="bestof-intro" class="space-y-4">
+    <div class="space-y-4">
       <p class="rounded-xl border border-ticket bg-ticket-light p-4 text-sm text-primary">
         Tapselo este produsul nostru. L-am pus în listă după aceleași criterii ca pe celelalte programe, iar datele despre ceilalți producători vin doar de pe site-urile lor, cu link la fiecare informație.
       </p>
@@ -493,7 +492,7 @@ const ext = { rel: "noopener", target: "_blank" };
       <p>Dacă ai un magazin alimentar mic și vrei să vinzi și când pică netul, încearcă Tapselo pe calculatorul tău. Casa rulează pe Windows, macOS sau Linux și pornește de pe un stick USB în aproximativ 20 de minute. Prețurile pleacă singure în cântarul Dibal, iar marfa intră în stoc din poza facturii. Tapselo e gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA, și te anunțăm cu 30 de zile înainte de trecerea la tarif. Nu ai nevoie de card ca să începi. Poți <a href={DEMO} data-tapselo-cta="bestof-final-text">încerca demo-ul acum</a> sau <a href={internalPath("/demo/")} data-tapselo-cta="bestof-final-text">programa o prezentare</a> pentru magazinul tău.</p>
     </section>
 
-    <aside id="bestof-final-cta" class="bestof-cta bestof-cta--final" aria-label="Începe cu Tapselo">
+    <aside class="bestof-cta bestof-cta--final" aria-label="Începe cu Tapselo">
       <p class="bestof-cta__title">Vinde și când pică netul.</p>
       <p>Tapselo: gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA.</p>
       <p class="bestof-cta__actions">
@@ -520,7 +519,6 @@ const ext = { rel: "noopener", target: "_blank" };
 
   </article>
 
-  <FloatingCta href={DEMO} label="Încearcă demo-ul" cta="bestof-float" startId="bestof-intro" hideId="bestof-final-cta" />
 </GuideShell>
 
 <style>
