@@ -1,7 +1,7 @@
 // Run: npm test (node --test, native TypeScript type stripping, no dependencies).
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { renderCardPage, renderCardNotFound, levelLook, formatPct, pointsLabel, TOKEN_RE, WALLET_PASS_URL, walletPassUrl, type CardPayload } from "../src/lib/card-render.ts";
+import { renderCardPage, renderCardNotFound, levelLook, formatPct, pointsLabel, TOKEN_RE, WALLET_PASS_URL, walletPassUrl, googleWalletUrl, type CardPayload } from "../src/lib/card-render.ts";
 import { MOCK_CARD, MOCK_CARD_VARIANTS } from "../src/lib/card-mock.ts";
 import { eanCheckDigit, isValidEan13 } from "../src/lib/ean13.ts";
 
@@ -113,4 +113,14 @@ test("not found page", () => {
   const out = renderCardNotFound();
   assert.match(out, /Nu am gasit cardul/);
   assert.doesNotMatch(out, /<script/i);
+});
+
+test("Google Wallet button: only for Android, never with the Apple one", () => {
+  const token = "AAAAAAAAAAAAAAAAAAAAAA";
+  const android = renderCardPage(MOCK_CARD, { token, isAndroid: true });
+  assert.ok(android.includes(`<a class="wallet" href="${WALLET_PASS_URL}?token=${token}&amp;platform=google">Adauga in Google Wallet</a>`));
+  assert.doesNotMatch(android, /Apple Wallet/);
+  assert.doesNotMatch(renderCardPage(MOCK_CARD, { token }), /Google Wallet/);
+  assert.doesNotMatch(renderCardPage(MOCK_CARD, { isAndroid: true }), /Google Wallet/);
+  assert.equal(googleWalletUrl("a+b"), `${WALLET_PASS_URL}?token=a%2Bb&platform=google`);
 });

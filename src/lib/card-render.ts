@@ -24,18 +24,24 @@ export const TOKEN_RE = /^[A-Za-z0-9_-]{22}$/;
 
 const SITE = "https://tapselo.com";
 
-/** The pos repo edge function that builds and signs the Apple Wallet pass. */
+/** The pos repo edge function: the Apple Wallet pass, or (platform=google) a redirect to the Google Wallet save page. */
 export const WALLET_PASS_URL = "https://rhatutvdltsbhidghfhh.supabase.co/functions/v1/wallet-pass";
 
-/** Options from the request: functions/card/[token].ts sets isApple from the User-Agent. */
+/** Options from the request: functions/card/[token].ts sets isApple and isAndroid from the User-Agent. */
 export interface CardPageOptions {
   token?: string;
   isApple?: boolean;
+  isAndroid?: boolean;
 }
 
 /** The .pkpass download link for one card token. */
 export function walletPassUrl(token: string): string {
   return `${WALLET_PASS_URL}?token=${encodeURIComponent(token)}`;
+}
+
+/** The Google Wallet save link for one card token. */
+export function googleWalletUrl(token: string): string {
+  return `${walletPassUrl(token)}&platform=google`;
 }
 
 /** from/to: bar and theme colours; metal: the brushed-metal card face (design pick A1). */
@@ -190,11 +196,14 @@ ${coins}<p class="pts">${escapeHtml(pointsLabel(points))}</p>
 </section>`;
   }
 
-  // Apple devices only (CSP has no script, so the check runs on the server).
-  const wallet =
-    opts.isApple && opts.token
+  // Apple or Android devices only (CSP has no script, so the check runs on the server).
+  const wallet = !opts.token
+    ? ""
+    : opts.isApple
       ? `<a class="wallet" href="${escapeHtml(walletPassUrl(opts.token))}">Adauga in Apple Wallet</a>\n`
-      : "";
+      : opts.isAndroid
+        ? `<a class="wallet" href="${escapeHtml(googleWalletUrl(opts.token))}">Adauga in Google Wallet</a>\n`
+        : "";
 
   const body = `<p class="shop">${escapeHtml(shop)}</p>
 <section class="card${look === NEUTRAL ? " neutral" : ""}" style="${vars}" aria-label="Card de client">
