@@ -27,7 +27,7 @@ export const ACTIVE_MASCOT_ID: keyof typeof MASCOTS = "shopkeeper";
 
 export const ACTIVE_MASCOT: MascotCharacter = MASCOTS[ACTIVE_MASCOT_ID];
 
-/** localStorage key set by the "Ascunde mascota" button. */
+/** sessionStorage key set by the "Ascunde mascota" button (the old v2 localStorage value under this key is cleared). */
 export const MASCOT_HIDDEN_KEY = "tapselo:mascot-hidden";
 
 export const MASCOT_SIZE = 104;

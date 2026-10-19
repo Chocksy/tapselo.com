@@ -3,13 +3,24 @@
 // - Shown only at 768px+ with a mouse (CSS below); nothing at all on phones/touch.
 // - The island hydrates (and loads its JS) only when motion is OK too; with
 //   prefers-reduced-motion it stays one static frame.
-// - "Ascunde mascota" hides it and remembers that in localStorage.
+// - "Ascunde mascota" hides it for this visit (sessionStorage) and shows a small
+//   "Arată mascota" peek button in the same spot to bring it back.
+// - Horizontally aligned with the right edge of .site-container (72rem + padding).
 // - Steps aside when the footer is on screen; sits above #57's floating CTA if present.
 // Switch character in src/data/mascot.ts. To remove: drop <SiteMascot /> from Layout.astro.
 import MascotIsland from "./MascotIsland.tsx";
 import { ACTIVE_MASCOT, MASCOT_HIDDEN_KEY, MASCOT_SIZE } from "../data/mascot.ts";
 ---
 
+<button
+  type="button"
+  id="site-mascot-peek"
+  class="site-mascot-peek"
+  aria-label="Arată mascota"
+  title="Arată mascota"
+  hidden
+  style={`background-image: url(${ACTIVE_MASCOT.directions})`}
+></button>
 <div id="site-mascot" class="site-mascot" data-hidden-key={MASCOT_HIDDEN_KEY}>
   <button type="button" class="site-mascot-close" aria-label="Ascunde mascota" title="Ascunde mascota">×</button>
   <MascotIsland
@@ -24,46 +35,70 @@ import { ACTIVE_MASCOT, MASCOT_HIDDEN_KEY, MASCOT_SIZE } from "../data/mascot.ts
 <script is:inline>
   (() => {
     const el = document.getElementById("site-mascot");
-    if (!el) return;
+    const peek = document.getElementById("site-mascot-peek");
+    if (!el || !peek) return;
     const key = el.dataset.hiddenKey;
-    try {
-      if (localStorage.getItem(key) === "1") return el.remove();
-    } catch {}
-    el.querySelector(".site-mascot-close").addEventListener("click", () => {
-      try { localStorage.setItem(key, "1"); } catch {}
-      el.remove();
-    });
+    // v2 remembered "hidden" forever in localStorage; drop that so it comes back.
+    try { localStorage.removeItem(key); } catch {}
+    const setHidden = (hidden) => {
+      el.hidden = hidden;
+      peek.hidden = !hidden;
+      try { hidden ? sessionStorage.setItem(key, "1") : sessionStorage.removeItem(key); } catch {}
+    };
+    let start = false;
+    try { start = sessionStorage.getItem(key) === "1"; } catch {}
+    if (start) setHidden(true);
+    el.querySelector(".site-mascot-close").addEventListener("click", () => { setHidden(true); peek.focus(); });
+    peek.addEventListener("click", () => setHidden(false));
     const footer = document.querySelector("footer");
     if (footer && "IntersectionObserver" in window) {
-      new IntersectionObserver(([e]) => el.classList.toggle("is-away", e.isIntersecting)).observe(footer);
+      new IntersectionObserver(([e]) => {
+        el.classList.toggle("is-away", e.isIntersecting);
+        peek.classList.toggle("is-away", e.isIntersecting);
+      }).observe(footer);
     }
   })();
 </script>
 
 <style>
-  .site-mascot {
+  .site-mascot,
+  .site-mascot-peek {
+    /* Right edge of .site-container's content box. 100% = viewport width without
+       the scrollbar (fixed containing block). Narrow screens fall back to 1rem. */
+    --mascot-right: max(
+      1rem,
+      env(safe-area-inset-right),
+      calc((100% - var(--site-container-max, 72rem)) / 2 + var(--site-container-pad, 1.5rem))
+    );
+    --mascot-bottom: max(1rem, env(safe-area-inset-bottom));
     display: none;
     position: fixed;
-    right: max(1rem, env(safe-area-inset-right));
-    bottom: max(1rem, env(safe-area-inset-bottom));
+    right: var(--mascot-right);
+    bottom: var(--mascot-bottom);
     /* Below the navbar (z-50), #57's floating CTA (z-40), modals and banners. */
     z-index: 30;
     transition: opacity 200ms ease, transform 200ms ease;
   }
   @media (min-width: 768px) and (hover: hover) and (pointer: fine) {
     .site-mascot { display: block; }
+    .site-mascot-peek { display: block; }
+    .site-mascot[hidden],
+    .site-mascot-peek[hidden] { display: none; }
   }
   /* Draft PR #57's floating CTA (bottom bar, or bottom-right rail at 1400px+): sit above it. */
-  :global(body:has(.floating-cta:not([hidden]))) .site-mascot {
-    bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 5.5rem);
+  :global(body:has(.floating-cta:not([hidden]))) .site-mascot,
+  :global(body:has(.floating-cta:not([hidden]))) .site-mascot-peek {
+    bottom: calc(var(--mascot-bottom) + 5.5rem);
   }
-  .site-mascot.is-away {
+  .site-mascot.is-away,
+  .site-mascot-peek.is-away {
     opacity: 0;
     transform: translateY(1rem);
     pointer-events: none;
   }
   @media (prefers-reduced-motion: reduce) {
-    .site-mascot { transition: none; }
+    .site-mascot,
+    .site-mascot-peek { transition: none; }
   }
   .site-mascot-close {
     position: absolute;
@@ -86,4 +121,20 @@ import { ACTIVE_MASCOT, MASCOT_HIDDEN_KEY, MASCOT_SIZE } from "../data/mascot.ts
   .site-mascot-close:focus-visible {
     opacity: 1;
   }
+  /* Restore button: a 44px round crop of the centre frame's face. */
+  .site-mascot-peek {
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border-radius: 9999px;
+    border: 2px solid rgb(255 255 255 / 0.9);
+    background-color: rgb(241 245 249);
+    background-repeat: no-repeat;
+    background-size: 264px 264px;
+    background-position: -110px -96px;
+    box-shadow: 0 4px 12px rgb(15 23 42 / 0.25);
+    cursor: pointer;
+    transition: opacity 200ms ease, transform 200ms ease;
+  }
+  .site-mascot-peek:hover { transform: scale(1.08); }
 </style>
