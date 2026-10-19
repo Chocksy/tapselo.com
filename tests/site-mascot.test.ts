@@ -13,15 +13,19 @@ test("corner mascot: fixed, desktop-with-mouse only, hydrates only when motion i
   assert.match(src, /position: fixed;/);
   assert.match(src, /env\(safe-area-inset-bottom\)/);
   assert.match(src, /z-index: 30;/);
-  assert.match(src, /\.site-mascot \{\n    display: none;/);
+  assert.match(src, /\.site-mascot,\n  \.site-mascot-peek \{[^}]*display: none;/);
   assert.match(src, /@media \(min-width: 768px\) and \(hover: hover\) and \(pointer: fine\) \{\n    \.site-mascot \{ display: block; \}/);
 });
 
-test("corner mascot has a remembered 'Ascunde mascota' button", () => {
+test("corner mascot has a per-visit 'Ascunde mascota' button and 'Arată mascota' restore", () => {
   const src = read("src/components/SiteMascot.astro");
   assert.match(src, /aria-label="Ascunde mascota"/);
-  assert.match(src, /localStorage\.setItem\(key, "1"\)/);
-  assert.match(src, /localStorage\.getItem\(key\) === "1"/);
+  assert.match(src, /sessionStorage\.setItem\(key, "1"\)/);
+  assert.match(src, /sessionStorage\.getItem\(key\) === "1"/);
+  assert.match(src, /localStorage\.removeItem\(key\)/);
+  assert.doesNotMatch(src, /localStorage\.setItem/);
+  assert.match(src, /aria-label="Arată mascota"/);
+  assert.match(src, /var\(--site-container-max/);
 });
 
 test("mascot is on marketing pages, not in the hero, not on shopper pages", () => {
