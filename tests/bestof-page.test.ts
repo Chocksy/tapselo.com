@@ -1,12 +1,9 @@
-// Run after `npm run build` (ALLOW_TODO_PLACEHOLDERS=1 while the draft still has TODO slots).
+// Run after `npm run build`.
 // /comparatie/cel-mai-bun-program-casa-de-marcat/: schema, FAQ parity and copy rules.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { mkdtemp, mkdir, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { findTodoPlaceholders } from "../src/lib/build/todo-guard.ts";
 
 const file = join(process.cwd(), "dist/comparatie/cel-mai-bun-program-casa-de-marcat/index.html");
 
@@ -81,27 +78,35 @@ test("Tapselo price only in the approved form", async () => {
   assert.ok(!/(?<!79\/)129 lei\/lună|\b79 lei\/lună/.test(t), "Tapselo price outside the approved string");
 });
 
-test("todo guard flags placeholders and passes clean HTML", async () => {
-  const dir = await mkdtemp(join(tmpdir(), "todo-guard-"));
-  await mkdir(join(dir, "a"));
-  await writeFile(join(dir, "a/index.html"), '<div data-todo="TODO-FOTO">[TODO-FOTO: x]</div> {DATA_PUBLICARE}');
-  await writeFile(join(dir, "index.html"), "<p>Gata de publicare.</p>");
-  const hits = await findTodoPlaceholders(dir);
-  assert.equal(hits.length, 1);
-  assert.equal(hits[0].page, join("a", "index.html"));
-  assert.ok(hits[0].matches.includes("{DATA_PUBLICARE"));
+test("no placeholders, author and dates filled, competitor prices sourced", async () => {
+  const { html, blocks, article } = await page();
+  assert.doesNotMatch(html, /data-todo|TODO|\{DATA_|\[TODO/);
+  const a = blocks.find((b) => b["@type"] === "Article");
+  assert.equal(a.datePublished, "2026-10-20");
+  assert.equal(a.dateModified, "2026-10-20");
+  assert.equal(a.author.name, "Razvan Ciocanel");
+  assert.equal(a.author.jobTitle, "Fondator Tapselo");
+  assert.deepEqual(a.author.sameAs, ["https://www.linkedin.com/in/chocksy/"]);
+  const t = text(article);
+  assert.ok(text(html).replace(/ ,/g, ",").includes("De Razvan Ciocanel, Fondator Tapselo"), "byline");
+  assert.equal(a.author.image, "https://tapselo.com/authors/razvan-ciocanel@2x.webp");
+  assert.match(html, /src="\/authors\/razvan-ciocanel\.webp"/);
+  for (const u of ["https://www.smartbill.ro/preturi/vanzare-cu-casa-marcat", "https://www.oblio.eu/cat-costa", "https://noxta.ro/pricing"]) {
+    assert.ok(article.includes(`href="${u}"`), `missing price source ${u}`);
+  }
+  assert.ok(t.includes("accesat la 20.10.2026"));
 });
 
-test("title, no GuideShell CTA box, OG image falls back to the site default", async () => {
+test("title, no GuideShell CTA box, page OG image", async () => {
   const { html } = await page();
   const title = /<title>([^<]*)<\/title>/.exec(html)?.[1] ?? "";
   assert.equal(decode(title), "Cel mai bun program de casă de marcat în 2026 | Tapselo");
   assert.equal(decode(title).length, 55);
   assert.ok(!html.includes('data-tapselo-cta="ghid-bestof-program-casa-de-marcat"'), "GuideShell CTA should be off");
   assert.ok(!text(html).includes("Vezi cum funcționează"), "GuideShell CTA button text found");
-  assert.match(html, /<meta property="og:image" content="https:\/\/tapselo\.com\/og-image\.jpg"/);
-  assert.match(html, /<meta name="twitter:image" content="https:\/\/tapselo\.com\/og-image\.jpg"/);
-  assert.match(html, /data-todo="TODO-OG-IMAGE"/);
+  const og = "https://tapselo.com/og/cel-mai-bun-program-casa-de-marcat.png";
+  assert.ok(html.includes(`<meta property="og:image" content="${og}"`), "og:image");
+  assert.ok(html.includes(`<meta name="twitter:image" content="${og}"`), "twitter:image");
 });
 
 test("other GuideShell pages keep the built-in CTA", async () => {

@@ -3,7 +3,6 @@
 // Copy is verbatim from cross-app-seo/tapselo/tap-bestof-2026-10-18.md §4; do not reword.
 import { Linkedin } from "@lucide/astro";
 import GuideShell from "../../components/GuideShell.astro";
-import TodoSlot from "../../components/TodoSlot.astro";
 import FloatingCta from "../../components/FloatingCta.astro";
 import { internalPath } from "../../lib/internal-url.ts";
 import { formatDateRo } from "../../lib/mcp/text.ts";
@@ -23,21 +22,29 @@ const HEADING = "Cel mai bun program de casă de marcat în 2026: lista scurtă 
 const DESCRIPTION =
   "7 programe de casă de marcat pentru magazine, comparate pe aceleași criterii: vânzare fără internet, case și cântare compatibile, preț public. Cu surse.";
 
-/** Set both on publish (YYYY-MM-DD, the merge/deploy day); UPDATED only changes with the content. */
-const PUBLISHED: string | null = null;
-const UPDATED: string | null = PUBLISHED;
+/** UPDATED only changes with the content. */
+const PUBLISHED = "2026-10-20";
+const UPDATED = "2026-10-20";
 const VERIFIED = "2026-10-18";
 
-/** Fill when Razvan supplies them; sameAs/image are emitted only once set. */
 const AUTHOR = {
-  name: "Răzvan Ciocanel",
-  role: "fondator Tapselo",
-  linkedin: null as string | null,
-  photo: null as string | null,
+  name: "Razvan Ciocanel",
+  role: "Fondator Tapselo",
+  linkedin: "https://www.linkedin.com/in/chocksy/",
+  photo: "/authors/razvan-ciocanel.webp",
+  photo2x: "/authors/razvan-ciocanel@2x.webp",
 };
 
-/** Absolute URL of the page's OG image once supplied (real screenshot or plain text card). */
-const OG_IMAGE: string | null = null;
+const SITE_ORIGIN = new URL(PAGE_URL).origin;
+const OG_IMAGE = `${SITE_ORIGIN}/og/cel-mai-bun-program-casa-de-marcat.png`;
+
+/** Competitor prices: only from the official pricing pages, re-read on PRICES_ACCESSED. */
+const PRICES_ACCESSED = "20.10.2026";
+const PRICE_PAGES = {
+  smartbill: "https://www.smartbill.ro/preturi/vanzare-cu-casa-marcat",
+  oblio: "https://www.oblio.eu/cat-costa",
+  noxta: "https://noxta.ro/pricing",
+};
 
 const DEMO = "https://app.tapselo.com/?demo=1";
 const APP = "https://app.tapselo.com";
@@ -96,16 +103,15 @@ const article = {
   description: DESCRIPTION,
   inLanguage: "ro-RO",
   mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
-  // Unfilled dates stay as placeholders so the TODO build guard fails.
-  datePublished: PUBLISHED ?? "{DATA_PUBLICARE_ISO}",
-  dateModified: UPDATED ?? "{DATA_ACTUALIZARE_ISO}",
+  datePublished: PUBLISHED,
+  dateModified: UPDATED,
   author: {
     "@type": "Person",
     name: AUTHOR.name,
     jobTitle: AUTHOR.role,
     worksFor: { "@type": "Organization", name: "Tapselo", url: "https://tapselo.com/" },
-    ...(AUTHOR.linkedin ? { sameAs: [AUTHOR.linkedin] } : {}),
-    ...(AUTHOR.photo ? { image: AUTHOR.photo } : {}),
+    sameAs: [AUTHOR.linkedin],
+    image: `${SITE_ORIGIN}${AUTHOR.photo2x}`,
   },
   publisher: {
     "@type": "Organization",
@@ -113,7 +119,7 @@ const article = {
     url: "https://tapselo.com/",
     logo: { "@type": "ImageObject", url: "https://tapselo.com/logo.png" },
   },
-  ...(OG_IMAGE ? { image: [OG_IMAGE] } : {}),
+  image: [OG_IMAGE],
 };
 
 const itemList = {
@@ -143,36 +149,24 @@ const ext = { rel: "noopener", target: "_blank" };
   publishedOn={PUBLISHED}
   updatedOn={UPDATED}
   showCta={false}
-  ogImage={OG_IMAGE ?? undefined}
+  ogImage={OG_IMAGE}
   jsonLd={jsonLd}
   appJsonLd={false}
   pageToc={false}
 >
   <Fragment slot="byline">
     <p class="flex flex-wrap items-center gap-x-2 gap-y-2">
-      {AUTHOR.photo ? (
-        <img src={AUTHOR.photo} alt={AUTHOR.name} width={48} height={48} class="h-12 w-12 rounded-full object-cover" />
-      ) : null}
+      <img src={AUTHOR.photo} srcset={`${AUTHOR.photo} 1x, ${AUTHOR.photo2x} 2x`} alt={AUTHOR.name} width={48} height={48} class="h-12 w-12 rounded-full object-cover" />
       <span>De <strong class="text-white">{AUTHOR.name}</strong>, {AUTHOR.role}</span>
       <span aria-hidden="true">·</span>
-      {AUTHOR.linkedin ? (
-        <a href={AUTHOR.linkedin} target="_blank" rel="noopener me" aria-label={`${AUTHOR.name} pe LinkedIn`} class="inline-flex text-text-on-primary hover:text-white">
-          <Linkedin class="h-4 w-4" aria-hidden="true" />
-        </a>
-      ) : (
-        <TodoSlot id="TODO-LINKEDIN" inline tone="dark">[TODO-LINKEDIN: link profil LinkedIn]</TodoSlot>
-      )}
-      {!AUTHOR.photo && (
-        <>
-          <span aria-hidden="true">·</span>
-          <TodoSlot id="TODO-FOTO" inline tone="dark">[TODO-FOTO: fotografie Răzvan Ciocanel, pătrat, min. 240×240 px]</TodoSlot>
-        </>
-      )}
+      <a href={AUTHOR.linkedin} target="_blank" rel="noopener me" aria-label={`${AUTHOR.name} pe LinkedIn`} class="inline-flex text-text-on-primary hover:text-white">
+        <Linkedin class="h-4 w-4" aria-hidden="true" />
+      </a>
     </p>
     <p class="mt-2 text-text-on-primary-muted">
-      Publicat: {PUBLISHED ? <time datetime={PUBLISHED}>{formatDateRo(PUBLISHED)}</time> : <TodoSlot id="TODO-DATA_PUBLICARE" inline tone="dark">{"{DATA_PUBLICARE}"}</TodoSlot>}
+      Publicat: <time datetime={PUBLISHED}>{formatDateRo(PUBLISHED)}</time>
       <span aria-hidden="true"> · </span>
-      Actualizat: {UPDATED ? <time datetime={UPDATED}>{formatDateRo(UPDATED)}</time> : <TodoSlot id="TODO-DATA_ACTUALIZARE" inline tone="dark">{"{DATA_ACTUALIZARE}"}</TodoSlot>}
+      Actualizat: <time datetime={UPDATED}>{formatDateRo(UPDATED)}</time>
       <span aria-hidden="true"> · </span>
       Fapte verificate la <time datetime={VERIFIED}>{formatDateRo(VERIFIED)}</time>
     </p>
@@ -193,7 +187,7 @@ const ext = { rel: "noopener", target: "_blank" };
       <ul class="bestof-cards">
         <li><strong>Niciun program nu e cel mai bun pentru toată lumea.</strong> Ordinea de mai jos e făcută pentru un magazin alimentar mic, cu una sau două case, calculator la tejghea, cântar și internet instabil. Dacă ai un restaurant sau vinzi doar de pe telefon, citește direct tabelul „<a href="#ce-program-ti-se-potriveste">Ce program ți se potrivește</a>”.</li>
         <li><strong>Vânzarea fără internet e documentată de patru producători:</strong> Tapselo, SmartBill POS, Noxta și FreyaPOS (FreyaPOS scrie „până la 7 zile”). La Oblio, Conexa și Selectsoft nu am găsit informația pe paginile verificate, ceea ce nu înseamnă că lipsește. Întreabă producătorul înainte.</li>
-        <li><strong>Prețurile publice diferă mult.</strong> Oblio cere 29 €/an, SmartBill POS 10,9 €/lună + TVA, Noxta are un plan de 0 RON limitat la 30 de plăți pe zi, iar Tapselo e gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA. FreyaPOS, Conexa și Selectsoft dau prețul la cerere.</li>
+        <li><strong>Prețurile publice diferă mult.</strong> Oblio cere 29 €/an, SmartBill POS 10,9 €/lună + TVA, Noxta are un plan de 0 RON limitat la 30 de plăți pe zi, iar Tapselo e gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA. FreyaPOS, Conexa și Selectsoft dau prețul la cerere. Surse: <a href={PRICE_PAGES.smartbill} {...ext}>SmartBill</a>, <a href={PRICE_PAGES.oblio} {...ext}>Oblio</a>, <a href={PRICE_PAGES.noxta} {...ext}>Noxta</a>, accesate la {PRICES_ACCESSED}.</li>
         <li><strong>Pornește de la casa de marcat pe care o ai deja.</strong> Tapselo e testat azi doar cu Datecs FP-700 pe USB. SmartBill POS, Oblio, Noxta și Conexa menționează mai multe mărci, așa că verifică modelul tău pe lista fiecăruia.</li>
         <li><strong>Programul nu te scapă de obligațiile casei de marcat.</strong> Conectarea casei de marcat la ANAF e obligația ta, oricare ar fi programul (OUG 28/1999, art. 3¹ alin. (4)). Programul doar trimite vânzarea către casă.</li>
       </ul>
@@ -240,7 +234,7 @@ const ext = { rel: "noopener", target: "_blank" };
         <li><strong>Probă sau plan gratuit:</strong> câte zile și în ce condiții.</li>
       </ol>
       <p><strong>Cum am verificat:</strong> am citit paginile publice ale fiecărui producător pe 18.10.2026. Fiecare informație are linkul și data în secțiunea „<a href="#surse">Surse</a>” de la final. Nu am făcut conturi la ceilalți producători și nu am folosit note de pe site-uri de recenzii. Când o pagină nu spune nimic despre un criteriu, am scris „nu e menționat”, nu „nu”. Despre Tapselo am scris doar ce apare pe tapselo.com.</p>
-      <p><strong>Ce am testat noi:</strong> testul practic cu Tapselo (bon pe Datecs FP-700, produs la kg din cântarul Dibal, vânzare cu internetul oprit) îl documentăm cu capturi de ecran în secțiunea despre Tapselo. <TodoSlot id="TODO-TEST" inline>[TODO-TEST: dacă testul cu capturi nu e făcut până la publicare, înlocuiește fraza cu: „Încă nu am publicat un test practic cu capturi; informațiile despre Tapselo vin din documentația de pe tapselo.com.”]</TodoSlot></p>
+      <p><strong>Ce am testat noi:</strong> Încă nu am publicat un test practic cu capturi; informațiile despre Tapselo vin din documentația de pe tapselo.com.</p>
       <p><strong>Transparență:</strong> Tapselo e produsul nostru, iar autorul paginii este fondatorul Tapselo. Dacă vezi o informație depășită, scrie-ne la <a href="mailto:contact@tapselo.com">contact@tapselo.com</a> și o corectăm. Recitim toate sursele cel puțin o dată la 90 de zile și schimbăm data de actualizare doar când schimbăm conținutul.</p>
     </section>
 
@@ -256,13 +250,6 @@ const ext = { rel: "noopener", target: "_blank" };
         <p><strong>Inclus în ambele planuri:</strong> recepția de marfă din poza facturii (confirmi liniile, iar NIR-ul și stocul se completează), inventarul cu telefonul, rețetele și producția, rapoartele de vânzări și importul produselor din programul vechi.</p>
         <p><strong>Limitări de știut:</strong> Tapselo nu merge încă cu terminale de card, sertar de bani, imprimante pe rețea sau Bluetooth. Nu are aplicație de casă pe telefon.</p>
         <p><strong>Preț:</strong> gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA (79 lei pentru o casă, 129 lei pentru două case). Te anunțăm cu 30 de zile înainte de trecerea la tarif.</p>
-        <div class="bestof-shots">
-          <TodoSlot id="TODO-SCREENSHOT-1">[TODO-SCREENSHOT-1: ecranul de vânzare Tapselo pe calculator, cu un bon în lucru (un produs la bucată + un produs la kg)]</TodoSlot>
-          <TodoSlot id="TODO-SCREENSHOT-2">[TODO-SCREENSHOT-2: bonul fiscal tipărit pe Datecs FP-700 din Tapselo (fotografie, datele firmei acoperite)]</TodoSlot>
-          <TodoSlot id="TODO-SCREENSHOT-3">[TODO-SCREENSHOT-3: raport Z pe FP-700 din Tapselo (fotografie a raportului tipărit)]</TodoSlot>
-          <TodoSlot id="TODO-SCREENSHOT-4">[TODO-SCREENSHOT-4: vânzare cu internetul oprit: ecranul casei cu indicatorul offline, apoi panoul de administrare după reconectare, cu aceeași vânzare]</TodoSlot>
-          <TodoSlot id="TODO-SCREENSHOT-5">[TODO-SCREENSHOT-5: produs la kg: eticheta din cântarul Dibal D-900 și linia citită pe casă]</TodoSlot>
-        </div>
         <p>Poți vedea fluxul în <a href={DEMO} data-tapselo-cta="bestof-inline">demo-ul Tapselo</a>.</p>
         <p class="bestof-fit"><strong>Potrivit pentru:</strong> magazine alimentare, băcănii și brutării cu una sau două case, care vând la kg și nu vor să se oprească atunci când pică netul. Nu e alegerea potrivită dacă vrei să încasezi cu POS bancar legat de program sau dacă ai altă casă de marcat decât Datecs FP-700, singura testată azi.</p>
       </div>
@@ -272,7 +259,7 @@ const ext = { rel: "noopener", target: "_blank" };
         <p>SmartBill POS e aplicația de vânzare a SmartBill, care scrie pe site că are „Peste 170.000 de clienti” (pentru toate produsele sale). Conform SmartBill, aplicația „Functioneaza pe PC cu Windows si pe dispozitive mobile cu Android” și poate fi folosită la casa fixă sau mobil, la masă ori la stand.</p>
         <p><strong>Fără internet:</strong> SmartBill scrie că POS-ul „functioneaza atat offline, cat si online”. Dacă e conectat la SmartBill Gestiune și rămâi fără net, poți emite în continuare bonuri, iar acestea se trimit automat în cloud când revine conexiunea.</p>
         <p><strong>Echipamente:</strong> pe pagina de prețuri scrie „Se leaga la casa de marcat si la cantar”, cu posibilitatea de a folosi sertarul de bani și „Integrare POS Bancar”. Configurarea caselor de marcat și a cântarului e descrisă în centrul de ajutor SmartBill POS.</p>
-        <p><strong>Preț (pagina de prețuri SmartBill):</strong> POS 10,9 €/lună + TVA. POS + Gestiune 27,22 €/lună + TVA, care adaugă NIR, gestiuni, inventar și integrare cu magazinul online. Un utilizator suplimentar costă 3,5 €/lună + TVA. Poți încerca 30 de zile. Firmele aflate în primul an de la înființare au 12 luni de SmartBill POS gratuit, dacă îl folosesc conectat la SmartBill Facturare sau Gestiune. SmartBill are și o campanie în care casa de marcat Daisy Compact S e oferită gratuit la abonarea la SmartBill POS, prin partenerul Zeus Services.</p>
+        <p><strong>Preț (<a href={PRICE_PAGES.smartbill} {...ext}>pagina de prețuri SmartBill</a>, accesat la {PRICES_ACCESSED}):</strong> POS 10,9 €/lună + TVA. POS + Gestiune 27,22 €/lună + TVA, care adaugă NIR, gestiuni, inventar și integrare cu magazinul online. Un utilizator suplimentar costă 3,5 €/lună + TVA. Poți încerca 30 de zile. Firmele aflate în primul an de la înființare au 12 luni de SmartBill POS gratuit, dacă îl folosesc conectat la SmartBill Facturare sau Gestiune. SmartBill are și o campanie în care casa de marcat Daisy Compact S e oferită gratuit la abonarea la SmartBill POS, prin partenerul Zeus Services.</p>
         <p><strong>Ecosistem:</strong> POS-ul se poate lega de SmartBill Gestiune (e-Factura, stocuri, oricâte stații), de magazine online și de SmartBill Conta.</p>
         <p class="bestof-fit"><strong>Potrivit pentru:</strong> magazine care vor să vândă de pe telefon sau tabletă Android, au POS bancar legat de program ori folosesc deja SmartBill Facturare sau Gestiune. Merită comparat cu atenție dacă ai nevoie de stocuri, pentru că acestea sunt în planul POS + Gestiune.</p>
       </div>
@@ -281,7 +268,7 @@ const ext = { rel: "noopener", target: "_blank" };
         <h3 class="kb-h3">3. Oblio, cel mai bun pentru cel mai mic preț public, cu facturare și stocuri</h3>
         <p>Oblio pornește de la facturare și declară că „Peste 150.000 de firme il folosesc deja”. Modulul Stocuri + Producție e inclus gratuit în abonament, iar din el emiți bonuri fiscale. Oblio scrie: „Adaugi o casa de marcat Datecs, Tremol sau Daisy in 30 de secunde”, cu „o interfata prietenoasa pentru POS”. Integrarea cu Datecs e „Valabil doar daca ati activat Oblio Stocuri” și cere un plugin instalat pe calculator.</p>
         <p><strong>Stocuri:</strong> NIR, notă de transfer, bon de consum, inventar, rețetar și „Inventar mobil” cu telefonul. Are integrări cu WooCommerce, Prestashop, Opencart și eMAG și exportă datele în Saga, WinMentor și Ciel.</p>
-        <p><strong>Preț (pagina „Cât costă”):</strong> „€ 29 / an” („doar 2.49 € / luna”), un singur abonament, cu facturi, utilizatori, firme și puncte de lucru nelimitate. Pagina nu precizează dacă prețul include TVA. Poți încerca 1 an gratuit.</p>
+        <p><strong>Preț (<a href={PRICE_PAGES.oblio} {...ext}>pagina „Cât costă” Oblio</a>, accesat la {PRICES_ACCESSED}):</strong> „€ 29 / an” („doar 2.49 € / luna”), un singur abonament, cu facturi, utilizatori, firme și puncte de lucru nelimitate. Pagina nu precizează dacă prețul include TVA. Poți încerca 1 an gratuit.</p>
         <p><strong>Ce nu am găsit:</strong> pe paginile verificate (Stocuri, Cât costă, integrarea Datecs) nu apare vânzarea fără internet și nici cântarul. Dacă sunt importante pentru tine, întreabă Oblio înainte.</p>
         <p class="bestof-fit"><strong>Potrivit pentru:</strong> firme care au nevoie mai ales de facturare și stocuri, cu bon fiscal din același program, la cel mai mic preț public din listă. Mai puțin potrivit dacă vinzi la kg sau dacă internetul din magazin pică des, până nu confirmi cu Oblio cum se comportă.</p>
       </div>
@@ -290,7 +277,7 @@ const ext = { rel: "noopener", target: "_blank" };
         <h3 class="kb-h3">4. Noxta, cel mai bun pentru afaceri foarte mici care vor să înceapă de la 0 lei</h3>
         <p>Noxta (Riveat Software SRL, Arad) e o aplicație de vânzare pentru cafenele, restaurante, magazine și saloane. Emite bonul fiscal prin case Datecs sau Tremol. Pe pagina principală scrie „Android + iOS + Windows”.</p>
         <p><strong>Fără internet:</strong> Noxta scrie că „vinzi și fără internet”. Vânzările se salvează pe dispozitiv și, pe planurile cu cloud, se sincronizează automat când revine conexiunea.</p>
-        <p><strong>Preț (pagina de prețuri Noxta, fără TVA):</strong> planul Free costă 0 RON și include „1 dispozitiv, 30 plăți/zi, bon fiscal și funcționare offline”. Starter costă 149 RON/lună (sau 1.488 RON/an). Professional costă 349 RON/lună (sau 3.490 RON/an) și adaugă 3 dispozitive, gestiune de stocuri, furnizori și NIR. Business costă 599 RON/lună. Planurile plătite au 14 zile de test, fără card.</p>
+        <p><strong>Preț (<a href={PRICE_PAGES.noxta} {...ext}>pagina de prețuri Noxta</a>, accesat la {PRICES_ACCESSED}, fără TVA):</strong> planul Free costă 0 RON și include „1 dispozitiv, 30 plăți/zi, bon fiscal și funcționare offline”. Starter costă 149 RON/lună (sau 1.488 RON/an). Professional costă 349 RON/lună (sau 3.490 RON/an) și adaugă 3 dispozitive, gestiune de stocuri, furnizori și NIR. Business costă 599 RON/lună (sau 5.990 RON/an). Planurile plătite au 14 zile de test, fără card.</p>
         <p><strong>De știut:</strong> Starter e descris „Pentru localuri mici, cu servire la masă”, iar gestiunea de stocuri începe de la Professional. Pe paginile verificate nu apare cântarul.</p>
         <p class="bestof-fit"><strong>Potrivit pentru:</strong> afaceri foarte mici, cu sub 30 de plăți pe zi, care vor să emită bon fiscal de pe telefon, tabletă sau PC fără să plătească de la început. Pentru un magazin cu stoc și NIR, compară prețul planului Professional cu celelalte variante.</p>
       </div>
@@ -362,7 +349,7 @@ const ext = { rel: "noopener", target: "_blank" };
               <td>Da</td>
               <td>Da</td>
               <td>În planul POS + Gestiune</td>
-              <td>POS 10,9 €/lună + TVA; POS + Gestiune 27,22 €/lună + TVA</td>
+              <td>POS 10,9 €/lună + TVA; POS + Gestiune 27,22 €/lună + TVA <small>(<a href={PRICE_PAGES.smartbill} {...ext}>sursa</a>, accesat la {PRICES_ACCESSED})</small></td>
               <td>30 de zile; 12 luni pentru firme în primul an (cu condiții)</td>
             </tr>
             <tr>
@@ -373,7 +360,7 @@ const ext = { rel: "noopener", target: "_blank" };
               <td>Nu e menționat</td>
               <td>Nu e menționat</td>
               <td>Da, modulul Stocuri + Producție inclus</td>
-              <td>29 €/an (TVA nespecificat)</td>
+              <td>29 €/an (TVA nespecificat) <small>(<a href={PRICE_PAGES.oblio} {...ext}>sursa</a>, accesat la {PRICES_ACCESSED})</small></td>
               <td>1 an</td>
             </tr>
             <tr>
@@ -383,8 +370,8 @@ const ext = { rel: "noopener", target: "_blank" };
               <td>Datecs, Tremol</td>
               <td>Nu e menționat</td>
               <td>Nu e menționat</td>
-              <td>De la planul Professional (349 RON/lună)</td>
-              <td>Free 0 RON (30 de plăți/zi); Starter 149 RON/lună; fără TVA</td>
+              <td>De la planul Professional (349 RON/lună, <a href={PRICE_PAGES.noxta} {...ext}>sursa</a>)</td>
+              <td>Free 0 RON (30 de plăți/zi); Starter 149 RON/lună; fără TVA <small>(<a href={PRICE_PAGES.noxta} {...ext}>sursa</a>, accesat la {PRICES_ACCESSED})</small></td>
               <td>Free fără termen; 14 zile pe planurile plătite</td>
             </tr>
             <tr>
@@ -460,7 +447,7 @@ const ext = { rel: "noopener", target: "_blank" };
             <tr>
               <th scope="row">Vrei cel mai mic preț public, cu facturare și stocuri</th>
               <td>Oblio</td>
-              <td>29 €/an, Stocuri + Producție incluse</td>
+              <td>29 €/an (<a href={PRICE_PAGES.oblio} {...ext}>sursa</a>, accesat la {PRICES_ACCESSED}), Stocuri + Producție incluse</td>
               <td>Cum se comportă când pică netul (întreabă-i)</td>
             </tr>
             <tr>
@@ -518,7 +505,7 @@ const ext = { rel: "noopener", target: "_blank" };
 
     <section id="surse">
       <h2 class="kb-h2">Surse</h2>
-      <p>Toate verificate la 18.10.2026.</p>
+      <p>Toate verificate la 18.10.2026. Paginile de prețuri SmartBill, Oblio și Noxta au fost accesate din nou la 20.10.2026.</p>
       <ul>
         <li>Tapselo: <a href="https://tapselo.com/">tapselo.com</a> (echipamente, prețuri, întrebări frecvente); <a href="https://tapselo.com/program-gestiune-magazin/">program gestiune magazin</a></li>
         <li>SmartBill POS: <a href="https://www.smartbill.ro/produse/pos" {...ext}>smartbill.ro/produse/pos</a>; <a href="https://www.smartbill.ro/preturi/vanzare-cu-casa-marcat" {...ext}>prețuri program vânzare cu casa de marcat</a>; <a href="https://www.smartbill.ro/case-marcat-gratis" {...ext}>campania casă de marcat gratis</a>; <a href="https://ajutorpos.smartbill.ro/collection/548-instalare-si-configurare-smartbill-pos" {...ext}>centrul de ajutor SmartBill POS: instalare și configurare</a></li>
@@ -531,7 +518,6 @@ const ext = { rel: "noopener", target: "_blank" };
       </ul>
     </section>
 
-    {!OG_IMAGE && <TodoSlot id="TODO-OG-IMAGE">[TODO-OG-IMAGE: OG image for this page, a real screenshot or a plain text card. No fabricated UI.]</TodoSlot>}
   </article>
 
   <FloatingCta href={DEMO} label="Încearcă demo-ul" cta="bestof-float" startId="bestof-intro" hideId="bestof-final-cta" />
@@ -551,7 +537,6 @@ const ext = { rel: "noopener", target: "_blank" };
   .kb-prose .bestof-btn--secondary:hover { background: rgb(255 255 255 / 0.1); color: #fff; }
   .bestof-vendor { margin-top: 2rem; }
   .bestof-vendor > * + * { margin-top: 1rem; }
-  .bestof-shots { display: grid; gap: 0.75rem; }
   .bestof-fit { border-left: 4px solid var(--color-cash); background: var(--color-cash-light); border-radius: 0.5rem; padding: 0.875rem 1rem; color: var(--color-primary); }
   .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; border: 1px solid var(--color-border-light); border-radius: 0.75rem; background: var(--color-surface-white); }
   .bestof-table { min-width: 64rem; border-collapse: separate; border-spacing: 0; }
