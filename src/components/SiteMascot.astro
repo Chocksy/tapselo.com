@@ -130,8 +130,10 @@ import { ACTIVE_MASCOT, MASCOT_HIDDEN_KEY, MASCOT_SIZE } from "../data/mascot.ts
     border: 2px solid rgb(255 255 255 / 0.9);
     background-color: rgb(241 245 249);
     background-repeat: no-repeat;
-    background-size: 264px 264px;
-    background-position: -110px -96px;
+    /* Atlas scaled to 180px (cell 60px); centres the head (hair to chin, incl. moustache)
+       in the 40px inner circle. Measured from the centre cell of the 624px shopkeeper atlas. */
+    background-size: 180px 180px;
+    background-position: -68px -62px;
     box-shadow: 0 4px 12px rgb(15 23 42 / 0.25);
     cursor: pointer;
     transition: opacity 200ms ease, transform 200ms ease;
