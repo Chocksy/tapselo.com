@@ -14,6 +14,7 @@ export const toolLinks: SiteLink[] = [
   { href: internalPath("/unelte/registru-de-casa"), label: "Registru de casă" },
   { href: internalPath("/unelte/dispozitie-de-plata"), label: "Dispoziție de plată" },
   { href: internalPath("/unelte/generator-nir"), label: "Generator NIR" },
+  { href: internalPath("/unelte/generator-aviz-de-insotire"), label: "Aviz de însoțire a mărfii" },
   { href: internalPath("/unelte/fisa-de-magazie"), label: "Fișă de magazie" },
   { href: internalPath("/unelte/calculator-adaos-comercial"), label: "Calculator adaos comercial" },
   { href: internalPath("/unelte/calculator-reducere"), label: "Calculator reducere" },

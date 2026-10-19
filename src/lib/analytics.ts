@@ -20,7 +20,8 @@ export type AnalyticsTool =
   | "verificare_cui"
   | "afise_obligatorii"
   | "fisa_de_magazie"
-  | "dispozitie_de_plata";
+  | "dispozitie_de_plata"
+  | "generator_aviz";
 
 export type ToolAction =
   | "check"

@@ -1,0 +1,229 @@
+---
+import ToolShell from "../../components/ToolShell.astro";
+import AvizInsotireTool from "../../components/unelte/AvizInsotireTool.astro";
+import { internalPath } from "../../lib/internal-url.ts";
+import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
+
+const path = "/unelte/generator-aviz-de-insotire/";
+const heading = "Generator aviz de însoțire a mărfii";
+
+const SRC = {
+  ordin: "https://legislatie.just.ro/Public/DetaliiDocument/267710",
+  generale: "https://legislatie.just.ro/Public/DetaliiDocument/267711",
+  specifice: "https://legislatie.just.ro/Public/DetaliiDocument/267712",
+  modele: "https://legislatie.just.ro/Public/DetaliiDocument/267713",
+  codFiscal: "https://legislatie.just.ro/Public/DetaliiDocument/171282",
+};
+
+const faq = [
+  {
+    q: "Ce este avizul de însoțire a mărfii?",
+    a: "Este documentul financiar-contabil cu codul 14-3-6A din OMFP nr. 2.634/2015. Normele specifice spun că servește ca document de însoțire a mărfii pe timpul transportului, ca bază pentru întocmirea facturii, ca dispoziție de transfer între gestiunile aceleiași entități aflate în locuri diferite, ca document de primire în gestiune și ca document de descărcare din gestiune a bunurilor cedate cu titlu gratuit, după caz.",
+  },
+  {
+    q: "Când emit aviz de însoțire în loc de factură?",
+    a: "Conform normelor specifice, avizul se întocmește de entitățile care nu au posibilitatea întocmirii facturii în momentul livrării, precum și în alte situații stabilite prin procedurile proprii. Codul fiscal (art. 319 alin. 16) cere ca factura să fie emisă cel târziu până în a 15-a zi a lunii următoare celei în care ia naștere faptul generator al taxei.",
+  },
+  {
+    q: "Ce mențiune trebuie să scriu pe aviz?",
+    a: "„Fără factură” la transferul între gestiunile aceleiași entități aflate în locuri diferite și la transportul bunurilor cedate cu titlu gratuit (mostre, materiale promoționale etc.); „Pentru prelucrare la terți” când trimiți bunuri spre prelucrare; în alte situații, cauza pentru care ai întocmit avizul și nu factura.",
+  },
+  {
+    q: "În câte exemplare se întocmește avizul de însoțire?",
+    a: "OMFP nr. 2.634/2015 nu fixează un număr de exemplare: circuitul documentelor și numărul de exemplare se stabilesc prin procedurile proprii ale firmei, aprobate de administrator (art. 4 alin. 3 din ordin).",
+  },
+  {
+    q: "Trebuie să trec prețurile pe aviz?",
+    a: "Modelul are coloane pentru prețul unitar fără TVA și valoare. Normele permit să nu le completezi, cu condiția ca datele valorice să se regăsească într-un alt document justificativ care stă la baza înregistrării în contabilitate.",
+  },
+  {
+    q: "Pot descărca un model de aviz de însoțire a mărfii în PDF?",
+    a: "Da. Completezi formularul și salvezi PDF din fereastra de printare (A4 sau A5), fără cont Tapselo. Dacă preferi să-l completezi de mână, descarci modelul 14-3-6A necompletat, tot în A4 sau A5.",
+  },
+  {
+    q: "Ce fac cu avizul când primesc marfa?",
+    a: "La primire, recepția și încărcarea în gestiune se pot face pe baza avizului care însoțește transportul. NIR-ul este obligatoriu doar în anumite cazuri, de exemplu la diferențe la recepție sau când evidența se ține la preț de vânzare.",
+  },
+  {
+    q: "Datele mele sunt trimise pe internet?",
+    a: "Nu. Avizul se generează local în browser. Nu trimitem conținutul formularului în analytics, doar faptul că ai folosit unealta (print, PDF sau formular gol).",
+  },
+];
+
+const jsonLd = toolJsonLd({
+  path,
+  heading,
+  appName: "Generator aviz de însoțire a mărfii Tapselo",
+  description:
+    "Generator gratuit aviz de însoțire a mărfii, cod 14-3-6A: furnizor, cumpărător, produse, date privind expediția, PDF A4/A5 și model necompletat, în browser.",
+  faq,
+});
+
+const link = "font-semibold text-accent hover:underline";
+---
+
+<ToolShell
+  title="Aviz de însoțire a mărfii — model PDF completat online | Tapselo"
+  description="Generator aviz de însoțire a mărfii, model 14-3-6A (OMFP 2.634/2015): furnizor, cumpărător, produse și delegat. PDF A4/A5 completat online sau model necompletat."
+  heading={heading}
+  path={path}
+  lead="Ai de trimis marfă fără factură pe loc, de mutat stoc între magazine sau de dat mostre? Completezi avizul pe modelul oficial 14-3-6A, alegi mențiunea potrivită și salvezi PDF, local în browser."
+  campaign="generator-aviz-de-insotire"
+  ctaTitle="Recepție din aviz, direct în stoc"
+  ctaBody="În Tapselo recepționezi marfa din fotografia facturii sau a avizului: NIR-ul și stocul se completează automat. Tapselo e gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA."
+  related={[
+    { href: "/unelte/generator-nir/", label: "Generator NIR (notă de recepție)" },
+    { href: "/unelte/fisa-de-magazie/", label: "Fișă de magazie" },
+    { href: "/ghid/nir-nota-receptie", label: "Ghid NIR: nota de recepție și constatare de diferențe" },
+  ]}
+  jsonLd={jsonLd}
+  faq={faq}
+>
+  <AvizInsotireTool />
+
+  <article class="site-prose prose-tapselo space-y-8 text-text-secondary leading-relaxed">
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Ce este și când îl folosești</h2>
+      <p>
+        <strong class="text-primary">Avizul de însoțire a mărfii</strong> (cod <strong class="text-primary">14-3-6A</strong>, OMFP nr. 2.634/2015)
+        este documentul care însoțește marfa când nu ai o factură emisă în momentul livrării. Potrivit normelor specifice, el servește ca:
+      </p>
+      <ul class="list-disc space-y-1 pl-5">
+        <li>document de însoțire a mărfii pe timpul transportului, după caz;</li>
+        <li>document ce stă la baza întocmirii facturii, după caz;</li>
+        <li>dispoziție de transfer al valorilor materiale de la o gestiune la alta, dispersate teritorial, ale aceleiași entități;</li>
+        <li>document de primire în gestiune, după caz;</li>
+        <li>document de descărcare din gestiune a bunurilor cedate cu titlu gratuit.</li>
+      </ul>
+      <p>
+        (sursă: <a href={SRC.specifice} class={link}>legislatie.just.ro — Norme specifice, Anexa nr. 2, cod 14-3-6A</a>).
+        Dacă preferi să-l completezi de mână, <a href="#aviz-blank" class={link}>descarcă avizul necompletat (PDF, A4 sau A5)</a> din generatorul de mai sus.
+      </p>
+      <p>
+        În magazin, îl folosești de obicei când muți marfă între două puncte de lucru ale aceleiași firme, când trimiți mostre sau
+        materiale promoționale, ori când livrezi unui client și factura se emite mai târziu.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Aviz sau factură?</h2>
+      <p>
+        Normele specifice spun că avizul „se întocmește de către entitățile care nu au posibilitatea întocmirii facturii în momentul livrării
+        produselor, mărfurilor sau altor valori materiale, precum și în alte situații stabilite prin procedurile proprii ale entității”.
+      </p>
+      <p>
+        Dacă livrarea trebuie facturată, Codul fiscal cere ca factura să fie emisă „cel târziu până în cea de-a 15-a zi a lunii următoare celei în care
+        ia naștere faptul generator al taxei” (art. 319 alin. (16)). Dacă strângi mai multe livrări către același client într-o
+        <strong class="text-primary">factură centralizatoare</strong>, toate documentele emise la data livrării trebuie anexate obligatoriu la ea, iar
+        operațiunile trebuie să fie dintr-o perioadă care nu depășește o lună calendaristică (art. 319 alin. (17))
+        (sursă: <a href={SRC.codFiscal} class={link}>legislatie.just.ro — Legea nr. 227/2015 privind Codul fiscal</a>).
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Ce mențiune scrii pe aviz</h2>
+      <ul class="list-disc space-y-2 pl-5">
+        <li>
+          <strong class="text-primary">„Fără factură”</strong>: la transferul de bunuri între gestiunile aceleiași entități, dispersate teritorial, și la
+          transportul bunurilor cedate cu titlu gratuit (mostre, bunuri pentru stimularea vânzării sau testări la locul de desfacere, premii,
+          materiale promoționale etc.), după caz;
+        </li>
+        <li><strong class="text-primary">„Pentru prelucrare la terți”</strong>: pentru valori materiale trimise spre prelucrare la terți;</li>
+        <li>în alte situații: <strong class="text-primary">cauza</strong> pentru care s-a întocmit avizul și nu factura.</li>
+      </ul>
+      <p>
+        Generatorul completează mențiunea după situația aleasă; o poți modifica. Pentru o livrare cu factură ulterioară, textul propus
+        („Factura se emite ulterior”) este formularea noastră pentru cauză, nu un text din normă.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Cum se completează modelul 14-3-6A</h2>
+      <p>Modelul din Anexa nr. 3 la OMFP nr. 2.634/2015 are:</p>
+      <ul class="list-disc space-y-2 pl-5">
+        <li>
+          pentru <strong class="text-primary">furnizor</strong> și <strong class="text-primary">cumpărător</strong>: denumirea și forma juridică, nr. de
+          înmatriculare în Registrul comerțului/anul, codul de identificare fiscală, sediul (localitatea, str., nr.) și județul;
+        </li>
+        <li><strong class="text-primary">numărul</strong> și <strong class="text-primary">data</strong> (ziua, luna, anul) avizului;</li>
+        <li>
+          tabelul cu <strong class="text-primary">nr. crt.</strong>, <strong class="text-primary">specificația</strong> (produse, ambalaje etc.),
+          <strong class="text-primary">U/M</strong>, <strong class="text-primary">cantitatea livrată</strong>,
+          <strong class="text-primary">prețul unitar (fără TVA)</strong> și <strong class="text-primary">valoarea</strong>, plus
+          <strong class="text-primary">TOTAL</strong>;
+        </li>
+        <li>
+          <strong class="text-primary">datele privind expediția</strong>: numele delegatului, cartea de identitate (seria, nr., eliberată de),
+          mijlocul de transport și numărul lui, data și ora expedierii și semnăturile;
+        </li>
+        <li><strong class="text-primary">semnătura reprezentantului furnizorului</strong> și <strong class="text-primary">semnătura de primire</strong>.</li>
+      </ul>
+      <p>
+        Normele generale cer ca orice document emis de o entitate să menționeze și forma juridică, codul de identificare fiscală și capitalul social,
+        după caz (pct. 3); de aceea generatorul are un câmp opțional pentru capitalul social al furnizorului
+        (sursă: <a href={SRC.generale} class={link}>Norme generale, Anexa nr. 1</a>). Modelele pot fi adaptate și editate cu programe informatice,
+        dacă păstrează conținutul de informații cerut (pct. 22).
+      </p>
+      <p>Verifică întotdeauna cu contabilul tău dacă documentul este potrivit pentru situația concretă.</p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">În câte exemplare</h2>
+      <p>
+        Ordinul nu stabilește un număr fix: „Circuitul documentelor financiar-contabile și numărul de exemplare al acestora se stabilesc prin
+        proceduri proprii privind organizarea și conducerea contabilității, aprobate de administratorul entității” (art. 4 alin. (3) din
+        <a href={SRC.ordin} class={link}>OMFP nr. 2.634/2015</a>). Printează atâtea exemplare câte prevede procedura firmei tale.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Legătura cu NIR-ul</h2>
+      <p>
+        Când marfa ajunge, cumpărătorul o poate recepționa direct pe baza avizului: în cazurile în care NIR-ul nu este obligatoriu, recepția și
+        încărcarea în gestiune se fac „pe baza documentului de livrare care însoțește transportul (factura, avizul de însoțire a mărfii etc.)”.
+        <a href={internalPath("/unelte/generator-nir/")} class={link}>NIR-ul</a> este obligatoriu, între altele, la diferențe la recepție și pentru
+        mărfurile intrate în gestiunile la care evidența se ține la preț de vânzare (sursă: aceleași
+        <a href={SRC.specifice} class={link}>norme specifice, cod 14-3-1A</a>). Mișcarea apare apoi în
+        <a href={internalPath("/unelte/fisa-de-magazie/")} class={link}>fișa de magazie</a>.
+      </p>
+    </section>
+
+    <section id="surse">
+      <h2 class="font-display text-2xl italic text-primary">Surse</h2>
+      <ul class="list-disc space-y-3 pl-5 text-sm">
+        <li>
+          <a href={SRC.ordin} class={link}>Ordinul MFP nr. 2.634/2015 privind documentele financiar-contabile</a>, art. 3: „Elementele obligatorii pe care
+          trebuie să le conțină documentele financiar-contabile sunt cele prevăzute la pct. 2 și 10 din anexa nr. 1”; art. 4 alin. (3): numărul de
+          exemplare se stabilește prin proceduri proprii.
+        </li>
+        <li>
+          <a href={SRC.generale} class={link}>Anexa nr. 1 — Norme generale de întocmire și utilizare a documentelor financiar-contabile</a>, pct. 2
+          (elementele principale: denumirea documentului, denumirea și sediul celui care îl întocmește, numărul și data, părțile, conținutul
+          operațiunii, datele cantitative și valorice, numele și semnăturile persoanelor care răspund), pct. 3 și pct. 22.
+        </li>
+        <li>
+          <a href={SRC.specifice} class={link}>Anexa nr. 2 — Norme specifice de utilizare a documentelor financiar-contabile</a>, „Aviz de însoțire a
+          mărfii (Cod 14-3-6A)”: rolurile documentului, când se întocmește, datele valorice și mențiunile „Fără factură” / „Pentru prelucrare la
+          terți”; „Notă de recepție și constatare de diferențe (Cod 14-3-1A)”.
+        </li>
+        <li>
+          <a href={SRC.modele} class={link}>Anexa nr. 3 — modelele documentelor financiar-contabile</a>, modelul 14-3-6A (câmpurile de pe formular).
+        </li>
+        <li>
+          <a href={SRC.codFiscal} class={link}>Legea nr. 227/2015 privind Codul fiscal</a>, art. 319 alin. (16) (termenul de emitere a facturii) și
+          alin. (17) (factura centralizatoare).
+        </li>
+      </ul>
+      <p class="text-sm">Texte verificate pe legislatie.just.ro la 19.10.2026.</p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Confidențialitate</h2>
+      <p class="text-sm">
+        Datele firmelor, produsele și datele delegatului rămân pe dispozitivul tău. Opțional, salvăm local în browser doar datele furnizorului, ca să
+        nu le reintroduci la fiecare aviz. Analytics-ul Tapselo înregistrează doar că ai folosit unealta (print, generate_pdf sau download_blank),
+        fără câmpuri din formular.
+      </p>
+    </section>
+  </article>
+</ToolShell>
