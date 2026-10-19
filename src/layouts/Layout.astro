@@ -14,6 +14,10 @@ interface Props {
   publishedTime?: string;
   /** ISO date for article:modified_time (articles only). */
   modifiedTime?: string;
+  /** Site-wide SoftwareApplication JSON-LD; off on vendor comparison pages. */
+  appJsonLd?: boolean;
+  /** Absolute og:image/twitter:image URL for this page; defaults to the site OG image. */
+  ogImage?: string;
   /** Fixed corner mascot (marketing pages). Shopper pages pass false. */
   mascot?: boolean;
 }
@@ -25,12 +29,15 @@ const {
   jsonLd = [],
   publishedTime,
   modifiedTime,
+  appJsonLd = true,
+  ogImage,
   mascot = true,
 } = Astro.props;
 
 const siteUrl = "https://tapselo.com";
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
-const ogImageUrl = `${siteUrl}/og-image.jpg`;
+const defaultOgImageUrl = `${siteUrl}/og-image.jpg`;
+const ogImageUrl = ogImage ?? defaultOgImageUrl;
 const tapseloAppDescription =
   "Casa de marcat care merge și fără internet. Cu bon fiscal, cântar integrat și rapoarte inteligente. Gata în 20 de minute, pe Windows, macOS sau Linux.";
 ---
@@ -75,6 +82,7 @@ const tapseloAppDescription =
     <meta name="twitter:image" content={ogImageUrl} />
 
     <!-- Structured Data -->
+    {appJsonLd && (
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
@@ -83,7 +91,7 @@ const tapseloAppDescription =
       "operatingSystem": "Windows, macOS, Linux",
       "description": tapseloAppDescription,
       "url": siteUrl,
-      "image": ogImageUrl,
+      "image": defaultOgImageUrl,
       "offers": {
         "@type": "Offer",
         "priceCurrency": "RON",
@@ -103,6 +111,7 @@ const tapseloAppDescription =
         }
       }
     })} />
+    )}
     {jsonLd.map((block) => (
       <script type="application/ld+json" set:html={JSON.stringify(block)} />
     ))}

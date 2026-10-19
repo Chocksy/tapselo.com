@@ -353,12 +353,12 @@
     "fiscal_p7b_archive": null,
     "customer_offers": null,
     "ai_assistant": null,
-    "pricing_public": "Plan Baza: 299 RON/lună, 3 dispozitive simultan, fără contract; stație suplimentară +89 RON/lună (prețuri finale afișate pe site, MNDIGITAL SOLUTIONS SRL neplătitoare de TVA).",
-    "pricing_from": "299 RON/lună (3 dispozitive); +89 RON/lună per stație suplimentară",
+    "pricing_public": "Preț la cerere: conexa.software nu afișează prețuri, iar furnizorul (POINT OF BUSINESS SOFTWARE S.R.L.) scrie că dimensionează licențierea „în funcție de complexitatea fluxurilor tale”.",
+    "pricing_from": "Preț la cerere",
     "notes": "Conexa (POB Soft) este platformă POS și gestiune pentru retail și HoReCa: stocuri în timp real, NIR, e-Factura SPV, rapoarte și POS tactil. Site-ul menționează conectare la case AMEF și cântare comerciale. POB Soft rămâne brandul istoric în testimoniale.",
     "sources": [
       {
-        "title": "Conexa — prețuri și plan Baza",
+        "title": "Conexa — pagina produsului (preț la cerere)",
         "url": "https://conexa.software"
       },
       {
@@ -366,7 +366,7 @@
         "url": "https://pobsoft.ro/"
       }
     ],
-    "verified_on": "2026-10-08"
+    "verified_on": "2026-10-18"
   },
   {
     "id": "selectsoft-retail",
