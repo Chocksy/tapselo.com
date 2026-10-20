@@ -120,3 +120,35 @@ export function withCarry(href: string, carry: Partial<Record<CarryKey, string>>
 export function fbcFromFbclid(fbclid: string | null, nowMs: number): string | null {
   return fbclid && /^[A-Za-z0-9_-]{1,500}$/.test(fbclid) ? `fb.1.${nowMs}.${fbclid}` : null;
 }
+
+/** Consent flag the demo apps check before sending anything to Meta (contract in PR #71). */
+export const CONSENT_COOKIE = "tapselo_consent";
+export const CONSENT_COOKIE_MAX_AGE = 180 * 24 * 3600;
+export type ConsentChoice = "granted" | "denied";
+const COOKIE_ATTRS = "Domain=.tapselo.com; Path=/; SameSite=Lax; Secure";
+
+/** Set-cookie strings for a choice. Refuz also deletes tapselo_attr. */
+export function consentCookies(choice: ConsentChoice): string[] {
+  if (choice === "granted") return [`${CONSENT_COOKIE}=marketing; ${COOKIE_ATTRS}; Max-Age=${CONSENT_COOKIE_MAX_AGE}`];
+  return [`${CONSENT_COOKIE}=denied; ${COOKIE_ATTRS}; Max-Age=${CONSENT_COOKIE_MAX_AGE}`, `${ATTR_COOKIE}=; ${COOKIE_ATTRS}; Max-Age=0`];
+}
+
+/** tapselo_attr cookie: the carry set plus the explicit consent marker. */
+export function attrCookie(carry: Partial<Record<CarryKey, string>>): string {
+  const payload = { ...carry, consent: "marketing" };
+  return `${ATTR_COOKIE}=${encodeURIComponent(JSON.stringify(payload))}; ${COOKIE_ATTRS}; Max-Age=${ATTR_COOKIE_MAX_AGE}`;
+}
+
+/** Demo link with the carry set and tc=1 (consent given). */
+export function demoHrefWithConsent(href: string, carry: Partial<Record<CarryKey, string>>, base = "https://tapselo.com/"): string {
+  const u = new URL(withCarry(href, carry, base));
+  u.searchParams.set("tc", "1");
+  return u.toString();
+}
+
+/** Remove carried params (and tc) from a demo href, e.g. after Refuz. */
+export function stripCarry(href: string, base = "https://tapselo.com/"): string {
+  const u = new URL(href, base);
+  for (const k of [...CARRY_KEYS, "tc"]) u.searchParams.delete(k);
+  return u.toString();
+}

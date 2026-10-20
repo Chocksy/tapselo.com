@@ -20,9 +20,11 @@ const { pixelId } = Astro.props;
 
 <script>
   import {
-    ATTR_COOKIE,
-    ATTR_COOKIE_MAX_AGE,
     CONSENT_KEY,
+    attrCookie,
+    consentCookies,
+    demoHrefWithConsent,
+    stripCarry,
     DEMO_EVENT,
     LANDING_KEY,
     buildCarry,
@@ -30,7 +32,6 @@ const { pixelId } = Astro.props;
     fbcFromFbclid,
     isDemoHref,
     resolvePixelId,
-    withCarry,
   } from "../lib/meta/pixel.ts";
 
   type Fbq = ((...args: unknown[]) => void) & { queue?: unknown[]; loaded?: boolean; version?: string; push?: unknown; callMethod?: (...a: unknown[]) => void };
@@ -112,13 +113,14 @@ const { pixelId } = Astro.props;
     void w.__tapseloPostHogBoot?.promise.then((ph) => ph?.capture(DEMO_EVENT, { ...params, event_id: eventId }));
 
     // Hand-off to the demo app: query params plus a first-party cookie on .tapselo.com.
-    a.href = withCarry(a.href, carry);
-    document.cookie = `${ATTR_COOKIE}=${encodeURIComponent(JSON.stringify(carry))}; Domain=.tapselo.com; Path=/; Max-Age=${ATTR_COOKIE_MAX_AGE}; SameSite=Lax; Secure`;
+    a.href = demoHrefWithConsent(a.href, carry);
+    document.cookie = attrCookie(carry);
   }
 
   if (pixelId && box) {
     const consent = readConsent();
     if (consent === "granted") {
+      for (const c of consentCookies("granted")) document.cookie = c;
       rememberLanding();
       loadPixel(pixelId);
     } else if (consent !== "denied") {
@@ -133,6 +135,12 @@ const { pixelId } = Astro.props;
         /* ignore */
       }
       box.hidden = true;
+      for (const c of consentCookies(choice)) document.cookie = c;
+      if (choice === "denied") {
+        for (const link of document.querySelectorAll<HTMLAnchorElement>("a[href]")) {
+          if (isDemoHref(link.getAttribute("href"), location.href)) link.href = stripCarry(link.href);
+        }
+      }
       if (choice === "granted") {
         rememberLanding();
         loadPixel(pixelId);

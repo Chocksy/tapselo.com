@@ -121,3 +121,23 @@ test("browser params: allowlist, demo links, carry", () => {
   assert.match(href, /^https:\/\/app\.tapselo\.com\/\?demo=1&/);
   assert.ok(href.includes(`event_id=${good.event_id}`));
 });
+
+test("consent contract: cookies, attr payload, tc=1, Refuz clears tapselo_attr", async () => {
+  const { attrCookie, consentCookies, demoHrefWithConsent, stripCarry } = await import("../src/lib/meta/pixel.ts");
+  const [granted] = consentCookies("granted");
+  assert.equal(granted, "tapselo_consent=marketing; Domain=.tapselo.com; Path=/; SameSite=Lax; Secure; Max-Age=15552000");
+  const denied = consentCookies("denied");
+  assert.equal(denied[0], "tapselo_consent=denied; Domain=.tapselo.com; Path=/; SameSite=Lax; Secure; Max-Age=15552000");
+  assert.equal(denied[1], "tapselo_attr=; Domain=.tapselo.com; Path=/; SameSite=Lax; Secure; Max-Age=0");
+  const carry = { utm_source: "meta", event_id: good.event_id, landing_page: "/demo/" };
+  const c = attrCookie(carry);
+  assert.match(c, /^tapselo_attr=.+; Domain=\.tapselo\.com; Path=\/; SameSite=Lax; Secure; Max-Age=604800$/);
+  const payload = JSON.parse(decodeURIComponent(c.split(";")[0].slice("tapselo_attr=".length)));
+  assert.deepEqual(payload, { ...carry, consent: "marketing" });
+  const href = demoHrefWithConsent("https://app.tapselo.com/?demo=1", carry);
+  const u = new URL(href);
+  assert.equal(u.searchParams.get("tc"), "1");
+  assert.equal(u.searchParams.get("demo"), "1");
+  assert.equal(u.searchParams.get("event_id"), good.event_id);
+  assert.equal(stripCarry(href), "https://app.tapselo.com/?demo=1");
+});
