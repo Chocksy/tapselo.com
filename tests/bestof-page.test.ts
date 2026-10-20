@@ -113,3 +113,17 @@ test("other GuideShell pages keep the built-in CTA", async () => {
   const other = await readFile(join(process.cwd(), "dist/program-gestiune-magazin/index.html"), "utf8");
   assert.ok(other.includes('data-tapselo-cta="ghid-program-gestiune-magazin"'));
 });
+
+test("article DOM: every section and CTA is a direct child (no stray <small> wrapper)", async () => {
+  const { parse } = await import("node-html-parser");
+  const { html } = await page();
+  const article = parse(html).querySelector("article[data-bestof]");
+  assert.ok(article);
+  assert.equal(html.includes("<small"), false, "use span.bestof-note; Astro misnests <small> in this table");
+  const kids = article.childNodes.filter((n) => n.nodeType === 1).map((n) => (n as unknown as { rawTagName: string }).rawTagName.toLowerCase());
+  assert.ok(kids.every((t) => ["section", "aside", "div", "p"].includes(t)), kids.join(","));
+  assert.equal(kids.filter((t) => t === "aside").length, 2);
+  const h2s = article.querySelectorAll("h2.kb-h2");
+  assert.ok(h2s.length >= 8);
+  for (const h of h2s) assert.equal(h.parentNode.parentNode, article, `${h.text} is not inside a direct child section`);
+});

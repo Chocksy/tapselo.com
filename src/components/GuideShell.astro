@@ -195,8 +195,9 @@ const ctaLocation = `ghid-${campaign}`;
   .kb-prose > * + * { margin-top: 1rem; }
   .kb-prose .kb-h2,
   .kb-h2 { margin-top: 2.5rem; font-family: var(--font-display); font-size: clamp(1.75rem, 3vw + 0.5rem, 2.25rem); font-style: italic; font-weight: 400; line-height: 1.15; color: var(--color-primary); }
-  .kb-prose .kb-h2:first-child,
-  .kb-h2:first-child { margin-top: 0; }
+  /* Only the very first heading of the prose sits flush; an H2 that opens a later <section> keeps its top margin. */
+  .kb-prose > .kb-h2:first-child,
+  .kb-prose > :first-child > .kb-h2:first-child { margin-top: 0; }
   .kb-prose .kb-h3,
   .kb-h3 { margin-top: 1.75rem; font-size: 1.125rem; font-weight: 600; line-height: 1.35; color: var(--color-primary); }
   .kb-prose strong { color: var(--color-primary); font-weight: 700; }
