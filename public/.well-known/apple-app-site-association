@@ -1,0 +1,10 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["9SRWEPF965.com.tapselo.client"],
+        "components": [{ "/": "/card/*", "comment": "Card links open the Tapselo Card app" }]
+      }
+    ]
+  }
+}

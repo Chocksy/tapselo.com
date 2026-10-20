@@ -162,6 +162,7 @@ body{margin:0;font-family:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe U
 .keep b{color:#0f172a}
 .wallet{display:flex;align-items:center;justify-content:center;min-height:3rem;max-width:20rem;margin:1rem auto 0;padding:.75rem 1.5rem;border-radius:999px;background:#000;color:#fff;font-size:1.0625rem;font-weight:700;text-decoration:none;box-shadow:0 6px 16px -8px rgba(15,23,42,.6)}
 .wallet:focus-visible{outline:3px solid #2563eb;outline-offset:3px}
+.app{display:block;margin:.75rem auto 0;text-align:center;color:inherit;font-weight:600;font-size:.9375rem;text-underline-offset:3px}
 .tip{margin:1rem .25rem 0;text-align:center;font-size:.9375rem;color:#475569}
 .made{margin:1.5rem 0 0;text-align:center;font-size:.8125rem;color:#94a3b8}
 .made a{color:#64748b;font-weight:700;text-decoration:none}
@@ -224,6 +225,11 @@ ${coins}<p class="pts">${escapeHtml(pointsLabel(points))}</p>
       : opts.isAndroid
         ? `<a class="wallet" href="${escapeHtml(googleWalletUrl(opts.token))}">Adauga in Google Wallet</a>\n`
         : "";
+  // The Tapselo Card app (tapselo:// is the app's own link scheme). Phones only.
+  const app =
+    opts.token && (opts.isApple || opts.isAndroid)
+      ? `<a class="app" href="tapselo://card/${encodeURIComponent(opts.token)}">Deschide in aplicatia Tapselo Card</a>\n`
+      : "";
 
   const body = `<p class="shop">${escapeHtml(shop)}</p>
 <section class="card${look === NEUTRAL ? " neutral" : ""}" style="${vars}" aria-label="Card de client">
@@ -231,7 +237,7 @@ ${coins}<p class="pts">${escapeHtml(pointsLabel(points))}</p>
 <div class="code">${codeHtml}</div>
 <p class="scan">Arata codul la casa</p>
 </section>
-${wallet}${box}
+${wallet}${app}${box}
 <p class="tip">Pastreaza linkul: adauga pagina pe ecranul principal</p>`;
 
   return page(`Card ${shop}`, look.from, body);
