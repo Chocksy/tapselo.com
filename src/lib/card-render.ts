@@ -18,6 +18,9 @@ export interface CardPayload {
   next_min_points: number | string | null;
   /** Optional: the next level's percent, shown as "(5%)". Not in the first contract; rendered only when sent. */
   next_percent?: number | string | null;
+  /** Optional (pos migration 20261020130000): the day the level drops without a new purchase ('YYYY-MM-DD'), and the points that keep it. */
+  keep_until?: string | null;
+  keep_points?: number | null;
 }
 
 export const TOKEN_RE = /^[A-Za-z0-9_-]{22}$/;
@@ -88,6 +91,15 @@ export function pointsLabel(n: number): string {
   return n > 0 && (r === 0 || r >= 20) ? `${n} de puncte` : `${n} puncte`;
 }
 
+const MONTHS = ["ian", "feb", "mar", "apr", "mai", "iun", "iul", "aug", "sep", "oct", "noi", "dec"];
+
+/** "2027-01-15" -> "15 ian 2027"; "" when malformed. */
+export function formatDay(v: string | null | undefined): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(v ?? "");
+  const month = m ? MONTHS[Number(m[2]) - 1] : undefined;
+  return m && month ? `${Number(m[3])} ${month} ${m[1]}` : "";
+}
+
 function page(title: string, themeColor: string, body: string): string {
   return `<!doctype html>
 <html lang="ro">
@@ -146,6 +158,8 @@ body{margin:0;font-family:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe U
 .bar{margin:.75rem 0 .625rem;height:.625rem;border-radius:999px;background:#e5e7eb;overflow:hidden}
 .bar span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--from),var(--to))}
 .next{margin:0;font-size:1rem;color:#334155}
+.keep{margin:.5rem 0 0;font-size:.9375rem;color:#475569}
+.keep b{color:#0f172a}
 .wallet{display:flex;align-items:center;justify-content:center;min-height:3rem;max-width:20rem;margin:1rem auto 0;padding:.75rem 1.5rem;border-radius:999px;background:#000;color:#fff;font-size:1.0625rem;font-weight:700;text-decoration:none;box-shadow:0 6px 16px -8px rgba(15,23,42,.6)}
 .wallet:focus-visible{outline:3px solid #2563eb;outline-offset:3px}
 .tip{margin:1rem .25rem 0;text-align:center;font-size:.9375rem;color:#475569}
@@ -189,10 +203,16 @@ export function renderCardPage(p: CardPayload, opts: CardPageOptions = {}): stri
         coins = `<div class="coins" aria-hidden="true"><span class="coin">${escapeHtml(pct)}%</span><span class="track">${escapeHtml(levelName)} &rarr; ${escapeHtml(nextName)}</span><span class="coin next" style="--metal:${nl.metal}">${escapeHtml(np)}%</span></div>`;
       }
     }
+    const keepPoints = Math.ceil(num(p.keep_points) ?? 0);
+    const keepDay = formatDay(p.keep_until);
+    const keep =
+      levelName && keepDay && keepPoints > 0
+        ? `\n<p class="keep">Mai ai <b>${escapeHtml(pointsLabel(keepPoints))}</b> pana pe ${escapeHtml(keepDay)} ca sa pastrezi ${escapeHtml(levelName)}</p>`
+        : "";
     box = `<section class="box" style="${vars}" aria-label="Nivel">
 ${coins}<p class="pts">${escapeHtml(pointsLabel(points))}</p>
 <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${fill}"><span style="width:${fill}%"></span></div>
-<p class="next">${escapeHtml(nextLine)}</p>
+<p class="next">${escapeHtml(nextLine)}</p>${keep}
 </section>`;
   }
 
