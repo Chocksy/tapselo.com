@@ -231,7 +231,16 @@ import PublicShell from "../../components/PublicShell.astro";
       );
     }
 
-    $("done-title").textContent = `Gata, ${name}! Arată acest ecran la casă.`;
+    // A new member gets the card token: open the card (barcode, Wallet, app) right away.
+    const token = typeof res.data === "string" ? res.data : null;
+    if (token && /^[A-Za-z0-9_-]{22}$/.test(token)) {
+      location.replace(`/card/${token}`);
+      return;
+    }
+    // Member with a phone or email already on file: no card here, so a stranger never sees it.
+    $("done-title").textContent = member
+      ? `${name}, ești deja client. Cere linkul cardului la casă.`
+      : `Gata, ${name}! Arată acest ecran la casă.`;
     show("done");
     window.scrollTo({ top: 0 });
   }

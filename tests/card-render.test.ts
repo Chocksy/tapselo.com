@@ -139,3 +139,12 @@ test("keep line: under the next line, escaped; none without data", () => {
   assert.doesNotMatch(renderCardPage({ ...clone(), keep_until: "bad", keep_points: 10 }), /class="keep"/);
   assert.doesNotMatch(renderCardPage({ ...MOCK_CARD_VARIANTS.off, keep_until: "2027-01-15", keep_points: 10 }), /class="keep"/);
 });
+
+test("open-in-app link: phones with a token only", () => {
+  const token = "AbCdEfGhIjKlMnOpQrStUv";
+  for (const o of [{ isApple: true }, { isAndroid: true }]) {
+    assert.match(renderCardPage(MOCK_CARD, { token, ...o }), new RegExp(`<a class="app" href="tapselo://card/${token}">`));
+  }
+  assert.doesNotMatch(renderCardPage(MOCK_CARD, { token }), /tapselo:\/\//);
+  assert.doesNotMatch(renderCardPage(MOCK_CARD, { isApple: true }), /tapselo:\/\//);
+});
