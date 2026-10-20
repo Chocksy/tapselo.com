@@ -1,0 +1,72 @@
+---
+// /r/{token}: the "Am deja card" link from the recovery email.
+// Static page; public/_redirects rewrites /r/* here and the script reads the token from the URL.
+// public_card_recover gives the card tokens of every card of that email; the app
+// adds them all with tapselo://r/{token}, the links below open each card page.
+import PublicShell from "../../components/PublicShell.astro";
+---
+
+<PublicShell title="Cardurile tale">
+  <p id="loading" class="pub-card pub-text">Se încarcă...</p>
+
+  <div id="ok" class="pub-card hidden space-y-6">
+    <h1 class="pub-title">Cardurile tale</h1>
+    <a id="open-app" class="pub-btn text-center" href="#">Deschide în aplicația Tapselo Card</a>
+    <ul id="cards" class="space-y-3"></ul>
+  </div>
+
+  <div id="bad" class="pub-card hidden">
+    <p class="pub-error" role="alert" id="bad-msg">
+      Linkul a expirat. Cere altul din aplicație sau la casa magazinului.
+    </p>
+  </div>
+</PublicShell>
+
+<script>
+  import { rpc } from "../../lib/supabase-public";
+
+  const TOKEN_RE = /^[A-Za-z0-9_-]{22}$/;
+  const $ = (id: string) => document.getElementById(id) as HTMLElement;
+
+  function show(id: "loading" | "ok" | "bad") {
+    for (const s of ["loading", "ok", "bad"]) $(s).classList.toggle("hidden", s !== id);
+  }
+
+  // "/r/<token>" or "/r/<token>/"; ?t= works on `astro dev`, which ignores public/_redirects.
+  function tokenFromPath(): string | null {
+    const parts = location.pathname.split("/").filter(Boolean);
+    const raw = parts[0] === "r" ? (parts[1] ?? new URLSearchParams(location.search).get("t")) : null;
+    return raw && TOKEN_RE.test(raw) ? raw : null;
+  }
+
+  async function init() {
+    $("shell-store").textContent = "Tapselo Card";
+    const token = tokenFromPath();
+    if (!token) return show("bad");
+
+    const res = await rpc<{ tokens?: unknown } | null>("public_card_recover", { p_token: token });
+    if (!res.ok && res.kind !== "rejected") {
+      $("bad-msg").textContent = res.message;
+      return show("bad");
+    }
+    const tokens = res.ok && Array.isArray(res.data?.tokens)
+      ? res.data.tokens.filter((t): t is string => typeof t === "string" && TOKEN_RE.test(t))
+      : [];
+    if (tokens.length === 0) return show("bad");
+
+    ($("open-app") as HTMLAnchorElement).href = `tapselo://r/${token}`;
+    const list = $("cards");
+    tokens.forEach((t, i) => {
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.className = "pub-link text-xl";
+      a.href = `/card/${t}`;
+      a.textContent = `Card ${i + 1}`;
+      li.append(a);
+      list.append(li);
+    });
+    show("ok");
+  }
+
+  init();
+</script>
