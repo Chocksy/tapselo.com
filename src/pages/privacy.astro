@@ -22,7 +22,7 @@ import OperatorLine from "../components/OperatorLine.astro";
         Ce date colectăm, de ce le colectăm și ce poți face cu ele.
       </p>
       <p class="mt-6 text-sm text-text-on-primary-muted">
-        Ultima actualizare: 1 octombrie 2026
+        Ultima actualizare: 20 octombrie 2026
       </p>
     </div>
   </header>
@@ -181,8 +181,54 @@ import OperatorLine from "../components/OperatorLine.astro";
         <h2 class="font-display text-3xl italic text-primary">Cookie-uri</h2>
         <p class="mt-4 leading-relaxed text-text-secondary">
           Acest site de prezentare nu folosește cookie-uri de urmărire și nu are pixeli de
-          publicitate. Formularul de contact este protejat de Cloudflare Turnstile, care verifică
+          publicitate, cu o singură excepție: pagina <a href="/demo/" class="text-accent hover:text-accent-hover">/demo/</a>,
+          unde pixelul Meta pornește numai dacă vă dați acordul (detalii mai jos). Formularul de contact este protejat de Cloudflare Turnstile, care verifică
           doar dacă cererea vine de la un om.
+        </p>
+      </section>
+
+      <section id="meta-pixel">
+        <h2 class="font-display text-3xl italic text-primary">Pixelul Meta pe pagina /demo/</h2>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Pe pagina <a href="/demo/" class="text-accent hover:text-accent-hover">/demo/</a> folosim pixelul Meta și
+          Meta Conversions API ca să măsurăm cât de bine funcționează reclamele noastre (câte persoane ajung din
+          reclame să încerce demo-ul). Pe nicio altă pagină a site-ului nu se încarcă cod Meta.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          <strong>Numai cu acordul dumneavoastră.</strong> Pe /demo/ vă arătăm o casetă cu butoanele „Accept” și
+          „Refuz”. Până nu apăsați „Accept”, pixelul nu se încarcă, nu se setează cookie-uri Meta și nu se trimite
+          nimic către Meta. Baza legală este consimțământul dumneavoastră.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">După ce acceptați, folosim:</p>
+        <ul class="mt-2 space-y-2 pl-5 text-text-secondary">
+          <li class="list-disc leading-relaxed"><code>_fbp</code> și <code>_fbc</code>: cookie-uri setate de pixelul Meta, care identifică browserul și clicul pe reclamă;</li>
+          <li class="list-disc leading-relaxed"><code>tapselo_attr</code>: cookie pe domeniul <code>.tapselo.com</code>, valabil 7 zile, care duce aceleași date de măsurare (mai jos) către demo-ul Tapselo;</li>
+          <li class="list-disc leading-relaxed"><code>tapselo_marketing_consent</code> (localStorage): păstrează alegerea dumneavoastră („Accept” sau „Refuz”), ca să nu vă întrebăm din nou;</li>
+          <li class="list-disc leading-relaxed"><code>tapselo_landing_page</code> (sessionStorage, doar pe durata sesiunii): prima pagină a vizitei.</li>
+        </ul>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          <strong>Ce trimitem.</strong> Când apăsați un buton care deschide demo-ul, trimitem către Meta, din browser
+          și de pe serverul nostru, evenimentul <code>demo_started</code> cu: un identificator aleatoriu al evenimentului
+          (<code>event_id</code>), prima pagină a vizitei (<code>landing_page</code>), pagina curentă
+          (<code>page_path</code>), parametrii <code>utm_*</code> din link, dacă există, adresa IP, tipul de browser
+          (user agent) și valorile <code>fbp</code>/<code>fbc</code>. La încărcarea pixelului, Meta primește și
+          evenimentul standard <code>PageView</code>, cu adresa paginii /demo/. Datele de măsurare de mai sus, fără
+          adresa IP și user agent, plus parametrul <code>fbclid</code> din linkul reclamei, sunt adăugate și la linkul
+          către demo.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          <strong>Ce nu trimitem.</strong> Nu trimitem către Meta adresa de e-mail, numărul de telefon, coduri de bare,
+          prețuri, CUI-uri sau alte date despre firma dumneavoastră.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          <strong>Destinatar.</strong> Datele ajung la Meta Platforms Ireland Limited. Meta poate transfera date în afara
+          Spațiului Economic European, folosind mecanismele de transfer descrise în politica sa de confidențialitate.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          <strong>Cum refuzați sau vă retrageți acordul.</strong> Apăsați „Refuz” în caseta de pe /demo/. Dacă ați
+          acceptat deja, ștergeți datele site-ului tapselo.com din browser (cookie-urile și localStorage); caseta va
+          apărea din nou la următoarea vizită pe /demo/. Ne puteți scrie oricând la
+          <EmailLink class="font-bold text-accent hover:text-accent-hover" />.
         </p>
       </section>
 
@@ -211,7 +257,11 @@ import OperatorLine from "../components/OperatorLine.astro";
           integration at any time, which stops all collection. Processing is based on GDPR
           (contract performance and legitimate interest). Users have the right to access, correct
           and delete their data; email the address above. The marketing site sets no tracking
-          cookies.
+          cookies, except on /demo/: there, only after the visitor clicks "Accept", the Meta Pixel and Meta
+          Conversions API record a demo_started event (event_id, landing page, page path, utm_* parameters, IP
+          address, user agent, _fbp/_fbc), sent to Meta Platforms Ireland for ad measurement, on the basis of consent.
+          No email, phone, barcodes, prices, CUIs or company data are sent. Cookies: _fbp, _fbc, tapselo_attr
+          (.tapselo.com, 7 days); localStorage tapselo_marketing_consent.
         </p>
         <p class="mt-4 leading-relaxed text-text-secondary">
           AI connector ("Tapselo", https://tapselo.com/mcp, used from Claude or ChatGPT, no account):
@@ -220,7 +270,7 @@ import OperatorLine from "../components/OperatorLine.astro";
           document tools are stored for 30 days and then deleted by a daily job. Logs hold the tool name, success or error, duration, error type and, on failure, the technical error message; they hold no user text or tool arguments.
           Outside services: ANAF (the CUI you check), BNR (exchange rate, nothing sent about you), and Open Food Facts
           (the barcodes you look up). Document pages are public to anyone with the link and marked noindex. To delete a
-          document or report abuse, email <!--email_off-->contact@tapselo.com<!--/email_off--> with the link. Last updated: 1 October 2026.
+          document or report abuse, email <!--email_off-->contact@tapselo.com<!--/email_off--> with the link. Last updated: 20 October 2026.
         </p>
       </section>
     </div>

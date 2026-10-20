@@ -28,7 +28,10 @@ function metaPages(dir: string): string[] {
   const hit: string[] = [];
   for (const f of files(dir, /\.html$/)) {
     const html = readFileSync(f, "utf8");
-    if (META.test(html) || META.test(scriptsOf(dir, html))) hit.push(relative(dir, f));
+    // Code only: inline <script>s, the page's JS files and the consent box markup. Prose (e.g. /privacy
+    // describing the pixel) is not code.
+    const inline = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]).join("\n");
+    if (/data-meta-consent/.test(html) || META.test(inline) || META.test(scriptsOf(dir, html))) hit.push(relative(dir, f));
   }
   return hit;
 }
