@@ -3,6 +3,11 @@ import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import { ArrowRight } from "@lucide/astro";
+import MetaPixelDemo from "../components/MetaPixelDemo.astro";
+import { resolvePixelId } from "../lib/meta/pixel.ts";
+
+// Meta Pixel lives on this page only. Unset PUBLIC_META_PIXEL_ID: nothing is rendered.
+const pixelId = resolvePixelId(import.meta.env.PUBLIC_META_PIXEL_ID);
 ---
 
 <Layout
@@ -50,4 +55,5 @@ import { ArrowRight } from "@lucide/astro";
     </div>
   </main>
   <Footer />
+  {pixelId && <MetaPixelDemo pixelId={pixelId} />}
 </Layout>

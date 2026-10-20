@@ -8,6 +8,8 @@ interface ImportMetaEnv {
   readonly PUBLIC_BARCODE_API_URL?: string;
   readonly PUBLIC_POSTHOG_KEY?: string;
   readonly PUBLIC_POSTHOG_HOST?: string;
+  /** Meta Pixel ID, used on /demo/ only. Unset: no pixel, no banner, no events. */
+  readonly PUBLIC_META_PIXEL_ID?: string;
 }
 
 interface ImportMeta {
