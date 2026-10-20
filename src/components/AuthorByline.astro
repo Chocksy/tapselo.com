@@ -1,0 +1,40 @@
+---
+// Byline for GuideShell's `byline` slot (dark hero): photo, name, role, LinkedIn, dates.
+import { Linkedin } from "@lucide/astro";
+import type { Author } from "../data/authors.ts";
+import { formatDateRo } from "../lib/mcp/text.ts";
+
+interface Props {
+  author: Author;
+  publishedOn?: string | null;
+  updatedOn?: string | null;
+  verifiedOn?: string | null;
+  /** Label before the verified date. */
+  verifiedLabel?: string;
+}
+const { author, publishedOn, updatedOn, verifiedOn, verifiedLabel = "Verificat la" } = Astro.props;
+const dates = [
+  publishedOn && { label: "Publicat:", iso: publishedOn },
+  updatedOn && { label: "Actualizat:", iso: updatedOn },
+  verifiedOn && { label: verifiedLabel, iso: verifiedOn },
+].filter((d): d is { label: string; iso: string } => Boolean(d));
+---
+
+<p class="flex flex-wrap items-center gap-x-2 gap-y-2">
+  <img src={author.photo} srcset={`${author.photo} 1x, ${author.photo2x} 2x`} alt={author.name} width={48} height={48} class="h-12 w-12 rounded-full object-cover" />
+  <span>De <strong class="text-white">{author.name}</strong>, {author.role}</span>
+  <span aria-hidden="true">·</span>
+  <a href={author.linkedin} target="_blank" rel="noopener me" aria-label={`${author.name} pe LinkedIn`} class="inline-flex text-text-on-primary hover:text-white">
+    <Linkedin class="h-4 w-4" aria-hidden="true" />
+  </a>
+</p>
+{dates.length > 0 && (
+  <p class="mt-2 text-text-on-primary-muted">
+    {dates.map((d, i) => (
+      <>
+        {i > 0 && <span aria-hidden="true"> · </span>}
+        {`${d.label} `}<time datetime={d.iso}>{formatDateRo(d.iso)}</time>
+      </>
+    ))}
+  </p>
+)}

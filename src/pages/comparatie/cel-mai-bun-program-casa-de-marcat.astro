@@ -1,10 +1,10 @@
 ---
 // /comparatie/cel-mai-bun-program-casa-de-marcat/: best-of shortlist (TAP-BESTOF-GAP).
 // Copy is verbatim from cross-app-seo/tapselo/tap-bestof-2026-10-18.md §4; do not reword.
-import { Linkedin } from "@lucide/astro";
 import GuideShell from "../../components/GuideShell.astro";
+import AuthorByline from "../../components/AuthorByline.astro";
+import { AUTHORS, authorPersonJsonLd } from "../../data/authors.ts";
 import { internalPath } from "../../lib/internal-url.ts";
-import { formatDateRo } from "../../lib/mcp/text.ts";
 import {
   breadcrumbJsonLd,
   breadcrumbLinks,
@@ -26,13 +26,7 @@ const PUBLISHED = "2026-10-20";
 const UPDATED = "2026-10-20";
 const VERIFIED = "2026-10-18";
 
-const AUTHOR = {
-  name: "Razvan Ciocanel",
-  role: "Fondator Tapselo",
-  linkedin: "https://www.linkedin.com/in/chocksy/",
-  photo: "/authors/razvan-ciocanel.webp",
-  photo2x: "/authors/razvan-ciocanel@2x.webp",
-};
+const AUTHOR = AUTHORS["razvan-ciocanel"];
 
 const SITE_ORIGIN = new URL(PAGE_URL).origin;
 const OG_IMAGE = `${SITE_ORIGIN}/og/cel-mai-bun-program-casa-de-marcat.png`;
@@ -104,14 +98,8 @@ const article = {
   mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
   datePublished: PUBLISHED,
   dateModified: UPDATED,
-  author: {
-    "@type": "Person",
-    name: AUTHOR.name,
-    jobTitle: AUTHOR.role,
-    worksFor: { "@type": "Organization", name: "Tapselo", url: "https://tapselo.com/" },
-    sameAs: [AUTHOR.linkedin],
-    image: `${SITE_ORIGIN}${AUTHOR.photo2x}`,
-  },
+  author: authorPersonJsonLd(AUTHOR, SITE_ORIGIN),
+
   publisher: {
     "@type": "Organization",
     name: "Tapselo",
@@ -154,21 +142,7 @@ const ext = { rel: "noopener", target: "_blank" };
   pageToc={false}
 >
   <Fragment slot="byline">
-    <p class="flex flex-wrap items-center gap-x-2 gap-y-2">
-      <img src={AUTHOR.photo} srcset={`${AUTHOR.photo} 1x, ${AUTHOR.photo2x} 2x`} alt={AUTHOR.name} width={48} height={48} class="h-12 w-12 rounded-full object-cover" />
-      <span>De <strong class="text-white">{AUTHOR.name}</strong>, {AUTHOR.role}</span>
-      <span aria-hidden="true">·</span>
-      <a href={AUTHOR.linkedin} target="_blank" rel="noopener me" aria-label={`${AUTHOR.name} pe LinkedIn`} class="inline-flex text-text-on-primary hover:text-white">
-        <Linkedin class="h-4 w-4" aria-hidden="true" />
-      </a>
-    </p>
-    <p class="mt-2 text-text-on-primary-muted">
-      Publicat: <time datetime={PUBLISHED}>{formatDateRo(PUBLISHED)}</time>
-      <span aria-hidden="true"> · </span>
-      Actualizat: <time datetime={UPDATED}>{formatDateRo(UPDATED)}</time>
-      <span aria-hidden="true"> · </span>
-      Fapte verificate la <time datetime={VERIFIED}>{formatDateRo(VERIFIED)}</time>
-    </p>
+    <AuthorByline author={AUTHOR} publishedOn={PUBLISHED} updatedOn={UPDATED} verifiedOn={VERIFIED} verifiedLabel="Fapte verificate la" />
   </Fragment>
 
   <article class="kb-prose bestof space-y-10" data-bestof>

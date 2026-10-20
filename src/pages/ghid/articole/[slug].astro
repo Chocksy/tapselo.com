@@ -1,6 +1,8 @@
 ---
 // /ghid/articole/{slug} — one support article from src/lib/kb/articles.json.
 import GuideShell from "../../../components/GuideShell.astro";
+import AuthorByline from "../../../components/AuthorByline.astro";
+import { AUTHORS } from "../../../data/authors.ts";
 import { getArticleBySlug, supportArticles } from "../../../lib/articles/load.ts";
 import { articlePath, buildArticleJsonLd } from "../../../lib/articles/schema.ts";
 import { internalPath } from "../../../lib/internal-url.ts";
@@ -19,6 +21,7 @@ const related = article.related
   .filter((a): a is NonNullable<typeof a> => Boolean(a));
 
 const jsonLd = buildArticleJsonLd(article, supportArticles);
+const author = article.author ? AUTHORS[article.author] : null;
 const card = "block rounded-xl border border-border-light p-4 transition-colors hover:border-accent";
 ---
 
@@ -41,6 +44,11 @@ const card = "block rounded-xl border border-border-light p-4 transition-colors 
     { label: article.title },
   ]}
 >
+  {author && (
+    <Fragment slot="byline">
+      <AuthorByline author={author} publishedOn={article.published} updatedOn={article.updated} verifiedOn={article.verifiedOn} />
+    </Fragment>
+  )}
   <article class="kb-prose" set:html={markdownToHtml(article.body)} />
 
   {article.steps && article.steps.length > 0 && (
