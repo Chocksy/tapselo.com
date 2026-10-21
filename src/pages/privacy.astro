@@ -242,6 +242,12 @@ import OperatorLine from "../components/OperatorLine.astro";
           înregistrează în statisticile PostHog, la evenimentele din demo, parametrii <code>utm_*</code>,
           <code>landing_page</code>, <code>event_id</code> și <code>fbclid</code>. Îi folosim ca să vedem din ce campanie
           a pornit o încercare a demo-ului. Valorile <code>fbp</code>/<code>fbc</code> nu ajung în PostHog.
+          Statisticile sunt prelucrate de PostHog, Inc. (SUA), ca persoană împuternicită, prin PostHog Cloud EU,
+          găzduit pe servere din Frankfurt (Germania); datele ajung acolo prin adresa noastră <code>t.tapselo.com</code>.
+          Conform
+          <a href="https://posthog.com/dpa" class="text-accent hover:text-accent-hover">acordului PostHog de prelucrare a datelor</a>,
+          PostHog, Inc. participă la Cadrul de confidențialitate a datelor UE-SUA (EU-U.S. Data Privacy Framework) și
+          folosește clauze contractuale standard pentru eventualele transferuri în afara Spațiului Economic European.
         </p>
         <p class="mt-4 leading-relaxed text-text-secondary">
           <strong>Ce nu trimitem.</strong> Nici de pe tapselo.com, nici din demo nu trimitem către Meta adresa de e-mail, numărul de telefon, coduri de bare,
@@ -296,7 +302,7 @@ import OperatorLine from "../components/OperatorLine.astro";
           cookies, except on /demo/: there, only after the visitor clicks "Accept", the Meta Pixel and Meta
           Conversions API record a demo_started event (event_id, landing page, page path, utm_* parameters, IP
           address, user agent, _fbp/_fbc), sent to Meta Platforms Ireland for ad measurement, on the basis of consent.
-          Only when the tapselo_consent=marketing cookie (.tapselo.com) is present, the demo (app.tapselo.com / demo.tapselo.com) also sends a server-side demo_active event via the Conversions API (new event_id, event time, demo URL, IP, user agent, fbp/fbc, landing_page, page_path "/", utm_*; sent unhashed, no email, phone, name or external ID); if the visitor refused, nothing is sent from the demo either and tapselo_attr is deleted. For accepted visits only, the demo also records utm_*, landing_page, event_id and fbclid on its PostHog analytics events. No email, phone, barcodes, prices, CUIs or company data are sent. Cookies: _fbp, _fbc, tapselo_attr
+          Only when the tapselo_consent=marketing cookie (.tapselo.com) is present, the demo (app.tapselo.com / demo.tapselo.com) also sends a server-side demo_active event via the Conversions API (new event_id, event time, demo URL, IP, user agent, fbp/fbc, landing_page, page_path "/", utm_*; sent unhashed, no email, phone, name or external ID); if the visitor refused, nothing is sent from the demo either and tapselo_attr is deleted. For accepted visits only, the demo also records utm_*, landing_page, event_id and fbclid on its PostHog analytics events (no fbp/fbc). PostHog, Inc. (US) processes these as our processor on PostHog Cloud EU (Frankfurt), via t.tapselo.com; per its DPA it participates in the EU-U.S. Data Privacy Framework and uses Standard Contractual Clauses for transfers. No email, phone, barcodes, prices, CUIs or company data are sent. Cookies: _fbp, _fbc, tapselo_attr
           (.tapselo.com, 7 days), tapselo_consent (.tapselo.com, 180 days, "marketing" or "denied"; the demo sends to Meta only with "marketing"); localStorage tapselo_marketing_consent. Legal basis: consent (GDPR art. 6(1)(a); Romanian Law 506/2004 art. 4(5) for cookies). Meta may transfer data to Meta Platforms, Inc. (US), certified under the EU-U.S. Data Privacy Framework. To withdraw consent, clear the site data of tapselo.com, app.tapselo.com and demo.tapselo.com; withdrawal does not affect the lawfulness of earlier processing.
         </p>
         <p class="mt-4 leading-relaxed text-text-secondary">
