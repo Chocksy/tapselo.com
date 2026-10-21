@@ -25,6 +25,7 @@ const { class: cls = "", wrapClass = "" } = Astro.props;
   function revoke() {
     withdrawConsent({
       setCookie: (c) => (document.cookie = c),
+      local: (() => { try { return localStorage; } catch { return null; } })(),
       session: (() => { try { return sessionStorage; } catch { return null; } })(),
     });
     // Site PostHog is cookieless (memory); reset drops any in-memory properties for this page.

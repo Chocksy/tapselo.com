@@ -7,7 +7,8 @@ import { mkdtempSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { tmpdir } from "node:os";
 
-const META = /fbevents|connect\.facebook\.net|meta-capi|data-meta-consent|tapselo_marketing_consent|\bfbq\b/;
+// tapselo_marketing_consent is not listed: „Retrage acordul” (footer, every page) must write it as denied.
+const META = /fbevents|connect\.facebook\.net|meta-capi|data-meta-consent|\bfbq\b/;
 
 function files(dir: string, ext: RegExp): string[] {
   const out: string[] = [];
