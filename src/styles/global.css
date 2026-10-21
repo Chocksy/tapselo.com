@@ -186,6 +186,14 @@
     transform: translateX(0);
   }
 
+  /* Below xl (no side margin to absorb 24px) the sideways slide-ins would push the page wider than the viewport; rise instead. */
+  @media (max-width: 1279.98px) {
+    .animate-on-scroll.animate-from-left,
+    .animate-on-scroll.animate-from-right {
+      transform: translateY(24px);
+    }
+  }
+
   .animate-on-scroll.animate-scale {
     transform: scale(0.95);
   }

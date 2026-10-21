@@ -10,7 +10,7 @@ import { extname, join, relative } from "node:path";
 
 const DIST = join(process.cwd(), "dist");
 const CHROME = process.env.CHROME_PATH ?? "/usr/bin/google-chrome";
-// Own layouts by design: centred 404, customer card / recovery / email-confirmation pages, /demo/ video landing.
+// Own layouts by design (only the sideways-scroll check applies): centred 404, customer card / recovery / email-confirmation pages, /demo/ video landing.
 const OWN_SHELL = new Set(["/404.html", "/c/", "/p/", "/r/", "/confirmare/", "/dezabonare/", "/demo/"]);
 
 function htmlFiles(dir: string): string[] {
@@ -29,7 +29,7 @@ test("no element combines site-container with site-reading", () => {
 const AUDIT = `(() => {
   const nav = document.querySelector("nav .site-container");
   const main0 = document.querySelector("main") ?? document.body, h10 = document.querySelector("h1");
-  if (!nav || !main0 || !h10) return { missing: [!nav && "nav", !main0 && "main", !h10 && "h1"].filter(Boolean).join(",") };
+  if (!nav || !main0 || !h10) return { scrollWidth: document.documentElement.scrollWidth, viewport: innerWidth, missing: [!nav && "nav", !main0 && "main", !h10 && "h1"].filter(Boolean).join(",") };
   const ns = getComputedStyle(nav), nb = nav.getBoundingClientRect();
   const left = nb.left + parseFloat(ns.paddingLeft), right = nb.right - parseFloat(ns.paddingRight);
   const main = main0;
@@ -45,13 +45,14 @@ const AUDIT = `(() => {
     const n = e.nextElementSibling;
     if (n && /^(P|UL|OL)$/.test(n.tagName) && n.offsetParent && n.getBoundingClientRect().top - e.getBoundingClientRect().bottom < 4) tight++;
   }
-  return { left, right, h1Left: h1.getBoundingClientRect().left, h1: fs(h1),
+  const scrollWidth = document.documentElement.scrollWidth;
+  return { scrollWidth, viewport: innerWidth, left, right, h1Left: h1.getBoundingClientRect().left, h1: fs(h1),
     h2: Math.max(0, ...vis("h2").map(fs)), h3: Math.max(0, ...vis("h3").map(fs)), contentRight: cr, tight };
 })()`;
 
-test("every route: aligned with the header container, h1 > h2 > h3, spaced prose", { timeout: 300_000, skip: !existsSync(CHROME) && "no Chrome" }, async () => {
+test("every route: no sideways page scroll; aligned with the header container, h1 > h2 > h3, spaced prose", { timeout: 300_000, skip: !existsSync(CHROME) && "no Chrome" }, async () => {
   const { chromium } = await import("playwright-core");
-  const routes = htmlFiles(DIST).map((f) => "/" + relative(DIST, f).replace(/index\.html$/, "")).filter((r) => !OWN_SHELL.has(r));
+  const routes = htmlFiles(DIST).map((f) => "/" + relative(DIST, f).replace(/index\.html$/, ""));
   const types: Record<string, string> = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".woff2": "font/woff2" };
   const server = createServer((req, res) => {
     let p = join(DIST, decodeURIComponent((req.url ?? "/").split("?")[0]));
@@ -71,6 +72,10 @@ test("every route: aligned with the header container, h1 > h2 > h3, spaced prose
         await page.goto(`http://127.0.0.1:${port}${route}`, { waitUntil: "load" });
         const d = await page.evaluate(AUDIT);
         const at = `${width} ${route}`;
+        // Sideways page scroll (internal scroll containers like the /comparatie table are fine). Checked on
+        // every route, own-layout pages included.
+        if (d.scrollWidth > d.viewport) problems.push(`${at}: page is ${d.scrollWidth}px wide (viewport ${d.viewport}px)`);
+        if (OWN_SHELL.has(route)) continue;
         if (d.missing) { problems.push(`${at}: missing ${d.missing}`); continue; }
         if (Math.abs(d.h1Left - d.left) > 2) problems.push(`${at}: h1 left ${d.h1Left} vs header ${d.left}`);
         if (d.h2 && d.h2 >= d.h1) problems.push(`${at}: h2 ${d.h2}px >= h1 ${d.h1}px`);
