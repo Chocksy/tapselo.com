@@ -1,35 +1,24 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/Navbar.astro";
-import Footer from "../components/Footer.astro";
+import GuideShell from "../components/GuideShell.astro";
 import EmailLink from "../components/EmailLink.astro";
 import { internalPath } from "../lib/internal-url.ts";
 import OperatorLine from "../components/OperatorLine.astro";
 import WithdrawConsent from "../components/WithdrawConsent.astro";
 ---
 
-<Layout
+<GuideShell
   title="Politica de confidențialitate — Tapselo POS"
   description="Cum colectează și folosește Tapselo POS datele clienților și ale magazinelor, inclusiv mesajele primite prin integrarea Facebook Messenger și datele primite de asistentul AI."
+  heading="Politica de confidențialitate"
+  lead="Ce date colectăm, de ce le colectăm și ce poți face cu ele."
+  campaign="legal-privacy"
+  breadcrumb={false}
+  contentWidth="reading"
+  pageToc
+  showCta={false}
+  adviceNote={false}
 >
-  <Navbar />
-
-  <header class="bg-primary pt-28 pb-16 md:pt-32">
-    <div class="site-container site-reading">
-      <h1 class="font-display text-4xl italic text-white sm:text-5xl">
-        Politica de confidențialitate
-      </h1>
-      <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">
-        Ce date colectăm, de ce le colectăm și ce poți face cu ele.
-      </p>
-      <p class="mt-6 text-sm text-text-on-primary-muted">
-        Ultima actualizare: 21 octombrie 2026
-      </p>
-    </div>
-  </header>
-
-  <main class="bg-surface-white py-16">
-    <div class="site-container site-reading space-y-12">
+  <p slot="byline" class="text-text-on-primary-muted">Ultima actualizare: 21 octombrie 2026</p>
       <section>
         <h2 class="font-display text-3xl italic text-primary">Cine suntem</h2>
         <OperatorLine class="mt-4 text-sm text-text-secondary" />
@@ -329,8 +318,4 @@ import WithdrawConsent from "../components/WithdrawConsent.astro";
           document or report abuse, email <!--email_off-->contact@tapselo.com<!--/email_off--> with the link. Last updated: 21 October 2026.
         </p>
       </section>
-    </div>
-  </main>
-
-  <Footer />
-</Layout>
+</GuideShell>

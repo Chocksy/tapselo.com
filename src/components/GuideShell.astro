@@ -47,6 +47,8 @@ interface Props {
   showCta?: boolean;
   /** Absolute og:image/twitter:image URL; Layout falls back to the site default. */
   ogImage?: string;
+  /** „Nu este consultanță juridică” footnote; legal pages (/privacy, /terms…) pass false. */
+  adviceNote?: boolean;
 }
 
 const {
@@ -71,6 +73,7 @@ const {
   appJsonLd = true,
   showCta = true,
   ogImage,
+  adviceNote = true,
 } = Astro.props;
 const hasByline = Astro.slots.has("byline");
 const contentInnerClass = contentWidth === "reading" ? "site-reading" : "w-full";
@@ -178,9 +181,11 @@ const ctaLocation = `ghid-${campaign}`;
       </section>
       )}
 
+      {adviceNote && (
       <p class="text-sm text-text-muted">
         Pagina are scop informativ și nu este consultanță juridică sau fiscală. Pentru cazul tău, verifică sursele oficiale sau întreabă contabilul.
       </p>
+      )}
         </div>
         {pageToc && <GuidePageToc />}
       </div>
