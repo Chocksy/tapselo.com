@@ -1,7 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/Navbar.astro";
-import Footer from "../components/Footer.astro";
+import GuideShell from "../components/GuideShell.astro";
 import EmailLink from "../components/EmailLink.astro";
 import { internalPath } from "../lib/internal-url.ts";
 
@@ -15,28 +13,19 @@ const li = "list-disc leading-relaxed";
 const a = "font-bold text-accent hover:text-accent-hover";
 ---
 
-<Layout
+<GuideShell
   title="Acord de prelucrare a datelor — Tapselo POS"
   description="Acordul de prelucrare a datelor (art. 28 GDPR) dintre magazin, ca operator, și Tapselo, ca persoană împuternicită, pentru datele clienților magazinului."
+  heading="Acord de prelucrare a datelor"
+  lead="Cum prelucrează Tapselo datele clienților tăi, în numele magazinului tău (art. 28 GDPR)."
+  campaign="legal-dpa"
+  breadcrumb={false}
+  contentWidth="reading"
+  pageToc
+  showCta={false}
+  adviceNote={false}
 >
-  <Navbar />
-
-  <header class="bg-primary pt-28 pb-16 md:pt-32">
-    <div class="site-container site-reading">
-      <h1 class="font-display text-4xl italic text-white sm:text-5xl">
-        Acord de prelucrare a datelor
-      </h1>
-      <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">
-        Cum prelucrează Tapselo datele clienților tăi, în numele magazinului tău (art. 28 GDPR).
-      </p>
-      <p class="mt-6 text-sm text-text-on-primary-muted">
-        Versiunea {DPA_VERSION} · 28 septembrie 2026
-      </p>
-    </div>
-  </header>
-
-  <main class="bg-surface-white py-16">
-    <div class="site-container site-reading space-y-12">
+  <p slot="byline" class="text-text-on-primary-muted">Versiunea {DPA_VERSION} · 28 septembrie 2026</p>
       <section>
         <h2 class={h2}>1. Părțile</h2>
         <p class={p}>
@@ -208,8 +197,4 @@ const a = "font-bold text-accent hover:text-accent-hover";
         </p>
         <p class={p}>Se aplică legea română.</p>
       </section>
-    </div>
-  </main>
-
-  <Footer />
-</Layout>
+</GuideShell>
