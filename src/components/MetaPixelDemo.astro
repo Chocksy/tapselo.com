@@ -150,11 +150,6 @@ const { pixelId } = Astro.props;
     });
     document.addEventListener("click", onDemoClick, true);
     window.addEventListener(WITHDRAW_EVENT, () => {
-      try {
-        localStorage.setItem(CONSENT_KEY, "denied");
-      } catch {
-        /* ignore */
-      }
       w.fbq?.("consent", "revoke");
       box.hidden = true;
     });
