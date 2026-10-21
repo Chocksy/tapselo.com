@@ -152,3 +152,4 @@ export function stripCarry(href: string, base = "https://tapselo.com/"): string 
   for (const k of [...CARRY_KEYS, "tc"]) u.searchParams.delete(k);
   return u.toString();
 }
+

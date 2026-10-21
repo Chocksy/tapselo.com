@@ -5,6 +5,7 @@ import Footer from "../components/Footer.astro";
 import EmailLink from "../components/EmailLink.astro";
 import { internalPath } from "../lib/internal-url.ts";
 import OperatorLine from "../components/OperatorLine.astro";
+import WithdrawConsent from "../components/WithdrawConsent.astro";
 ---
 
 <Layout
@@ -274,6 +275,9 @@ import OperatorLine from "../components/OperatorLine.astro";
           din GDPR). Ne puteți scrie oricând la
           <EmailLink class="font-bold text-accent hover:text-accent-hover" />.
         </p>
+        <div id="retrage-acordul" class="mt-4 text-text-secondary">
+          <WithdrawConsent class="rounded-md bg-accent px-4 py-2 font-bold text-white hover:bg-accent-hover" />
+        </div>
       </section>
 
       <section class="rounded-xl border border-border bg-surface p-6 md:p-8">

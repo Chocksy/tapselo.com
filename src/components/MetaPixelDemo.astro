@@ -33,6 +33,7 @@ const { pixelId } = Astro.props;
     isDemoHref,
     resolvePixelId,
   } from "../lib/meta/pixel.ts";
+  import { WITHDRAW_EVENT, cookieDenied } from "../lib/consent-withdraw.ts";
 
   type Fbq = ((...args: unknown[]) => void) & { queue?: unknown[]; loaded?: boolean; version?: string; push?: unknown; callMethod?: (...a: unknown[]) => void };
   type W = Window & { fbq?: Fbq; _fbq?: Fbq; __tapseloPostHogBoot?: { promise: Promise<{ capture: (e: string, p?: Record<string, unknown>) => void } | null> } };
@@ -42,6 +43,7 @@ const { pixelId } = Astro.props;
   const pixelId = resolvePixelId(box?.dataset.pixelId);
 
   const readConsent = () => {
+    if (cookieDenied(document.cookie)) return "denied"; // „Retrage acordul” wins over an older „Accept”
     try {
       return localStorage.getItem(CONSENT_KEY);
     } catch {
@@ -147,6 +149,15 @@ const { pixelId } = Astro.props;
       }
     });
     document.addEventListener("click", onDemoClick, true);
+    window.addEventListener(WITHDRAW_EVENT, () => {
+      try {
+        localStorage.setItem(CONSENT_KEY, "denied");
+      } catch {
+        /* ignore */
+      }
+      w.fbq?.("consent", "revoke");
+      box.hidden = true;
+    });
   }
 </script>
 
