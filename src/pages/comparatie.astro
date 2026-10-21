@@ -327,6 +327,8 @@ const initials = author.name.split(/\s+/).map((w) => w[0]).slice(0, 2).join("").
   }
 
   .compare-scroll {
+    /* Containing block for the .sr-only labels inside, so they scroll with the table instead of widening the page. */
+    position: relative;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     max-width: 100%;
