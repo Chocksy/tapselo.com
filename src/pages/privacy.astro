@@ -229,9 +229,9 @@ import OperatorLine from "../components/OperatorLine.astro";
           (<code>event_id</code>), ora evenimentului, adresa demo-ului (<code>event_source_url</code>), adresa IP, user
           agent, valorile <code>fbp</code>/<code>fbc</code>, prima pagină a vizitei pe tapselo.com
           (<code>landing_page</code>), <code>page_path</code> (mereu „/”) și parametrii <code>utm_*</code>, dacă există.
-          Aceste valori sunt trimise așa cum sunt, fără hash. Nu trimitem identificatori pe care Meta îi cere în formă
-          hash-uită (e-mail, telefon, nume, identificator extern). Ca să nu fie numărat de două ori, evenimentul are
-          alt <code>event_id</code> decât <code>demo_started</code> de pe tapselo.com.
+          Aceste valori sunt trimise așa cum sunt, fără hash. Nu trimitem e-mail, telefon, nume sau identificator extern.
+          Evenimentul are propriul <code>event_id</code>, diferit de cel al evenimentului <code>demo_started</code> de pe
+          tapselo.com.
           Dacă ați apăsat „Refuz” pe /demo/ (sau nu ați răspuns), adică dacă cookie-ul <code>tapselo_consent</code> lipsește
           sau are valoarea <code>denied</code>, linkul către demo nu primește aceste date, cookie-ul
           <code>tapselo_attr</code> este șters, iar din demo nu se trimite nimic către Meta.
@@ -249,17 +249,21 @@ import OperatorLine from "../components/OperatorLine.astro";
         </p>
         <p class="mt-4 leading-relaxed text-text-secondary">
           <strong>Destinatar.</strong> Datele ajung la Meta Platforms Ireland Limited. Meta poate transfera date către
-          Meta Platforms, Inc. din Statele Unite. Meta Platforms, Inc. este certificată în cadrul EU-U.S. Data Privacy
-          Framework, conform
-          <a href="https://www.facebook.com/privacy/policies/data_privacy_framework" class="text-accent hover:text-accent-hover" rel="noopener">declarației Meta privind Data Privacy Framework</a>.
+          Meta Platforms, Inc. din Statele Unite, care este certificată în cadrul Cadrului de confidențialitate a datelor
+          UE-SUA (EU-U.S. Data Privacy Framework), conform
+          <a href="https://www.facebook.com/privacy/policies/data_privacy_framework" class="text-accent hover:text-accent-hover">declarației Meta privind Data Privacy Framework</a>. Pentru alte
+          transferuri în afara Spațiului Economic European, Meta folosește mecanismele descrise în politica sa de
+          confidențialitate.
         </p>
         <p class="mt-4 leading-relaxed text-text-secondary">
           <strong>Cum refuzați sau vă retrageți acordul.</strong> Apăsați „Refuz” în caseta de pe /demo/. Dacă ați
-          acceptat deja, vă puteți retrage acordul oricând, la fel de simplu: ștergeți datele site-ului tapselo.com din
-          browser (cookie-urile, inclusiv <code>tapselo_consent</code>, și localStorage). Fără cookie-ul
+          acceptat deja, vă puteți retrage acordul oricând: ștergeți din browser datele site-ului tapselo.com și ale
+          subdomeniilor app.tapselo.com și demo.tapselo.com (cookie-urile, inclusiv <code>tapselo_consent</code>, și
+          localStorage). Fără cookie-ul
           <code>tapselo_consent=marketing</code>, demo-ul nu mai trimite nimic către Meta și nu mai adaugă datele de
           campanie în PostHog, iar caseta va apărea din nou la următoarea vizită pe /demo/. Retragerea acordului nu
-          afectează prelucrarea făcută înainte (art. 7 alin. (3) din GDPR). Ne puteți scrie oricând la
+          afectează legalitatea prelucrării efectuate pe baza consimțământului înainte de retragere (art. 7 alin. (3)
+          din GDPR). Ne puteți scrie oricând la
           <EmailLink class="font-bold text-accent hover:text-accent-hover" />.
         </p>
       </section>
@@ -292,8 +296,8 @@ import OperatorLine from "../components/OperatorLine.astro";
           cookies, except on /demo/: there, only after the visitor clicks "Accept", the Meta Pixel and Meta
           Conversions API record a demo_started event (event_id, landing page, page path, utm_* parameters, IP
           address, user agent, _fbp/_fbc), sent to Meta Platforms Ireland for ad measurement, on the basis of consent.
-          Only when the tapselo_consent=marketing cookie (.tapselo.com) is present, the demo (app.tapselo.com / demo.tapselo.com) also sends a server-side demo_active event via the Conversions API (new event_id, event time, demo URL, IP, user agent, fbp/fbc, landing_page, page_path "/", utm_*; sent unhashed, no email, phone or external ID); if the visitor refused, nothing is sent from the demo either and tapselo_attr is deleted. For accepted visits only, the demo also records utm_*, landing_page, event_id and fbclid on its PostHog analytics events. No email, phone, barcodes, prices, CUIs or company data are sent. Cookies: _fbp, _fbc, tapselo_attr
-          (.tapselo.com, 7 days), tapselo_consent (.tapselo.com, 180 days, "marketing" or "denied"; the demo sends to Meta only with "marketing"); localStorage tapselo_marketing_consent.
+          Only when the tapselo_consent=marketing cookie (.tapselo.com) is present, the demo (app.tapselo.com / demo.tapselo.com) also sends a server-side demo_active event via the Conversions API (new event_id, event time, demo URL, IP, user agent, fbp/fbc, landing_page, page_path "/", utm_*; sent unhashed, no email, phone, name or external ID); if the visitor refused, nothing is sent from the demo either and tapselo_attr is deleted. For accepted visits only, the demo also records utm_*, landing_page, event_id and fbclid on its PostHog analytics events. No email, phone, barcodes, prices, CUIs or company data are sent. Cookies: _fbp, _fbc, tapselo_attr
+          (.tapselo.com, 7 days), tapselo_consent (.tapselo.com, 180 days, "marketing" or "denied"; the demo sends to Meta only with "marketing"); localStorage tapselo_marketing_consent. Legal basis: consent (GDPR art. 6(1)(a); Romanian Law 506/2004 art. 4(5) for cookies). Meta may transfer data to Meta Platforms, Inc. (US), certified under the EU-U.S. Data Privacy Framework. To withdraw consent, clear the site data of tapselo.com, app.tapselo.com and demo.tapselo.com; withdrawal does not affect the lawfulness of earlier processing.
         </p>
         <p class="mt-4 leading-relaxed text-text-secondary">
           AI connector ("Tapselo", https://tapselo.com/mcp, used from Claude or ChatGPT, no account):
