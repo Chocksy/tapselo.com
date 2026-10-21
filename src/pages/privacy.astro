@@ -266,11 +266,18 @@ import WithdrawConsent from "../components/WithdrawConsent.astro";
         </p>
         <p class="mt-4 leading-relaxed text-text-secondary">
           <strong>Cum refuzați sau vă retrageți acordul.</strong> Apăsați „Refuz” în caseta de pe /demo/. Dacă ați
-          acceptat deja, vă puteți retrage acordul oricând: ștergeți din browser datele site-ului tapselo.com și ale
+          acceptat deja, vă puteți retrage acordul oricând cu un clic pe butonul
+          <a href="#retrage-acordul" class="text-accent hover:text-accent-hover">„Retrage acordul”</a>, aflat mai jos
+          și în subsolul fiecărei pagini. Butonul setează cookie-ul <code>tapselo_consent=denied</code> pe domeniul
+          <code>.tapselo.com</code>, valabil 180 de zile, șterge cookie-ul <code>tapselo_attr</code> și prima pagină a
+          vizitei (<code>tapselo_landing_page</code>, sessionStorage) și scoate datele de măsurare din linkurile către
+          demo de pe pagina deschisă. Pe /demo/, păstrează și alegerea „Refuz” în localStorage și transmite pixelului
+          Meta retragerea acordului (<code>consent revoke</code>). Cu <code>tapselo_consent=denied</code>, demo-ul nu
+          mai trimite nimic către Meta, iar la următoarea încărcare șterge din PostHog datele de campanie salvate în
+          browser (parametrii <code>utm_*</code>, <code>landing_page</code>, <code>event_id</code> și
+          <code>fbclid</code>). Ca alternativă, puteți șterge manual din browser datele site-ului tapselo.com și ale
           subdomeniilor app.tapselo.com și demo.tapselo.com (cookie-urile, inclusiv <code>tapselo_consent</code>, și
-          localStorage). Fără cookie-ul
-          <code>tapselo_consent=marketing</code>, demo-ul nu mai trimite nimic către Meta și nu mai adaugă datele de
-          campanie în PostHog, iar caseta va apărea din nou la următoarea vizită pe /demo/. Retragerea acordului nu
+          localStorage); în acest caz, caseta va apărea din nou la următoarea vizită pe /demo/. Retragerea acordului nu
           afectează legalitatea prelucrării efectuate pe baza consimțământului înainte de retragere (art. 7 alin. (3)
           din GDPR). Ne puteți scrie oricând la
           <EmailLink class="font-bold text-accent hover:text-accent-hover" />.
@@ -309,7 +316,7 @@ import WithdrawConsent from "../components/WithdrawConsent.astro";
           Conversions API record a demo_started event (event_id, landing page, page path, utm_* parameters, IP
           address, user agent, _fbp/_fbc), sent to Meta Platforms Ireland for ad measurement, on the basis of consent.
           Only when the tapselo_consent=marketing cookie (.tapselo.com) is present, the demo (app.tapselo.com / demo.tapselo.com) also sends a server-side demo_active event via the Conversions API (new event_id, event time, demo URL, IP, user agent, fbp/fbc, landing_page, page_path "/", utm_*; sent unhashed, no email, phone, name or external ID); if the visitor refused, nothing is sent from the demo either and tapselo_attr is deleted. For accepted visits only, the demo also records utm_*, landing_page, event_id and fbclid on its PostHog analytics events (no fbp/fbc). Independently of consent, the demo also sends PostHog usage and debugging events (pages opened, clicks, errors and session recordings, with password fields masked). PostHog, Inc. (US) processes all PostHog data as our processor on PostHog Cloud EU (Frankfurt), via t.tapselo.com; per PostHog's DPA, PostHog, Inc. participates in the EU-U.S. Data Privacy Framework and uses Standard Contractual Clauses for transfers outside the EEA. No email, phone, barcodes, prices, CUIs or company data are sent. Cookies: _fbp, _fbc, tapselo_attr
-          (.tapselo.com, 7 days), tapselo_consent (.tapselo.com, 180 days, "marketing" or "denied"; the demo sends to Meta only with "marketing"); localStorage tapselo_marketing_consent. Legal basis: consent (GDPR art. 6(1)(a); Romanian Law 506/2004 art. 4(5) for cookies). Meta may transfer data to Meta Platforms, Inc. (US), certified under the EU-U.S. Data Privacy Framework. To withdraw consent, clear the site data of tapselo.com, app.tapselo.com and demo.tapselo.com; withdrawal does not affect the lawfulness of earlier processing.
+          (.tapselo.com, 7 days), tapselo_consent (.tapselo.com, 180 days, "marketing" or "denied"; the demo sends to Meta only with "marketing"); localStorage tapselo_marketing_consent. Legal basis: consent (GDPR art. 6(1)(a); Romanian Law 506/2004 art. 4(5) for cookies). Meta may transfer data to Meta Platforms, Inc. (US), certified under the EU-U.S. Data Privacy Framework. To withdraw consent, click "Retrage acordul" (in every page footer and at /privacy/#retrage-acordul): it sets tapselo_consent=denied on .tapselo.com for 180 days, deletes tapselo_attr and the sessionStorage tapselo_landing_page, removes the measurement data from demo links on the open page, and on /demo/ also stores "denied" in localStorage and sends Meta Pixel consent revoke. With the denied cookie the demo sends nothing to Meta and, on its next load, clears the stored PostHog campaign properties (utm_*, landing_page, event_id, fbclid). Alternatively, clear the site data of tapselo.com, app.tapselo.com and demo.tapselo.com by hand; withdrawal does not affect the lawfulness of earlier processing.
         </p>
         <p class="mt-4 leading-relaxed text-text-secondary">
           AI connector ("Tapselo", https://tapselo.com/mcp, used from Claude or ChatGPT, no account):
