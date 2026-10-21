@@ -2,9 +2,7 @@
 // /ai: docs page for the "Tapselo" MCP connector (https://tapselo.com/mcp).
 // The tool list comes from the registry (src/lib/mcp/tools.ts). Every tool needs a line in LINES,
 // else the build fails, so the page cannot drift from the tools.
-import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/Navbar.astro";
-import Footer from "../components/Footer.astro";
+import GuideShell from "../components/GuideShell.astro";
 import EmailLink from "../components/EmailLink.astro";
 import { internalPath } from "../lib/internal-url.ts";
 import { answerTools } from "../lib/mcp/tools.ts";
@@ -66,24 +64,18 @@ const p = "mt-4 leading-relaxed text-text-secondary";
 const li = "list-disc leading-relaxed";
 ---
 
-<Layout
+<GuideShell
   title="Tapselo în Claude și ChatGPT | Tapselo"
   description="Conectorul Tapselo pentru Claude și ChatGPT: reguli fiscale, erori Datecs, cântare Dibal, calcul preț, verificare firmă și documente printabile pentru magazinele mici din România."
+  heading="Tapselo în Claude și ChatGPT"
+  lead="Un conector care dă asistentului AI reguli verificate și calcule pentru magazinele mici din România, plus documente gata de printat."
+  campaign="ai"
+  breadcrumb={false}
+  contentWidth="reading"
+  pageToc
+  showCta={false}
+  adviceNote={false}
 >
-  <Navbar />
-
-  <header class="bg-primary pt-28 pb-14 md:pt-32">
-    <div class="site-container site-reading">
-      <h1 class="font-display text-4xl italic text-white sm:text-5xl">Tapselo în Claude și ChatGPT</h1>
-      <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">
-        Un conector care dă asistentului AI reguli verificate și calcule pentru magazinele mici din România, plus
-        documente gata de printat.
-      </p>
-    </div>
-  </header>
-
-  <main class="bg-surface-white py-14">
-    <div class="site-container site-reading space-y-12">
       <section>
         <h2 class="font-display text-3xl italic text-primary">Ce face</h2>
         <p class={p}>
@@ -189,8 +181,5 @@ const li = "list-disc leading-relaxed";
           <EmailLink class={a} />.
         </p>
       </section>
-    </div>
-  </main>
+</GuideShell>
 
-  <Footer />
-</Layout>
