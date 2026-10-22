@@ -30,6 +30,8 @@ type Data = { verified_on: string; published: string; sources: Record<DocId, Sou
 export const datecsPagesData = raw as unknown as Data;
 export const datecsErrorPages = datecsPagesData.pages;
 export const HUB_PATH = "/ghid/erori-datecs/";
+/** Confirmed by Razvan on 2026-10-22; the only Tapselo-shows-error claim allowed (see test). */
+export const TAPSELO_LINE = "Tapselo afișează textul erorii casei de marcat direct pe ecranul casei, în aplicație.";
 
 export const datecsPagePath = (slug: string) => internalPath(`/ghid/erori-datecs/${slug}`);
 export const datecsPageByCode = (code: string) => datecsErrorPages.find((p) => p.code === code);
