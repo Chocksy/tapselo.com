@@ -1,0 +1,299 @@
+# M2: Datecs, „Manualul utilizatorului — Casa de marcat electronică fiscală Datecs DP-25MX”
+# Sursa: https://www.datecs.ro/getFile/mbs619e2afeac916.html
+# Accesat: 22.10.2026. Text extras cu pdftotext -layout (spațiile multiple comprimate), doar paginile citate: 5, 6, 20, 28, 29.
+
+=== pag. 5 ===
+Manual casa de marcat electronica fiscala marca DATECS model DP-25MX
+
+DESPACHETARE
+
+După ce scoateti casa de marcat electronica din cutie și inlaturati protectiile de carton si folia de plastic, veți găsi:
+▪ Manual de utilizare;
+▪ Registrul Special
+▪ Cartea de interventii
+
+▪ NU instalați casa de marcat electronica la lumină solară directă sau in apropierea surselor de caldura!
+▪ Amplasati casa de marcat într-un loc adecvat pentru operare astfel incat, atât clientul și operatorul sa
+poata vedea informațiile afișate.
+▪ NU instalați aparatul în locuri cu mult praf!
+
+PORNIREA AMEF (ON / OFF)
+
+Casa de marcat DP-25MX este livrata impreuna cu alimentatorul de curent electric. Alimentatorul este destinat să
+funcționeze cu tensiune de intrare 100 ... 240 Vca / 50Hz. Puteti sa achizitionati optional acumulator Li-Ion 7,4V
+2000mAh.
+AMEF poate fi pornit prin apăsarea tastei . Pe ecran este afișat meniul principal <<MENIU >>.
+
+AMEF poate fi oprita din meniul principal <<MENIU >> după apăsarea tastei sau prin selectarea optiunii 10
+din meniu.
+
+▪ Nu folositi alte tipuri de alimentatoare in afara celor recomandate de producator.
+▪ Conectati casa de marcat doar la prize cu impamantare!
+▪ Evitati conectarea alimentatorului AMEF la un bloc de conectare (priza multipla), împreună cu alți
+consumatori puternici de energie (frigidere, congelatoare, cuptoare, motoare electrice etc.)
+▪ Conectati alimentatorul AMEF la rețea pentru încărcarea acumulatorului inglobat, cu 24 de ore înainte
+de utilizarea AMEF! Înainte de a începe lucrul, verificați dacă există hârtie si asezata corect în AMEF!
+
+▪ Sesizati orice anomalie in functionarea AMEF unitatii de service cu care aveti contract.
+▪ Asigurati-va ca toate interventiile asupra casei de marcat sunt efectuate de un tehnician autorizat,
+reprezentant al unei firme de service autorizate sa intervina asupra acestui model de casa de marcat.
+Pentru o lista actualizata a firmelor de service autorizate, verificati site-ul importatorului: datecs.ro
+▪ Asigurati-va ca toate interventiile asupra casei de marcat au fost notate in cartea de interventii a
+aparatului.
+▪ Verificati periodic integritatea sigiliului aplicat casei de marcat. In cazul lipsei anuntati imediat unitatea
+acreditata pentru service si notati data, ora si locul unde a fost gasit echipamentul fiscal. Administratorul
+societatii detinatoare de AMEF trebuie sa intocmeasca un Proces Verbal de constatatre a lipsei sigiliului.
+
+Încărcarea hârtiei
+▪ Scoateți capacul imprimantei;
+▪ Așezați rola de hârtie conform desenului de mai jos;
+
+▪ Derulati aproximativ 5-10 cm din rola de hârtie;
+▪ Închideți capacul apăsandu-l ușor. Daca intampinati rezistenta, reasezati rola de hartie si repetati
+inchiderea capacului;
+
+5
+
+=== pag. 6 ===
+Manual casa de marcat electronica fiscala marca DATECS model DP-25MX
+
+▪ Pentru avans hârtie apasati si urmariti derularea hartiei catre exterior. Daca hartia nu se
+deruleaza, deschideti capacul si rearanjati rola;
+▪ Daca ati ramas fara hartie in timpul tiparirii unui document, introduceti rola de hartie (conform
+
+instructiunilor) si apasati tasta pentru deblocarea casei de marcat.
+
+DESCRIERE AFISAJ
+DP-25MX are două afisaje grafice - unul pentru operator și unul pentru client.
+Afișajul operatorului are 4 rânduri (benzi) de text cu numărul maxim de 22 caractere afisate pentru fiecare rand.
+Afisajul clientului are 2 rânduri de text cu numărul maxim de 16 caractere afisate pentru fiecare rand.
+Afisaj operator: Afisaj Client:
+
+MENIU 11:18 Pâine albã
+1 VANZARI
+2 RAPOARTE X 3.60
+
+In partea superioara a ecranului operatorului există o banda de status, permanent vizibila.
+
+24.11.2017 13:19
+Pâine albã
+
+3.60
+Pe linia de stare sunt afisate:
+24.11.2017 13:19 - data și ora curentă
+
+- indicator de incarcare a bateriei
+
+Modurile de operare
+
+DP-25MX suporta mai multe moduri de operare care permit urmatoarele: accesul rapid la toți parametrii de
+functionare, modificarea lor, imprimarea de rapoarte, comunicarea cu un computer și vânzări de la tastatură.
+Interactiunea cu operatorul se face prin mesaje scrise fie ca sunt descrieri ale meniului casei de marcat sau mesaje
+de eroare datorate operarii eronate.
+După pornirea AMEF pe (cu cheia ) ecran este afișat << MENIU >>: MENIU 11:18
+1 VANZARI
+2 RAPOARTE X
+
+Meniul principal oferă acces la următoarele moduri:
+număr Mod Descriere număr Mod Descriere
+1 VANZARI 6 CONEXIUNE PC
+2 RAPOARTE X 7 SERVICE
+3 RAP. FISCALE 8 TESTE
+4 PROGRAMARE 9 JURNAL ELECTRONIC
+5 RAP. INFO AMEF 10 OPRIRE
+1. Alegerea unui mod de funcționare
+Fiecare mod poate fi accesat in următorul fel:
+-cu tasta numerica corespondenta
+
+-cu ajutorul tastelor / va pozitionati pe modul dorit și il selectați prin apăsarea .
+Cu tasta puteți ieși din orice mod si sa reveniti la meniul anterior.
+
+2. Accesul la moduri:
+Operatorii nu au drepturi egale la accesarea modurilor. Permisiunile de acces pentru operatorii sunt:
+
+▪ Operatorii 1..23 (casieri) au acces numai la modul Inregistrare (vanzari)
+▪ Operatorii 24, 25 au acces la modurile Inregistrare,RAPORT Х si Jurnal Electronic
+
+6
+
+=== pag. 20 ===
+Manual casa de marcat electronica fiscala marca DATECS model DP-25MX
+Secventa de taste permite introducerea unui text liber, care va fi tiparit pe bon imediat după
+introducerea sa.
+Puteți introduce până la 10 linii și până la 40 de caractere pe linie.
+
+Apasati pentru a intra în modul de introducere a textului. Utilizați tastele descrise în modul
+„Programare“ – editarea campurilor alfabetice. Apasati pentru a ieși din acest mod si pentru
+confirmarea sau nu a tiparirii. .
+Apasarea tastei determina finalizarea bonului si incasarea contravalorii articolelor inregistrate (tip plata
+implicit: incasarea in numerar) Dacă înainte de apăsarea acestei taste este introdusa suma bruta pe
+care clientul a plătit-o în numerar, sunt tipărite atât valoarea totală cat si restul de returnat. În cazul în
+care el a plătit în numerar mai puțini bani decât este necesar – se inregistreaza o plată parțială.
+Este posibila si plata mixtă. După introducerea unei părți din suma datorată și apăsând butonul de tip
+de plată, suma și tipul de plată sunt tipărite. Pe ecran este afișată suma rămasă datorată. Se poate
+continua in mod similar cu un alt mod de plata.
+
+Deschide sertarul atunci când nu exista bon deschis.
+
+Selectare tip de plata „2“ - CARD.
+
+Introduceti suma plătită de client cu aceasta metoda, apoi apăsați .
+
+Pentru optiunea 1, suma platita este inregistrata ca plata cu cardul.
+Daca exista si optiunea de avans in numerar (cash – back), se va alege optiunea 2 care va permite
+inregistrarea sumei de avans numerar si care va inregistra atat suma de plata platita cu cardul cat si
+suma de avans numerar.
+
+Selectarea meniului PinPad.
+Daca AMEF este configurata sa lucreze cu PinPad integrat, meniul de administrare a PinPadului
+Datecs se acceseaza din Modul Inregistrare inainte de introducerea vreunui articol.
+Optiunile meniului sunt:
+▪ Anulare
+▪ Copia ultimului document PinPad
+▪ Copia unui document PinPad
+▪ Raport tranzactii ziua curenta
+▪ Inchidere zi
+▪ Raport PinPad
+▪ Raport detaliat
+▪ Corelare Data - ora
+▪ Test conectare cu PinPad
+▪ Test conectare cu server autorizare
+▪ Actualizare software
+▪ Autorizare tranzactie non-fiscala
+▪ Informatii PinPad
+▪ Conexiune PinPad
+▪ Sold schema loialitate
+
+Selectare tip de plata „3“ TICHETE MASA.
+
+Introduceti suma plătită de client cu aceasta metoda, apoi apăsați .
+Selectarea tipurilor de plata 4 - 9
+
+Introduceti suma plătită de client cu aceasta metoda, apoi apăsați apăsați consecutiv .
+Plata în moneda alternativă. În cazul în care clientul a plătit mai mulți bani decât este necesar într-o
+monedă alternativă, restul se calculeaza in moneda alternativa.
+
+Arata clientului suma care trebuie plătită într-o monedă alternativă.
+
+20
+
+=== pag. 28 ===
+Manual casa de marcat electronica fiscala marca DATECS model DP-25MX
+
+(6 - 9) ALTE MODURI
+(6) Modul - Conexiunea cu PC
+Acest mod permite programarea, realizarea de rapoarte și de vânzări cu AMEF, cu ajutorul unui calculator,
+conectat la acesta.
+Înainte de a începe lucrul, este necesar să se programeze parametrii portului COM din Modul
+Programare, sectiunea 13. Configurare, 5.Comunicatie , 2. Conexiune PC, al casei de marcat utilizat pentru
+conectarea la PC.
+
+Casa de marcat DP-25MX are capacitatea de a inchide corect un bon, chiar si in cazul in care apar
+disfunctionalitati in conexiunea cu PC-ul.
+Prin apăsarea tastei este afisat pe ecranul operator un dialog de iesire din blocaj:
+
+Dacă tasta este apăsata, AMEF ramane in starea actuala asteptand interventie de la PC.
+
+Dacă tasta este apăsata, AMEF afișează un meniu pentru alegerea unui mod de inchidere bon:
+
+1. Anulare bon
+2. Închidere bon
+
+(7) Modul Service
+ATENTIE! Acest mod este accesibil numai persoanelor avizate. Va rugam sa legitimati tehnicianul de service
+si sa va asigurati ca va completa toate actele in conformitate cu legislatia in vigoare!
+
+(8)Modul Teste
+Pentru a accesa modul „Test“, din meniul principal << MENIU >> apăsați tasta . Testele sunt activate
+cu tasta numerica corespondenta:
+Nr. testului Descriere
+1 Test de imprimantă
+2 Test de afișare
+3 Test de tastatură
+4 Test de memorie RAM
+5 Test de memorie FLASH (microSD)
+6 Test de citire Memorie Fiscală
+7 Test de scriere în Memoria Fiscală
+8 Test complet Memorie Fiscală
+9 Test Ceas - data și ora curentă vor fi afișate până la expirarea unui minut de la inceputul
+testului sau până când orice tastă este apăsată.
+10 Test complet
+11 Test ciclic
+12 Test de porturi seriale - se testeaza porturile seriale COM1, COM2 si USB; este necesar un
+cablu special;
+13 Test GPRS
+14 Test baterie
+15 Test modul criptare
+
+(9) Modul Jurnal Electronic
+
+Pentru a accesa modul „Jurnal Electronic“, din meniul principal << MENIU >> apăsați tasta sau folositi tasta
+
+pana la “9). Jurnal Electronic:” si selectati-l apasand
+
+28
+
+=== pag. 29 ===
+Manual casa de marcat electronica fiscala marca DATECS model DP-25MX
+Selectati una dintre optiunile urmatoare
+1) Export date.
+Optiunea este utilizata pentru extragerea fisierelor din Jurnal Electronic. Acestea sunt:
+1. Lunar ANAF. Genereaza si exporta un pachet de fisiere criptate (.p7b) corespunzator lunii
+selectate
+2. La cerere ANAF. Genereaza si exporta un pachet de fisiere criptate corespunzator selectiei
+dupa data si ora, sau dupa serie rapoarte Z
+3. Export Fisiere JE. Genereaza si exporta un fisier necriptat (.je) corespunzand selectiei dupa
+data sau dupa serie rapoarte Z
+Nota! Daca AMEF este conectata la un calculator personal puteti folosi programele utilitare de extragere
+fisiere puse la dispozitie de Distribuitorul Autorizat DANUBIUS EXIM. Va rugam sa consultati site-ul
+www.datecs.ro pentru a descarca programele necesare!
+
+2) Rapoarte JE. Optiunile de raportare sunt:
+
+1. Raport detaliat JE: selectare dupa nr. Z sau Data/Ora
+2. Raport Z: selectare dupa nr. Z sau Data/Ora
+3. Raport Bonuri Fiscale BF: selectare dupa nr. Bon, nr. Z sau Data/Ora
+4. Raport BF cu CIF client: selectare dupa nr. Bon, nr. Z sau Data/Ora
+5. Raport Bonuri Nefiscale: selectare dupa nr. Bon, nr. Z sau Data/Ora
+6. Raport anulari: selectare dupa nr. Bon, nr. Z sau Data/Ora
+
+ERORI POSIBILE AMEF ȘI METODE DE REZOLVARE
+
+Eroare Cauzele erorilor și indicatii pentru rezolvare
+Operatiune imposibila Secvența selectată de taste nu poate fi executată
+Cod PLU inexistent! Cod PLU invalid. Introduceți un cod PLU valid.
+Cota TVA inactiva Încercarea de a face o vânzare cu o cota TVA interzisa
+Pret Lipsa Introduceți un preț (de exemplu, pentru un articol cu tipul de preț 2).
+Parametru invalid Parametrul introdus nu este valid.
+Depasire rulaj PLU Efectuati un Raport Zilnic pe articol cu descarcare de registre
+Depasire AMEF REGISTRU Efectuati un Raport Zilnic (Z)
+Depasire Bon REGISTRU S-a atins numărul maxim de vânzări intr-un bon. Închideți bonul cu
+articolele deja inregistrate. Deschideti un bon nou pentru a finaliza
+vanzarea.
+Bon Deschis! O încercare de a ieși din modul Inregistrare în timp ce există un bon
+deschis.
+Bon inchis! O tasta functionala pentru efectuarea unei plăți a fost apăsata după
+inchiderea bonului.
+Numerar insuficient! Suma tastata pentru operatiunea de Retragere numerar este mai mare
+decât suma disponibilă în sertar
+Plata initiata O încercare de inregistrare vânzare a fost facuta în timp ce plata a fost
+inițiată. Închideți bonul și deschideți un bon nou sau anulati bonul se
+repetati vânzarea.
+Nr. max. de vanzari A fost atins numărul maxim de vânzări inregistrate in bon. Închideți
+bonul. Deschideti un bon nou.
+Posibil sume negative! Operatiunea efectuata nu este posibila deoaree poate genera valori
+negative.
+BD plina Baza de date articole este plina, iar articolul nu poate fi stocat
+Există Cod de bare. Codul de bare există deja si este alocat pentru un alt articol.
+Cod de bare Lipsa! Codul de bare nu este introdus în baza de date.
+Eroare Baza Date PLU! Structura bazei de date este deteriorata. Este necesară intervenția de
+service.
+MF nu e goala Eroare blocanta. Este necesară intervenția de service.
+MF defecta Eroare blocanta. Este necesară intervenția de service.
+MF plina Eroare blocanta. Este necesară intervenția de service.
+DMJE plin Eroare blocanta. Este necesară intervenția de service.
+Lipsa modul criptare Eroare blocanta. Este necesară intervenția de service.
+Lipsa hartie! Înlocuiți rola de hârtie cu una noua
+Consultati Lista Coduri de eroare publicata pe site-ul www.datecs.ro
+
+29

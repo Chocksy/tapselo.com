@@ -1,0 +1,91 @@
+# M3: Datecs, „Manual de Utilizare Imprimanta Fiscală Datecs FP-700”, UM 31.01.18/v1.0.0
+# Sursa: https://www.datecs.ro/getFile/mbs5d090a4e3542d.html
+# Accesat: 22.10.2026. Text extras cu pdftotext -layout (spațiile multiple comprimate), doar paginile citate: 6, 25.
+
+=== pag. 6 ===
+1 DATECS FP-700 Manual Utilizare
+
+4. Funcționalitățile tastelor/butoanelor
+Taste/Butoane Funcție
+- In mod operațional are rolul de Switch alimentare al imprimantei (ON/OFF)
+- In mod Meniu autonom are funcție de ieșire din Meniu
+
+- In mod operațional, apăsarea butonului executa avans rolă hârtie
+- In mod Meniu autonom, execută opțiunea selectată
+
+- Apăsarea butonului când imprimanta este in mod operațional execută trecerea in mod
+Meniu.
+- permite schimbarea valorii pentru parametrul selectat (mod Meniu)
+- daca parametrul selectat are valoare de tip caracter, trece la caracterul anterior. (mod
+Meniu)
+- permite schimbarea valorii pentru parametrul selectat (mod Meniu)
+- daca parametrul selectat are valoare de tip caracter, trece la caracterul următor. (mod
+Meniu).
+- Apăsarea butonului, când imprimanta este in mod operațional, execută trecerea in mod
+Meniu si tipărirea Raportului Z.
+- In mod Meniu, trece la linia (opțiunea) următoare
+- In mod Meniu, când un parametru este selectat, valoarea acestuia scade
+- Apăsarea butonului, când imprimanta este in mod operațional execută trecerea in mod
+Meniu și tipărirea Raportului X.
+- In mod Meniu, trece la linia (opțiunea) anterioara
+- In mod Meniu, când un parametru este selectat, valoarea acestuia creste
+
+4.1. Switch alimentare ON/OFF
+
+Imprimanta fiscală se pornește / oprește prin apăsarea butonului .
+
+Clapeta deschidere
+
+Switch ON/OFF
+
+4.2. Schimbarea rolei de hârtie
+Imprimanta fiscala permite schimbarea rolei de hârtie într-un mod simplu. Trebuie sa urmați pașii de mai jos:
+ Deschideți capacul imprimantei apăsând clapeta de deschidere
+ Scoateți rola veche si introduceți rola nouă conform pozei
+ Derulați 3- 5 cm de hârtie
+ Închideți capacul prin presare
+ Apăsați pentru derulare hârtie. Daca hârtia nu avansează cursiv, deschideți capacul, rearanjați rola,
+închideți capacul si repetați
+
+UM 31.01.18/v1.0.0 6
+
+=== pag. 25 ===
+1 DATECS FP-700 Manual Utilizare
+
+6.11. Modul Criptografic
+№ Tasta Indicații afișaj
+
+1 Apăsați
+
+2 Apăsați / până ajungeți la 10) Modul Criptare
+
+3 Apăsați pentru confirmare
+
+4
+Ieșiți cu
+
+8. Configurare
+Opriți imprimanta (Power OFF) Porniți imprimanta și țineți apăsat butonul .
+Mențineți apăsat butonul până auziți al treilea semnal sonor.
+
+Pe ecran va fi afișată configurația curentă între imprimanta fiscală și PC.
+
+Viteza de transfer poate fi schimbată cu butoanele / .
+Noua valoare setată, trebuie confirmată prin apăsarea butonului
+
+Abandonarea schimbării se face apăsând butoanele
+/ . Confirmați abandonul cu .
+
+Posibile probleme și metode de eliminare:
+
+Mesaj Cauze si remedieri
+Lipsă hârtie! Înlocuiți rola de hârtie
+Capac hârtie deschis! Închideți capacul imprimantei
+Bon deschis Închideți bonul dacă e necesar
+Bon închis S-au trimis instrucțiuni de plată după închiderea bonului
+Efectuați Raportul Z Efectuați Raportul Z pentru a putea continua vânzările
+Afișaj deconectat Verificați conexiunea cu afișajul client
+Service! Anunțați echipa de Service
+Va rugam sa consultati lista de coduri cu posibile erori publicata pe site-ul www.datecs.ro
+
+UM 31.01.18/v1.0.0 25

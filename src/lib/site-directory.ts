@@ -4,6 +4,7 @@ import checklists from "./kb/shop-checklists.json";
 import { supportArticles } from "./articles/load.ts";
 import { articlePath, A4200_CHECKER_PATH } from "./articles/schema.ts";
 import { internalPath } from "./internal-url.ts";
+import { datecsErrorPages, datecsPagePath } from "./datecs-pages/pages.ts";
 
 export type SiteLink = { href: string; label: string };
 
@@ -51,6 +52,12 @@ export const articleLinks: SiteLink[] = supportArticles.map((a) => ({
   label: a.title,
 }));
 
+/** Per-error Datecs pages under /ghid/erori-datecs/<slug>/ (TAP-018). */
+export const datecsErrorPageLinks: SiteLink[] = datecsErrorPages.map((p) => ({
+  href: datecsPagePath(p.slug),
+  label: `${p.message} la casa de marcat Datecs (${p.code})`,
+}));
+
 /** Every /ghid/* and /unelte/* URL we ship (for crawl tests). */
 export function allGhidUneltePaths(): string[] {
   const paths = new Set<string>();
@@ -62,6 +69,7 @@ export function allGhidUneltePaths(): string[] {
   for (const a of articleLinks) paths.add(a.href);
   paths.add(internalPath(A4200_CHECKER_PATH));
   paths.add(internalPath("/ghid/erori-datecs"));
+  for (const d of datecsErrorPageLinks) paths.add(d.href);
   paths.add(internalPath("/ghid/cantar-dibal"));
   paths.add(internalPath("/ghid/registru-unic-de-control"));
   paths.add(internalPath("/ghid/articole"));

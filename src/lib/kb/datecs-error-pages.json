@@ -1,0 +1,146 @@
+{
+  "verified_on": "2026-10-22",
+  "published": "2026-10-22",
+  "sources": {
+    "M1": { "title": "Datecs, „Coduri de eroare DATECS” (lista codurilor de eroare, aparate fiscale)", "url": "https://www.datecs.ro/getFile/mbs5f4612fe46e90.html", "file": "docs/sources/datecs/M1.txt" },
+    "M2": { "title": "Datecs, „Manualul utilizatorului — Casa de marcat electronică fiscală Datecs DP-25MX”", "url": "https://www.datecs.ro/getFile/mbs619e2afeac916.html", "file": "docs/sources/datecs/M2.txt" },
+    "M3": { "title": "Datecs, „Manual de Utilizare Imprimanta Fiscală Datecs FP-700”, UM 31.01.18/v1.0.0", "url": "https://www.datecs.ro/getFile/mbs5d090a4e3542d.html", "file": "docs/sources/datecs/M3.txt" }
+  },
+  "service": [
+    { "text": "Sesizati orice anomalie in functionarea AMEF unitatii de service cu care aveti contract.", "doc": "M2", "page": 5 },
+    { "text": "Asigurati-va ca toate interventiile asupra casei de marcat sunt efectuate de un tehnician autorizat, reprezentant al unei firme de service autorizate sa intervina asupra acestui model de casa de marcat.", "doc": "M2", "page": 5 },
+    { "text": "Pentru o lista actualizata a firmelor de service autorizate, verificati site-ul importatorului: datecs.ro", "doc": "M2", "page": 5 }
+  ],
+  "codeList": { "text": "Consultati Lista Coduri de eroare publicata pe site-ul www.datecs.ro", "doc": "M2", "page": 29 },
+  "pages": [
+    {
+      "slug": "lipsa-hartie",
+      "code": "-100403",
+      "message": "Lipsă hârtie",
+      "title": "Eroare „Lipsă hârtie” la casa de marcat Datecs (-100403): ce înseamnă și ce faceți | Tapselo",
+      "h1": "Lipsă hârtie la casa de marcat Datecs: ce înseamnă și ce faceți",
+      "meta": "Codul Datecs -100403 („Lipsa hartie”) înseamnă că imprimanta casei a rămas fără hârtie. Textul exact din lista Datecs și pașii din manualele DP-25MX și FP-700.",
+      "short": "Codul -100403 înseamnă că imprimanta casei de marcat a rămas fără hârtie. Manualele Datecs spun același lucru: înlocuiți rola de hârtie. Schimbarea rolei este descrisă în manual ca operațiune pe care o faceți dumneavoastră; service-ul autorizat intervine doar dacă mesajul rămâne după ce ați pus o rolă nouă.",
+      "m1": { "page": 1, "en": "Line thermal printer mechanism error: Paper end", "ro": "Eroare imprimanta termica: Lipsa hartie" },
+      "display": [
+        { "model": "DP-25MX", "message": { "text": "Lipsa hartie!", "doc": "M2", "page": 29 }, "remedy": { "text": "Înlocuiți rola de hârtie cu una noua", "doc": "M2", "page": 29 } },
+        { "model": "FP-700", "message": { "text": "Lipsă hârtie!", "doc": "M3", "page": 25 }, "remedy": { "text": "Înlocuiți rola de hârtie", "doc": "M3", "page": 25 } }
+      ],
+      "stepGroups": [
+        {
+          "title": "Casa de marcat DP-25MX",
+          "intro": "Manualul DP-25MX descrie încărcarea hârtiei în capitolul „Încărcarea hârtiei”:",
+          "steps": [
+            { "text": "Scoateți capacul imprimantei", "doc": "M2", "page": 5 },
+            { "text": "Așezați rola de hârtie conform desenului de mai jos", "doc": "M2", "page": 5, "note": "desenul se află în manual, la aceeași pagină" },
+            { "text": "Derulati aproximativ 5-10 cm din rola de hârtie", "doc": "M2", "page": 5 },
+            { "text": "Închideți capacul apăsandu-l ușor. Daca intampinati rezistenta, reasezati rola de hartie si repetati inchiderea capacului", "doc": "M2", "page": 5 },
+            { "text": "Daca hartia nu se deruleaza, deschideti capacul si rearanjati rola", "doc": "M2", "page": 6, "note": "după avansul hârtiei cu tasta indicată în manual" }
+          ],
+          "after": { "text": "Daca ati ramas fara hartie in timpul tiparirii unui document, introduceti rola de hartie (conform instructiunilor)", "doc": "M2", "page": 6, "note": "apoi apăsați tasta indicată în manual pentru deblocarea casei de marcat" }
+        },
+        {
+          "title": "Imprimanta fiscală FP-700",
+          "intro": "Manualul FP-700 descrie schimbarea rolei la punctul 4.2, „Schimbarea rolei de hârtie”:",
+          "steps": [
+            { "text": "Deschideți capacul imprimantei apăsând clapeta de deschidere", "doc": "M3", "page": 6 },
+            { "text": "Scoateți rola veche si introduceți rola nouă conform pozei", "doc": "M3", "page": 6 },
+            { "text": "Derulați 3- 5 cm de hârtie", "doc": "M3", "page": 6 },
+            { "text": "Închideți capacul prin presare", "doc": "M3", "page": 6 },
+            { "text": "Daca hârtia nu avansează cursiv, deschideți capacul, rearanjați rola, închideți capacul si repetați", "doc": "M3", "page": 6, "note": "după avansul hârtiei cu butonul indicat în manual" }
+          ]
+        }
+      ],
+      "faq": [
+        { "q": "Pot schimba singur rola de hârtie?", "a": "Da. Ambele manuale Datecs (DP-25MX, pag. 5–6, și FP-700, pag. 6) descriu schimbarea rolei ca pe un pas al utilizatorului, fără intervenția service-ului." },
+        { "q": "Cât de multă hârtie trebuie să derulez după ce pun rola?", "a": "Manualul DP-25MX spune aproximativ 5-10 cm (pag. 5), iar manualul FP-700 spune 3-5 cm (pag. 6)." },
+        { "q": "Ce fac dacă hârtia s-a terminat în timpul unui bon?", "a": "Manualul DP-25MX (pag. 6) spune să introduceți rola de hârtie conform instrucțiunilor și să apăsați tasta indicată acolo pentru deblocarea casei de marcat." },
+        { "q": "Ce fac dacă mesajul rămâne și cu rolă nouă?", "a": "Manualul DP-25MX (pag. 5) cere ca toate intervențiile asupra casei de marcat să fie făcute de un tehnician autorizat. Lista firmelor de service autorizate este pe site-ul importatorului, datecs.ro." }
+      ],
+      "related": ["capac-deschis", "bon-deschis"],
+      "howto": true
+    },
+    {
+      "slug": "capac-deschis",
+      "code": "-100404",
+      "message": "Capac deschis",
+      "title": "Eroare „Capac deschis” la casa de marcat Datecs (-100404): ce înseamnă și ce faceți | Tapselo",
+      "h1": "Capac deschis la casa de marcat Datecs: ce înseamnă și ce faceți",
+      "meta": "Codul Datecs -100404 („Capac deschis”) înseamnă că imprimanta casei vede capacul deschis. Textul exact din lista Datecs și ce spun manualele FP-700 și DP-25MX.",
+      "short": "Codul -100404 înseamnă că imprimanta termică a casei de marcat semnalează capacul deschis. Manualul FP-700 spune: închideți capacul imprimantei. Este un pas pe care îl faceți dumneavoastră; service-ul autorizat intervine doar dacă mesajul rămâne după ce capacul este închis corect.",
+      "m1": { "page": 1, "en": "Line thermal printer mechanism error: Cover is open", "ro": "Eroare imprimanta termica: Capac deschis" },
+      "display": [
+        { "model": "FP-700", "message": { "text": "Capac hârtie deschis!", "doc": "M3", "page": 25 }, "remedy": { "text": "Închideți capacul imprimantei", "doc": "M3", "page": 25 } }
+      ],
+      "displayNote": "În tabelul de erori al manualului DP-25MX (pag. 29) nu apare un mesaj separat pentru capac deschis; codul -100404 este în lista generală Datecs.",
+      "stepGroups": [
+        {
+          "title": "Imprimanta fiscală FP-700",
+          "intro": "Manualul FP-700 descrie închiderea capacului în pașii de schimbare a rolei (punctul 4.2):",
+          "steps": [
+            { "text": "Închideți capacul prin presare", "doc": "M3", "page": 6 },
+            { "text": "Daca hârtia nu avansează cursiv, deschideți capacul, rearanjați rola, închideți capacul si repetați", "doc": "M3", "page": 6, "note": "după avansul hârtiei cu butonul indicat în manual" }
+          ]
+        },
+        {
+          "title": "Casa de marcat DP-25MX",
+          "intro": "Manualul DP-25MX descrie închiderea capacului la „Încărcarea hârtiei”:",
+          "steps": [
+            { "text": "Închideți capacul apăsandu-l ușor. Daca intampinati rezistenta, reasezati rola de hartie si repetati inchiderea capacului", "doc": "M2", "page": 5 },
+            { "text": "Daca hartia nu se deruleaza, deschideti capacul si rearanjati rola", "doc": "M2", "page": 6, "note": "după avansul hârtiei cu tasta indicată în manual" }
+          ]
+        }
+      ],
+      "faq": [
+        { "q": "Ce înseamnă codul -100404?", "a": "În lista de coduri Datecs (pag. 1), -100404 este „Eroare imprimanta termica: Capac deschis”, în engleză „Line thermal printer mechanism error: Cover is open”." },
+        { "q": "Capacul pare închis, dar nu se închide până la capăt. Ce fac?", "a": "Manualul DP-25MX (pag. 5) spune că, dacă întâmpinați rezistență, reașezați rola de hârtie și repetați închiderea capacului." },
+        { "q": "Ce fac dacă mesajul rămâne cu capacul închis?", "a": "Manualul DP-25MX (pag. 5) cere ca toate intervențiile asupra casei de marcat să fie făcute de un tehnician autorizat. Lista firmelor de service autorizate este pe site-ul importatorului, datecs.ro." }
+      ],
+      "related": ["lipsa-hartie", "bon-deschis"],
+      "howto": true
+    },
+    {
+      "slug": "bon-deschis",
+      "code": "-111015",
+      "message": "Bon deschis",
+      "title": "Eroare „Bon deschis” la casa de marcat Datecs (-111015): ce înseamnă și ce faceți | Tapselo",
+      "h1": "Bon deschis la casa de marcat Datecs: ce înseamnă și ce faceți",
+      "meta": "Codul Datecs -111015 („Bon deschis”) apare când încercați o operațiune care cere bonul închis. Textul exact din lista Datecs și ce spun manualele DP-25MX și FP-700.",
+      "short": "Codul -111015 înseamnă că există un bon deschis, iar operațiunea cerută nu se poate face până nu îl închideți. Manualul DP-25MX descrie eroarea ca pe o încercare de a ieși din modul Înregistrare cu bonul deschis, iar manualul FP-700 spune: închideți bonul dacă e necesar. Este o situație de operare, nu un defect; service-ul autorizat intervine doar dacă bonul nu se poate închide.",
+      "m1": { "page": 8, "en": "Registration mode error: Receipt is opened", "ro": "Eroare in mod Inregistrare: Bon dechis", "sic": true },
+      "display": [
+        { "model": "DP-25MX", "message": { "text": "Bon Deschis!", "doc": "M2", "page": 29 }, "remedy": { "text": "O încercare de a ieși din modul Inregistrare în timp ce există un bon deschis.", "doc": "M2", "page": 29 } },
+        { "model": "FP-700", "message": { "text": "Bon deschis", "doc": "M3", "page": 25 }, "remedy": { "text": "Închideți bonul dacă e necesar", "doc": "M3", "page": 25 } }
+      ],
+      "stepGroups": [
+        {
+          "title": "Casa de marcat DP-25MX",
+          "intro": "Manualul DP-25MX descrie cum se finalizează un bon în modul Înregistrare: tasta de plată în numerar",
+          "steps": [
+            { "text": "determina finalizarea bonului si incasarea contravalorii articolelor inregistrate (tip plata implicit: incasarea in numerar)", "doc": "M2", "page": 20 }
+          ],
+          "after": { "text": "Casa de marcat DP-25MX are capacitatea de a inchide corect un bon, chiar si in cazul in care apar disfunctionalitati in conexiunea cu PC-ul.", "doc": "M2", "page": 28, "note": "dacă lucrați cu casa conectată la calculator, manualul descrie la aceeași pagină un dialog de ieșire din blocaj, cu alegerea între „1. Anulare bon” și „2. Închidere bon”" }
+        },
+        {
+          "title": "Imprimanta fiscală FP-700",
+          "intro": "Manualul FP-700 dă o singură remediere pentru acest mesaj:",
+          "steps": [
+            { "text": "Închideți bonul dacă e necesar", "doc": "M3", "page": 25 }
+          ]
+        }
+      ],
+      "extraQuotes": [
+        { "text": "1. Anulare bon", "doc": "M2", "page": 28 },
+        { "text": "2. Închidere bon", "doc": "M2", "page": 28 },
+        { "text": "O tasta functionala pentru efectuarea unei plăți a fost apăsata după inchiderea bonului.", "doc": "M2", "page": 29 }
+      ],
+      "faq": [
+        { "q": "De ce scrie „Bon dechis” în lista Datecs?", "a": "Așa apare textul în lista de coduri Datecs (pag. 8), cu greșeala de tipar din document. Mesajul de pe afișajul DP-25MX este „Bon Deschis!” (manualul DP-25MX, pag. 29)." },
+        { "q": "Care este diferența față de mesajul „Bon inchis!”?", "a": "Manualul DP-25MX (pag. 29) explică „Bon inchis!” ca pe situația opusă: o tastă de plată a fost apăsată după închiderea bonului." },
+        { "q": "Ce fac dacă bonul nu se poate închide?", "a": "Manualul DP-25MX (pag. 5) cere ca toate intervențiile asupra casei de marcat să fie făcute de un tehnician autorizat. Lista firmelor de service autorizate este pe site-ul importatorului, datecs.ro." }
+      ],
+      "related": ["lipsa-hartie", "capac-deschis"],
+      "howto": true
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+# M1: Datecs, „Coduri de eroare DATECS” (lista codurilor de eroare, aparate fiscale)
+# Sursa: https://www.datecs.ro/getFile/mbs5f4612fe46e90.html
+# Accesat: 22.10.2026. Text extras cu pdftotext -layout (spațiile multiple comprimate), doar paginile citate: 1, 8.
+
+=== pag. 1 ===
+Error code list DATECS Coduri de eroare DATECS
+
+(100000 ‐ 100100) GENERIC ERRORS ‐ FISCAL DEVICES
+‐100001 General error in fiscal device: In ‐ out error( cannot read or write ) Eroare generala AMEF: eroare in ‐ out (nu poate citi sau scrie)
+‐100002 General error in fiscal device: Wrong checksum Eroare generala AMEF: Suma de control gresita
+‐100003 General error in fiscal device: No more data Eroare generala AMEF: Lipsa informatii
+‐100004 General error in fiscal device: The element is not found Eroare generala AMEF: Element inexistent
+‐100005 General error in fiscal device: There are no records found Eroare generala AMEF: Nu sunt inregistrari
+‐100006 General error in fiscal device: The operation is aborted Eroare generala AMEF: Operatie abandonata
+‐100007 Wrong mode( standart training...) is selected. Selectare Mod Gresit (standard training)
+‐100008 General error in fiscal device: Device is not ready Eroare generala AMEF: Echipamentul nu este pregatit
+‐100009 General error in fiscal device: Nothing to print Eroare generala AMEF: Nu exista nimic de printat
+
+(100100 ‐ 100255) FISCAL MEMORIES
+‐100100 Fiscal memory error: Fiscal memory is busy Eroare memorie fiscala: Memorie fiscala ocupata
+‐100101 Fiscal memory error: Fiscal memory failure. Could not read or write Eroare memorie fiscala: Esuare Memorie Fiscala. nu poate citi sau scrie
+‐100102 Fiscal memory error: Forbidden write in fiscal memory Eroare memorie fiscala: Scriere interzisa in MF
+‐100103 Fiscal memory error: Wrong address in fiscal memory Eroare memorie fiscala: Adresa gresita in MF
+‐100104 Fiscal memory error: Wrong size in fiscal memory Eroare memorie fiscala: Marime gresita in MF
+‐100105 Fiscal memory error: Fiscal memory is not connected Eroare memorie fiscala: MF nu e conectata
+‐100106 Fiscal memory error: Wrong checksum in fiscal memory( invalid data ) Eroare memorie fiscala: Suma de control gresita in MF( invalid data)
+‐100107 Fiscal memory error: Empty block in fiscal memory Eroare memorie fiscala: Bloc de memorie gol in MF
+‐100108 Fiscal memory error: Maximum number of block in fiscal memory Eroare memorie fiscala: Numar maxim de blocuri in MF
+‐100109 Fiscal memory error: Wrong range in fiscal memory Eroare memorie fiscala: Zona de memorie gresita in MF
+‐100110 Fiscal memory error: Empty range in fiscal memory Eroare memorie fiscala:zona de memorie goala in MF
+‐100111 Fiscal memory error: New module in fiscal memory Eroare memorie fiscala: Modul nou MF
+‐100112 Fiscal memory error: Fiscal memory is not empty Eroare memorie fiscala: MF nu e goala
+‐100113 Fiscal memory error: Fiscal memory is not equal Eroare memorie fiscala: MF nu e egala
+‐100114 Fiscal memory error: Fiscal memory is full Eroare memorie fiscala: MF plina
+‐100115 Fiscal memory error: Fiscal memory needs update Eroare memorie fiscala: MF necesita update
+‐100116 Fiscal memory error: Fiscal memory is blocked Eroare memorie fiscala: MF blocata
+
+(100400 ‐ 100499) PRINTER DRIVER ERRORS
+‐100400 Line thermal printer mechanism error: Power supply error ( 3,3 V ) Eroare imprimanta termica: Eroare alimentare ( 3,3 V)
+‐100401 Line thermal printer mechanism error: Power supply error ( 24V or 8V ) Eroare imprimanta termica: Eroare alimentare ( 24V sau 8V )
+‐100402 Line thermal printer mechanism error: Head overheating Eroare imprimanta termica: Cap imprimare supraincalzit
+‐100403 Line thermal printer mechanism error: Paper end Eroare imprimanta termica: Lipsa hartie
+‐100404 Line thermal printer mechanism error: Cover is open Eroare imprimanta termica: Capac deschis
+‐100405 Line thermal printer mechanism error: Near paper end Eroare imprimanta termica: Atentie! Se termina hartia
+‐100406 Line thermal printer mechanism error: Mark sensor ‐ not used Eroare imprimanta termica: Mark sensor ‐ not used
+‐100407 Line thermal printer mechanism error: Cutter error Eroare imprimanta termica: Eroare Cutter
+‐100408 Line thermal printer mechanism error: Not used Eroare imprimanta termica: Not used
+‐100409 Line thermal printer mechanism error: Not used Eroare imprimanta termica: Not used
+‐100410 Line thermal printer mechanism error: Not used Eroare imprimanta termica: Not used
+
+Page 1 of 14
+
+=== pag. 8 ===
+Error code list DATECS Coduri de eroare DATECS
+
+‐110814 Tax terminal error: Not enough cash Eroare conexiune ANAF: Numerar insuficient
+‐110815 Tax terminal error: Blocked from server Eroare conexiune ANAF: Blocat de server
+‐110854 Tax terminal error: Service temporarily unavailable Eroare conexiune ANAF: Serviciu temporar indisponibil
+‐110855 Tax terminal error: Unknown error Eroare conexiune ANAF: Eroare necunoscuta
+
+(111000 ‐ 111499) REGMODE ERRORS
+‐111000 Registration mode error: Common error followed by deliting all data for the command Eroare in mod Inregistrare: Eroare ‐ stergeti toate datele comenzii
+
+‐111001 Registration mode error: Common error followed by partly deliting data for the Eroare in mod Inregistrare: Eroare ‐ stergeti componentele gresite din comanda
+command
+‐111002 Registration mode error: Syntax error. Check the parameters of the command Eroare in mod Inregistrare: Eroare sintaxa. Verificati parametrii comenzii
+‐111003 Registration mode error: Cannot do operation Eroare in mod Inregistrare: Operatiunea nu poate fi executata
+‐111004 Registration mode error: PLU code was not found Eroare in mod Inregistrare: Codul PLU nu a fost gasit
+‐111005 Registration mode error: Forbidden VAT Eroare in mod Inregistrare: TVA interzis
+‐111006 Registration mode error: Overflow in multiplication of quantity and price Eroare in mod Inregistrare: Depasire in produsul dintre cantitate si pret
+‐111007 Registration mode error: PLU has no price Eroare in mod Inregistrare: PLU nu are pret
+‐111008 Registration mode error: Group is not in range Eroare in mod Inregistrare: Grup in afara domeniului
+‐111009 Registration mode error: Department is not in range Eroare in mod Inregistrare: Departament in afara domeniului
+‐111010 Registration mode error: BAR code does not exist Eroare in mod Inregistrare: Codul de bare nu exista
+‐111011 Registration mode error: Overflow of the PLU turnover Eroare in mod Inregistrare: Depasire rulaj PLU
+‐111012 Registration mode error: Overflow of the PLU quantity Eroare in mod Inregistrare: Depasire cantitate PLU
+‐111013 Registration mode error: ECR daily registers overflow Eroare in mod Inregistrare: Depasire registri zilnici AMEF
+‐111014 Registration mode error: Bill total register overflow Eroare in mod Inregistrare: Depasire registrii total
+‐111015 Registration mode error: Receipt is opened Eroare in mod Inregistrare: Bon dechis
+‐111016 Registration mode error: Receipt is closed Eroare in mod Inregistrare: Bon inchis
+‐111017 Registration mode error: No cash in ECR Eroare in mod Inregistrare: AMEF fara numerar
+‐111018 Registration mode error: Payment is initiated Eroare in mod Inregistrare: Plata e initiata
+‐111019 Registration mode error: Maximum number of sales in receipt Eroare in mod Inregistrare: Numar maxim de vanzari in bon
+‐111020 Registration mode error: No transactions Eroare in mod Inregistrare: Fara tranzactii
+‐111021 Registration mode error: Possible negative turnover Eroare in mod Inregistrare: Posibil rulaj negativ
+‐111022 Registration mode error: Foreign payment has change Eroare in mod Inregistrare: Rest pentru plata in valuta
+‐111023 Registration mode error: Transaction is not found in the receipt Eroare in mod Inregistrare: Tranzactia nu este inregistrata in bon
+‐111024 Registration mode error: End of 24 hour blocking Eroare in mod Inregistrare: Au trecut 24 ore fara Raport Z!
+‐111025 Registration mode error: Invalid invoice range Eroare in mod Inregistrare: Nr factura in afara domeniului
+‐111026 Registration mode error: Operation is cancelled by operator Eroare in mod Inregistrare: Operatiune anulata de operator
+‐111027 Registration mode error: Operation approved by POS Eroare in mod Inregistrare: Operatiune aprobata la POS
+‐111028 Registration mode error: Operation is not approved by POS Eroare in mod Inregistrare: Operatiune respinsa la POS
+‐111029 Registration mode error: POS terminal communication error Eroare in mod Inregistrare: Eroare comunicatie POS
+‐111030 Registration mode error: Multiplication of quantity and price is 0 Eroare in mod Inregistrare: Produsul cantitate x pret este 0
+‐111031 Registration mode error: Value is too big Eroare in mod Inregistrare: Valoare prea mare
+‐111032 Registration mode error: Value is bad Eroare in mod Inregistrare: Valoare gresita
+
+Page 8 of 14
