@@ -1,7 +1,7 @@
 // /llms.txt (llmstxt.org). Routes come from site-directory.ts, so a new tool or guide cannot ship
 // without an entry here: buildLlmsTxt() throws on a missing or stale entry (same rule as /ai's LINES).
 // Text here: dumneavoastră form, no prices or amounts, comma-below ș/ț (tests/llms-txt.test.ts).
-import { articleLinks, guideHubLinks, ruleGuideLinks, shopGuideLinks, toolLinks, type SiteLink } from "../site-directory.ts";
+import { articleLinks, datecsErrorPageLinks, guideHubLinks, ruleGuideLinks, shopGuideLinks, toolLinks, type SiteLink } from "../site-directory.ts";
 import { internalPath } from "../internal-url.ts";
 
 export const SITE = "https://tapselo.com";
@@ -30,6 +30,10 @@ const ENTRIES: Record<string, Entry> = {
   "/ghid/erori-datecs/": { title: "Erori casă de marcat Datecs", desc: "Codurile de eroare Datecs, în română și engleză, cu pași de rezolvare." },
   "/ghid/cantar-dibal/": { title: "Cântar Dibal", desc: "Codul de bare de pe eticheta cântarului, PLU și legătura cu casa de marcat." },
   "/ghid/articole/": { title: "Articole de suport", desc: "Ghiduri pas cu pas pentru casa de marcat și raportarea către ANAF." },
+  // Ghiduri: erori Datecs (TAP-018)
+  "/ghid/erori-datecs/lipsa-hartie/": { title: "Lipsă hârtie la casa de marcat Datecs (-100403)", desc: "Ce înseamnă eroarea și cum se schimbă rola, după manualele Datecs." },
+  "/ghid/erori-datecs/capac-deschis/": { title: "Capac deschis la casa de marcat Datecs (-100404)", desc: "Ce înseamnă eroarea și ce faceți, după manualele Datecs." },
+  "/ghid/erori-datecs/bon-deschis/": { title: "Bon deschis la casa de marcat Datecs (-111015)", desc: "Ce înseamnă eroarea și cum închideți bonul, după manualele Datecs." },
   // Ghiduri: reguli
   "/ghid/cote-tva-casa-de-marcat/": { title: "Cote TVA și grupe în casa de marcat", desc: "Cotele de TVA în vigoare și cum se programează grupele în casa de marcat." },
   "/ghid/plafon-scutire-tva-395000/": { title: "Plafonul de scutire de TVA", desc: "Plafonul de scutire de TVA pentru întreprinderile mici și când trebuie să vă înregistrați în scopuri de TVA." },
@@ -79,7 +83,7 @@ export function llmsSections(): { heading: string; links: SiteLink[] }[] {
   const abs = (p: string): SiteLink => ({ href: internalPath(p), label: "" });
   return [
     { heading: "Unelte gratuite", links: [abs("/unelte"), ...toolLinks] },
-    { heading: "Ghiduri", links: [...hubs("/ghid"), ...ruleGuideLinks, ...shopGuideLinks, ...articleLinks] },
+    { heading: "Ghiduri", links: [...hubs("/ghid"), ...datecsErrorPageLinks, ...ruleGuideLinks, ...shopGuideLinks, ...articleLinks] },
     { heading: "Comparații", links: hubs("/comparatie") },
     { heading: "Despre Tapselo", links: ["/", "/demo", "/program-gestiune-magazin", "/ai"].map(abs) },
   ];
