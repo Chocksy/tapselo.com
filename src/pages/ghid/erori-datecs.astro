@@ -5,6 +5,7 @@ import { internalPath } from "../../lib/internal-url.ts";
 import GuideShell from "../../components/GuideShell.astro";
 import { datecsAnchor, type DatecsKb } from "../../lib/mcp/answers/datecs.ts";
 import datecsJson from "../../lib/kb/datecs-errors.json";
+import { datecsPageByCode, datecsPagePath } from "../../lib/datecs-pages/pages.ts";
 
 const kb = datecsJson as unknown as DatecsKb & { source_title: string; count: number };
 
@@ -48,6 +49,11 @@ const hintAnchor = (key: string) => `pasi-${key.replace(/[^A-Za-z0-9]+/g, "-").t
               </>
             ))}
           </p>
+          {g.codes.map(datecsPageByCode).filter((x) => x).map((x) => (
+            <p class="mt-1 text-sm">
+              <a href={datecsPagePath(x!.slug)} class="text-accent hover:text-accent-hover">Ghid complet: {x!.message} ({x!.code})</a>
+            </p>
+          ))}
           <ol class="kb-prose mt-3">
             {g.steps.map((s) => <li>{s}</li>)}
           </ol>
@@ -84,6 +90,12 @@ const hintAnchor = (key: string) => `pasi-${key.replace(/[^A-Za-z0-9]+/g, "-").t
                       <>
                         {" "}
                         <a href={`#${hintAnchor(h.key)}`} class="whitespace-nowrap text-accent hover:text-accent-hover">Ce faci</a>
+                      </>
+                    )}
+                    {datecsPageByCode(code) && (
+                      <>
+                        {" "}
+                        <a href={datecsPagePath(datecsPageByCode(code)!.slug)} class="whitespace-nowrap text-accent hover:text-accent-hover">Ghid complet</a>
                       </>
                     )}
                   </td>
