@@ -54,7 +54,9 @@ test("copy rules: no banned words, no cedilla, no Tapselo-shows-error claim, ≥
     for (const w of [/certificat Datecs/i, /\bavizat/i, /omologat/i, /fără driver/i, /fără tehnician/i]) {
       assert.doesNotMatch(visible(html), w, `${p.slug}: banned ${w}`);
     }
-    assert.doesNotMatch(visible(html), /Tapselo (afișează|arată|vă arată|semnalează)/i, `${p.slug}: unconfirmed product claim`);
+    const LINE = "Tapselo afișează textul erorii casei de marcat direct pe ecranul casei, în aplicație.";
+    assert.equal(html.split(LINE).length - 1, 1, `${p.slug}: confirmed Tapselo line must appear once`);
+    assert.doesNotMatch(visible(html).split(LINE).join(" "), /Tapselo (afișează|arată|vă arată|semnalează)/i, `${p.slug}: other product claim`);
     assert.doesNotMatch(own, /\b(faci|ai|poți|tău|ta|vezi|sună|verifică-ți)\b/i, `${p.slug}: tu-form in own copy`);
     const words = norm(visible(main(html))).split(" ").filter((w) => /\p{L}/u.test(w)).length;
     assert.ok(words >= 350, `${p.slug}: only ${words} words`);

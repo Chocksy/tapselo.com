@@ -14,6 +14,7 @@ import {
   HUB_PATH,
   type DocId,
   type Quote,
+  TAPSELO_LINE,
 } from "../../../lib/datecs-pages/pages.ts";
 
 export function getStaticPaths() {
@@ -138,6 +139,7 @@ const src = "mt-1 block text-sm text-text-muted";
       Codul {p.code} și textele de mai sus sunt cele din documentele Datecs. Când contactați furnizorul programului sau
       service-ul, spuneți codul complet și mesajul afișat de aparat.
     </p>
+    <p>{TAPSELO_LINE}</p>
   </section>
 
   <section class="kb-prose">
