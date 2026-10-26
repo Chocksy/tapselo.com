@@ -109,3 +109,11 @@ test("same-task section marked documentat", async () => {
   assert.match(text(article), /documentat/i);
   assert.ok(!/testat pe FP-700 de echipa/i.test(text(article)));
 });
+
+test("fiscal printers: Daisy/Tremol supported, not în curând", async () => {
+  const { article } = await page();
+  const t = text(article);
+  assert.ok(!/în curând/i.test(t), "în curând should not appear for printers");
+  assert.match(t, /driver în produs/i);
+  assert.ok(!/aveți o casă de marcat Daisy/i.test(t));
+});

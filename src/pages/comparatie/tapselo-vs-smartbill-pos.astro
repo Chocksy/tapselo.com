@@ -12,6 +12,11 @@ import {
   type Crumb,
   type FaqItem,
 } from "../../lib/unelte/jsonld.ts";
+import {
+  TAPS_FISCAL_INSTALL_SUPPORT,
+  TAPS_FISCAL_PRINTERS_TABLE,
+  TAPS_PRICE_CANON,
+} from "../../data/tapselo-product-copy.ts";
 
 const PATH = "/comparatie/tapselo-vs-smartbill-pos/";
 const PAGE_URL = canonicalUrl(PATH);
@@ -27,7 +32,6 @@ const PRICES_ACCESSED = "22.10.2026";
 
 const AUTHOR = AUTHORS["razvan-ciocanel"];
 const SITE_ORIGIN = new URL(PAGE_URL).origin;
-const TAPS_PRICE_CANON = "gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA";
 
 const SRC = {
   tapselo: "https://tapselo.com/",
@@ -72,7 +76,7 @@ const decisionRows: DecisionRow[] = [
   {
     criterion: "Case de marcat suportate",
     tapselo: {
-      answer: "Datecs FP-700 pe USB (testat); Daisy și Tremol „în curând”",
+      answer: TAPS_FISCAL_PRINTERS_TABLE,
       href: SRC.tapselo,
     },
     smartbill: {
@@ -114,7 +118,10 @@ const decisionRows: DecisionRow[] = [
   },
   {
     criterion: "e-Factura și contabilitate",
-    tapselo: { answer: "neverificat pe tapselo.com", href: SRC.tapselo },
+    tapselo: {
+      answer: "Nu (încă) în Tapselo; contabilul poate folosi alt program",
+      href: SRC.tapselo,
+    },
     smartbill: {
       answer: "Da, prin SmartBill Gestiune (e-Factura), Conta și magazine online",
       href: SRC.smartbillPos,
@@ -251,14 +258,14 @@ const VERIFIED_RO = "22.10.2026";
       <h3 class="kb-h3">Alegeți SmartBill POS dacă</h3>
       <ul>
         <li>vânzarea de la tejghea trebuie să ruleze pe telefon sau tabletă Android (casa Tapselo nu rulează pe telefon; acolo aveți doar inventar);</li>
-        <li>aveți o casă de marcat Daisy, Tremol, Partner, Eltrade, Activa sau Adpos, sau alt model Datecs decât FP-700 (Tapselo a testat doar FP-700);</li>
+        <li>aveți casă Partner, Eltrade, Activa sau Adpos, sau alt model Datecs decât FP-700 — întrebați-ne despre modelul dumneavoastră înainte de migrare;</li>
         <li>aveți nevoie de POS bancar legat de program sau de sertar de bani (Tapselo nu le suportă încă);</li>
         <li>folosiți deja SmartBill Facturare, Gestiune sau Conta, sau aveți magazine online legate de gestiune;</li>
         <li>vă ajută perioada de probă de 30 de zile documentată pe site-ul SmartBill.</li>
       </ul>
       <h3 class="kb-h3">Alegeți Tapselo dacă</h3>
       <ul>
-        <li>la tejghea aveți un calculator cu Windows, macOS sau Linux și o Datecs FP-700 pe USB;</li>
+        <li>la tejghea aveți un calculator cu Windows, macOS sau Linux și o imprimantă fiscală compatibilă (Datecs FP-700 testată E2E pe USB; Daisy și Tremol cu driver în produs, validate la instalare cu suportul nostru);</li>
         <li>vindeți la kg cu un cântar Dibal în rețea și doriți ca prețurile să plece din program în cântar;</li>
         <li>doriți recepție de marfă din poza facturii, inventar cu telefonul și rețete în același program cu vânzarea — detalii în <a href={internalPath("/program-gestiune-magazin/")}>programul de gestiune pentru magazin</a>;</li>
         <li>doriți să păstrați arhiva .p7b descărcată din casă;</li>
@@ -269,8 +276,9 @@ const VERIFIED_RO = "22.10.2026";
         SmartBill POS vă emite deja bonuri când pică netul, contabilul lucrează în SmartBill Conta și aveți terminalul de card integrat. Ați pierde integrări pe care Tapselo nu le are astăzi. Dacă sunteți mulțumit de fluxul actual, rămâneți pe SmartBill.
       </p>
       <p>
-        Ambele programe documentează vânzarea fără internet și merg cu Datecs FP-700 și cântar Dibal — diferența este pe ce dispozitiv vindeți, ce integrări aveți nevoie și ce preț public acceptați.
+        Ambele programe documentează vânzarea fără internet. Tapselo merge cu Datecs FP-700 (testată E2E), Daisy și Tremol (driver în produs), plus cântar Dibal — diferența este pe ce dispozitiv vindeți, ce integrări aveți nevoie și ce preț public acceptați.
       </p>
+      <p>{TAPS_FISCAL_INSTALL_SUPPORT}</p>
     </section>
 
     <section>

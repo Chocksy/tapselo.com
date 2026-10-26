@@ -13,6 +13,10 @@ import {
   type Crumb,
   type FaqItem,
 } from "../../lib/unelte/jsonld.ts";
+import {
+  TAPS_FISCAL_INSTALL_SUPPORT,
+  TAPS_FISCAL_PRINTERS_TABLE,
+} from "../../data/tapselo-product-copy.ts";
 
 const PATH = "/comparatie/cel-mai-bun-program-casa-de-marcat/";
 const PAGE_URL = canonicalUrl(PATH);
@@ -23,7 +27,7 @@ const DESCRIPTION =
 
 /** UPDATED only changes with the content. */
 const PUBLISHED = "2026-10-20";
-const UPDATED = "2026-10-20";
+const UPDATED = "2026-10-26";
 const VERIFIED = "2026-10-18";
 
 const AUTHOR = AUTHORS["razvan-ciocanel"];
@@ -75,7 +79,7 @@ const faq: FaqItem[] = [
   },
   {
     q: "Ce case de marcat merg cu Tapselo?",
-    a: "Azi e testată imprimanta fiscală Datecs FP-700, conectată pe USB. Daisy și Tremol sunt anunțate „în curând”. Dacă ai alt model, scrie-ne și verificăm.",
+    a: "Testată E2E pe Datecs FP-700 pe USB. Daisy și Tremol au driver în produs — le validăm la instalare cu suportul nostru. Pentru alte mărci, scrie-ne despre modelul tău.",
   },
   {
     q: "Cum mut produsele din programul vechi?",
@@ -164,7 +168,7 @@ const ext = { rel: "noopener", target: "_blank" };
         <li><strong>Niciun program nu e cel mai bun pentru toată lumea.</strong> Ordinea de mai jos e făcută pentru un magazin alimentar mic, cu una sau două case, calculator la tejghea, cântar și internet instabil. Dacă ai un restaurant sau vinzi doar de pe telefon, citește direct tabelul „<a href="#ce-program-ti-se-potriveste">Ce program ți se potrivește</a>”.</li>
         <li><strong>Vânzarea fără internet e documentată de patru producători:</strong> Tapselo, SmartBill POS, Noxta și FreyaPOS (FreyaPOS scrie „până la 7 zile”). La Oblio, Conexa și Selectsoft nu am găsit informația pe paginile verificate, ceea ce nu înseamnă că lipsește. Întreabă producătorul înainte.</li>
         <li><strong>Prețurile publice diferă mult.</strong> Oblio cere 29 €/an, SmartBill POS 10,9 €/lună + TVA, Noxta are un plan de 0 RON limitat la 30 de plăți pe zi, iar Tapselo e gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA. FreyaPOS, Conexa și Selectsoft dau prețul la cerere. Surse: <a href={PRICE_PAGES.smartbill} {...ext}>SmartBill</a>, <a href={PRICE_PAGES.oblio} {...ext}>Oblio</a>, <a href={PRICE_PAGES.noxta} {...ext}>Noxta</a>, accesate la {PRICES_ACCESSED}.</li>
-        <li><strong>Pornește de la casa de marcat pe care o ai deja.</strong> Tapselo e testat azi doar cu Datecs FP-700 pe USB. SmartBill POS, Oblio, Noxta și Conexa menționează mai multe mărci, așa că verifică modelul tău pe lista fiecăruia.</li>
+        <li><strong>Pornește de la casa de marcat pe care o ai deja.</strong> Tapselo are test E2E pe Datecs FP-700 și driver pentru Daisy și Tremol (validare la instalare). SmartBill POS, Oblio, Noxta și Conexa menționează mai multe mărci, așa că verifică modelul tău pe lista fiecăruia.</li>
         <li><strong>Programul nu te scapă de obligațiile casei de marcat.</strong> Conectarea casei de marcat la ANAF e obligația ta, oricare ar fi programul (OUG 28/1999, art. 3¹ alin. (4)). Programul doar trimite vânzarea către casă.</li>
       </ul>
     </section>
@@ -222,12 +226,12 @@ const ext = { rel: "noopener", target: "_blank" };
         <h3 class="kb-h3">1. Tapselo, cel mai bun pentru magazinul alimentar mic cu calculator la tejghea și internet instabil</h3>
         <p>Tapselo e programul nostru, făcut pentru magazine alimentare mici, băcănii și brutării. Casa de marcat rulează pe calculator cu Windows, macOS sau Linux (există și o imagine Tapselo pentru kiosk, pe Linux). Telefonul Android sau iPhone îl folosești doar pentru inventar și recepția de marfă, nu pentru bon fiscal.</p>
         <p><strong>Fără internet:</strong> când pică netul, vânzarea continuă. Bonul fiscal iese la imprimanta legată local, vânzările rămân pe calculator și se sincronizează în panoul de administrare când revine conexiunea.</p>
-        <p><strong>Echipamente testate, conform tapselo.com:</strong> imprimanta fiscală Datecs FP-700 conectată pe USB (bon fiscal, raport X și Z, jurnal electronic, export .p7b pentru ANAF), cântarul Dibal în rețea, testat pe D-900, unde prețurile pleacă singure în cântar (PLU 1-999), și orice cititor de coduri de bare pe USB. Daisy și Tremol sunt anunțate „în curând”.</p>
+        <p><strong>Echipamente, conform tapselo.com:</strong> imprimanta fiscală Datecs FP-700 pe USB (testată E2E; bon fiscal, raport X și Z, jurnal electronic, export .p7b pentru ANAF), Daisy și Tremol (driver în produs; validare la instalare cu suport), cântarul Dibal în rețea testat pe D-900 (PLU 1-999), și orice cititor de coduri de bare pe USB. {TAPS_FISCAL_INSTALL_SUPPORT}</p>
         <p><strong>Inclus în ambele planuri:</strong> recepția de marfă din poza facturii (confirmi liniile, iar NIR-ul și stocul se completează), inventarul cu telefonul, rețetele și producția, rapoartele de vânzări și importul produselor din programul vechi.</p>
         <p><strong>Limitări de știut:</strong> Tapselo nu merge încă cu terminale de card, sertar de bani, imprimante pe rețea sau Bluetooth. Nu are aplicație de casă pe telefon.</p>
         <p><strong>Preț:</strong> gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA (79 lei pentru o casă, 129 lei pentru două case). Te anunțăm cu 30 de zile înainte de trecerea la tarif.</p>
         <p>Poți vedea fluxul în <a href={DEMO} data-tapselo-cta="bestof-inline">demo-ul Tapselo</a>.</p>
-        <p class="bestof-fit"><strong>Potrivit pentru:</strong> magazine alimentare, băcănii și brutării cu una sau două case, care vând la kg și nu vor să se oprească atunci când pică netul. Nu e alegerea potrivită dacă vrei să încasezi cu POS bancar legat de program sau dacă ai altă casă de marcat decât Datecs FP-700, singura testată azi.</p>
+        <p class="bestof-fit"><strong>Potrivit pentru:</strong> magazine alimentare, băcănii și brutării cu una sau două case, care vând la kg și nu vor să se oprească atunci când pică netul. Nu e alegerea potrivită dacă vrei POS bancar legat de program. Pentru alte mărci de casă decât Datecs FP-700, Daisy sau Tremol, întreabă-ne despre model înainte.</p>
       </div>
 
       <div id="smartbill-pos" class="bestof-vendor">
@@ -310,7 +314,7 @@ const ext = { rel: "noopener", target: "_blank" };
               <th scope="row">Tapselo <span class="bestof-note">(produsul nostru)</span></th>
               <td>Da: vânzări salvate local, sincronizare la revenire</td>
               <td>Windows, macOS, Linux; Android și iPhone doar pentru inventar</td>
-              <td>Datecs FP-700 pe USB; Daisy, Tremol „în curând”</td>
+              <td>{TAPS_FISCAL_PRINTERS_TABLE}</td>
               <td>Dibal în rețea (testat pe D-900)</td>
               <td>Nu încă</td>
               <td>Da, în ambele planuri (recepție din poza facturii, NIR)</td>

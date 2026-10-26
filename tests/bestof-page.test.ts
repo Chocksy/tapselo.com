@@ -83,7 +83,7 @@ test("no placeholders, author and dates filled, competitor prices sourced", asyn
   assert.doesNotMatch(html, /data-todo|TODO|\{DATA_|\[TODO/);
   const a = blocks.find((b) => b["@type"] === "Article");
   assert.equal(a.datePublished, "2026-10-20");
-  assert.equal(a.dateModified, "2026-10-20");
+  assert.equal(a.dateModified, "2026-10-26");
   assert.equal(a.author.name, "Razvan Ciocanel");
   assert.equal(a.author.jobTitle, "Fondator Tapselo");
   assert.deepEqual(a.author.sameAs, ["https://www.linkedin.com/in/chocksy/"]);
