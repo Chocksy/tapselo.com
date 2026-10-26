@@ -66,6 +66,10 @@ const ENTRIES: Record<string, Entry> = {
   // Comparații
   "/comparatie/": { title: "Comparație programe de casă de marcat", desc: "Tabel cu programele POS din România, după informațiile publice ale producătorilor." },
   "/comparatie/cel-mai-bun-program-casa-de-marcat/": { title: "Cel mai bun program de casă de marcat", desc: "Ce program se potrivește fiecărui tip de magazin." },
+  "/comparatie/tapselo-vs-smartbill-pos/": {
+    title: "Tapselo vs SmartBill POS",
+    desc: "Comparație onestă pentru magazin alimentar mic: aceleași criterii, surse oficiale, prețuri publice.",
+  },
   // Despre Tapselo
   "/": { title: "Tapselo", desc: "Prezentarea programului de casă de marcat Tapselo." },
   "/demo/": { title: "Demo", desc: "Încercați Tapselo în browser, fără cont." },

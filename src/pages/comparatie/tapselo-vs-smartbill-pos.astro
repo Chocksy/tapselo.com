@@ -1,0 +1,433 @@
+---
+// TAP-019: Tapselo vs SmartBill POS — honest comparison (draft).
+import GuideShell from "../../components/GuideShell.astro";
+import AuthorByline from "../../components/AuthorByline.astro";
+import { AUTHORS, authorPersonJsonLd } from "../../data/authors.ts";
+import { internalPath } from "../../lib/internal-url.ts";
+import {
+  breadcrumbJsonLd,
+  breadcrumbLinks,
+  canonicalUrl,
+  faqPageJsonLd,
+  type Crumb,
+  type FaqItem,
+} from "../../lib/unelte/jsonld.ts";
+
+const PATH = "/comparatie/tapselo-vs-smartbill-pos/";
+const PAGE_URL = canonicalUrl(PATH);
+const HEADING = "Tapselo vs SmartBill POS: care se potrivește unui magazin mic în 2026";
+const TITLE = `${HEADING} | Tapselo`;
+const DESCRIPTION =
+  "Comparație Tapselo și SmartBill POS pentru magazin alimentar mic: Datecs FP-700, cântar Dibal, vânzare fără internet, prețuri publice și ce implică schimbarea. Surse la fiecare rând.";
+
+const PUBLISHED = "2026-10-26";
+const UPDATED = "2026-10-26";
+const VERIFIED = "2026-10-22";
+const PRICES_ACCESSED = "22.10.2026";
+
+const AUTHOR = AUTHORS["razvan-ciocanel"];
+const SITE_ORIGIN = new URL(PAGE_URL).origin;
+const TAPS_PRICE_CANON = "gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA";
+
+const SRC = {
+  tapselo: "https://tapselo.com/",
+  tapseloGestiune: "https://tapselo.com/program-gestiune-magazin/",
+  tapseloP7b: "https://tapselo.com/ghid/articole/casa-de-marcat-fara-internet/",
+  smartbillPos: "https://www.smartbill.ro/produse/pos",
+  smartbillPrice: "https://www.smartbill.ro/preturi/vanzare-cu-casa-marcat",
+  smartbillCase: "https://www.smartbill.ro/case-marcat-gratis",
+  sbCaseList: "https://ajutor.smartbill.ro/article/246-case-marcat",
+  sbDatecs: "https://ajutorpos.smartbill.ro/article/575-configurarea-datecs-in-smartbill-pos",
+  sbDude: "https://ajutorpos.smartbill.ro/article/574-casa-de-marcat-datecs-si-instalarea-driver-ului-dude",
+  sbScale: "https://ajutorpos.smartbill.ro/article/601-configurarea-cantarului-in-smartbill-pos",
+  sbImport: "https://ajutorpos.smartbill.ro/article/669-adaugarea-produselor-in-nomenclatorul-pos-ului-de-sine-statator",
+};
+
+type Cell = { answer: string; href: string; label?: string };
+type DecisionRow = { criterion: string; tapselo: Cell; smartbill: Cell };
+
+const decisionRows: DecisionRow[] = [
+  {
+    criterion: "Pe ce rulează casa",
+    tapselo: {
+      answer: "Windows, macOS, Linux (și imagine kiosk Linux); telefonul Android sau iPhone doar pentru inventar",
+      href: SRC.tapselo,
+    },
+    smartbill: {
+      answer: "Windows (PC, laptop, tabletă) și Android (telefon, tabletă)",
+      href: SRC.smartbillPos,
+    },
+  },
+  {
+    criterion: "Vânzare fără internet",
+    tapselo: {
+      answer: "Da; vânzările rămân pe calculator și se sincronizează în admin la revenirea conexiunii",
+      href: SRC.tapseloP7b,
+    },
+    smartbill: {
+      answer: "Da; „Funcionare offline”; conectat la Gestiune, bonurile se trimit în cloud la revenire",
+      href: SRC.smartbillPrice,
+    },
+  },
+  {
+    criterion: "Case de marcat suportate",
+    tapselo: {
+      answer: "Datecs FP-700 pe USB (testat); Daisy și Tremol „în curând”",
+      href: SRC.tapselo,
+    },
+    smartbill: {
+      answer: "Activa, Adpos, Daisy, Datecs (inclusiv FP700), Eltrade, Partner, Tremol",
+      href: SRC.sbCaseList,
+    },
+  },
+  {
+    criterion: "Conectare Datecs FP-700",
+    tapselo: { answer: "USB", href: SRC.tapselo },
+    smartbill: {
+      answer: "Serial/COM cu aplicația DUDE de la Datecs (port COM și viteză în configurare)",
+      href: SRC.sbDatecs,
+    },
+  },
+  {
+    criterion: "Cântar (ex. Dibal)",
+    tapselo: {
+      answer: "Dibal în rețea, testat pe D-900; prețurile pleacă din program în cântar (PLU 1–999)",
+      href: SRC.tapselo,
+    },
+    smartbill: {
+      answer: "Aclas PS6X, ACS 6/15, CAS PR-II, Dibal Seria G, SWS PMK-30; mod manual pe ecranul de vânzare",
+      href: SRC.sbScale,
+    },
+  },
+  {
+    criterion: "POS bancar (card)",
+    tapselo: { answer: "Nu încă (documentat pe tapselo.com)", href: SRC.tapselo },
+    smartbill: { answer: "Da; „Integrare POS Bancar”", href: SRC.smartbillPrice },
+  },
+  {
+    criterion: "Sertar de bani",
+    tapselo: { answer: "Nu încă", href: SRC.tapselo },
+    smartbill: {
+      answer: "Da (în funcție de modelul casei; documentat în ajutor)",
+      href: SRC.smartbillCase,
+    },
+  },
+  {
+    criterion: "e-Factura și contabilitate",
+    tapselo: { answer: "neverificat pe tapselo.com", href: SRC.tapselo },
+    smartbill: {
+      answer: "Da, prin SmartBill Gestiune (e-Factura), Conta și magazine online",
+      href: SRC.smartbillPos,
+    },
+  },
+  {
+    criterion: "Import din programul vechi",
+    tapselo: {
+      answer: "Inclus în planuri; format CSV discutat la demo",
+      href: SRC.tapseloGestiune,
+    },
+    smartbill: {
+      answer: "POS de sine stătător: import Excel (model descărcabil) + adăugare manuală",
+      href: SRC.sbImport,
+    },
+  },
+  {
+    criterion: "Recepție marfă / NIR",
+    tapselo: {
+      answer: "Din poza facturii (OCR), NIR și stoc în același program",
+      href: SRC.tapseloGestiune,
+    },
+    smartbill: {
+      answer: "Prin SmartBill Gestiune (modul separat de POS de bază)",
+      href: SRC.smartbillPos,
+    },
+  },
+  {
+    criterion: "Inventar",
+    tapselo: { answer: "Cu telefonul (Android, iPhone sau browser)", href: SRC.tapseloGestiune },
+    smartbill: { answer: "Prin SmartBill Gestiune", href: SRC.smartbillPos },
+  },
+  {
+    criterion: "Rețete / producție",
+    tapselo: { answer: "Incluse în program", href: SRC.tapseloGestiune },
+    smartbill: { answer: "Modul de producție în SmartBill Gestiune", href: SRC.smartbillPos },
+  },
+  {
+    criterion: "Arhivă .p7b din casă",
+    tapselo: { answer: "Da; descărcare și păstrare .p7b", href: SRC.tapseloP7b },
+    smartbill: { answer: "neverificat", href: SRC.sbCaseList, label: "listă case (fără mențiune .p7b)" },
+  },
+  {
+    criterion: "Preț (plan casă, cum îl afișează producătorul)",
+    tapselo: {
+      answer: TAPS_PRICE_CANON,
+      href: SRC.tapselo,
+    },
+    smartbill: {
+      answer: "POS 10,9 €/lună + TVA (POS + Gestiune 27,22 €/lună + TVA)",
+      href: SRC.smartbillPrice,
+    },
+  },
+];
+
+const faq: FaqItem[] = [
+  {
+    q: "Pot vinde fără internet cu Tapselo și cu SmartBill POS?",
+    a: "Da, în ambele cazuri producătorul documentează vânzarea offline: Tapselo păstrează vânzările local și le sincronizează la revenirea internetului; SmartBill POS scrie „Funcionare offline”, iar bonurile pot merge în cloud la reconectare dacă folosiți Gestiune.",
+  },
+  {
+    q: "Merge Tapselo pe telefon sau tabletă pentru bon fiscal?",
+    a: "Nu pentru casă. Casa Tapselo rulează pe Windows, macOS și Linux. Pe telefon sau tabletă folosiți Tapselo doar pentru inventar și recepție. SmartBill POS rulează și pe Android, inclusiv pentru vânzare.",
+  },
+  {
+    q: "Pot muta produsele din SmartBill în Tapselo?",
+    a: "Tapselo include importul produselor din programul vechi; formatul (de exemplu CSV) se stabilește la demo. Exportul din SmartBill trebuie verificat în documentația SmartBill Gestiune înainte de migrare.",
+  },
+  {
+    q: "Cât costă Tapselo față de SmartBill POS?",
+    a: `Tapselo este ${TAPS_PRICE_CANON}. SmartBill POS costă 10,9 €/lună + TVA conform paginii de prețuri SmartBill (accesată la ${PRICES_ACCESSED}). Stocurile și NIR-ul la SmartBill sunt în pachetul POS + Gestiune (27,22 €/lună + TVA).`,
+  },
+];
+
+const crumbs: Crumb[] = [
+  { name: "Acasă", path: "/" },
+  { name: "Comparație", path: "/comparatie/" },
+  { name: "Tapselo vs SmartBill POS", path: PATH },
+];
+
+const article = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: HEADING,
+  description: DESCRIPTION,
+  inLanguage: "ro-RO",
+  mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
+  datePublished: PUBLISHED,
+  dateModified: UPDATED,
+  author: authorPersonJsonLd(AUTHOR, SITE_ORIGIN),
+  publisher: {
+    "@type": "Organization",
+    name: "Tapselo",
+    url: "https://tapselo.com/",
+    logo: { "@type": "ImageObject", url: "https://tapselo.com/logo.png" },
+  },
+};
+
+const jsonLd = [article, faqPageJsonLd(faq), breadcrumbJsonLd(crumbs)];
+const ext = { rel: "noopener", target: "_blank" };
+const DEMO = "https://app.tapselo.com/?demo=1";
+const VERIFIED_RO = "22.10.2026";
+---
+
+<GuideShell
+  title={TITLE}
+  description={DESCRIPTION}
+  heading={HEADING}
+  campaign="vs-smartbill-pos"
+  breadcrumbs={breadcrumbLinks(crumbs)}
+  publishedOn={PUBLISHED}
+  updatedOn={UPDATED}
+  showCta={false}
+  jsonLd={jsonLd}
+  appJsonLd={false}
+  pageToc={false}
+>
+  <Fragment slot="byline">
+    <AuthorByline author={AUTHOR} publishedOn={PUBLISHED} updatedOn={UPDATED} verifiedOn={VERIFIED} verifiedLabel="Fapte verificate la" />
+  </Fragment>
+
+  <article class="kb-prose bestof" data-vs-comparatie="smartbill-pos">
+    <div class="space-y-4">
+      <p class="rounded-xl border border-ticket bg-ticket-light p-4 text-sm text-primary">
+        Tapselo este produsul nostru. Datele despre SmartBill POS vin doar de pe smartbill.ro și din centrul lor de ajutor, cu link la fiecare afirmație.
+      </p>
+      <p>
+        Aveți un magazin alimentar mic, cu un calculator la tejghea, o imprimantă fiscală Datecs FP-700, eventual un cântar Dibal, și internetul care mai pică. Comparația de mai jos răspunde la întrebarea: în situația asta, vă convine mai mult Tapselo sau SmartBill POS? Pentru o listă mai largă de programe, vedeți și <a href={internalPath("/comparatie/cel-mai-bun-program-casa-de-marcat/")}>cel mai bun program de casă de marcat în 2026</a>.
+      </p>
+    </div>
+
+    <section>
+      <h2 class="kb-h2">Verdict pe scurt</h2>
+      <h3 class="kb-h3">Alegeți SmartBill POS dacă</h3>
+      <ul>
+        <li>vânzarea de la tejghea trebuie să ruleze pe telefon sau tabletă Android (casa Tapselo nu rulează pe telefon; acolo aveți doar inventar);</li>
+        <li>aveți o casă de marcat Daisy, Tremol, Partner, Eltrade, Activa sau Adpos, sau alt model Datecs decât FP-700 (Tapselo a testat doar FP-700);</li>
+        <li>aveți nevoie de POS bancar legat de program sau de sertar de bani (Tapselo nu le suportă încă);</li>
+        <li>folosiți deja SmartBill Facturare, Gestiune sau Conta, sau aveți magazine online legate de gestiune;</li>
+        <li>vă ajută perioada de probă de 30 de zile documentată pe site-ul SmartBill.</li>
+      </ul>
+      <h3 class="kb-h3">Alegeți Tapselo dacă</h3>
+      <ul>
+        <li>la tejghea aveți un calculator cu Windows, macOS sau Linux și o Datecs FP-700 pe USB;</li>
+        <li>vindeți la kg cu un cântar Dibal în rețea și doriți ca prețurile să plece din program în cântar;</li>
+        <li>doriți recepție de marfă din poza facturii, inventar cu telefonul și rețete în același program cu vânzarea — detalii în <a href={internalPath("/program-gestiune-magazin/")}>programul de gestiune pentru magazin</a>;</li>
+        <li>doriți să păstrați arhiva .p7b descărcată din casă;</li>
+        <li>vă avantajează că Tapselo este {TAPS_PRICE_CANON}.</li>
+      </ul>
+      <h3 class="kb-h3">Schimbarea probabil nu merită dacă</h3>
+      <p>
+        SmartBill POS vă emite deja bonuri când pică netul, contabilul lucrează în SmartBill Conta și aveți terminalul de card integrat. Ați pierde integrări pe care Tapselo nu le are astăzi. Dacă sunteți mulțumit de fluxul actual, rămâneți pe SmartBill.
+      </p>
+      <p>
+        Ambele programe documentează vânzarea fără internet și merg cu Datecs FP-700 și cântar Dibal — diferența este pe ce dispozitiv vindeți, ce integrări aveți nevoie și ce preț public acceptați.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="kb-h2">Tabel de decizie</h2>
+      <p>Fiecare celulă are răspuns în propoziții, nu bifă. „neverificat” înseamnă că nu am găsit informația pe pagina indicată, nu că funcția lipsește.</p>
+      <div class="table-scroll">
+        <table class="kb-table bestof-table">
+          <caption>Tapselo vs SmartBill POS — surse verificate la {VERIFIED_RO}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Criteriu</th>
+              <th scope="col">Tapselo</th>
+              <th scope="col">SmartBill POS</th>
+            </tr>
+          </thead>
+          <tbody>
+            {decisionRows.map((row) => (
+              <tr class:list={{ "is-tapselo": row.criterion.startsWith("Preț") }}>
+                <th scope="row">{row.criterion}</th>
+                <td>
+                  {row.tapselo.answer}
+                  <span class="bestof-note">
+                    (<a href={row.tapselo.href}>{row.tapselo.label ?? "sursă"}</a>, accesat la {PRICES_ACCESSED})
+                  </span>
+                </td>
+                <td>
+                  {row.smartbill.answer}
+                  <span class="bestof-note">
+                    (<a href={row.smartbill.href} {...ext}>{row.smartbill.label ?? "sursă"}</a>, accesat la {PRICES_ACCESSED})
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="kb-h2">Aceeași sarcină în ambele</h2>
+      <p>
+        <strong>Scenariu:</strong> primul bon pe Datecs FP-700, un produs la kg, apoi oprirea internetului. Pașii de mai jos sunt <strong>documentați</strong> (din tapselo.com și ajutorpos.smartbill.ro), nu testați de noi cu capturi — testul practic pe FP-700 rămâne de făcut înainte de publicare.
+      </p>
+      <p><strong>Inputuri comune:</strong> PC la tejghea, Datecs FP-700, cititor USB, cântar, un produs la bucată și unul la kg, internet oprit după primul bon.</p>
+      <h3 class="kb-h3">Tapselo (documentat)</h3>
+      <ol>
+        <li>Porniți calculatorul de pe stickul USB Tapselo (aproximativ 20 de minute).</li>
+        <li>Introduceți codul de activare de 6 caractere din panoul de administrare.</li>
+        <li>Conectați Datecs FP-700 pe USB.</li>
+        <li>Prețurile pleacă din Tapselo în cântarul Dibal din rețea; casa citește greutatea din codul de bare al etichetei.</li>
+        <li>Scanați, încasați, se tipărește bonul.</li>
+        <li>Fără internet vânzarea continuă; vânzările rămân pe calculator și se sincronizează în admin când revine netul.</li>
+      </ol>
+      <h3 class="kb-h3">SmartBill POS (documentat)</h3>
+      <ol>
+        <li>Descărcați aplicația pentru Windows sau Android.</li>
+        <li>Alegeți „conectat la SmartBill Facturare/Gestiune” sau „de sine stătător”.</li>
+        <li>Pentru Datecs instalați aplicația DUDE de pe datecs.ro, apoi în Configurare → Casa de marcat alegeți FP700, portul COM și viteza.</li>
+        <li>Cântar: Configurare → Cântar (Dibal Seria G și altele; mod manual), cu butonul CÂNTAR pe ecranul de vânzare.</li>
+        <li>Vindeți și emiteți bonul.</li>
+        <li>SmartBill POS funcționează și offline; conectat la Gestiune, bonurile se trimit în cloud la revenirea conexiunii.</li>
+      </ol>
+      <p>
+        La configurarea casei Datecs, ghidul nostru despre <a href={internalPath("/ghid/erori-datecs/")}>erorile Datecs</a> vă poate ajuta dacă apare un cod pe display.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="kb-h2">Ce implică schimbarea</h2>
+      <p><strong>De la SmartBill POS la Tapselo</strong></p>
+      <ul>
+        <li><strong>Ce se mută:</strong> catalogul de produse (denumiri, coduri de bare, prețuri). Tapselo include import din programul vechi; formatul se stabilește la <a href={internalPath("/demo/")}>demo</a>.</li>
+        <li><strong>Ce refaceți:</strong> configurarea casei (Datecs FP-700 pe USB), a cântarului Dibal și a utilizatorilor; activarea cu codul de 6 caractere.</li>
+        <li><strong>Ce pierdeți sau reconectați:</strong> POS bancar integrat și sertar (Tapselo nu le suportă încă); legătura cu SmartBill Facturare, Gestiune, Conta și magazinele online legate de gestiune.</li>
+        <li><strong>Ce testați înainte:</strong> bon de test pe FP-700, raport X și Z, produs la kg cu eticheta Dibal, vânzare cu netul tăiat și sincronizare după reconectare, plus export .p7b.</li>
+      </ul>
+      <p><strong>De la Tapselo la SmartBill POS</strong></p>
+      <ul>
+        <li>Exportați produsele din Tapselo în formatul acceptat de SmartBill (Excel pentru POS de sine stătător, conform ajutorului SmartBill).</li>
+        <li>Reconfigurați casa (eventual DUDE și port COM dacă nu folosiți USB ca la Tapselo).</li>
+        <li>Activați integrările de care aveți nevoie (Gestiune, POS bancar, sertar).</li>
+      </ul>
+      <p>
+        Casa de marcat și obligațiile față de ANAF rămân ale dumneavoastră, indiferent de program.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="kb-h2">Cum am comparat</h2>
+      <p>
+        Am citit pagina de produs SmartBill POS și articolele din centrul de ajutor la data de {PRICES_ACCESSED}. Despre Tapselo am folosit doar ce scrie pe tapselo.com. Pașii marcați „documentat” nu au fost încă refăcuți de noi pe același PC cu capturi de ecran.
+      </p>
+      <p>
+        Revizuim pagina când SmartBill sau Tapselo schimbă documentația publică. Nu actualizăm doar data fără să schimbăm conținutul.
+      </p>
+      <p>
+        Pentru context mai larg: <a href={internalPath("/comparatie/cel-mai-bun-program-casa-de-marcat/")}>lista scurtă de programe de casă de marcat</a>, <a href={internalPath("/comparatie/")}>tabelul comparativ cu zece producători</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="kb-h2">Întrebări frecvente</h2>
+      <div class="bestof-faq">
+        {faq.map((item) => (
+          <details open>
+            <summary>{item.q}</summary>
+            <p>{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <aside class="bestof-cta" aria-label="Demo Tapselo">
+      <p class="bestof-cta__title">Vedeți Tapselo în scenariul dumneavoastră</p>
+      <p>Bon pe Datecs, produs la kg, offline — {TAPS_PRICE_CANON}.</p>
+      <p class="bestof-cta__actions">
+        <a href={DEMO} data-tapselo-cta="vs-smartbill-demo" class="bestof-btn bestof-btn--primary">Încercați demo-ul</a>
+        <a href={internalPath("/demo/")} data-tapselo-cta="vs-smartbill-demo" class="bestof-btn bestof-btn--secondary">Programați o prezentare</a>
+      </p>
+    </aside>
+
+    <section id="surse">
+      <h2 class="kb-h2">Surse</h2>
+      <p>Toate accesate la {PRICES_ACCESSED}, exceptând verificarea generală la {VERIFIED_RO}.</p>
+      <ul>
+        <li>Tapselo: <a href={SRC.tapselo}>tapselo.com</a>; <a href={SRC.tapseloGestiune}>program gestiune magazin</a>; <a href={SRC.tapseloP7b}>casa de marcat fără internet</a></li>
+        <li>
+          SmartBill POS: <a href={SRC.smartbillPos} {...ext}>produse/pos</a>; <a href={SRC.smartbillPrice} {...ext}>prețuri vânzare cu casa de marcat</a>;
+          <a href={SRC.sbCaseList} {...ext}>case de marcat compatibile</a>; <a href={SRC.sbDatecs} {...ext}>configurare Datecs</a>;
+          <a href={SRC.sbScale} {...ext}>configurare cântar</a>; <a href={SRC.sbImport} {...ext}>import produse POS de sine stătător</a>
+        </li>
+      </ul>
+    </section>
+  </article>
+</GuideShell>
+
+<style>
+  .bestof-note { font-size: 0.875em; display: block; margin-top: 0.35rem; color: var(--color-text-muted); }
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; border: 1px solid var(--color-border-light); border-radius: 0.75rem; background: var(--color-surface-white); }
+  .bestof-table { min-width: 52rem; border-collapse: separate; border-spacing: 0; }
+  .bestof-table caption { caption-side: top; text-align: left; padding: 0.75rem; font-size: 0.875rem; color: var(--color-text-muted); }
+  .bestof-table td { min-width: 10rem; vertical-align: top; }
+  .bestof-table th[scope="row"] { position: sticky; left: 0; z-index: 1; background: var(--color-surface-white); min-width: 9rem; max-width: 12rem; box-shadow: 1px 0 0 var(--color-border-light); }
+  .bestof-table thead th:first-child { position: sticky; left: 0; z-index: 2; box-shadow: 1px 0 0 var(--color-border-light); }
+  .bestof-table tr.is-tapselo th, .bestof-table tr.is-tapselo td { background: var(--color-accent-light); }
+  .bestof-faq { display: grid; gap: 0.75rem; }
+  .bestof-faq details { border: 1px solid var(--color-border-light); border-radius: 0.75rem; padding: 1rem 1.125rem; background: var(--color-surface-white); }
+  .bestof-faq summary { cursor: pointer; font-weight: 600; color: var(--color-primary); }
+  .bestof-faq details > p { margin-top: 0.5rem; }
+  .kb-prose > .bestof-cta { margin-block: 2.5rem; }
+  .bestof-cta { border-radius: 0.75rem; background: var(--color-primary); color: var(--color-text-on-primary); padding: 1.5rem; }
+  .bestof-cta > * + * { margin-top: 0.5rem; }
+  .bestof-cta__title { font-family: var(--font-display); font-style: italic; font-size: 1.75rem; line-height: 1.2; color: #fff; }
+  .bestof-cta__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem !important; }
+  .kb-prose .bestof-btn { display: inline-block; border-radius: 0.375rem; padding: 0.625rem 1.25rem; font-size: 0.875rem; font-weight: 700; text-decoration: none; transition: background-color 0.15s; }
+  .kb-prose .bestof-btn--primary { background: var(--color-accent); color: #fff; }
+  .kb-prose .bestof-btn--primary:hover { background: var(--color-accent-hover); color: #fff; }
+  .kb-prose .bestof-btn--secondary { border: 1px solid rgb(255 255 255 / 0.4); color: #fff; }
+  .kb-prose .bestof-btn--secondary:hover { background: rgb(255 255 255 / 0.1); color: #fff; }
+</style>

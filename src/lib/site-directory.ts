@@ -32,6 +32,7 @@ export const guideHubLinks: SiteLink[] = [
   { href: internalPath("/ghid/articole"), label: "Articole de suport" },
   { href: internalPath("/comparatie"), label: "Comparație POS" },
   { href: internalPath("/comparatie/cel-mai-bun-program-casa-de-marcat"), label: "Cel mai bun program de casă de marcat" },
+  { href: internalPath("/comparatie/tapselo-vs-smartbill-pos"), label: "Tapselo vs SmartBill POS" },
 ];
 
 export const ruleGuideLinks: SiteLink[] = [
