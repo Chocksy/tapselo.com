@@ -2,6 +2,7 @@
 
 import { markdownToPlainText } from "../markdown.ts";
 import { OPERATOR_LEGAL_NAME } from "../../data/site.ts";
+import { AUTHORS, authorPersonJsonLd, isAuthorId, type AuthorId } from "../../data/authors.ts";
 
 const SITE = "https://tapselo.com";
 const PUBLISHER = {
@@ -30,6 +31,8 @@ export type SupportArticle = {
   published?: string;
   updated: string;
   verifiedOn: string;
+  /** Key in src/data/authors.ts; shows the byline and makes the Article author a Person. */
+  author?: AuthorId;
   sources: ArticleSource[];
   tags: string[];
   related: string[];
@@ -131,6 +134,13 @@ function validateArticle(raw: unknown, index: number): SupportArticle {
     throw new ArticleSchemaError(`${field}.steps`, "howto articles require steps");
   }
 
+  let author: AuthorId | undefined;
+  if (o.author !== undefined) {
+    const id = isNonEmptyString(o.author, `${field}.author`);
+    if (!isAuthorId(id)) throw new ArticleSchemaError(`${field}.author`, `unknown author: ${id}`);
+    author = id;
+  }
+
   return {
     slug,
     title: isNonEmptyString(o.title, `${field}.title`),
@@ -139,6 +149,7 @@ function validateArticle(raw: unknown, index: number): SupportArticle {
     published: o.published === undefined ? undefined : isIsoDate(o.published, `${field}.published`),
     updated: isIsoDate(o.updated, `${field}.updated`),
     verifiedOn: isIsoDate(o.verifiedOn, `${field}.verifiedOn`),
+    author,
     sources,
     tags,
     related,
@@ -196,7 +207,7 @@ export function buildArticleJsonLd(article: SupportArticle, all: SupportArticle[
     inLanguage: "ro-RO",
     url,
     mainEntityOfPage: url,
-    author: PUBLISHER,
+    author: article.author ? authorPersonJsonLd(AUTHORS[article.author], SITE) : PUBLISHER,
     publisher: PUBLISHER,
   });
 
