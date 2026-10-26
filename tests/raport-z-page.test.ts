@@ -77,10 +77,19 @@ test("dumneavoastră, ș/ț only, no banned words, platform line kept", async ()
   // Unicode-aware word boundaries: \b is blind to Romanian diacritics (e.g. apăsa / închizi).
   const informalTu =
     /(?<![\p{L}])(apeși|apasă|scoți|schimbi|faci|continui|vinzi|poți|închizi|anulezi|anunți|vezi|reiei)(?![\p{L}])/iu;
-  // Cover the whole main (steps/FAQ live outside kb-prose as well as the article body).
-  assert.doesNotMatch(text(main), informalTu);
-  assert.ok(!/\breiei\b/i.test(t) && !t.includes("reiei"), "leftover tu-form reiei");
+  // Article-owned copy only: body + steps + FAQ. Strip related cards / shared CTA / disclaimer
+  // which intentionally use tu-form elsewhere on the site.
+  const owned =
+    (/<article class="kb-prose"[\s\S]*?<\/article>/.exec(main)?.[0] ?? "") +
+    (/<ol[\s\S]*?<\/ol>/.exec(main)?.[0] ?? "") +
+    (/<section[^>]*faq[\s\S]*?<\/section>/i.exec(main)?.[0] ?? "") +
+    ([...main.matchAll(/<div class="kb-faq"[\s\S]*?<\/div>/g)].map((m) => m[0]).join("") ||
+      [...main.matchAll(/<details[\s\S]*?<\/details>/g)].map((m) => m[0]).join(""));
+  assert.ok(owned.length > 200, "expected article-owned markup");
+  assert.doesNotMatch(text(owned), informalTu);
+  assert.ok(!t.includes("reiei"), "leftover tu-form reiei");
   assert.ok(t.includes("reluați"), "paper error row should use reluați");
+  assert.ok(t.includes("Închideți orice bon deschis"), "step 1 heading dumneavoastră");
   assert.ok(t.includes("rulează pe Windows, macOS sau Linux (telefonul e pentru inventar)"));
   for (const m of decode(html).matchAll(/79\/129[^"<]*/g)) assert.equal(m[0], "79/129 lei/lună + TVA");
 });

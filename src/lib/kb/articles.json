@@ -214,7 +214,7 @@
       ],
       "steps": [
         {
-          "name": "Închide orice bon deschis",
+          "name": "Închideți orice bon deschis",
           "text": "Modul autonom e disponibil doar când nu există bon fiscal sau nefiscal deschis (manual Datecs FP-700, pag. 17). Dacă vindeți din DUDE sau din programul POS, finalizați ori anulați bonul acolo."
         },
         {
