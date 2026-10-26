@@ -21,8 +21,8 @@
     "customer_offers": true,
     "ai_assistant": true,
     "pricing_public": "Plan Start 79 lei/luna + TVA (1 casa de marcat), Magazin 129 lei/luna + TVA (2 case); casa suplimentara +39 lei, magazin suplimentar +99 lei. In perioada beta aplicatia este gratuita, fara card, cu preaviz 30 zile inainte de tarif.",
-    "pricing_from": "79 lei/luna + TVA (beta: gratuit)",
-    "notes": "POS pentru magazine alimentare mici (retail, alimentar, minimarket, macelarie, brutarie), cu vanzare offline si sincronizare automata la revenirea internetului. Casa Datecs FP-700 pe USB: bon fiscal, raport X/Z, export .p7b; Tapselo descarca si pastreaza arhivele .p7b (util la depunerea A4200 pentru Z-uri lipsa). Cantar Dibal in retea, receptie marfa din poza facturii, inventar cu telefonul, retete cu productie, comenzi Messenger cu AI, pagina publica de oferte, cupoane si campanii WhatsApp/email. Conector AI (Claude/ChatGPT) cu reguli fiscale, erori Datecs si documente printabile.",
+    "pricing_from": "gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA",
+    "notes": "POS pentru magazine alimentare mici (retail, alimentar, minimarket, măcelărie, brutărie), cu vânzare offline și sincronizare automată la revenirea internetului. Imprimante fiscale: Datecs FP-700 pe USB (testată E2E); Daisy și Tremol cu driver în produs (validare la instalare cu suport). Bon fiscal, raport X/Z, export .p7b; Tapselo descarcă și păstrează arhivele .p7b. Cântar Dibal în rețea, recepție marfă din poza facturii, inventar cu telefonul, rețete cu producție, comenzi Messenger cu AI, pagină publică de oferte. La instalare vă ajutăm să validați modelul casei.",
     "sources": [
       {
         "title": "Tapselo - preturi",
