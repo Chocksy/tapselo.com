@@ -145,7 +145,7 @@ const ext = { rel: "noopener", target: "_blank" };
     <AuthorByline author={AUTHOR} publishedOn={PUBLISHED} updatedOn={UPDATED} verifiedOn={VERIFIED} verifiedLabel="Fapte verificate la" />
   </Fragment>
 
-  <article class="kb-prose bestof space-y-10" data-bestof>
+  <article class="kb-prose bestof" data-bestof>
     <div class="space-y-4">
       <p class="rounded-xl border border-ticket bg-ticket-light p-4 text-sm text-primary">
         Tapselo este produsul nostru. L-am pus în listă după aceleași criterii ca pe celelalte programe, iar datele despre ceilalți producători vin doar de pe site-urile lor, cu link la fiecare informație.
@@ -304,7 +304,7 @@ const ext = { rel: "noopener", target: "_blank" };
           </thead>
           <tbody>
             <tr class="is-tapselo">
-              <th scope="row">Tapselo <small>(produsul nostru)</small></th>
+              <th scope="row">Tapselo <span class="bestof-note">(produsul nostru)</span></th>
               <td>Da: vânzări salvate local, sincronizare la revenire</td>
               <td>Windows, macOS, Linux; Android și iPhone doar pentru inventar</td>
               <td>Datecs FP-700 pe USB; Daisy, Tremol „în curând”</td>
@@ -322,7 +322,7 @@ const ext = { rel: "noopener", target: "_blank" };
               <td>Da</td>
               <td>Da</td>
               <td>În planul POS + Gestiune</td>
-              <td>POS 10,9 €/lună + TVA; POS + Gestiune 27,22 €/lună + TVA <small>(<a href={PRICE_PAGES.smartbill} {...ext}>sursa</a>, accesat la {PRICES_ACCESSED})</small></td>
+              <td>POS 10,9 €/lună + TVA; POS + Gestiune 27,22 €/lună + TVA <span class="bestof-note">(<a href={PRICE_PAGES.smartbill} {...ext}>sursa</a>, accesat la {PRICES_ACCESSED})</span></td>
               <td>30 de zile; 12 luni pentru firme în primul an (cu condiții)</td>
             </tr>
             <tr>
@@ -333,7 +333,7 @@ const ext = { rel: "noopener", target: "_blank" };
               <td>Nu e menționat</td>
               <td>Nu e menționat</td>
               <td>Da, modulul Stocuri + Producție inclus</td>
-              <td>29 €/an (TVA nespecificat) <small>(<a href={PRICE_PAGES.oblio} {...ext}>sursa</a>, accesat la {PRICES_ACCESSED})</small></td>
+              <td>29 €/an (TVA nespecificat) <span class="bestof-note">(<a href={PRICE_PAGES.oblio} {...ext}>sursa</a>, accesat la {PRICES_ACCESSED})</span></td>
               <td>1 an</td>
             </tr>
             <tr>
@@ -344,7 +344,7 @@ const ext = { rel: "noopener", target: "_blank" };
               <td>Nu e menționat</td>
               <td>Nu e menționat</td>
               <td>De la planul Professional (349 RON/lună, <a href={PRICE_PAGES.noxta} {...ext}>sursa</a>)</td>
-              <td>Free 0 RON (30 de plăți/zi); Starter 149 RON/lună; fără TVA <small>(<a href={PRICE_PAGES.noxta} {...ext}>sursa</a>, accesat la {PRICES_ACCESSED})</small></td>
+              <td>Free 0 RON (30 de plăți/zi); Starter 149 RON/lună; fără TVA <span class="bestof-note">(<a href={PRICE_PAGES.noxta} {...ext}>sursa</a>, accesat la {PRICES_ACCESSED})</span></td>
               <td>Free fără termen; 14 zile pe planurile plătite</td>
             </tr>
             <tr>
@@ -498,6 +498,8 @@ const ext = { rel: "noopener", target: "_blank" };
 <style>
   .bestof-cards { list-style: none !important; padding-left: 0 !important; display: grid; gap: 0.75rem; }
   .bestof-cards li { margin: 0 !important; border: 1px solid var(--color-border-light); border-radius: 0.75rem; background: var(--color-surface-elevated); padding: 1rem 1.125rem; }
+  .bestof-note { font-size: 0.875em; }
+  .kb-prose > .bestof-cta { margin-block: 2.5rem; }
   .bestof-cta { border-radius: 0.75rem; background: var(--color-primary); color: var(--color-text-on-primary); padding: 1.5rem; }
   .bestof-cta > * + * { margin-top: 0.5rem; }
   .bestof-cta__title { font-family: var(--font-display); font-style: italic; font-size: 1.75rem; line-height: 1.2; color: #fff; }
@@ -518,7 +520,7 @@ const ext = { rel: "noopener", target: "_blank" };
   .bestof-table th[scope="row"] { position: sticky; left: 0; z-index: 1; background: var(--color-surface-white); min-width: 9rem; max-width: 12rem; box-shadow: 1px 0 0 var(--color-border-light); }
   .bestof-table thead th:first-child { position: sticky; left: 0; z-index: 2; box-shadow: 1px 0 0 var(--color-border-light); }
   .bestof-table tr.is-tapselo th, .bestof-table tr.is-tapselo td { background: var(--color-accent-light); }
-  .bestof-table tr.is-tapselo small { display: block; font-weight: 500; color: var(--color-text-muted); }
+  .bestof-table tr.is-tapselo .bestof-note { display: block; font-weight: 500; color: var(--color-text-muted); }
   .bestof-faq { display: grid; gap: 0.75rem; }
   .bestof-faq details { border: 1px solid var(--color-border-light); border-radius: 0.75rem; padding: 1rem 1.125rem; background: var(--color-surface-white); }
   .bestof-faq summary { cursor: pointer; font-weight: 600; color: var(--color-primary); }

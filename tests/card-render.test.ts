@@ -1,7 +1,7 @@
 // Run: npm test (node --test, native TypeScript type stripping, no dependencies).
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { renderCardPage, renderCardNotFound, levelLook, formatPct, pointsLabel, TOKEN_RE, WALLET_PASS_URL, walletPassUrl, googleWalletUrl, type CardPayload } from "../src/lib/card-render.ts";
+import { renderCardPage, renderCardNotFound, levelLook, formatDay, formatPct, pointsLabel, TOKEN_RE, WALLET_PASS_URL, walletPassUrl, googleWalletUrl, type CardPayload } from "../src/lib/card-render.ts";
 import { MOCK_CARD, MOCK_CARD_VARIANTS } from "../src/lib/card-mock.ts";
 import { eanCheckDigit, isValidEan13 } from "../src/lib/ean13.ts";
 
@@ -123,4 +123,28 @@ test("Google Wallet button: only for Android, never with the Apple one", () => {
   assert.doesNotMatch(renderCardPage(MOCK_CARD, { token }), /Google Wallet/);
   assert.doesNotMatch(renderCardPage(MOCK_CARD, { isAndroid: true }), /Google Wallet/);
   assert.equal(googleWalletUrl("a+b"), `${WALLET_PASS_URL}?token=a%2Bb&platform=google`);
+});
+
+test("keep line: under the next line, escaped; none without data", () => {
+  assert.equal(formatDay("2027-01-15"), "15 ian 2027");
+  assert.equal(formatDay("2027-13-01"), "");
+  assert.equal(formatDay(null), "");
+  const out = renderCardPage({ ...clone(), keep_until: "2027-01-15", keep_points: 150 });
+  assert.match(out, /<p class="keep">Mai ai <b>150 de puncte<\/b> pana pe 15 ian 2027 ca sa pastrezi Argint<\/p>/);
+  assert.ok(out.indexOf('class="keep"') > out.indexOf('<p class="next">'));
+  const odd = renderCardPage({ ...clone(), level_name: "<b>x</b>", keep_until: "2027-01-15", keep_points: 1 });
+  assert.match(odd, /ca sa pastrezi &lt;b&gt;x&lt;\/b&gt;<\/p>/);
+  assert.doesNotMatch(renderCardPage(clone()), /class="keep"/);
+  assert.doesNotMatch(renderCardPage({ ...clone(), keep_until: "2027-01-15", keep_points: 0 }), /class="keep"/);
+  assert.doesNotMatch(renderCardPage({ ...clone(), keep_until: "bad", keep_points: 10 }), /class="keep"/);
+  assert.doesNotMatch(renderCardPage({ ...MOCK_CARD_VARIANTS.off, keep_until: "2027-01-15", keep_points: 10 }), /class="keep"/);
+});
+
+test("open-in-app link: phones with a token only", () => {
+  const token = "AbCdEfGhIjKlMnOpQrStUv";
+  for (const o of [{ isApple: true }, { isAndroid: true }]) {
+    assert.match(renderCardPage(MOCK_CARD, { token, ...o }), new RegExp(`<a class="app" href="tapselo://card/${token}">`));
+  }
+  assert.doesNotMatch(renderCardPage(MOCK_CARD, { token }), /tapselo:\/\//);
+  assert.doesNotMatch(renderCardPage(MOCK_CARD, { isApple: true }), /tapselo:\/\//);
 });

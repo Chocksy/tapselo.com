@@ -1,34 +1,24 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/Navbar.astro";
-import Footer from "../components/Footer.astro";
+import GuideShell from "../components/GuideShell.astro";
 import EmailLink from "../components/EmailLink.astro";
 import { internalPath } from "../lib/internal-url.ts";
 import OperatorLine from "../components/OperatorLine.astro";
+import WithdrawConsent from "../components/WithdrawConsent.astro";
 ---
 
-<Layout
+<GuideShell
   title="Politica de confidențialitate — Tapselo POS"
   description="Cum colectează și folosește Tapselo POS datele clienților și ale magazinelor, inclusiv mesajele primite prin integrarea Facebook Messenger și datele primite de asistentul AI."
+  heading="Politica de confidențialitate"
+  lead="Ce date colectăm, de ce le colectăm și ce poți face cu ele."
+  campaign="legal-privacy"
+  breadcrumb={false}
+  contentWidth="reading"
+  pageToc
+  showCta={false}
+  adviceNote={false}
 >
-  <Navbar />
-
-  <header class="bg-primary pt-28 pb-16 md:pt-32">
-    <div class="site-container site-reading">
-      <h1 class="font-display text-4xl italic text-white sm:text-5xl">
-        Politica de confidențialitate
-      </h1>
-      <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">
-        Ce date colectăm, de ce le colectăm și ce poți face cu ele.
-      </p>
-      <p class="mt-6 text-sm text-text-on-primary-muted">
-        Ultima actualizare: 1 octombrie 2026
-      </p>
-    </div>
-  </header>
-
-  <main class="bg-surface-white py-16">
-    <div class="site-container site-reading space-y-12">
+  <p slot="byline" class="text-text-on-primary-muted">Ultima actualizare: 21 octombrie 2026</p>
       <section>
         <h2 class="font-display text-3xl italic text-primary">Cine suntem</h2>
         <OperatorLine class="mt-4 text-sm text-text-secondary" />
@@ -181,9 +171,110 @@ import OperatorLine from "../components/OperatorLine.astro";
         <h2 class="font-display text-3xl italic text-primary">Cookie-uri</h2>
         <p class="mt-4 leading-relaxed text-text-secondary">
           Acest site de prezentare nu folosește cookie-uri de urmărire și nu are pixeli de
-          publicitate. Formularul de contact este protejat de Cloudflare Turnstile, care verifică
+          publicitate, cu o singură excepție: pagina <a href="/demo/" class="text-accent hover:text-accent-hover">/demo/</a>,
+          unde pixelul Meta pornește numai dacă vă dați acordul (detalii mai jos). Formularul de contact este protejat de Cloudflare Turnstile, care verifică
           doar dacă cererea vine de la un om.
         </p>
+      </section>
+
+      <section id="meta-pixel">
+        <h2 class="font-display text-3xl italic text-primary">Pixelul Meta pe pagina /demo/</h2>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Pe pagina <a href="/demo/" class="text-accent hover:text-accent-hover">/demo/</a> folosim pixelul Meta și
+          Meta Conversions API ca să măsurăm cât de bine funcționează reclamele noastre (câte persoane ajung din
+          reclame să încerce demo-ul). Pe nicio altă pagină a site-ului nu se încarcă cod Meta.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          <strong>Numai cu acordul dumneavoastră.</strong> Pe /demo/ vă arătăm o casetă cu butoanele „Accept” și
+          „Refuz”. Până nu apăsați „Accept”, pixelul nu se încarcă, nu se setează cookie-uri Meta și nu se trimite
+          nimic către Meta. Baza legală este consimțământul dumneavoastră (art. 6 alin. (1) lit. a) din GDPR), iar
+          stocarea cookie-urilor și accesul la ele pe dispozitivul dumneavoastră se fac numai cu acordul dat după
+          informarea de pe această pagină, conform art. 4 alin. (5) din Legea nr. 506/2004.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">După ce acceptați, folosim:</p>
+        <ul class="mt-2 space-y-2 pl-5 text-text-secondary">
+          <li class="list-disc leading-relaxed"><code>_fbp</code> și <code>_fbc</code>: cookie-uri setate de pixelul Meta, care identifică browserul și clicul pe reclamă;</li>
+          <li class="list-disc leading-relaxed"><code>tapselo_attr</code>: cookie pe domeniul <code>.tapselo.com</code>, valabil 7 zile, care duce aceleași date de măsurare (mai jos) către demo-ul Tapselo;</li>
+          <li class="list-disc leading-relaxed"><code>tapselo_consent</code>: cookie pe domeniul <code>.tapselo.com</code>, valabil 180 de zile, cu valoarea <code>marketing</code> (ați acceptat) sau <code>denied</code> (ați refuzat); demo-ul trimite date către Meta numai dacă găsește <code>marketing</code>;</li>
+          <li class="list-disc leading-relaxed"><code>tapselo_marketing_consent</code> (localStorage): păstrează alegerea dumneavoastră („Accept” sau „Refuz”), ca să nu vă întrebăm din nou;</li>
+          <li class="list-disc leading-relaxed"><code>tapselo_landing_page</code> (sessionStorage, doar pe durata sesiunii): prima pagină a vizitei.</li>
+        </ul>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          <strong>Ce trimitem.</strong> Când apăsați un buton care deschide demo-ul, trimitem către Meta, din browser
+          și de pe serverul nostru, evenimentul <code>demo_started</code> cu: un identificator aleatoriu al evenimentului
+          (<code>event_id</code>), prima pagină a vizitei (<code>landing_page</code>), pagina curentă
+          (<code>page_path</code>), parametrii <code>utm_*</code> din link, dacă există, adresa IP, tipul de browser
+          (user agent) și valorile <code>fbp</code>/<code>fbc</code>. La încărcarea pixelului, Meta primește și
+          evenimentul standard <code>PageView</code>, cu adresa paginii /demo/. Datele de măsurare de mai sus, fără
+          adresa IP și user agent, plus parametrul <code>fbclid</code> din linkul reclamei, sunt adăugate și la linkul
+          către demo.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          <strong>Evenimentul <code>demo_active</code> din demo.</strong> Când demo-ul pornește efectiv pe
+          app.tapselo.com sau demo.tapselo.com (la prima autentificare în demo, într-o filă de browser), serverul nostru
+          trimite către Meta, prin Conversions API, evenimentul <code>demo_active</code>. Se întâmplă numai dacă ați apăsat
+          „Accept” pe tapselo.com/demo/: demo-ul verifică în browser cookie-ul <code>tapselo_consent</code> (domeniul
+          <code>.tapselo.com</code>) și trimite datele numai dacă are valoarea <code>marketing</code>. Parametrii din link
+          sau din cookie-ul <code>tapselo_attr</code> nu sunt suficienți singuri. În demo nu se încarcă pixelul Meta. Evenimentul conține: un identificator aleatoriu nou
+          (<code>event_id</code>), ora evenimentului, adresa demo-ului (<code>event_source_url</code>), adresa IP, user
+          agent, valorile <code>fbp</code>/<code>fbc</code>, prima pagină a vizitei pe tapselo.com
+          (<code>landing_page</code>), <code>page_path</code> (mereu „/”) și parametrii <code>utm_*</code>, dacă există.
+          Aceste valori sunt trimise așa cum sunt, fără hash. Nu trimitem e-mail, telefon, nume sau identificator extern.
+          Evenimentul are propriul <code>event_id</code>, diferit de cel al evenimentului <code>demo_started</code> de pe
+          tapselo.com.
+          Dacă ați apăsat „Refuz” pe /demo/ (sau nu ați răspuns), adică dacă cookie-ul <code>tapselo_consent</code> lipsește
+          sau are valoarea <code>denied</code>, linkul către demo nu primește aceste date, cookie-ul
+          <code>tapselo_attr</code> este șters, iar din demo nu se trimite nimic către Meta.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          <strong>Statistici PostHog în demo.</strong> Tot numai dacă cookie-ul <code>tapselo_consent</code> are valoarea
+          <code>marketing</code> (ați acceptat pe tapselo.com/demo/), demo-ul (app.tapselo.com și demo.tapselo.com)
+          înregistrează în statisticile PostHog, la evenimentele din demo, parametrii <code>utm_*</code>,
+          <code>landing_page</code>, <code>event_id</code> și <code>fbclid</code>. Îi folosim ca să vedem din ce campanie
+          a pornit o încercare a demo-ului. Valorile <code>fbp</code>/<code>fbc</code> nu ajung în PostHog.
+          Separat de acest acord, demo-ul trimite către PostHog evenimente de utilizare și depanare: paginile
+          deschise, clicurile, erorile și înregistrări ale sesiunii (câmpurile de parolă sunt mascate).
+          Toate datele PostHog sunt prelucrate de PostHog, Inc. (SUA), în calitate de persoană împuternicită de operator, prin PostHog Cloud EU,
+          găzduit pe servere din Frankfurt (Germania); datele ajung acolo prin adresa noastră <code>t.tapselo.com</code>.
+          Conform
+          <a href="https://posthog.com/dpa" class="text-accent hover:text-accent-hover">acordului PostHog de prelucrare a datelor</a>,
+          PostHog, Inc. participă la Cadrul UE-SUA privind confidențialitatea datelor (EU-U.S. Data Privacy Framework) și
+          folosește clauze contractuale standard pentru eventualele transferuri în afara Spațiului Economic European.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          <strong>Ce nu trimitem.</strong> Nici de pe tapselo.com, nici din demo nu trimitem către Meta adresa de e-mail, numărul de telefon, coduri de bare,
+          prețuri, CUI-uri sau alte date despre firma dumneavoastră.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          <strong>Destinatar.</strong> Datele ajung la Meta Platforms Ireland Limited. Meta poate transfera date către
+          Meta Platforms, Inc. din Statele Unite, care este certificată conform Cadrului UE-SUA privind confidențialitatea
+          datelor (EU-U.S. Data Privacy Framework), conform
+          <a href="https://www.facebook.com/privacy/policies/data_privacy_framework" class="text-accent hover:text-accent-hover">declarației Meta privind Data Privacy Framework</a>. Pentru alte
+          transferuri în afara Spațiului Economic European, Meta folosește mecanismele descrise în politica sa de
+          confidențialitate.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          <strong>Cum refuzați sau vă retrageți acordul.</strong> Apăsați „Refuz” în caseta de pe /demo/. Dacă ați
+          acceptat deja, vă puteți retrage acordul oricând cu un clic pe butonul
+          <a href="#retrage-acordul" class="text-accent hover:text-accent-hover">„Retrage acordul”</a>, aflat mai jos
+          și în subsolul fiecărei pagini. Butonul setează cookie-ul <code>tapselo_consent=denied</code> pe domeniul
+          <code>.tapselo.com</code>, valabil 180 de zile, șterge cookie-ul <code>tapselo_attr</code> și prima pagină
+          vizitată, reținută în sessionStorage (<code>tapselo_landing_page</code>), și scoate datele de măsurare din linkurile către
+          demo de pe pagina deschisă. Pe /demo/, salvează și alegerea „Refuz” în localStorage și, dacă pixelul Meta
+          era încărcat (după un „Accept” anterior), îi transmite retragerea acordului (<code>consent revoke</code>). Cu <code>tapselo_consent=denied</code>, demo-ul nu
+          mai trimite nimic către Meta, iar la următoarea încărcare șterge din browser proprietățile de campanie
+          PostHog salvate acolo (parametrii <code>utm_*</code>, <code>landing_page</code>, <code>event_id</code> și
+          <code>fbclid</code>) și datele de măsurare din sessionStorage (<code>tapselo.attr</code>). Evenimentele
+          trimise deja către PostHog nu sunt șterse prin acest pas. Ca alternativă, puteți șterge manual din browser datele site-ului tapselo.com și ale
+          subdomeniilor app.tapselo.com și demo.tapselo.com (cookie-urile, inclusiv <code>tapselo_consent</code>, și
+          localStorage); în acest caz, caseta va apărea din nou la următoarea vizită pe /demo/. Retragerea acordului nu
+          afectează legalitatea prelucrării efectuate pe baza consimțământului înainte de retragere (art. 7 alin. (3)
+          din GDPR). Ne puteți scrie oricând la
+          <EmailLink class="font-bold text-accent hover:text-accent-hover" />.
+        </p>
+        <div id="retrage-acordul" class="mt-4 text-text-secondary">
+          <WithdrawConsent class="rounded-md bg-accent px-4 py-2 font-bold text-white hover:bg-accent-hover" />
+        </div>
       </section>
 
       <section class="rounded-xl border border-border bg-surface p-6 md:p-8">
@@ -211,7 +302,11 @@ import OperatorLine from "../components/OperatorLine.astro";
           integration at any time, which stops all collection. Processing is based on GDPR
           (contract performance and legitimate interest). Users have the right to access, correct
           and delete their data; email the address above. The marketing site sets no tracking
-          cookies.
+          cookies, except on /demo/: there, only after the visitor clicks "Accept", the Meta Pixel and Meta
+          Conversions API record a demo_started event (event_id, landing page, page path, utm_* parameters, IP
+          address, user agent, _fbp/_fbc), sent to Meta Platforms Ireland for ad measurement, on the basis of consent.
+          Only when the tapselo_consent=marketing cookie (.tapselo.com) is present, the demo (app.tapselo.com / demo.tapselo.com) also sends a server-side demo_active event via the Conversions API (new event_id, event time, demo URL, IP, user agent, fbp/fbc, landing_page, page_path "/", utm_*; sent unhashed, no email, phone, name or external ID); if the visitor refused, nothing is sent from the demo either and tapselo_attr is deleted. For accepted visits only, the demo also records utm_*, landing_page, event_id and fbclid on its PostHog analytics events (no fbp/fbc). Independently of consent, the demo also sends PostHog usage and debugging events (pages opened, clicks, errors and session recordings, with password fields masked). PostHog, Inc. (US) processes all PostHog data as our processor on PostHog Cloud EU (Frankfurt), via t.tapselo.com; per PostHog's DPA, PostHog, Inc. participates in the EU-U.S. Data Privacy Framework and uses Standard Contractual Clauses for transfers outside the EEA. No email, phone, barcodes, prices, CUIs or company data are sent. Cookies: _fbp, _fbc, tapselo_attr
+          (.tapselo.com, 7 days), tapselo_consent (.tapselo.com, 180 days, "marketing" or "denied"; the demo sends to Meta only with "marketing"); localStorage tapselo_marketing_consent. Legal basis: consent (GDPR art. 6(1)(a); Romanian Law 506/2004 art. 4(5) for cookies). Meta may transfer data to Meta Platforms, Inc. (US), certified under the EU-U.S. Data Privacy Framework. To withdraw consent, click "Retrage acordul" (in every page footer and at /privacy/#retrage-acordul): it sets tapselo_consent=denied on .tapselo.com for 180 days, deletes tapselo_attr and the sessionStorage tapselo_landing_page, removes the measurement data from demo links on the open page, and on /demo/ also stores "denied" in localStorage and, if the Meta Pixel was loaded after an earlier "Accept", sends it consent revoke. With the denied cookie the demo sends nothing to Meta and, on its next load, clears from the browser the stored PostHog campaign properties (utm_*, landing_page, event_id, fbclid) and the sessionStorage tapselo.attr; events already sent to PostHog are not deleted by this step. Alternatively, clear the site data of tapselo.com, app.tapselo.com and demo.tapselo.com by hand (the consent box then reappears on the next /demo/ visit); withdrawal does not affect the lawfulness of earlier processing.
         </p>
         <p class="mt-4 leading-relaxed text-text-secondary">
           AI connector ("Tapselo", https://tapselo.com/mcp, used from Claude or ChatGPT, no account):
@@ -220,11 +315,7 @@ import OperatorLine from "../components/OperatorLine.astro";
           document tools are stored for 30 days and then deleted by a daily job. Logs hold the tool name, success or error, duration, error type and, on failure, the technical error message; they hold no user text or tool arguments.
           Outside services: ANAF (the CUI you check), BNR (exchange rate, nothing sent about you), and Open Food Facts
           (the barcodes you look up). Document pages are public to anyone with the link and marked noindex. To delete a
-          document or report abuse, email <!--email_off-->contact@tapselo.com<!--/email_off--> with the link. Last updated: 1 October 2026.
+          document or report abuse, email <!--email_off-->contact@tapselo.com<!--/email_off--> with the link. Last updated: 21 October 2026.
         </p>
       </section>
-    </div>
-  </main>
-
-  <Footer />
-</Layout>
+</GuideShell>

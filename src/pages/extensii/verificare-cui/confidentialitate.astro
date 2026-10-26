@@ -1,7 +1,5 @@
 ---
-import Layout from "../../../layouts/Layout.astro";
-import Navbar from "../../../components/Navbar.astro";
-import Footer from "../../../components/Footer.astro";
+import GuideShell from "../../../components/GuideShell.astro";
 import { internalPath } from "../../../lib/internal-url.ts";
 import OperatorLine from "../../../components/OperatorLine.astro";
 
@@ -10,12 +8,19 @@ const description =
   "Politica de confidențialitate pentru extensia Chrome Tapselo „Verificare CUI ANAF”: ce date procesăm, ce nu colectăm și cum contactezi echipa.";
 ---
 
-<Layout title={title} description={description}>
-  <Navbar />
-  <main class="bg-surface-white py-24">
-    <article class="mx-auto max-w-3xl px-6 prose prose-neutral">
-      <h1 class="font-display text-4xl italic text-primary">Confidențialitate — extensia Verificare CUI ANAF</h1>
-      <p class="text-text-secondary">Ultima actualizare: 13 octombrie 2026</p>
+<GuideShell
+  title={title}
+  description={description}
+  heading="Confidențialitate — extensia Verificare CUI ANAF"
+  campaign="extensie-verificare-cui"
+  breadcrumb={false}
+  contentWidth="reading"
+  pageToc
+  showCta={false}
+  adviceNote={false}
+>
+  <p slot="byline" class="text-text-on-primary-muted">Ultima actualizare: 13 octombrie 2026</p>
+  <article class="kb-prose">
 
       <h2>Ce face extensia</h2>
       <p>
@@ -63,13 +68,12 @@ const description =
       </p>
 
       <h2>Contact</h2>
-      <OperatorLine class="text-sm text-text-secondary not-prose" />
+      <OperatorLine class="text-sm text-text-secondary" />
       <p>
         Pentru întrebări despre această extensie, scrie-ne din
         <a href={internalPath("/#contact")}>formularul de contact</a> Tapselo sau consultă
         <a href={internalPath("/privacy")}>politica generală de confidențialitate</a> a site-ului.
       </p>
-    </article>
-  </main>
-  <Footer />
-</Layout>
+  </article>
+</GuideShell>
+

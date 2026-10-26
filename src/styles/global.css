@@ -186,6 +186,14 @@
     transform: translateX(0);
   }
 
+  /* Below xl (no side margin to absorb 24px) the sideways slide-ins would push the page wider than the viewport; rise instead. */
+  @media (max-width: 1279.98px) {
+    .animate-on-scroll.animate-from-left,
+    .animate-on-scroll.animate-from-right {
+      transform: translateY(24px);
+    }
+  }
+
   .animate-on-scroll.animate-scale {
     transform: scale(0.95);
   }
@@ -237,5 +245,45 @@
       0 25px 50px -12px rgba(0, 0, 0, 0.4),
       0 12px 24px -8px rgba(0, 0, 0, 0.25),
       0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Guide prose (moved from GuideShell so every template that uses .kb-prose gets it, not only GuideShell pages). */
+.kb-prose, .prose-tapselo { color: var(--color-text-secondary); line-height: 1.7; }
+.kb-prose > * + * { margin-top: 1rem; }
+.kb-prose .kb-h2,
+.kb-prose h2:not([class]),
+.kb-h2 { margin-top: 2.5rem; font-family: var(--font-display); font-size: clamp(1.75rem, 3vw + 0.5rem, 2.25rem); font-style: italic; font-weight: 400; line-height: 1.15; color: var(--color-primary); }
+  /* Only the very first heading of the prose sits flush; an H2 that opens a later <section> keeps its top margin. */
+.kb-prose > .kb-h2:first-child,
+.kb-prose > :first-child > .kb-h2:first-child { margin-top: 0; }
+.kb-prose .kb-h3,
+.kb-prose h3:not([class]),
+.kb-h3 { margin-top: 1.75rem; font-size: 1.125rem; font-weight: 600; line-height: 1.35; color: var(--color-primary); }
+.kb-prose strong { color: var(--color-primary); font-weight: 700; }
+.kb-prose a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+.kb-prose a:hover { color: var(--color-accent-hover); }
+.kb-prose ul { list-style: disc; padding-left: 1.25rem; }
+.kb-prose ol { list-style: decimal; padding-left: 1.25rem; }
+.kb-prose li + li { margin-top: 0.4rem; }
+.kb-prose code { font-family: var(--font-mono); font-size: 0.9em; background: var(--color-surface); padding: 0.1em 0.35em; border-radius: 4px; }
+.kb-prose .kb-table { margin-top: 1rem; }
+.kb-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.kb-table th, .kb-table td { border-bottom: 1px solid var(--color-border-light); padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; }
+.kb-table th { color: var(--color-primary); font-weight: 600; background: var(--color-surface); }
+.kb-table tr:target td { background: var(--color-ticket-light); }
+section[id], div[id], tr[id] { scroll-margin-top: 5rem; }
+
+@layer components {
+  /* Paragraph/list rhythm inside nested sections of prose; utilities (mt-*) on an element still win. */
+  :is(.kb-prose, .prose-tapselo) :is(p, ul, ol, pre, blockquote, table) + :is(p, ul, ol, pre, blockquote, table) {
+    margin-top: 1rem;
+  }
+  :is(.kb-prose, .prose-tapselo) :is(h2, h3) + :is(p, ul, ol, pre, blockquote, table) {
+    margin-top: 0.75rem;
   }
 }

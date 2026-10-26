@@ -12,6 +12,9 @@ import { anafCuiDevProxyPlugin } from './src/lib/cui-anaf/vite-dev-proxy.ts';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const articlesRaw = JSON.parse(readFileSync(join(__dirname, 'src/lib/kb/articles.json'), 'utf8'));
 const articleLastmod = articleLastmodByPath(parseArticlesFile(articlesRaw));
+// Datecs per-error pages (/ghid/erori-datecs/<slug>/): lastmod = verified_on of the data file.
+const datecsPages = JSON.parse(readFileSync(join(__dirname, 'src/lib/kb/datecs-error-pages.json'), 'utf8'));
+for (const p of datecsPages.pages) articleLastmod.set(`/ghid/erori-datecs/${p.slug}`, datecsPages.verified_on);
 
 // https://astro.build/config
 export default defineConfig({
@@ -22,7 +25,7 @@ export default defineConfig({
     preact({ compat: true }),
     sitemap({
       // Shopper pages (store sign-up, store privacy, confirm, unsubscribe) are noindex.
-      filter: (page) => !/^\/(c|p|g|o|confirmare|dezabonare)\//.test(new URL(page).pathname),
+      filter: (page) => !/^\/(c|p|g|o|r|confirmare|dezabonare)\//.test(new URL(page).pathname),
       serialize(item) {
         const path = new URL(item.url).pathname.replace(/\/$/, '') || '/';
         const lastmod = articleLastmod.get(path);

@@ -1,0 +1,181 @@
+---
+// Meta Pixel + demo_started for /demo/ ONLY (Razvan, 2026-10-20). Render it only when
+// PUBLIC_META_PIXEL_ID is set; the script then still waits for the visitor's opt-in.
+interface Props {
+  pixelId: string;
+}
+const { pixelId } = Astro.props;
+---
+
+<div class="meta-consent" data-meta-consent data-pixel-id={pixelId} hidden role="dialog" aria-live="polite" aria-label="Cookie-uri de marketing">
+  <p>
+    Vrei să ne ajuți să măsurăm reclamele? Cu acordul tău folosim pixelul Meta pe această pagină.
+    <a href="/privacy/">Detalii</a>
+  </p>
+  <div class="meta-consent__actions">
+    <button type="button" data-meta-consent-choice="denied">Refuz</button>
+    <button type="button" data-meta-consent-choice="granted" class="meta-consent__accept">Accept</button>
+  </div>
+</div>
+
+<script>
+  import {
+    CONSENT_KEY,
+    attrCookie,
+    consentCookies,
+    demoHrefWithConsent,
+    stripCarry,
+    DEMO_EVENT,
+    LANDING_KEY,
+    buildCarry,
+    buildDemoParams,
+    fbcFromFbclid,
+    isDemoHref,
+    resolvePixelId,
+  } from "../lib/meta/pixel.ts";
+  import { WITHDRAW_EVENT, cookieDenied } from "../lib/consent-withdraw.ts";
+
+  type Fbq = ((...args: unknown[]) => void) & { queue?: unknown[]; loaded?: boolean; version?: string; push?: unknown; callMethod?: (...a: unknown[]) => void };
+  type W = Window & { fbq?: Fbq; _fbq?: Fbq; __tapseloPostHogBoot?: { promise: Promise<{ capture: (e: string, p?: Record<string, unknown>) => void } | null> } };
+  const w = window as W;
+
+  const box = document.querySelector<HTMLElement>("[data-meta-consent]");
+  const pixelId = resolvePixelId(box?.dataset.pixelId);
+
+  const readConsent = () => {
+    if (cookieDenied(document.cookie)) return "denied"; // „Retrage acordul” wins over an older „Accept”
+    try {
+      return localStorage.getItem(CONSENT_KEY);
+    } catch {
+      return null;
+    }
+  };
+  const cookie = (name: string) => document.cookie.split("; ").find((c) => c.startsWith(`${name}=`))?.slice(name.length + 1) ?? null;
+
+  function loadPixel(id: string) {
+    if (w.fbq) return;
+    const q: Fbq = function (...args: unknown[]) {
+      if (q.callMethod) q.callMethod(...args);
+      else q.queue!.push(args);
+    } as Fbq;
+    q.queue = [];
+    q.loaded = true;
+    q.version = "2.0";
+    q.push = q;
+    w.fbq = w._fbq = q;
+    const s = document.createElement("script");
+    s.async = true;
+    s.src = "https://connect.facebook.net/en_US/fbevents.js";
+    document.head.appendChild(s);
+    w.fbq("init", id);
+    w.fbq("track", "PageView");
+  }
+
+  function rememberLanding() {
+    try {
+      if (sessionStorage.getItem(LANDING_KEY)) return;
+      let landing = location.pathname;
+      if (document.referrer) {
+        const r = new URL(document.referrer);
+        if (r.origin === location.origin) landing = r.pathname;
+      }
+      sessionStorage.setItem(LANDING_KEY, landing);
+    } catch {
+      /* storage blocked: landing_page falls back to this page */
+    }
+  }
+
+  function onDemoClick(e: MouseEvent) {
+    const a = (e.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
+    if (!a || !isDemoHref(a.getAttribute("href"), location.href) || !pixelId || readConsent() !== "granted") return;
+    const eventId = crypto.randomUUID();
+    let landing: string | null = null;
+    try {
+      landing = sessionStorage.getItem(LANDING_KEY);
+    } catch {
+      /* ignore */
+    }
+    const params = buildDemoParams(location.pathname, location.search, landing);
+    const fbclid = new URLSearchParams(location.search).get("fbclid");
+    const carry = buildCarry({
+      params,
+      fbclid,
+      fbc: cookie("_fbc") ?? fbcFromFbclid(fbclid, Date.now()),
+      fbp: cookie("_fbp"),
+      eventId,
+    });
+
+    // 1) Browser pixel and 2) CAPI share one event_id so Meta keeps one.
+    w.fbq?.("trackCustom", DEMO_EVENT, params, { eventID: eventId });
+    navigator.sendBeacon?.(
+      "/api/meta-capi",
+      new Blob([JSON.stringify({ event_name: DEMO_EVENT, event_id: eventId, event_source_url: location.href, custom_data: params })], { type: "application/json" }),
+    );
+    // 3) Same event_id on the site's PostHog (already booted by Layout; nothing is loaded here).
+    void w.__tapseloPostHogBoot?.promise.then((ph) => ph?.capture(DEMO_EVENT, { ...params, event_id: eventId }));
+
+    // Hand-off to the demo app: query params plus a first-party cookie on .tapselo.com.
+    a.href = demoHrefWithConsent(a.href, carry);
+    document.cookie = attrCookie(carry);
+  }
+
+  if (pixelId && box) {
+    const consent = readConsent();
+    if (consent === "granted") {
+      for (const c of consentCookies("granted")) document.cookie = c;
+      rememberLanding();
+      loadPixel(pixelId);
+    } else if (consent !== "denied") {
+      box.hidden = false;
+    }
+    box.addEventListener("click", (e) => {
+      const choice = (e.target as Element | null)?.closest?.("[data-meta-consent-choice]")?.getAttribute("data-meta-consent-choice");
+      if (choice !== "granted" && choice !== "denied") return;
+      try {
+        localStorage.setItem(CONSENT_KEY, choice);
+      } catch {
+        /* ignore */
+      }
+      box.hidden = true;
+      for (const c of consentCookies(choice)) document.cookie = c;
+      if (choice === "denied") {
+        for (const link of document.querySelectorAll<HTMLAnchorElement>("a[href]")) {
+          if (isDemoHref(link.getAttribute("href"), location.href)) link.href = stripCarry(link.href);
+        }
+      }
+      if (choice === "granted") {
+        rememberLanding();
+        loadPixel(pixelId);
+      }
+    });
+    document.addEventListener("click", onDemoClick, true);
+    window.addEventListener(WITHDRAW_EVENT, () => {
+      w.fbq?.("consent", "revoke");
+      box.hidden = true;
+    });
+  }
+</script>
+
+<style>
+  .meta-consent {
+    position: fixed;
+    z-index: 60;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    max-width: 32rem;
+    margin: 0 auto;
+    border-radius: 0.75rem;
+    background: #fff;
+    color: var(--color-primary);
+    box-shadow: 0 10px 30px rgb(15 23 42 / 0.25);
+    padding: 1rem 1.125rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .meta-consent[hidden] { display: none; }
+  .meta-consent a { color: var(--color-accent); text-decoration: underline; }
+  .meta-consent__actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.75rem; }
+  .meta-consent button { border-radius: 0.375rem; border: 1px solid var(--color-border-light); padding: 0.5rem 1rem; font-weight: 700; }
+  .meta-consent .meta-consent__accept { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+</style>

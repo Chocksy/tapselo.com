@@ -10,6 +10,7 @@ import {
 } from "../lib/site-directory.ts";
 import OperatorLine from "./OperatorLine.astro";
 import SiteLogo from "./SiteLogo.astro";
+import WithdrawConsent from "./WithdrawConsent.astro";
 
 const navClass = "text-sm font-medium text-text-on-primary-muted transition-colors hover:text-white";
 const colTitle = "text-xs font-bold uppercase tracking-wide text-text-on-primary-muted";
@@ -78,6 +79,7 @@ const colLink = "text-sm text-text-on-primary-muted transition-colors hover:text
       <a href={internalPath("/ghid")} class={navClass}>Ghid</a>
       <a href={internalPath("/ai")} class={navClass}>Asistent AI</a>
       <a href={internalPath("/comparatie")} class={navClass}>Comparație</a>
+      <WithdrawConsent class={`${navClass} underline`} wrapClass="order-last basis-full text-center text-sm text-text-on-primary-muted" />
       <a
         href="https://github.com/Chocksy/tapselo-pos"
         target="_blank"

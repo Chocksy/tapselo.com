@@ -1,0 +1,165 @@
+---
+// /ghid/erori-datecs/<slug>/: one help page per Datecs error (TAP-018), from src/lib/kb/datecs-error-pages.json.
+// Only manufacturer text (docs/sources/datecs/); quoted strings stay verbatim and carry doc + page.
+import GuideShell from "../../../components/GuideShell.astro";
+import { datecsAnchor } from "../../../lib/mcp/answers/datecs.ts";
+import { internalPath } from "../../../lib/internal-url.ts";
+import { articlePath } from "../../../lib/articles/schema.ts";
+import {
+  cite,
+  datecsErrorPages,
+  datecsPageJsonLd,
+  datecsPagePath,
+  datecsPagesData as d,
+  HUB_PATH,
+  type DocId,
+  type Quote,
+  TAPSELO_LINE,
+} from "../../../lib/datecs-pages/pages.ts";
+
+export function getStaticPaths() {
+  return datecsErrorPages.map((page) => ({ params: { slug: page.slug }, props: { page } }));
+}
+
+const { page: p } = Astro.props;
+const q = (x: Quote) => `„${x.text}”`;
+const usedPages = new Map<DocId, Set<number>>();
+const use = (x: { doc: DocId; page: number }) => usedPages.set(x.doc, (usedPages.get(x.doc) ?? new Set()).add(x.page));
+use({ doc: "M1", page: p.m1.page });
+p.display.forEach((x) => (use(x.message), use(x.remedy)));
+p.stepGroups.forEach((g) => (g.steps.forEach(use), g.after && use(g.after)));
+(p.extraQuotes ?? []).forEach(use);
+d.service.forEach(use);
+use(d.codeList);
+const accessed = "22.10.2026";
+const sources = [...usedPages].sort().map(([doc, pages]) => ({
+  title: `${d.sources[doc].title}, pag. ${[...pages].sort((a, b) => a - b).join(", ")}, accesat la ${accessed}`,
+  url: d.sources[doc].url,
+}));
+const siblings = p.related.map((s) => datecsErrorPages.find((x) => x.slug === s)!).filter(Boolean);
+const box = "rounded-xl border border-border-light p-5";
+const src = "mt-1 block text-sm text-text-muted";
+---
+
+<GuideShell
+  title={p.title}
+  description={p.meta}
+  heading={p.h1}
+  sources={sources}
+  verifiedOn={d.verified_on}
+  publishedOn={d.published}
+  updatedOn={d.verified_on}
+  campaign={`erori-datecs-${p.slug}`}
+  contentWidth="reading"
+  pageToc
+  appJsonLd={false}
+  showCta={false}
+  adviceNote={false}
+  jsonLd={datecsPageJsonLd(p)}
+  breadcrumbs={[
+    { label: "Ghid pentru magazine", href: internalPath("/ghid") },
+    { label: "Erori casă de marcat Datecs", href: internalPath(HUB_PATH) },
+    { label: p.message },
+  ]}
+>
+  <section class="kb-prose">
+    <h2 class="kb-h2">Răspuns pe scurt</h2>
+    <p>{p.short}</p>
+  </section>
+
+  <section class="kb-prose">
+    <h2 class="kb-h2">Mesajul exact</h2>
+    <div class={box}>
+      <p><strong>Cod:</strong> <span class="font-mono">{p.code}</span></p>
+      <p><strong>Lista Datecs, în engleză:</strong> „{p.m1.en}”</p>
+      <p>
+        <strong>Lista Datecs, în română:</strong> „{p.m1.ro}”{p.m1.sic && " [sic]"}
+        <span class={src}>Sursa: {cite({ doc: "M1", page: p.m1.page })}</span>
+      </p>
+      {p.display.map((x) => (
+        <p>
+          <strong>Pe afișaj, {x.model}:</strong> {q(x.message)}. Remediere din manual: {q(x.remedy)}
+          <span class={src}>Sursa: {cite(x.remedy)}</span>
+        </p>
+      ))}
+    </div>
+    {p.displayNote && <p>{p.displayNote}</p>}
+  </section>
+
+  <section class="kb-prose">
+    <h2 class="kb-h2">Ce faceți, pas cu pas</h2>
+    <p>Pașii de mai jos sunt cei din manualele Datecs, citați exact, cu pagina.</p>
+    {p.stepGroups.map((g) => (
+      <>
+        <h3 class="kb-h3">{g.title}</h3>
+        <p>{g.intro}</p>
+        <ol>
+          {g.steps.map((s) => (
+            <li>
+              {q(s)}{s.note && ` (${s.note})`}
+              <span class={src}>Sursa: {cite(s)}</span>
+            </li>
+          ))}
+        </ol>
+        {g.after && (
+          <p>
+            Manualul mai spune: {q(g.after)}{g.after.note && `; ${g.after.note}`}.
+            <span class={src}>Sursa: {cite(g.after)}</span>
+          </p>
+        )}
+      </>
+    ))}
+    {p.extraQuotes && p.extraQuotes.length > 0 && (
+      <>
+        <p>Alte texte din manual, legate de acest mesaj:</p>
+        <ul>
+          {p.extraQuotes.map((x) => (
+            <li>{q(x)} <span class={src}>Sursa: {cite(x)}</span></li>
+          ))}
+        </ul>
+      </>
+    )}
+  </section>
+
+  <section class="kb-prose">
+    <h2 class="kb-h2">Când chemați service-ul autorizat</h2>
+    <p>Dacă mesajul rămâne după pașii din manual, manualul DP-25MX spune:</p>
+    <ul>
+      {d.service.map((x) => <li>{q(x)} <span class={src}>Sursa: {cite(x)}</span></li>)}
+    </ul>
+    <p>
+      Pentru alte coduri, manualul trimite la lista Datecs: {q(d.codeList)} (<a href={d.sources.M1.url} rel="noopener" target="_blank">lista de coduri Datecs, PDF</a>).
+      <span class={src}>Sursa: {cite(d.codeList)}</span>
+    </p>
+  </section>
+
+  <section class="kb-prose">
+    <h2 class="kb-h2">Dacă folosiți un program de vânzare pe calculator</h2>
+    <p>
+      Codul {p.code} și textele de mai sus sunt cele din documentele Datecs. Când contactați furnizorul programului sau
+      service-ul, spuneți codul complet și mesajul afișat de aparat.
+    </p>
+    <p>{TAPSELO_LINE}</p>
+  </section>
+
+  <section class="kb-prose">
+    <h2 class="kb-h2">Întrebări frecvente</h2>
+    {p.faq.map((f) => (
+      <>
+        <h3 class="kb-h3">{f.q}</h3>
+        <p>{f.a}</p>
+      </>
+    ))}
+  </section>
+
+  <section class="kb-prose">
+    <h2 class="kb-h2">Erori înrudite</h2>
+    <ul>
+      {siblings.map((s) => <li><a href={datecsPagePath(s.slug)}>{s.message} la casa de marcat Datecs ({s.code})</a></li>)}
+      <li><a href={`${internalPath(HUB_PATH)}#${datecsAnchor(p.code)}`}>Codul {p.code} în lista tuturor erorilor Datecs</a></li>
+      <li><a href={internalPath(articlePath("raport-z-datecs-fp-70"))}>Raportul Z pe Datecs FP-70</a></li>
+      <li><a href={internalPath(articlePath("casa-de-marcat-fara-internet"))}>Casa de marcat fără internet</a></li>
+    </ul>
+    <p class="text-sm text-text-muted">Tapselo este un program de vânzare; nu suntem service autorizat Datecs.</p>
+  </section>
+</GuideShell>

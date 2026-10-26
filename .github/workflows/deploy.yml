@@ -24,6 +24,7 @@ jobs:
           PUBLIC_A4200_PDF_URL: ${{ vars.PUBLIC_A4200_PDF_URL }}
           PUBLIC_POSTHOG_KEY: ${{ vars.PUBLIC_POSTHOG_KEY }}
           PUBLIC_POSTHOG_HOST: ${{ vars.PUBLIC_POSTHOG_HOST }}
+          PUBLIC_META_PIXEL_ID: ${{ vars.PUBLIC_META_PIXEL_ID }}
 
       - name: Deploy to Cloudflare Pages
         run: npx wrangler pages deploy dist --project-name tapselo-com --branch main --commit-message "deploy ${{ github.sha }}"

@@ -1,0 +1,48 @@
+---
+// „Retrage acordul” (art. 7 alin. (3) GDPR): one click, as easy as „Accept”. Used in the footer and on /privacy.
+interface Props {
+  /** Button classes. */
+  class?: string;
+  /** Wrapper classes (layout and confirmation text colour). */
+  wrapClass?: string;
+}
+const { class: cls = "", wrapClass = "" } = Astro.props;
+---
+
+<span class:list={["withdraw-consent", wrapClass]} data-withdraw-consent>
+  <button type="button" class={cls} data-withdraw-consent-btn>Retrage acordul</button>
+  <span class="withdraw-consent__done" data-withdraw-consent-done role="status" aria-live="polite" hidden>
+    Acordul dumneavoastră a fost retras. Nu mai trimitem date către Meta, iar datele de campanie au fost șterse.
+  </span>
+</span>
+
+<script>
+  import { WITHDRAW_EVENT, withdrawConsent } from "../lib/consent-withdraw.ts";
+  import { isDemoHref, stripCarry } from "../lib/meta/pixel.ts";
+
+  type W = Window & { __tapseloPostHogBoot?: { promise: Promise<{ reset?: () => void } | null> } };
+
+  function revoke() {
+    withdrawConsent({
+      setCookie: (c) => (document.cookie = c),
+      local: (() => { try { return localStorage; } catch { return null; } })(),
+      session: (() => { try { return sessionStorage; } catch { return null; } })(),
+    });
+    // Site PostHog is cookieless (memory); reset drops any in-memory properties for this page.
+    void (window as W).__tapseloPostHogBoot?.promise.then((ph) => ph?.reset?.());
+    for (const link of document.querySelectorAll<HTMLAnchorElement>("a[href]")) {
+      if (isDemoHref(link.getAttribute("href"), location.href)) link.href = stripCarry(link.href);
+    }
+    window.dispatchEvent(new Event(WITHDRAW_EVENT));
+    for (const done of document.querySelectorAll<HTMLElement>("[data-withdraw-consent-done]")) done.hidden = false;
+  }
+
+  for (const btn of document.querySelectorAll<HTMLButtonElement>("[data-withdraw-consent-btn]")) {
+    btn.addEventListener("click", revoke);
+  }
+</script>
+
+<style>
+  .withdraw-consent__done { display: block; margin-top: 0.5rem; font-size: 0.875rem; }
+  .withdraw-consent__done[hidden] { display: none; }
+</style>

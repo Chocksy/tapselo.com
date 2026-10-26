@@ -71,7 +71,7 @@ const card = "block rounded-xl border border-border-light p-4 transition-colors 
         {article.faq.map((item) => (
           <div class="rounded-xl border border-border-light p-5">
             <h3 class="text-primary">{item.q}</h3>
-            <p class="kb-prose mt-2" set:html={markdownToHtml(item.a)} />
+            <div class="kb-prose mt-2" set:html={markdownToHtml(item.a)} />
           </div>
         ))}
       </div>

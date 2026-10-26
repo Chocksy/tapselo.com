@@ -1,33 +1,22 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/Navbar.astro";
-import Footer from "../components/Footer.astro";
+import GuideShell from "../components/GuideShell.astro";
 import EmailLink from "../components/EmailLink.astro";
 import { internalPath } from "../lib/internal-url.ts";
 ---
 
-<Layout
+<GuideShell
   title="Ștergerea datelor — Tapselo POS"
   description="Cum ceri ștergerea datelor tale din Tapselo POS, inclusiv a mesajelor trimise prin Facebook Messenger către pagina unui magazin."
+  heading="Ștergerea datelor"
+  lead="Cere ștergerea datelor tale din Tapselo. Un email este suficient."
+  campaign="legal-data-deletion"
+  breadcrumb={false}
+  contentWidth="reading"
+  pageToc
+  showCta={false}
+  adviceNote={false}
 >
-  <Navbar />
-
-  <header class="bg-primary pt-28 pb-16 md:pt-32">
-    <div class="site-container site-reading">
-      <h1 class="font-display text-4xl italic text-white sm:text-5xl">
-        Ștergerea datelor
-      </h1>
-      <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">
-        Cere ștergerea datelor tale din Tapselo. Un email este suficient.
-      </p>
-      <p class="mt-6 text-sm text-text-on-primary-muted">
-        Ultima actualizare: 17 august 2026
-      </p>
-    </div>
-  </header>
-
-  <main class="bg-surface-white py-16">
-    <div class="site-container site-reading space-y-12">
+  <p slot="byline" class="text-text-on-primary-muted">Ultima actualizare: 17 august 2026</p>
       <section>
         <h2 class="font-display text-3xl italic text-primary">Ai scris unui magazin pe Messenger</h2>
         <p class="mt-4 leading-relaxed text-text-secondary">
@@ -112,8 +101,4 @@ import { internalPath } from "../lib/internal-url.ts";
           for full details.
         </p>
       </section>
-    </div>
-  </main>
-
-  <Footer />
-</Layout>
+</GuideShell>
