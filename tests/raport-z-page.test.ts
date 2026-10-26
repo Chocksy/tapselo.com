@@ -74,8 +74,13 @@ test("dumneavoastră, ș/ț only, no banned words, platform line kept", async ()
   for (const w of ["certificat Datecs", "avizat", "omologat", "fără driver", "fără tehnician"]) {
     assert.ok(!t.toLowerCase().includes(w.toLowerCase()), `banned: ${w}`);
   }
-  const article = text(/<article class="kb-prose"[\s\S]*?<\/article>/.exec(main)![0]);
-  assert.doesNotMatch(article, /\b(apeși|apasă|scoți|schimbi|faci|continui|vinzi|poți|închizi|anulezi|anunți|vezi)\b/i);
+  // Unicode-aware word boundaries: \b is blind to Romanian diacritics (e.g. apăsa / închizi).
+  const informalTu =
+    /(?<![\p{L}])(apeși|apasă|scoți|schimbi|faci|continui|vinzi|poți|închizi|anulezi|anunți|vezi|reiei)(?![\p{L}])/iu;
+  // Cover the whole main (steps/FAQ live outside kb-prose as well as the article body).
+  assert.doesNotMatch(text(main), informalTu);
+  assert.ok(!/\breiei\b/i.test(t) && !t.includes("reiei"), "leftover tu-form reiei");
+  assert.ok(t.includes("reluați"), "paper error row should use reluați");
   assert.ok(t.includes("rulează pe Windows, macOS sau Linux (telefonul e pentru inventar)"));
   for (const m of decode(html).matchAll(/79\/129[^"<]*/g)) assert.equal(m[0], "79/129 lei/lună + TVA");
 });
