@@ -77,15 +77,13 @@ test("dumneavoastră, ș/ț only, no banned words, platform line kept", async ()
   // Unicode-aware word boundaries: \b is blind to Romanian diacritics (e.g. apăsa / închizi).
   const informalTu =
     /(?<![\p{L}])(apeși|apasă|scoți|schimbi|faci|continui|vinzi|poți|închizi|anulezi|anunți|vezi|reiei)(?![\p{L}])/iu;
-  // Article-owned copy only: body + steps + FAQ. Strip related cards / shared CTA / disclaimer
-  // which intentionally use tu-form elsewhere on the site.
-  const owned =
-    (/<article class="kb-prose"[\s\S]*?<\/article>/.exec(main)?.[0] ?? "") +
-    (/<ol[\s\S]*?<\/ol>/.exec(main)?.[0] ?? "") +
-    (/<section[^>]*faq[\s\S]*?<\/section>/i.exec(main)?.[0] ?? "") +
-    ([...main.matchAll(/<div class="kb-faq"[\s\S]*?<\/div>/g)].map((m) => m[0]).join("") ||
-      [...main.matchAll(/<details[\s\S]*?<\/details>/g)].map((m) => m[0]).join(""));
+  // Article-owned copy: body through FAQ; stops before related cards / sources / shared CTA.
+  const start = main.indexOf('<article class="kb-prose"');
+  const end = main.indexOf(">Articole legate<");
+  assert.ok(start >= 0 && end > start, "expected article body and related-articles marker");
+  const owned = main.slice(start, end);
   assert.ok(owned.length > 200, "expected article-owned markup");
+  assert.ok(owned.includes("Închideți orice bon deschis"), "owned slice must include steps");
   assert.doesNotMatch(text(owned), informalTu);
   assert.ok(!t.includes("reiei"), "leftover tu-form reiei");
   assert.ok(t.includes("reluați"), "paper error row should use reluați");
