@@ -18,7 +18,7 @@ import WithdrawConsent from "../components/WithdrawConsent.astro";
   showCta={false}
   adviceNote={false}
 >
-  <p slot="byline" class="text-text-on-primary-muted">Ultima actualizare: 21 octombrie 2026</p>
+  <p slot="byline" class="text-text-on-primary-muted">Ultima actualizare: 28 octombrie 2026</p>
       <section>
         <h2 class="font-display text-3xl italic text-primary">Cine suntem</h2>
         <OperatorLine class="mt-4 text-sm text-text-secondary" />
@@ -170,10 +170,58 @@ import WithdrawConsent from "../components/WithdrawConsent.astro";
       <section>
         <h2 class="font-display text-3xl italic text-primary">Cookie-uri</h2>
         <p class="mt-4 leading-relaxed text-text-secondary">
-          Acest site de prezentare nu folosește cookie-uri de urmărire și nu are pixeli de
-          publicitate, cu o singură excepție: pagina <a href="/demo/" class="text-accent hover:text-accent-hover">/demo/</a>,
-          unde pixelul Meta pornește numai dacă vă dați acordul (detalii mai jos). Formularul de contact este protejat de Cloudflare Turnstile, care verifică
+          Acest site de prezentare <strong class="font-bold text-primary">nu setează cookie-uri de urmărire</strong>
+          și nu are pixeli de publicitate în afara paginii
+          <a href="/demo/" class="text-accent hover:text-accent-hover">/demo/</a> (Meta, numai cu acord; detalii mai jos).
+          Folosim totuși statistici de produs PostHog fără cookie-uri, descrise la
+          <a href="#statistici-demo-site" class="text-accent hover:text-accent-hover">Statistici de produs (PostHog)</a>.
+          Formularul de contact este protejat de Cloudflare Turnstile, care verifică
           doar dacă cererea vine de la un om.
+        </p>
+      </section>
+
+      <section id="statistici-demo-site" class="scroll-mt-24">
+        <h2 class="font-display text-3xl italic text-primary">Statistici de produs (PostHog) pe site și în demo</h2>
+
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Folosim PostHog (PostHog Cloud EU, Frankfurt, prin <code>t.tapselo.com</code>) ca să înțelegem
+          cum funcționează site-ul de prezentare și demo-ul Tapselo: ce pagini se deschid, ce butoane
+          se apasă, ce erori apar și — în demo / aplicație — înregistrări de sesiune pentru depanare
+          (câmpurile de tip parolă sunt mascate; nu folosim aceste înregistrări pentru publicitate).
+        </p>
+
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          <strong class="font-bold text-primary">Baza legală:</strong> interes legitim (art. 6 alin. (1) lit. f) GDPR) de a măsura și
+          îmbunătăți produsul, a depana erori și a înțelege fluxul demo, după ce am echilibrat acest
+          interes cu drepturile vizitatorilor (date limitate la evenimente tehnice de utilizare,
+          fără vânzare de date, fără publicitate pe baza acestor statistici).
+        </p>
+
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Pe site-ul de prezentare statistica rulează <strong class="font-bold text-primary">fără cookie-uri de urmărire</strong>
+          (stocare doar în memorie pe durata sesiunii). În demo și în aplicație pot fi folosite
+          stocări locale (de tip localStorage) necesare SDK-ului; acestea nu înlocuiesc consimțământul
+          cerut pentru pixelul Meta de pe <code>/demo/</code>.
+        </p>
+
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          Parametrii de campanie (<code>utm_*</code>, <code>landing_page</code>, <code>event_id</code>,
+          <code>fbclid</code>) se atașează evenimentelor PostHog din demo <strong class="font-bold text-primary">numai</strong> dacă
+          ați acceptat măsurarea Meta (<code>tapselo_consent=marketing</code>). Restul evenimentelor
+          de utilizare / depanare pot fi colectate și fără acel acord.
+        </p>
+
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          <strong class="font-bold text-primary">Păstrare (nivel general):</strong> păstrăm evenimentele și înregistrările de sesiune
+          doar cât e nevoie pentru analiză de produs și depanare, apoi le ștergem sau le agregăm
+          conform setărilor proiectului PostHog EU.
+        </p>
+
+        <p class="mt-4 leading-relaxed text-text-secondary">
+          <strong class="font-bold text-primary">Dreptul de opoziție:</strong> puteți obiecta la această prelucrare scriind la
+          <EmailLink class="font-bold text-accent hover:text-accent-hover" />. Pentru măsurarea Meta, folosiți
+          „Refuz” / „Retrage acordul” de pe site. Retragerea acordului Meta nu oprește automat
+          statisticile de produs PostHog descrise aici.
         </p>
       </section>
 
@@ -298,6 +346,14 @@ import WithdrawConsent from "../components/WithdrawConsent.astro";
           AI provider solely for that extraction.
         </p>
         <p class="mt-4 leading-relaxed text-text-secondary">
+          Independently of Meta ad consent, we process limited product-analytics events on the marketing
+          site and in the demo/app via PostHog Cloud EU (<code>t.tapselo.com</code>) on the basis of
+          legitimate interest (GDPR art. 6(1)(f)): pages viewed, clicks, errors, and—in the demo/app—session
+          recordings with password fields masked, to improve and debug the product (not for advertising).
+          Campaign parameters are attached to demo PostHog events only when Meta marketing consent is
+          granted. Object by emailing <!--email_off-->contact@tapselo.com<!--/email_off-->.
+        </p>
+        <p class="mt-4 leading-relaxed text-text-secondary">
           Message data is kept only as long as needed to manage orders. A store can disconnect the
           integration at any time, which stops all collection. Processing is based on GDPR
           (contract performance and legitimate interest). Users have the right to access, correct
@@ -315,7 +371,7 @@ import WithdrawConsent from "../components/WithdrawConsent.astro";
           document tools are stored for 30 days and then deleted by a daily job. Logs hold the tool name, success or error, duration, error type and, on failure, the technical error message; they hold no user text or tool arguments.
           Outside services: ANAF (the CUI you check), BNR (exchange rate, nothing sent about you), and Open Food Facts
           (the barcodes you look up). Document pages are public to anyone with the link and marked noindex. To delete a
-          document or report abuse, email <!--email_off-->contact@tapselo.com<!--/email_off--> with the link. Last updated: 21 October 2026.
+          document or report abuse, email <!--email_off-->contact@tapselo.com<!--/email_off--> with the link. Last updated: 28 October 2026.
         </p>
       </section>
 </GuideShell>

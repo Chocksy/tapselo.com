@@ -10,7 +10,9 @@ const { pixelId } = Astro.props;
 <div class="meta-consent" data-meta-consent data-pixel-id={pixelId} hidden role="dialog" aria-live="polite" aria-label="Cookie-uri de marketing">
   <p>
     Vrei să ne ajuți să măsurăm reclamele? Cu acordul tău folosim pixelul Meta pe această pagină.
-    <a href="/privacy/">Detalii</a>
+    <a href="/privacy/#meta-pixel">Detalii Meta</a>.
+    Folosim și statistici de produs (PostHog), indiferent de acest acord;
+    <a href="/privacy/#statistici-demo-site">detalii</a>.
   </p>
   <div class="meta-consent__actions">
     <button type="button" data-meta-consent-choice="denied">Refuz</button>
