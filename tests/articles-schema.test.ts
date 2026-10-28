@@ -12,12 +12,13 @@ import {
 
 const articlesJson = JSON.parse(readFileSync(join(process.cwd(), "src/lib/kb/articles.json"), "utf8"));
 
-test("articles.json validates and includes five live articles", () => {
+test("articles.json validates and includes six live articles", () => {
   const articles = parseArticlesFile(articlesJson);
-  assert.equal(articles.length, 5);
+  assert.equal(articles.length, 6);
   const slugs = articles.map((a) => a.slug).sort();
   assert.deepEqual(slugs, [
     "casa-de-marcat-fara-internet",
+    "cod-qr-bon-fiscal",
     "depunere-a4200",
     "erori-dukintegrator",
     "export-p7b-anaf",

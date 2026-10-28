@@ -63,6 +63,10 @@ const ENTRIES: Record<string, Entry> = {
   "/ghid/articole/export-p7b-anaf/": { title: "Exportul fișierului .p7b pentru ANAF", desc: "Cum exportați din casa de marcat fișierele .p7b cerute de ANAF." },
   "/ghid/articole/raport-z-datecs-fp-70/": { title: "Raportul Z pe Datecs FP-70", desc: "Cum emiteți raportul Z pe casa de marcat Datecs FP-70." },
   "/ghid/articole/casa-de-marcat-fara-internet/": { title: "Casa de marcat fără internet", desc: "Bonuri offline, transmiterea către ANAF și formularul F4110." },
+  "/ghid/articole/cod-qr-bon-fiscal/": {
+    title: "Cod QR pe bonul fiscal",
+    desc: "Obligația de cod QR pe bon, suspendarea sancțiunilor până la 1 noiembrie 2026 și ce verificați la service-ul autorizat.",
+  },
   // Comparații
   "/comparatie/": { title: "Comparație programe de casă de marcat", desc: "Tabel cu programele POS din România, după informațiile publice ale producătorilor." },
   "/comparatie/cel-mai-bun-program-casa-de-marcat/": { title: "Cel mai bun program de casă de marcat", desc: "Ce program se potrivește fiecărui tip de magazin." },
