@@ -374,6 +374,66 @@
         }
       ],
       "body": "**Răspuns scurt:** o casă de marcat cu jurnal electronic poate **tipări bonuri fiscale și în timpul unei întreruperi de internet**, pentru că tranzacțiile se salvează local în AMEF; în același timp, legea vă obligă să **asigurați conectarea la distanță** a aparatului și **transmiterea datelor fiscale către ANAF** (de regulă automat după raportul Z când rețeaua funcționează). Dacă punctul de lucru **nu poate fi deservit de rețea**, notificați ANAF prin **F4110**. Rapoartele Z care nu au ajuns la ANAF se recuperează prin **A4200** (fișiere .p7b). Neconectarea nerezolvată se sancționează cu **amendă 8.000–10.000 lei**.\n\n## Cum funcționează fără internet (tehnic)\n\n- **Vânzare locală:** memoria fiscală / jurnalul electronic înregistrează bonurile chiar dacă legătura către internet lipsește.\n- **Transmitere ulterioară:** după reconectare, AMEF trimite datele către ANAF — în mod obișnuit la generarea raportului Z de închidere zilnică (ghid ANAF, v4.3 din 16.08.2021).\n- **Limită de timp la bonuri:** nu puteți lăsa ziua fiscală deschisă peste **24 de ore** fără raport Z ([HG 479/2003, art. 34](https://legislatie.just.ro/Public/DetaliiDocument/156065)) — indiferent de internet.\n- **Limită la „offline”:** legea nu dă un număr de zile pentru funcționare fără transmisie; o pană scurtă se remediază, nu se normalizează.\n\n## Obligații legale (cu surse)\n\n| Subiect | Ce spune legea / ANAF |\n| --- | --- |\n| Conectare | Operatorii asigură conectarea la distanță a AMEF pentru transmiterea datelor către ANAF — [OUG 28/1999, art. 3¹ alin. (4)](https://legislatie.just.ro/Public/DetaliiDocument/17431) |\n| Menținere conexiune | Ghidul ANAF cere asigurarea condițiilor pentru menținerea conexiunii (ex. servicii internet neîntrerupte) — diligență rezonabilă |\n| Zonă fără semnal | Declarație **F4110** pentru zone nedeservite de rețele — OpANAF 435/2021, anexa 2; pentru AMEF achiziționate ulterior datei de 01.12.2021, termenul este de două zile lucrătoare de la data instalării — [OpANAF 435/2021, art. 3 alin. (2)](https://legislatie.just.ro/Public/DetaliiDocument/240150); [formular F4110 (ANAF)](https://static.anaf.ro/static/10/Anaf/Declaratii_R/4110.html) |\n| Z netransmise | Declarația **A4200** cu export .p7b, termen obișnuit **până pe 20** ale lunii următoare |\n| Amendă neconectare | 8.000–10.000 lei — [art. 10 lit. ff) + art. 11 alin. (1) lit. l) OUG 28/1999](https://legislatie.just.ro/Public/DetaliiDocument/17431) (Legea 296/2023) |\n\n## Conectare efectivă vs. „are SIM”\n\n„Conectat” în practica ANAF înseamnă parcurgerea procedurii de service: certificat digital ANAF în aparat, fișier de profil pentru trecerea online, **raport Z transmis cu succes**, raport atașat la cartea tehnică (ghid ANAF). Un SIM activ sau un router nu înlocuiesc singure acești pași.\n\n## Legături în ghidul Tapselo\n\n- [Raport Z, memorie fiscală și .p7b](/ghid/raport-z-memorie-fiscala-p7b)\n- [Export .p7b pentru ANAF](/ghid/articole/export-p7b-anaf)\n- [Depunere A4200](/ghid/articole/depunere-a4200)\n- [Verificare A4200 gratuită](/ghid/verificare-a4200)\n- [Erori Datecs](/ghid/erori-datecs)\n\n## Tapselo și vânzarea fără internet\n\n**Tapselo** (programul de casă pentru magazine alimentare) este documentat ca funcționând **offline** la vânzare: bonul fiscal iese prin **imprimanta Datecs** legată local (USB), iar datele de vânzare apar în administrare după **sincronizare la revenirea internetului** pe PC-ul magazinului. În plus, Tapselo poate **păstra arhiva fișierelor .p7b** descărcate din casă — pas util când trebuie completată **A4200** pentru zile netransmise la ANAF.\n\nAceasta **nu elimină** obligația ca **AMEF** să aibă propria cale de date (router/SIM) către ANAF și să transmită rapoartele Z; pentru profil, certificat și intervenții rămâneți la **distribuitorul autorizat**.\n\n[Încearcă Tapselo](/) · [Compară programe POS cu mod offline](/comparatie)"
+    },
+    {
+      "slug": "cod-qr-bon-fiscal",
+      "title": "Cod QR pe bonul fiscal: obligație, suspendare și amendă",
+      "description": "Ce cere legea despre codul QR pe bon (art. 4 alin. 2^1), cine îl tipărește, suspendarea sancțiunilor până la 1 noiembrie 2026 și amendă 2.000–4.000 lei după art. 11 lit. h).",
+      "type": "article",
+      "published": "2026-10-28",
+      "updated": "2026-10-28",
+      "verifiedOn": "2026-10-28",
+      "author": "razvan-ciocanel",
+      "tags": [
+        "QR",
+        "Bon fiscal",
+        "AMEF",
+        "OUG 28/1999",
+        "ANAF"
+      ],
+      "cta": "default",
+      "related": [
+        "casa-de-marcat-fara-internet",
+        "raport-z-datecs-fp-70",
+        "export-p7b-anaf"
+      ],
+      "sources": [
+        {
+          "title": "OUG 28/1999 — formă consolidată (art. 4 alin. (2^1), art. 10 lit. f), art. 11 alin. (1) lit. h))",
+          "url": "https://legislatie.just.ro/Public/DetaliiDocument/17431"
+        },
+        {
+          "title": "OUG 68/2025 — art. IV suspendare sancțiuni QR (PDF ANAF; MO 1132/08.12.2025)",
+          "url": "https://static.anaf.ro/static/10/Anaf/legislatie/OUG_68_2025.pdf"
+        }
+      ],
+      "faq": [
+        {
+          "q": "De când se aplică din nou sancțiunile pentru lipsa codului QR?",
+          "a": "Aplicarea art. 10 lit. f) și art. 11 alin. (1) lit. h) pentru bon emis fără cod QR, fără număr de identificare al bonului sau fără cod beneficiar **se suspendă până la data de 1 noiembrie 2026** ([OUG 68/2025, art. IV](https://static.anaf.ro/static/10/Anaf/legislatie/OUG_68_2025.pdf)). După această dată, sancțiunile pentru această faptă pot fi aplicate din nou, odată ce suspendarea încetează."
+        },
+        {
+          "q": "Cine tipărește codul QR pe bon?",
+          "a": "**Aparatul de marcat electronic fiscal (AMEF)** tipărește bonul și codul QR. Programul de vânzare (inclusiv Tapselo) trimite comanda de vânzare către casă; **nu** tipărește QR-ul pe hârtie."
+        },
+        {
+          "q": "Cât este amenda pentru bon fiscal fără cod QR?",
+          "a": "Pentru fapta de la art. 10 lit. f) (bon cu date incomplete, inclusiv lipsa elementelor de la art. 4 alin. (2^1) sub formă de cod QR), amendă **2.000–4.000 lei** la [art. 11 alin. (1) lit. h) din OUG 28/1999](https://legislatie.just.ro/Public/DetaliiDocument/17431), conform grilei din Legea nr. 296/2023 (din 11.11.2023). Până la **1 noiembrie 2026**, aplicarea acestor sancțiuni pentru lipsa QR / ID bon / cod beneficiar este **suspendată** (OUG 68/2025 art. IV)."
+        },
+        {
+          "q": "Tapselo rezolvă lipsa codului QR?",
+          "a": "**Nu.** Conformitatea bonului — inclusiv QR-ul — depinde de **AMEF** și de **service-ul autorizat** (firmware, parametrizare). Tapselo transmite vânzarea către aparatul conectat; nu înlocuiește intervenția la casă."
+        },
+        {
+          "q": "Există prelungire a suspendării după 1 noiembrie 2026?",
+          "a": "La **28 octombrie 2026**, o prelungire **nu figurează pe legislatie.just.ro** (ultima mențiune consultată: OG 5/2026). Reveniți la această pagină după publicarea unui act nou; îl vom adăuga în «Changelog»."
+        },
+        {
+          "q": "Unde citesc textul oficial?",
+          "a": "Obligația QR: [OUG 28/1999, forma consolidată](https://legislatie.just.ro/Public/DetaliiDocument/17431) (art. 4 alin. (2^1), art. 10 lit. f), art. 11 alin. (1) lit. h)). Suspendarea: [OUG 68/2025 art. IV — PDF ANAF](https://static.anaf.ro/static/10/Anaf/legislatie/OUG_68_2025.pdf)."
+        }
+      ],
+      "body": "De la **1 noiembrie 2026** se încheie suspendarea sancțiunilor pentru bonurile fiscale emise fără cod QR (și, acolo unde legea o cere, fără codul de identificare al beneficiarului sau fără numărul de identificare al bonului). **Codul QR este tipărit de aparatul de marcat electronic fiscal (AMEF)**, nu de programul de vânzare. Verificați cu unitatea de service autorizată dacă aparatul dumneavoastră poate tipări QR-ul și dacă are nevoie de actualizare.\n\n## Ce cere legea\n\nBonul fiscal trebuie să conțină data și ora emiterii, numărul de identificare al bonului și seria fiscală a aparatului — **și aceleași date sub formă de cod QR** ([OUG 28/1999, art. 4 alin. (2^1)](https://legislatie.just.ro/Public/DetaliiDocument/17431), introdus prin OUG 69/2024). Codul QR codifică data și ora, numărul de identificare al bonului și seria fiscală a AMEF.\n\nSeparat, acolo unde este cazul, bonul trebuie să includă și **codul de identificare al beneficiarului**.\n\nEmiterea unui bon **fără toate datele** prevăzute la art. 4 alin. (1), (2) și (2^1) — inclusiv lipsa datelor sub formă de cod QR prin trimiterea la alin. (2^1) — intră sub [art. 10 lit. f) din OUG 28/1999](https://legislatie.just.ro/Public/DetaliiDocument/17431) (emitere cu date eronate sau incomplete). Sancțiunea pentru această faptă este amendă **2.000–4.000 lei** la [art. 11 alin. (1) lit. h)](https://legislatie.just.ro/Public/DetaliiDocument/17431), cu grila din [Legea nr. 296/2023](https://legislatie.just.ro/Public/DetaliiDocument/274421) aplicabilă din **11.11.2023**.\n\n## Starea suspendării (datată)\n\n**Actualizat: 28 octombrie 2026**\n\nConform [OUG 68/2025, art. IV](https://static.anaf.ro/static/10/Anaf/legislatie/OUG_68_2025.pdf) (MO 1132/08.12.2025), aplicarea dispozițiilor art. 10 lit. f) și art. 11 alin. (1) lit. h) din OUG 28/1999 — pentru fapta de emitere a bonului fiscal fără codul de identificare al beneficiarului, fără numărul de identificare al bonului și fără datele de la art. 4 alin. (2^1) sub formă de cod QR — **se suspendă până la data de 1 noiembrie 2026**.\n\nSuspendarea este valabilă **până la 1 noiembrie 2026**; după această dată, sancțiunile pentru această faptă pot fi din nou aplicate, odată ce suspendarea încetează. O prelungire a termenului **nu figurează pe legislatie.just.ro la 28 octombrie 2026** (ultima mențiune consultată: OG 5/2026); dacă apare un act nou, îl vom nota în secțiunea «Changelog».\n\n## Ce face casa de marcat vs ce face Tapselo\n\n- **AMEF (casa de marcat)** tipărește bonul fiscal și **codul QR** pe hârtie.\n- **Tapselo** trimite comanda de vânzare către aparatul conectat (de exemplu **Datecs FP-700** pe USB); **nu tipărește** QR-ul și **nu garantează** conformitatea bonului față de cerințele de la art. 4 alin. (2^1).\n- Actualizarea de firmware, parametrizarea sau capacitatea aparatului de a emite QR se rezolvă la **unitatea de service autorizată** și la producătorul AMEF — nu există o setare în Tapselo care să înlocuiască acest pas.\n\nPentru închiderea zilei și bonuri de probă: [Raport Z pe Datecs FP-70](/ghid/articole/raport-z-datecs-fp-70). Context separat pentru rețea: [Casa de marcat fără internet](/ghid/articole/casa-de-marcat-fara-internet).\n\n## Ce să întrebați service-ul autorizat\n\n1. Modelul și seria aparatului meu pot tipări **cod QR** pe bon, conform art. 4 alin. (2^1)?\n2. Este nevoie de **actualizare de firmware** sau parametrizare? **Când** o puteți programa?\n3. După intervenție, cum verific pe un **bon de probă** că QR-ul apare și conține datele cerute?\n4. Dacă aparatul **nu poate încă** să tipărească QR: ce opțiuni îmi comunicați (de exemplu înlocuire sau așteptare), documentate de service — fără promisiuni din partea noastră despre echipamente pe care nu le furnizăm.\n\n## Changelog\n\n- **2026-10-28** — pagină publicată; suspendare sancțiuni până la **1.11.2026** conform OUG 68/2025 art. IV ([PDF ANAF](https://static.anaf.ro/static/10/Anaf/legislatie/OUG_68_2025.pdf)); cuantum amendă art. 11 alin. (1) lit. h) verificat pe forma consolidată OUG 28/1999.\n\n## Tapselo\n\n[Tapselo](/) este programul de vânzare pentru magazine mici: conectați casa de marcat, emiteți bonuri din aplicație și păstrați exporturile utile contabilului. **gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA** — [demo](/demo/) sau [comparație programe POS](/comparatie/)."
     }
   ]
 }
