@@ -4,7 +4,9 @@
 // else the build fails, so the page cannot drift from the tools.
 import GuideShell from "../components/GuideShell.astro";
 import EmailLink from "../components/EmailLink.astro";
+import ChatGptOpenButton from "../components/ChatGptOpenButton.astro";
 import { internalPath } from "../lib/internal-url.ts";
+import { CHATGPT_APP_URL } from "../lib/mcp/links.ts";
 import { answerTools } from "../lib/mcp/tools.ts";
 import { generatorTools } from "../lib/generators/tools.ts";
 
@@ -59,6 +61,23 @@ const PROMPTS = [
 ];
 
 const MCP_URL = "https://tapselo.com/mcp";
+const connectorJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Tapselo",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  url: CHATGPT_APP_URL,
+  installUrl: CHATGPT_APP_URL,
+  description:
+    "Conector MCP pentru Claude și ChatGPT: reguli fiscale pentru magazine mici din România, erori Datecs, calcule și documente printabile.",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "RON",
+    description: "Fără cont; conectorul nu cere autentificare.",
+  },
+};
 const a = "font-bold text-accent hover:text-accent-hover";
 const p = "mt-4 leading-relaxed text-text-secondary";
 const li = "list-disc leading-relaxed";
@@ -75,7 +94,12 @@ const li = "list-disc leading-relaxed";
   pageToc
   showCta={false}
   adviceNote={false}
+  appJsonLd={false}
+  jsonLd={[connectorJsonLd]}
 >
+      <div class="not-prose mb-8">
+        <ChatGptOpenButton variant="card" ctaId="ai-hero" />
+      </div>
       <section>
         <h2 class="font-display text-3xl italic text-primary">Ce face</h2>
         <p class={p}>
@@ -89,8 +113,23 @@ const li = "list-disc leading-relaxed";
       </section>
 
       <section>
+        <h2 class="font-display text-3xl italic text-primary">Cum îl adaugi în ChatGPT</h2>
+        <p class={p}>
+          Aplicația Tapselo este publicată în directorul ChatGPT. Deschideți-o acolo, apoi folosiți-o din chat — fără cont
+          Tapselo și fără autentificare suplimentară la conector.
+        </p>
+        <div class="not-prose mt-4">
+          <ChatGptOpenButton variant="card" ctaId="ai-chatgpt-section" />
+        </div>
+        <p class={p}>
+          Dacă contul dvs. permite conectori MCP personalizați, puteți folosi aceeași adresă ca mai jos la Claude:
+          <code>{MCP_URL}</code>.
+        </p>
+      </section>
+
+      <section>
         <h2 class="font-display text-3xl italic text-primary">Cum îl adaugi în Claude</h2>
-        <p class={p}>Din directorul de conectori: În curând în directorul Claude.</p>
+        <p class={p}>Din directorul de conectori: în curând în directorul Claude.</p>
         <p class={p}>Manual, ca și conector propriu:</p>
         <ol class="mt-4 space-y-2 pl-5 text-text-secondary">
           <li class="list-decimal leading-relaxed">Deschide Claude și mergi la <strong class="text-primary">Settings &rarr; Connectors</strong>.</li>
@@ -99,10 +138,6 @@ const li = "list-disc leading-relaxed";
           <li class="list-decimal leading-relaxed">Nu completa nimic la autentificare (OAuth). Conectorul nu cere cont și nu cere logare.</li>
           <li class="list-decimal leading-relaxed">Apasă <strong class="text-primary">Add</strong>, apoi activează conectorul în chat.</li>
         </ol>
-        <p class={p}>
-          În ChatGPT conectorul va fi disponibil mai târziu, după verificarea aplicațiilor pentru România. Până atunci
-          poți folosi aceeași adresă, <code>{MCP_URL}</code>, dacă contul tău permite conectori proprii.
-        </p>
       </section>
 
       <section>
@@ -175,8 +210,10 @@ const li = "list-disc leading-relaxed";
         </p>
         <p class={p}>
           Add it in Claude: Settings &rarr; Connectors &rarr; Add custom connector, URL <code>{MCP_URL}</code>, no
-          sign-in. Documents expire after 30 days and are public to anyone with the link. No account is needed. The
-          information is not legal or tax advice. Privacy:
+          sign-in. In ChatGPT, open the published app:
+          <a href={CHATGPT_APP_URL} rel="noopener noreferrer" target="_blank" class={a}>Open in ChatGPT</a>. Documents
+          expire after 30 days and are public to anyone with the link. No account is needed. The information is not legal
+          or tax advice. Privacy:
           <a href={internalPath("/privacy#asistent-ai")} class={a}>tapselo.com/privacy#asistent-ai</a>. Support:
           <EmailLink class={a} />.
         </p>

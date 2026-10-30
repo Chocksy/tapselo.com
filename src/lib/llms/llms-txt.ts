@@ -82,7 +82,10 @@ const ENTRIES: Record<string, Entry> = {
     title: "Program casă de marcat pe calculator",
     desc: "Program POS pe Windows, macOS și Linux cu imprimantă fiscală Datecs; telefonul doar pentru inventar și ce este legal pe dispozitive.",
   },
-  "/ai/": { title: "Tapselo în Claude și ChatGPT", desc: "Conectorul Tapselo pentru asistenții AI: reguli fiscale, calcule și documente printabile." },
+  "/ai/": {
+    title: "Tapselo în Claude și ChatGPT",
+    desc: "Conectorul MCP Tapselo pentru asistenții AI: reguli fiscale, calcule și documente printabile; aplicația este publicată în ChatGPT.",
+  },
 };
 
 const SUMMARY =

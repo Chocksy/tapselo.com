@@ -1,5 +1,6 @@
 ---
 import { internalPath } from "../lib/internal-url.ts";
+import ChatGptOpenButton from "./ChatGptOpenButton.astro";
 import { toolLinks, ruleGuideLinks, shopGuideLinks, articleLinks } from "../lib/site-directory.ts";
 
 const linkClass =
@@ -57,6 +58,18 @@ const linkClass =
       <p class="mt-2 max-w-2xl text-sm text-text-secondary">
         Stocuri, recepție din poză, inventar pe telefon și rapoarte — pentru alimentare, băcănii și brutării.
       </p>
+    </div>
+
+    <div class="mt-10">
+      <h3 class="text-lg font-bold text-primary">
+        <a href={internalPath("/ai/")} class="hover:text-accent">Asistent AI (Claude și ChatGPT)</a>
+      </h3>
+      <p class="mt-2 max-w-2xl text-sm text-text-secondary">
+        Conector MCP cu reguli fiscale verificate, calcule și documente printabile — direct din chat, fără cont Tapselo.
+      </p>
+      <div class="not-prose mt-4">
+        <ChatGptOpenButton variant="card" ctaId="resources-chatgpt" />
+      </div>
     </div>
 
     <div class="mt-10">

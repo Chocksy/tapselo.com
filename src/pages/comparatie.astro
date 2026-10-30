@@ -2,6 +2,7 @@
 // /comparatie: POS / casa de marcat software from src/lib/kb/competitors.json.
 import { Check, X } from "@lucide/astro";
 import GuideShell from "../components/GuideShell.astro";
+import ChatGptOpenButton from "../components/ChatGptOpenButton.astro";
 import { NEEDS, featureState, orderComparisonVendors, type Competitor } from "../lib/mcp/answers/compare.ts";
 import { formatDateRo } from "../lib/mcp/text.ts";
 import { vendorLogoPath } from "../lib/kb/vendor-logos.ts";
@@ -118,7 +119,7 @@ const initials = author.name.split(/\s+/).map((w) => w[0]).slice(0, 2).join("").
       <li><strong class="text-primary">Funcționează offline:</strong> poți vinde și emite bon fără internet?</li>
       <li><strong class="text-primary">Casa de marcat:</strong> lucrează cu case de marcat sau imprimante fiscale?</li>
       <li><strong class="text-primary">Funcțiile pentru magazin:</strong> cântare, rețete, stocuri, comenzi și recepția mărfii din poza facturii.</li>
-      <li><strong class="text-primary">Ce face în plus:</strong> arhiva .p7b a casei de marcat, oferte pentru clienți și asistent AI.</li>
+      <li><strong class="text-primary">Ce face în plus:</strong> arhiva .p7b a casei de marcat, oferte pentru clienți și <a href={internalPath("/ai/")} class="font-semibold text-accent hover:underline">asistent AI</a> (MCP în Claude și ChatGPT).</li>
       <li><strong class="text-primary">Prețul public de pornire,</strong> așa cum apare pe site-ul producătorului. Unii producători afișează prețul în euro, alții fără TVA, iar unii nu publică prețuri.</li>
     </ol>
     <p class="mt-4 text-text-secondary">
@@ -256,6 +257,11 @@ const initials = author.name.split(/\s+/).map((w) => w[0]).slice(0, 2).join("").
               Surse:{" "}
               {v.sources.map((s, j) => (<>{j > 0 && ", "}<a href={s.url} rel="noopener" target="_blank" class="text-accent hover:text-accent-hover">{s.title}</a></>))}
             </p>
+          )}
+          {v.id === "tapselo" && (
+            <div class="not-prose mt-4">
+              <ChatGptOpenButton variant="card" ctaId="comparatie-chatgpt" />
+            </div>
           )}
           <p class="mt-1 text-sm text-text-muted">Verificat la {v.verified_on ? formatDateRo(v.verified_on) : "necunoscut"}.</p>
         </div>
