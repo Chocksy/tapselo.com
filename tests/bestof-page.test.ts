@@ -97,6 +97,15 @@ test("no placeholders, author and dates filled, competitor prices sourced", asyn
   assert.ok(t.includes("accesat la 20.10.2026"));
 });
 
+test("links to program casă de marcat pe calculator guide", async () => {
+  const { article } = await page();
+  assert.ok(article.includes('href="/program-casa-de-marcat-pe-calculator/"'), "inline link to calculator guide");
+  assert.ok(
+    article.includes('href="https://tapselo.com/program-casa-de-marcat-pe-calculator/"'),
+    "Surse link to calculator guide",
+  );
+});
+
 test("title, no GuideShell CTA box, page OG image", async () => {
   const { html } = await page();
   const title = /<title>([^<]*)<\/title>/.exec(html)?.[1] ?? "";
