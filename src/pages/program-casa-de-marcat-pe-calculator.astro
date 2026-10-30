@@ -5,7 +5,7 @@ import { TAPS_FISCAL_PRINTERS_TABLE, TAPS_PRICE_CANON } from "../data/tapselo-pr
 import {
   breadcrumbJsonLd,
   faqPageJsonLd,
-  toolJsonLd,
+  webApplicationJsonLd,
   type FaqItem,
 } from "../lib/unelte/jsonld.ts";
 
@@ -29,7 +29,7 @@ const faq: FaqItem[] = [
     aHtml: `Da, vânzarea continuă local în Tapselo; la reconectare datele se sincronizează. Ce rămâne obligatoriu pentru AMEF și transmiterea către ANAF găsiți în <a href="${internalPath("/ghid/articole/casa-de-marcat-fara-internet/")}" class="font-semibold text-accent hover:underline">ghidul despre casa de marcat fără internet</a> — fără a repeta sancțiunile aici.`,
   },
   {
-    q: "Ce imprimante fiscale merge cu Tapselo?",
+    q: "Ce imprimante fiscale merg cu Tapselo?",
     a: "Testată E2E pe Datecs FP-700 pe USB. Daisy și Tremol au driver în produs — le validăm la instalare cu suportul nostru. Pentru alte mărci, contactați-ne despre model.",
   },
   {
@@ -49,15 +49,18 @@ const crumbs = [
   { name: "Program casă de marcat pe calculator", path: PATH },
 ];
 
-const baseJsonLd = toolJsonLd({
-  path: PATH,
-  heading: "Program de casă de marcat pe calculator",
-  appName: "Tapselo — program casă de marcat pe calculator",
-  description:
-    "Program de casă de marcat pe Windows, macOS și Linux: POS la tejghea, Datecs FP-700 pe USB, inventar pe telefon. Ce este legal pe telefon, tabletă și PC.",
-  faq,
-});
-const jsonLd = [baseJsonLd[0], faqPageJsonLd(faq), breadcrumbJsonLd(crumbs)];
+const jsonLd = [
+  webApplicationJsonLd({
+    name: "Tapselo — program casă de marcat pe calculator",
+    path: PATH,
+    description:
+      "Program de casă de marcat pe Windows, macOS și Linux: POS la tejghea, Datecs FP-700 pe USB, inventar pe telefon. Ce este legal pe telefon, tabletă și PC.",
+    operatingSystem: "Windows, macOS, Linux",
+    tapseloProductPricing: true,
+  }),
+  faqPageJsonLd(faq),
+  breadcrumbJsonLd(crumbs),
+];
 ---
 
 <GuideShell
@@ -111,7 +114,6 @@ const jsonLd = [baseJsonLd[0], faqPageJsonLd(faq), breadcrumbJsonLd(crumbs)];
         <li><strong>Nu emite bon fiscal pe telefon sau tabletă.</strong> Bonul vine doar din AMEF.</li>
         <li><strong>Nu este SoftPOS</strong> — nu transformăm telefonul în terminal de plată cu card legat de bon fiscal.</li>
         <li><strong>Nu deschidem sertarul de bani</strong> și nu integrăm încă POS bancar în program.</li>
-        <li><strong>Nu promitem „gratuit” fără context</strong> — prețul public este mai jos, în forma canon.</li>
       </ul>
     </section>
 

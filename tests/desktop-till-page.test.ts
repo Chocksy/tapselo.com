@@ -97,3 +97,12 @@ test("JSON-LD: WebApplication, FAQPage, BreadcrumbList", async () => {
   const types = blocks.map((b) => b["@type"]).sort();
   assert.deepEqual(types, ["BreadcrumbList", "FAQPage", "WebApplication"]);
 });
+
+test("WebApplication JSON-LD: desktop OS and canon offer, not free price-0", async () => {
+  const { blocks } = await page();
+  const app = blocks.find((b) => b["@type"] === "WebApplication");
+  assert.equal(app.operatingSystem, "Windows, macOS, Linux");
+  assert.equal(app.isAccessibleForFree, undefined);
+  assert.equal(app.offers.price, undefined);
+  assert.equal(app.offers.description, "gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA");
+});
