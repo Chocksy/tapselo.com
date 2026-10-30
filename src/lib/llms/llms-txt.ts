@@ -78,6 +78,10 @@ const ENTRIES: Record<string, Entry> = {
   "/": { title: "Tapselo", desc: "Prezentarea programului de casă de marcat Tapselo." },
   "/demo/": { title: "Demo", desc: "Încercați Tapselo în browser, fără cont." },
   "/program-gestiune-magazin/": { title: "Program gestiune magazin", desc: "Gestiunea stocurilor, recepția mărfii și vânzarea, în același program." },
+  "/program-casa-de-marcat-pe-calculator/": {
+    title: "Program casă de marcat pe calculator",
+    desc: "Program POS pe Windows, macOS și Linux cu imprimantă fiscală Datecs; telefonul doar pentru inventar și ce este legal pe dispozitive.",
+  },
   "/ai/": { title: "Tapselo în Claude și ChatGPT", desc: "Conectorul Tapselo pentru asistenții AI: reguli fiscale, calcule și documente printabile." },
 };
 
@@ -93,7 +97,7 @@ export function llmsSections(): { heading: string; links: SiteLink[] }[] {
     { heading: "Unelte gratuite", links: [abs("/unelte"), ...toolLinks] },
     { heading: "Ghiduri", links: [...hubs("/ghid"), ...datecsErrorPageLinks, ...ruleGuideLinks, ...shopGuideLinks, ...articleLinks] },
     { heading: "Comparații", links: hubs("/comparatie") },
-    { heading: "Despre Tapselo", links: ["/", "/demo", "/program-gestiune-magazin", "/ai"].map(abs) },
+    { heading: "Despre Tapselo", links: ["/", "/demo", "/program-gestiune-magazin", "/program-casa-de-marcat-pe-calculator", "/ai"].map(abs) },
   ];
 }
 

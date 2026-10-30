@@ -1,0 +1,239 @@
+---
+import GuideShell from "../components/GuideShell.astro";
+import { internalPath } from "../lib/internal-url.ts";
+import { TAPS_FISCAL_PRINTERS_TABLE, TAPS_PRICE_CANON } from "../data/tapselo-product-copy.ts";
+import {
+  breadcrumbJsonLd,
+  faqPageJsonLd,
+  webApplicationJsonLd,
+  type FaqItem,
+} from "../lib/unelte/jsonld.ts";
+
+const PATH = "/program-casa-de-marcat-pe-calculator/";
+const CDEP_PLX303 = "https://www.cdep.ro/ords/pls/proiecte/upl_pck2015.proiect?an=2026&nr=303";
+const OUG28 = "https://legislatie.just.ro/Public/DetaliiDocument/17431";
+const ext = { rel: "noopener", target: "_blank" } as const;
+
+const faq: FaqItem[] = [
+  {
+    q: "Pe ce sisteme de operare rulează programul de casă de marcat Tapselo?",
+    a: "Tapselo rulează pe Windows, macOS și Linux pe calculatorul de la tejghea. Telefoanele Android și iPhone sunt doar pentru inventar, nu pentru emiterea bonului fiscal.",
+  },
+  {
+    q: "Cum conectez casa de marcat Datecs la calculator?",
+    a: "Conectați imprimanta fiscală Datecs FP-700 la PC pe USB, porniți Tapselo, apoi emiteți bonul din program. Pe Windows poate apărea driverul de imprimantă — urmați manualul Datecs. La instalare vă ajutăm să validați modelul.",
+  },
+  {
+    q: "Pot vinde când pică internetul?",
+    a: "Da, vânzarea continuă local în Tapselo; la reconectare datele se sincronizează. Ce rămâne obligatoriu pentru AMEF și transmiterea către ANAF găsiți în ghidul despre casa de marcat fără internet — fără a repeta sancțiunile aici.",
+    aHtml: `Da, vânzarea continuă local în Tapselo; la reconectare datele se sincronizează. Ce rămâne obligatoriu pentru AMEF și transmiterea către ANAF găsiți în <a href="${internalPath("/ghid/articole/casa-de-marcat-fara-internet/")}" class="font-semibold text-accent hover:underline">ghidul despre casa de marcat fără internet</a> — fără a repeta sancțiunile aici.`,
+  },
+  {
+    q: "Ce imprimante fiscale merg cu Tapselo?",
+    a: "Testată E2E pe Datecs FP-700 pe USB. Daisy și Tremol au driver în produs — le validăm la instalare cu suportul nostru. Pentru alte mărci, contactați-ne despre model.",
+  },
+  {
+    q: "Pot folosi telefonul drept casă de marcat?",
+    a: "Nu. Bonul fiscal se emite din aparatul de marcat electronic fiscal (AMEF), nu din telefon. AMEF-V (casa de marcat virtuală) este doar o propunere legislativă (PL-x 303/2026), nu este în vigoare.",
+    aHtml: `Nu. Bonul fiscal se emite din aparatul de marcat electronic fiscal (AMEF), nu din telefon. AMEF-V (casa de marcat virtuală) este doar o propunere legislativă (<a href="${CDEP_PLX303}" target="_blank" rel="noopener" class="font-semibold text-accent hover:underline">PL-x 303/2026</a>), nu este în vigoare.`,
+  },
+  {
+    q: "Ce este AMEF-V?",
+    a: "AMEF-V ar fi o aplicație certificată ANAF propusă în PL-x 303/2026 pentru emiterea bonului fiscal exclusiv în format electronic. Propunerea nu este în vigoare; până atunci bonul fiscal legal vine tot din AMEF clasic.",
+    aHtml: `AMEF-V ar fi o aplicație certificată ANAF propusă în <a href="${CDEP_PLX303}" target="_blank" rel="noopener" class="font-semibold text-accent hover:underline">PL-x 303/2026</a> pentru emiterea bonului fiscal exclusiv în format electronic. Propunerea nu este în vigoare; până atunci bonul fiscal legal vine tot din AMEF clasic.`,
+  },
+];
+
+const crumbs = [
+  { name: "Acasă", path: "/" },
+  { name: "Program casă de marcat pe calculator", path: PATH },
+];
+
+const jsonLd = [
+  webApplicationJsonLd({
+    name: "Tapselo — program casă de marcat pe calculator",
+    path: PATH,
+    description:
+      "Program de casă de marcat pe Windows, macOS și Linux: POS la tejghea, Datecs FP-700 pe USB, inventar pe telefon. Ce este legal pe telefon, tabletă și PC.",
+    operatingSystem: "Windows, macOS, Linux",
+    tapseloProductPricing: true,
+  }),
+  faqPageJsonLd(faq),
+  breadcrumbJsonLd(crumbs),
+];
+---
+
+<GuideShell
+  title="Program casă de marcat pe calculator (Windows, macOS, Linux) | Tapselo"
+  description="Program de casă de marcat pe calculator pentru magazine mici: Windows, macOS, Linux, imprimantă fiscală Datecs FP-700, inventar pe telefon. Ce poate și ce nu poate Tapselo."
+  heading="Program de casă de marcat pe calculator"
+  lead="Tapselo este programul de vânzare pe Windows, macOS sau Linux la tejghea; bonul fiscal îl tipărește casa de marcat fiscală (AMEF) conectată pe USB — telefonul rămâne pentru inventar, nu pentru bon."
+  campaign="program-casa-de-marcat-pe-calculator"
+  breadcrumb={false}
+  ctaTitle="Vedeți Tapselo cu Datecs FP-700 la dumneavoastră"
+  ctaBody="Program scurt: conectarea casei pe USB, bon de probă și inventar pe telefon — pe echipamentele magazinului, nu pe slide-uri."
+  ctaHref={internalPath("/demo/")}
+  jsonLd={jsonLd}
+  appJsonLd={false}
+>
+  <article class="kb-prose space-y-10" data-desktop-till>
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Pe scurt</h2>
+      <p>
+        Dacă căutați un program pentru tejghea, mai jos găsiți pașii de conectare; pe scurt, un <strong>program de casă de marcat pe calculator</strong> este aplicația în care scanați produsele și încasați;
+        bonul fiscal îl emite <strong>aparatul de marcat electronic fiscal (AMEF)</strong>, nu ecranul PC-ului. Tapselo rulează pe calculatorul dumneavoastră sub
+        <strong>Windows, macOS și Linux</strong>, cu imprimantă fiscală <strong>Datecs FP-700</strong> testată pe USB. Telefoanele
+        servesc la <strong>inventar</strong>, nu la bon fiscal. Vânzarea poate continua <strong>fără internet</strong>, cu sincronizare
+        la reconectare; detalii legale despre offline →
+        <a href={internalPath("/ghid/articole/casa-de-marcat-fara-internet/")} class="font-semibold text-accent hover:underline">casa de marcat fără internet</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Ce face Tapselo pe calculator</h2>
+      <ul>
+        <li>
+          <strong>POS pe Windows, macOS și Linux</strong> — scanare, încasare cash sau card (fără terminal bancar integrat încă), legătură
+          cu cântar Dibal în rețea.
+        </li>
+        <li>
+          <strong>Imprimantă fiscală pe USB</strong> — {TAPS_FISCAL_PRINTERS_TABLE}.
+        </li>
+        <li>
+          <strong>Inventar pe telefon</strong> — aplicația PWA se sincronizează cu catalogul; nu înlocuiește AMEF-ul.
+        </li>
+        <li>
+          <strong>Offline</strong> — tranzacțiile se salvează local; la revenirea internetului se sincronizează (comportament documentat în produs).
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Ce nu face Tapselo</h2>
+      <ul>
+        <li><strong>Nu emite bon fiscal pe telefon sau tabletă.</strong> Bonul vine doar din AMEF.</li>
+        <li><strong>Nu este SoftPOS</strong> — nu transformăm telefonul în terminal de plată cu card legat de bon fiscal.</li>
+        <li><strong>Nu deschidem sertarul de bani</strong> și nu integrăm încă POS bancar în program.</li>
+      </ul>
+    </section>
+
+    <section id="telefon-tableta-calculator">
+      <h2 class="font-display text-3xl italic text-primary">Casă de marcat pe telefon, tabletă sau calculator: ce e legal în 2026</h2>
+      <p>
+        În 2026, bonul fiscal legal se emite tot de casa de marcat fiscală (AMEF), conectată la ANAF. Telefonul, tableta sau
+        calculatorul pot rula programul de vânzare, dar bonul fiscal îl tipărește casa de marcat. Casa de marcat virtuală (AMEF-V) este
+        doar o propunere legislativă (<a href={CDEP_PLX303} {...ext} class="font-semibold text-accent hover:underline">PL-x 303/2026</a>),
+        nu este în vigoare; până atunci, ce afișează o aplicație pe telefon fără casă de marcat nu este bon fiscal.
+      </p>
+      <p class="text-sm text-text-secondary">
+        Obligația de a folosi AMEF pentru vânzările către public este în
+        <a href={OUG28} {...ext} class="font-semibold text-accent hover:underline">OUG 28/1999, art. 1 alin. (1)</a>
+        (legislatie.just.ro).
+      </p>
+      <div class="table-scroll mt-6">
+        <table class="kb-table">
+          <caption class="sr-only">Comparație dispozitive: ce poate face, bon fiscal și Tapselo</caption>
+          <thead>
+            <tr>
+              <th scope="col">Dispozitiv</th>
+              <th scope="col">Ce poate face</th>
+              <th scope="col">Bon fiscal?</th>
+              <th scope="col">Tapselo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Calculator (Windows/macOS/Linux)</th>
+              <td>program de vânzare + imprimantă fiscală pe USB</td>
+              <td>Da, prin AMEF</td>
+              <td>Da (Datecs FP-700)</td>
+            </tr>
+            <tr>
+              <th scope="row">Tabletă</th>
+              <td>program de vânzare</td>
+              <td>Doar cu AMEF conectată</td>
+              <td>Nu în prezent</td>
+            </tr>
+            <tr>
+              <th scope="row">Telefon</th>
+              <td>inventar, încasare card (SoftPOS)</td>
+              <td>Nu; bonul vine din AMEF</td>
+              <td>Doar inventar</td>
+            </tr>
+            <tr>
+              <th scope="row">AMEF-V (casă de marcat virtuală)</th>
+              <td>propunere legislativă</td>
+              <td>Nu există încă legal</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Cum conectați casa de marcat la calculator (Windows/macOS/Linux)</h2>
+      <p>
+        Ca să folosiți un program de casă de marcat pe calculator, conectați imprimanta fiscală (ex. Datecs FP-700) la PC pe USB,
+        porniți Tapselo pe Windows, macOS sau Linux, apoi emiteți bonul local. Telefonul rămâne pentru inventar, nu pentru bon fiscal.
+      </p>
+      <ol>
+        <li>Calculator pe Windows, macOS sau Linux cu port USB liber.</li>
+        <li>Imprimantă fiscală suportată — în prezent Datecs FP-700 testată E2E; alte modele Daisy și Tremol doar când produsul le confirmă la instalare (<a href={internalPath("/comparatie/cel-mai-bun-program-casa-de-marcat/")} class="font-semibold text-accent hover:underline">detalii în comparație</a>).</li>
+        <li>Cablu USB; pe Windows poate apărea driverul de imprimantă — urmați manualul Datecs, nu un installer necunoscut.</li>
+        <li>Porniți Tapselo de pe stickul USB sau instalarea documentată pe tapselo.com; introduceți codul de activare din admin.</li>
+        <li>Test: un bon de probă (sau X, după procedura din ghidul de erori / manual), apoi vânzare normală.</li>
+        <li>
+          Fără internet: vânzarea continuă local; detalii legale →
+          <a href={internalPath("/ghid/articole/casa-de-marcat-fara-internet/")} class="font-semibold text-accent hover:underline">articolul „fără internet”</a>.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Preț</h2>
+      <p>
+        Tapselo este {TAPS_PRICE_CANON}. Detalii actualizate pe
+        <a href={internalPath("/#pricing")} class="font-semibold text-accent hover:underline">secțiunea Prețuri</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Întrebări frecvente</h2>
+      <dl class="space-y-6">
+        {faq.map((item) => (
+          <div>
+            <dt class="font-bold text-primary">{item.q}</dt>
+            {item.aHtml ? (
+              <dd class="mt-2" set:html={item.aHtml} />
+            ) : (
+              <dd class="mt-2">{item.a}</dd>
+            )}
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="rounded-xl border border-accent/30 bg-ticket-light/40 p-6">
+      <h2 class="font-display text-2xl italic text-primary">Următorul pas</h2>
+      <p class="mt-3">
+        Programează un <a href={internalPath("/demo/")} class="font-semibold text-accent hover:underline">demo Tapselo</a>
+        sau compară funcțiile cu alte programe pe
+        <a href={internalPath("/comparatie/cel-mai-bun-program-casa-de-marcat/")} class="font-semibold text-accent hover:underline">lista scurtă de programe POS</a>.
+        Pentru stocuri și recepție, vedeți și
+        <a href={internalPath("/program-gestiune-magazin/")} class="font-semibold text-accent hover:underline">programul de gestiune pentru magazin</a>.
+      </p>
+    </section>
+  </article>
+</GuideShell>
+
+<style>
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    border: 1px solid var(--color-border-light);
+    border-radius: 0.75rem;
+    background: var(--color-surface-white);
+  }
+</style>
