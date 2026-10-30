@@ -37,3 +37,10 @@ test("every link resolves to a built route; served as text/plain", () => {
   }
   assert.match(readFileSync("public/_headers", "utf8"), /\/llms\.txt\n\s+Content-Type: text\/plain; charset=utf-8/);
 });
+
+test("lists TAP-025 desktop till page under Despre Tapselo without pricing", () => {
+  const line = links.find((m) => m[2] === `${SITE}/program-casa-de-marcat-pe-calculator/`);
+  assert.ok(line, "missing program-casa-de-marcat-pe-calculator in llms.txt");
+  assert.equal(line![1], "Program casă de marcat pe calculator");
+  assert.doesNotMatch(line![3], /\blei\b|79|129|gratuit/i);
+});

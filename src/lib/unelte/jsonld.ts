@@ -1,6 +1,8 @@
 import { internalPath } from "../internal-url.ts";
 import { markdownToPlainText } from "../markdown.ts";
 
+import { TAPS_PRICE_CANON } from "../../data/tapselo-product-copy.ts";
+
 const SITE = "https://tapselo.com";
 
 /** Canonical URLs on tapselo.com end with "/" (see <link rel="canonical"> in Layout). */
@@ -45,19 +47,35 @@ export function breadcrumbLinks(crumbs: Crumb[]): BreadcrumbLink[] {
   }));
 }
 
-export function webApplicationJsonLd(opts: { name: string; path: string; description: string }): Record<string, unknown> {
-  return {
+export function webApplicationJsonLd(opts: {
+  name: string;
+  path: string;
+  description: string;
+  operatingSystem?: string;
+  /** Desktop/mobile product pages: canon subscription wording, no price-0 / isAccessibleForFree. */
+  tapseloProductPricing?: boolean;
+}): Record<string, unknown> {
+  const base: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: opts.name,
     url: canonicalUrl(opts.path),
     applicationCategory: "BusinessApplication",
-    operatingSystem: "Web",
+    operatingSystem: opts.operatingSystem ?? "Web",
     inLanguage: "ro",
-    isAccessibleForFree: true,
-    offers: { "@type": "Offer", price: "0", priceCurrency: "RON" },
     description: opts.description,
   };
+  if (opts.tapseloProductPricing) {
+    base.offers = {
+      "@type": "Offer",
+      priceCurrency: "RON",
+      description: TAPS_PRICE_CANON,
+    };
+    return base;
+  }
+  base.isAccessibleForFree = true;
+  base.offers = { "@type": "Offer", price: "0", priceCurrency: "RON" };
+  return base;
 }
 
 export function faqPageJsonLd(faq: FaqItem[]): Record<string, unknown> {
