@@ -78,7 +78,10 @@ const ENTRIES: Record<string, Entry> = {
   "/": { title: "Tapselo", desc: "Prezentarea programului de casă de marcat Tapselo." },
   "/demo/": { title: "Demo", desc: "Încercați Tapselo în browser, fără cont." },
   "/program-gestiune-magazin/": { title: "Program gestiune magazin", desc: "Gestiunea stocurilor, recepția mărfii și vânzarea, în același program." },
-  "/ai/": { title: "Tapselo în Claude și ChatGPT", desc: "Conectorul Tapselo pentru asistenții AI: reguli fiscale, calcule și documente printabile." },
+  "/ai/": {
+    title: "Tapselo în Claude și ChatGPT",
+    desc: "Conectorul MCP Tapselo pentru asistenții AI: reguli fiscale, calcule și documente printabile; aplicația este publicată în ChatGPT.",
+  },
 };
 
 const SUMMARY =

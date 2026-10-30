@@ -1,6 +1,7 @@
 ---
 import { Github } from "@lucide/astro";
 import { internalPath } from "../lib/internal-url.ts";
+import { CHATGPT_APP_URL } from "../lib/mcp/links.ts";
 import {
   toolLinks,
   ruleGuideLinks,
@@ -78,6 +79,7 @@ const colLink = "text-sm text-text-on-primary-muted transition-colors hover:text
       <a href={internalPath("/unelte")} class={navClass}>Unelte gratuite</a>
       <a href={internalPath("/ghid")} class={navClass}>Ghid</a>
       <a href={internalPath("/ai")} class={navClass}>Asistent AI</a>
+      <a href={CHATGPT_APP_URL} target="_blank" rel="noopener noreferrer" class={navClass}>Deschideți în ChatGPT</a>
       <a href={internalPath("/comparatie")} class={navClass}>Comparație</a>
       <WithdrawConsent class={`${navClass} underline`} wrapClass="order-last basis-full text-center text-sm text-text-on-primary-muted" />
       <a

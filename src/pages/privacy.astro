@@ -1,7 +1,9 @@
 ---
 import GuideShell from "../components/GuideShell.astro";
 import EmailLink from "../components/EmailLink.astro";
+import ChatGptOpenButton from "../components/ChatGptOpenButton.astro";
 import { internalPath } from "../lib/internal-url.ts";
+import { CHATGPT_APP_URL } from "../lib/mcp/links.ts";
 import OperatorLine from "../components/OperatorLine.astro";
 import WithdrawConsent from "../components/WithdrawConsent.astro";
 ---
@@ -98,10 +100,14 @@ import WithdrawConsent from "../components/WithdrawConsent.astro";
       <section id="asistent-ai" class="scroll-mt-24">
         <h2 class="font-display text-3xl italic text-primary">Asistentul AI (Claude și ChatGPT)</h2>
         <p class="mt-4 leading-relaxed text-text-secondary">
-          "Tapselo" este un conector pe care îl adaugi în Claude sau ChatGPT, la adresa
+          „Tapselo” este un conector pe care îl adăugați în Claude sau ChatGPT, la adresa
           <code>https://tapselo.com/mcp</code>. Nu are cont și nu cere autentificare. Ce face este descris pe pagina
           <a href={internalPath("/ai")} class="font-bold text-accent hover:text-accent-hover">Asistent AI</a>.
+          În ChatGPT, aplicația este publicată în directorul de pluginuri:
         </p>
+        <div class="not-prose mt-4">
+          <ChatGptOpenButton variant="card" ctaId="privacy-chatgpt" />
+        </div>
         <h3 class="mt-6 font-bold text-primary">Ce primim</h3>
         <p class="mt-2 leading-relaxed text-text-secondary">
           Primim doar argumentele pe care aplicația AI le trimite când folosește o unealtă: de exemplu un cod de eroare,
@@ -364,9 +370,13 @@ import WithdrawConsent from "../components/WithdrawConsent.astro";
           Only when the tapselo_consent=marketing cookie (.tapselo.com) is present, the demo (app.tapselo.com / demo.tapselo.com) also sends a server-side demo_active event via the Conversions API (new event_id, event time, demo URL, IP, user agent, fbp/fbc, landing_page, page_path "/", utm_*; sent unhashed, no email, phone, name or external ID); if the visitor refused, nothing is sent from the demo either and tapselo_attr is deleted. For accepted visits only, the demo also records utm_*, landing_page, event_id and fbclid on its PostHog analytics events (no fbp/fbc). Independently of consent, the demo also sends PostHog usage and debugging events (pages opened, clicks, errors and session recordings, with password fields masked). PostHog, Inc. (US) processes all PostHog data as our processor on PostHog Cloud EU (Frankfurt), via t.tapselo.com; per PostHog's DPA, PostHog, Inc. participates in the EU-U.S. Data Privacy Framework and uses Standard Contractual Clauses for transfers outside the EEA. No email, phone, barcodes, prices, CUIs or company data are sent. Cookies: _fbp, _fbc, tapselo_attr
           (.tapselo.com, 7 days), tapselo_consent (.tapselo.com, 180 days, "marketing" or "denied"; the demo sends to Meta only with "marketing"); localStorage tapselo_marketing_consent. Legal basis: consent (GDPR art. 6(1)(a); Romanian Law 506/2004 art. 4(5) for cookies). Meta may transfer data to Meta Platforms, Inc. (US), certified under the EU-U.S. Data Privacy Framework. To withdraw consent, click "Retrage acordul" (in every page footer and at /privacy/#retrage-acordul): it sets tapselo_consent=denied on .tapselo.com for 180 days, deletes tapselo_attr and the sessionStorage tapselo_landing_page, removes the measurement data from demo links on the open page, and on /demo/ also stores "denied" in localStorage and, if the Meta Pixel was loaded after an earlier "Accept", sends it consent revoke. With the denied cookie the demo sends nothing to Meta and, on its next load, clears from the browser the stored PostHog campaign properties (utm_*, landing_page, event_id, fbclid) and the sessionStorage tapselo.attr; events already sent to PostHog are not deleted by this step. Alternatively, clear the site data of tapselo.com, app.tapselo.com and demo.tapselo.com by hand (the consent box then reappears on the next /demo/ visit); withdrawal does not affect the lawfulness of earlier processing.
         </p>
-        <p class="mt-4 leading-relaxed text-text-secondary">
+        <p class="mt-4 leading-relaxed text-text-secondary break-words">
           AI connector ("Tapselo", https://tapselo.com/mcp, used from Claude or ChatGPT, no account):
-          we receive only the tool arguments the AI app sends (for example an error code, a CUI, barcodes or a product
+          open the published ChatGPT app (
+          <a href={CHATGPT_APP_URL} rel="noopener noreferrer" target="_blank" class="font-bold text-accent hover:text-accent-hover">
+            Open in ChatGPT
+          </a>
+          ). we receive only the tool arguments the AI app sends (for example an error code, a CUI, barcodes or a product
           list), never the chat history, memory or uploaded files. Answers are not stored. Documents made by the
           document tools are stored for 30 days and then deleted by a daily job. Logs hold the tool name, success or error, duration, error type and, on failure, the technical error message; they hold no user text or tool arguments.
           Outside services: ANAF (the CUI you check), BNR (exchange rate, nothing sent about you), and Open Food Facts
