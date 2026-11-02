@@ -25,6 +25,7 @@ export const KIND_TITLES: Record<string, string> = {
   cash_order: "Dispoziție de plată/încasare",
   aviz: "Aviz de însoțire a mărfii",
   food_conformity: "Declarație de conformitate produse alimentare",
+  pv_anulare_bon: "Proces verbal anulare bon fiscal",
 };
 
 // ---------- number formatting (Romanian: 1.234,56) ----------

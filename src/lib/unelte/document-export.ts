@@ -2,6 +2,7 @@ import { renderCashbook } from "../generators/cashbook.ts";
 import { renderAviz } from "../generators/aviz.ts";
 import { renderCashOrder } from "../generators/cash-order.ts";
 import { renderNir } from "../generators/nir.ts";
+import { renderPvAnulareBon } from "../generators/pv-anulare-bon.ts";
 import { renderPurchaseSlip } from "../generators/purchase-slip.ts";
 import { renderWarehouseCard } from "../generators/warehouse-card.ts";
 import { renderFoodConformityDeclaration } from "../generators/food-conformity-declaration.ts";
@@ -12,6 +13,7 @@ import type {
   DraftRecord,
   NirPayload,
   PurchaseSlipPayload,
+  PvAnulareBonPayload,
   WarehouseCardPayload,
   FoodConformityPayload,
 } from "../generators/types.ts";
@@ -102,4 +104,12 @@ export function foodConformityHtml(payload: FoodConformityPayload): string {
 
 export function downloadFoodConformityPdfViaPrint(payload: FoodConformityPayload): boolean {
   return openPrintHtml(foodConformityHtml(payload));
+}
+
+export function pvAnulareBonHtml(payload: PvAnulareBonPayload, blank = false): string {
+  return renderPvAnulareBon(payload, { ...LOCAL_DRAFT, kind: "pv_anulare_bon" }, { local: true, blank });
+}
+
+export function downloadPvAnulareBonPdfViaPrint(payload: PvAnulareBonPayload): boolean {
+  return openPrintHtml(pvAnulareBonHtml(payload));
 }

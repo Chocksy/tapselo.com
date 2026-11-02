@@ -218,6 +218,38 @@ export interface AvizLine {
   unit_price?: number;
 }
 
+export type PvAnulareMotiv = "pret_gresit" | "cantitate" | "produs" | "altul";
+
+/** Dosar art. 36 HG 479/2003 — sesizare + decizie (generator Tapselo, practică de piață). */
+export interface PvAnulareBonPayload {
+  company: string;
+  company_tax_id?: string;
+  workplace?: string;
+  amef_model?: string;
+  amef_series?: string;
+  receipt_number: string;
+  /** YYYY-MM-DD */
+  receipt_date: string;
+  /** HH:MM */
+  receipt_time: string;
+  receipt_amount?: number;
+  products_wrong: string;
+  motiv: PvAnulareMotiv;
+  motiv_detail?: string;
+  /** Opțional — practică, nu cerință legală (HG 479/2003 art. 36). */
+  correct_receipt_number?: string;
+  sesizare_name: string;
+  sesizare_role: string;
+  /** YYYY-MM-DD */
+  sesizare_date: string;
+  decizie_name: string;
+  decizie_role: string;
+  /** YYYY-MM-DD */
+  decizie_date: string;
+  checklist_nir_attached: boolean;
+  checklist_nota_contabila: boolean;
+}
+
 /** Aviz de însoțire a mărfii (form 14-3-6A, OMFP 2634/2015). */
 export interface AvizPayload {
   supplier: AvizParty;

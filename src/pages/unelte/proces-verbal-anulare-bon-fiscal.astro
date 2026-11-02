@@ -1,0 +1,157 @@
+---
+import ToolShell from "../../components/ToolShell.astro";
+import ProcesVerbalAnulareBonTool from "../../components/unelte/ProcesVerbalAnulareBonTool.astro";
+import { internalPath } from "../../lib/internal-url.ts";
+import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
+
+const path = "/unelte/proces-verbal-anulare-bon-fiscal/";
+const heading = "Proces verbal de anulare bon fiscal (dosar art. 36, HG 479/2003)";
+
+const S1 = "https://legislatie.just.ro/Public/DetaliiDocument/266909";
+const S2 = "https://legislatie.just.ro/Public/DetaliiDocument/263545";
+const ACCESAT = "02.11.2026";
+
+const faq = [
+  {
+    q: "Pot anula un bon fiscal direct în casa de marcat?",
+    a: "Nu. Funcția de corectare sau anulare a înregistrării unei operațiuni după emiterea bonului fiscal este interzisă aparatului de marcat electronic fiscal (HG nr. 479/2003, art. 34 lit. f)). Erorile se corectează numai înainte de emiterea bonului, pe bon, fără total negativ (art. 33 lit. B c)).",
+  },
+  {
+    q: "Ce trebuie să conțină dosarul după un bon emis greșit?",
+    a: "Potrivit art. 36 din aceleași norme, dosarul cuprinde: sesizarea scrisă a persoanei care a greșit (motiv, număr bon, ora și minutul emiterii); decizia scrisă de aprobare de la directorul financiar-contabil, contabilul-șef sau persoana care răspunde de gestionarea patrimoniului; copie de pe notele de recepție de la ultima inventariere cu prețul cu amănuntul; nota de contabilitate.",
+  },
+  {
+    q: "Legea impune un model de proces verbal?",
+    a: "Nu. Textul legal vorbește despre conținutul dosarului, nu despre denumirea „proces verbal” sau un șablon obligatoriu. Generatorul urmează practica de piață și cerințele din art. 36.",
+  },
+  {
+    q: "Anularea bonului greșit este la fel cu returul de marfă?",
+    a: "Nu. Returul de marfă are un alt dosar (art. 37): NIR 14-3-1A, dispoziție de plată-încasare 14-4-4 și factură. Nu amestecați procedurile.",
+  },
+  {
+    q: "Trebuie să reemit bon fiscal corect sau să anunț ANAF?",
+    a: "HG 479/2003, în forma verificată, nu impune explicit reemiterea unui bon corect sau notificarea ANAF pentru acest dosar. Stabilirea pașilor contabili și fiscali rămâne la procedura firmei și la contabil.",
+  },
+  {
+    q: "Unde se generează documentul?",
+    a: "În browserul dumneavoastră. Nu trimitem conținutul formularului către serverul Tapselo; opțional păstrăm local doar firma și CUI-ul. Pe tapselo.com, PostHog înregistrează doar că ați folosit unealta (PDF, Word sau descărcare model gol).",
+  },
+];
+
+const jsonLd = toolJsonLd({
+  path,
+  heading,
+  appName: "Generator proces verbal anulare bon fiscal Tapselo",
+  description:
+    "Generator gratuit pentru sesizare și decizie din dosarul art. 36 HG 479/2003: PDF și Word în browser, checklist NIR și notă contabilă.",
+  faq,
+});
+
+const link = "font-semibold text-accent hover:underline";
+---
+
+<ToolShell
+  title="Proces verbal anulare bon fiscal — generator gratuit PDF | Tapselo"
+  description="Generator proces verbal de anulare bon fiscal: sesizare și decizie art. 36 HG 479/2003, checklist dosar, PDF și Word în browser, model necompletat."
+  heading={heading}
+  path={path}
+  lead="Casa de marcat nu permite anularea după emiterea bonului fiscal; legea cere un dosar cu patru piese. Generatorul produce sesizarea și decizia (art. 36 lit. a) și b)) și o listă de verificare pentru NIR și nota contabilă (lit. c) și d)) — local, în browser."
+  campaign="proces-verbal-anulare-bon-fiscal"
+  ctaTitle="Mai puține bonuri greșite la casă"
+  ctaBody="În Tapselo, cotele TVA și prețurile se verifică înainte de bon, iar raportul Z se leagă de registru. Tapselo e gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA."
+  related={[
+    { href: "/unelte/dispozitie-de-plata/", label: "Dispoziție de plată (retur marfă, art. 37)" },
+    { href: "/unelte/generator-nir/", label: "Generator NIR" },
+    { href: "/ghid/erori-datecs/", label: "Erori casă de marcat Datecs" },
+    { href: "/ghid/articole/raport-z-datecs-fp-70/", label: "Raportul Z pe Datecs" },
+  ]}
+  jsonLd={jsonLd}
+  faq={faq}
+>
+  <ProcesVerbalAnulareBonTool />
+
+  <article class="site-prose prose-tapselo space-y-8 text-text-secondary leading-relaxed">
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Ce spune legea</h2>
+      <p>
+        În regim de înregistrare, aparatul de marcat are „posibilitatea de corecție a erorilor <strong class="text-primary">numai înainte de emiterea bonului fiscal</strong>.
+        Corectarea unei erori sau anularea unei vânzări se evidențiază pe bonul fiscal și se poate efectua numai cu condiția ca valoarea totală a acestuia să nu devină negativă”
+        (<a href={S1} class={link}>HG nr. 479/2003, art. 33 lit. B c)</a>, forma consolidată, accesat la {ACCESAT}).
+      </p>
+      <p>
+        Funcțiile interzise includ „<strong class="text-primary">corectarea sau anularea înregistrării unei operațiuni după emiterea bonului fiscal</strong>”
+        (<a href={S1} class={link}>aceeași sursă — art. 34 lit. f)</a>).
+      </p>
+      <p>
+        După emitere, „<strong class="text-primary">Pentru corectarea sau anularea înregistrării unei operațiuni după emiterea bonului fiscal utilizatorul întocmește un dosar</strong> care va cuprinde:
+        a) sesizarea scrisă a persoanei care a efectuat greșit operațiunea, cu precizarea motivației de corectare sau de anulare a acesteia, precum și a numărului de ordine al bonului fiscal de corectat, a orei și minutului emiterii acestuia;
+        b) decizia scrisă de aprobare a corectării operațiunii greșit efectuate, emisă de directorul financiar-contabil, contabilul-șef sau de altă persoană care răspunde de gestionarea patrimoniului unității;
+        c) copie de pe nota sau notele de recepție și constatare de diferențe, întocmite de la ultima inventariere până la zi, prin care a fost stabilit prețul cu amănuntul al produsului sau produselor înregistrate greșit în aparatul de marcat electronic fiscal;
+        d) nota de contabilitate care reflectă operațiunea efectuată.”
+        (<a href={S1} class={link}>art. 36</a>).
+      </p>
+      <p class="text-sm">
+        OUG nr. 28/1999 (republicată) este baza ordonanței; normele HG 479/2003 o detaliază
+        (<a href={S2} class={link}>legislatie.just.ro — OUG 28/1999, forma consolidată</a>, accesat la {ACCESAT}).
+        Nu am găsit un ordin ANAF separat care să impună denumirea „proces verbal de anulare”.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Ce conține dosarul</h2>
+      <ul class="list-disc space-y-2 pl-5">
+        <li><strong class="text-primary">Sesizare</strong> — cine a greșit, motivul, numărul bonului, ora și minutul (lit. a)); generatorul o produce din formular.</li>
+        <li><strong class="text-primary">Decizie scrisă</strong> — aprobarea de la directorul financiar-contabil, contabilul-șef sau persoana responsabilă de patrimoniu (lit. b)).</li>
+        <li><strong class="text-primary">Copii NIR</strong> — de la ultima inventariere, cu prețul cu amănuntul al produselor greșit înregistrate (lit. c)); bifați checklist-ul când le atașați.</li>
+        <li><strong class="text-primary">Notă contabilă</strong> — reflectă operațiunea (lit. d)); tot prin checklist.</li>
+      </ul>
+      <p>
+        Legea nu impune, în textul verificat, reemiterea obligatorie a unui bon corect, notificarea ANAF, un termen-limită, o amendă pentru dosar incomplet sau un model tipizat. Dacă emiteți un bon corect ulterior, completați câmpul opțional din generator — este practică, nu cerință legală.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Anulare vs retur</h2>
+      <p>
+        <strong class="text-primary">Returul de marfă</strong> este alt procedeu: art. 37 prevede dosar cu NIR 14-3-1A, dispoziție de plată-încasare 14-4-4 și factură — nu îl confundați cu corectarea bonului emis greșit.
+        Pentru dispoziția 14-4-4 folosiți
+        <a href={internalPath("/unelte/dispozitie-de-plata/")} class={link}>generatorul de dispoziție de plată</a>.
+        Funcția de „înregistrare retur de marfă” în AMEF rămâne interzisă (art. 34 lit. e)).
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Greșeli frecvente</h2>
+      <ul class="list-disc space-y-2 pl-5">
+        <li>Încercarea de anulare în casa de marcat după bon — interzisă (art. 34 lit. f)).</li>
+        <li>Lipsa orei și minutului bonului în sesizare — cerute explicit la art. 36 lit. a).</li>
+        <li>Amestecarea cu dosarul de retur (art. 37) sau lipsa notei contabile / NIR-ului din checklist.</li>
+        <li>Presupunerea că „proces verbal” este titlul legal — este formulare de piață; important este conținutul dosarului.</li>
+        <li>Promisiunea că ANAF primește automat dosarul — legea descrie documentele interne, nu o depunere centralizată.</li>
+      </ul>
+    </section>
+
+    <section id="surse">
+      <h2 class="font-display text-2xl italic text-primary">Surse</h2>
+      <ul class="list-disc space-y-3 pl-5 text-sm">
+        <li>
+          <a href={S1} class={link}>HG nr. 479/2003 — Normele metodologice de aplicare a OUG 28/1999</a> (forma consolidată; ultima modificare vizibilă pe portal 24-04-2023 prin HG 355/2023 — atinge art. 33–34, nu art. 36–37):
+          art. 33 lit. B c), art. 34 lit. f), art. 36, art. 37. Accesat la {ACCESAT}.
+        </li>
+        <li>
+          <a href={S2} class={link}>OUG nr. 28/1999 privind obligația de a utiliza aparate de marcat electronice fiscale</a> (republicată, consolidată). Accesat la {ACCESAT}.
+        </li>
+      </ul>
+      <p class="text-sm">Nu este consultanță fiscală. Verificați textele actualizate și procedura internă cu contabilul.</p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Confidențialitate</h2>
+      <p class="text-sm">
+        PDF-ul și fișierul Word se construiesc în browser; serverul Tapselo nu primește conținutul câmpurilor. Opțional, salvăm în
+        <code class="text-primary">localStorage</code> doar firma și CUI-ul. Analytics PostHog (proxy t.tapselo.com) primește evenimentul
+        <code class="text-primary">tool_used</code> cu acțiunea (PDF, Word, print sau model gol), fără date din formular.
+      </p>
+    </section>
+  </article>
+</ToolShell>

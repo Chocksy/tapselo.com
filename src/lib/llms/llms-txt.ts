@@ -16,6 +16,10 @@ const ENTRIES: Record<string, Entry> = {
   "/unelte/verificare-cui/": { title: "Verificare CUI ANAF", desc: "Verifică o firmă după CUI în registrul public ANAF: TVA, TVA la încasare, e-Factura." },
   "/unelte/registru-de-casa/": { title: "Registru de casă", desc: "Completează și printează registrul de casă zilnic, cu soldul după fiecare înregistrare." },
   "/unelte/dispozitie-de-plata/": { title: "Dispoziție de plată", desc: "Generează dispoziția de plată sau încasare către casierie, gata de printat." },
+  "/unelte/proces-verbal-anulare-bon-fiscal/": {
+    title: "Proces verbal anulare bon fiscal",
+    desc: "Sesizare și decizie pentru dosarul art. 36 HG 479/2003, PDF și Word în browser.",
+  },
   "/unelte/generator-nir/": { title: "Generator NIR", desc: "Întocmiți nota de intrare-recepție pentru marfa primită, cu TVA și adaos." },
   "/unelte/generator-aviz-de-insotire/": { title: "Aviz de însoțire a mărfii", desc: "Generează avizul de însoțire a mărfii, gata de printat." },
   "/unelte/declaratie-de-conformitate-produse-alimentare/": {
@@ -54,6 +58,10 @@ const ENTRIES: Record<string, Entry> = {
   "/ghid/alergeni-1169-2011/": { title: "Alergeni la produse nepreambalate", desc: "Cum afișați informația despre cei 14 alergeni la produsele vândute nepreambalate." },
   "/ghid/e-transport/": { title: "RO e-Transport", desc: "Ce transporturi de bunuri cu risc fiscal ridicat se declară și cum se obține codul UIT." },
   "/ghid/registru-unic-de-control/": { title: "Registrul unic de control (RUC)", desc: "Cine trebuie să aibă registrul unic de control și unde se păstrează." },
+  "/ghid/certificat-de-atestare-fiscala/": {
+    title: "Certificat de atestare fiscală (SPV)",
+    desc: "Cererea gratuită de certificat de atestare fiscală la ANAF prin SPV, termenul legal și valabilitatea.",
+  },
   // Ghiduri: deschiderea unui magazin
   "/ghid/deschide-macelarie/": { title: "Deschiderea unei măcelării", desc: "Codul CAEN, înregistrarea DSVSA, acordul primăriei și casa de marcat." },
   "/ghid/deschide-brutarie-patiserie/": { title: "Deschiderea unei brutării sau patiserii", desc: "Codurile CAEN, DSVSA, acordul primăriei și casa de marcat." },

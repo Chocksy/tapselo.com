@@ -14,6 +14,7 @@ export const toolLinks: SiteLink[] = [
   { href: internalPath("/unelte/verificare-cui"), label: "Verificare CUI ANAF" },
   { href: internalPath("/unelte/registru-de-casa"), label: "Registru de casă" },
   { href: internalPath("/unelte/dispozitie-de-plata"), label: "Dispoziție de plată" },
+  { href: internalPath("/unelte/proces-verbal-anulare-bon-fiscal"), label: "Proces verbal anulare bon fiscal" },
   { href: internalPath("/unelte/generator-nir"), label: "Generator NIR" },
   { href: internalPath("/unelte/generator-aviz-de-insotire"), label: "Aviz de însoțire a mărfii" },
   { href: internalPath("/unelte/declaratie-de-conformitate-produse-alimentare"), label: "Declarație conformitate alimente" },
@@ -42,6 +43,7 @@ export const ruleGuideLinks: SiteLink[] = [
     label: r.title,
   })),
   { href: internalPath("/ghid/registru-unic-de-control"), label: "Registrul unic de control (RUC)" },
+  { href: internalPath("/ghid/certificat-de-atestare-fiscala"), label: "Certificat de atestare fiscală (SPV)" },
 ];
 
 export const shopGuideLinks: SiteLink[] = checklists.map((c) => ({
@@ -74,6 +76,7 @@ export function allGhidUneltePaths(): string[] {
   for (const d of datecsErrorPageLinks) paths.add(d.href);
   paths.add(internalPath("/ghid/cantar-dibal"));
   paths.add(internalPath("/ghid/registru-unic-de-control"));
+  paths.add(internalPath("/ghid/certificat-de-atestare-fiscala"));
   paths.add(internalPath("/ghid/articole"));
   return [...paths].sort();
 }
