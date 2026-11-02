@@ -1,0 +1,303 @@
+---
+import { ALLERGENS_1169_ANEXA_II, VOLUNTARY_NOTICE } from "../../lib/unelte/declaratie-conformitate-alimente.ts";
+---
+
+<section class="ut-card" aria-labelledby="fcd-title">
+  <div
+    class="rounded-lg border border-amber-600/40 bg-amber-50 p-4 text-sm leading-relaxed text-primary"
+    role="note"
+    id="fcd-voluntary-notice"
+  >
+    <strong class="font-semibold">Important:</strong>
+    {VOLUNTARY_NOTICE}
+  </div>
+
+  <h2 id="fcd-title" class="mt-6 font-display text-2xl italic text-primary">
+    Generator declarație de conformitate
+  </h2>
+  <p class="mt-2 text-sm text-text-secondary">
+    Completați datele și descărcați documentul ca PDF (print din browser) sau DOCX. Generarea rulează local — fără cont Tapselo.
+  </p>
+
+  <div id="fcd-tool" class="mt-6 space-y-6">
+    <fieldset class="space-y-3">
+      <legend class="text-base font-semibold text-primary">Producător</legend>
+      <div>
+        <label class="ut-label" for="fcd-prod-name">Denumire</label>
+        <input class="ut-input" id="fcd-prod-name" type="text" maxlength="160" autocomplete="organization" required />
+      </div>
+      <div class="grid gap-3 sm:grid-cols-2">
+        <div>
+          <label class="ut-label" for="fcd-prod-cui">CUI</label>
+          <input class="ut-input" id="fcd-prod-cui" type="text" maxlength="20" placeholder="RO12345678" autocomplete="off" />
+        </div>
+        <div>
+          <label class="ut-label" for="fcd-prod-san">Nr. înregistrare / autorizare sanitar-veterinară (opțional)</label>
+          <input class="ut-input" id="fcd-prod-san" type="text" maxlength="80" autocomplete="off" />
+        </div>
+      </div>
+      <div>
+        <label class="ut-label" for="fcd-prod-addr">Sediu / punct de lucru</label>
+        <input class="ut-input" id="fcd-prod-addr" type="text" maxlength="200" />
+      </div>
+    </fieldset>
+
+    <fieldset class="space-y-3">
+      <legend class="text-base font-semibold text-primary">Produs</legend>
+      <div class="grid gap-3 sm:grid-cols-2">
+        <div>
+          <label class="ut-label" for="fcd-product">Denumire produs</label>
+          <input class="ut-input" id="fcd-product" type="text" maxlength="160" required />
+        </div>
+        <div>
+          <label class="ut-label" for="fcd-code">Cod intern (opțional)</label>
+          <input class="ut-input" id="fcd-code" type="text" maxlength="40" />
+        </div>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-2">
+        <div>
+          <label class="ut-label" for="fcd-lot">Lot (opțional)</label>
+          <input class="ut-input" id="fcd-lot" type="text" maxlength="60" />
+        </div>
+        <div>
+          <label class="ut-label" for="fcd-mfg">Data fabricației (opțional)</label>
+          <input class="ut-input" id="fcd-mfg" type="date" />
+        </div>
+      </div>
+      <div>
+        <label class="ut-label" for="fcd-ingredients">Ingrediente</label>
+        <textarea class="ut-input min-h-[5rem]" id="fcd-ingredients" maxlength="4000" required></textarea>
+      </div>
+    </fieldset>
+
+    <fieldset class="space-y-2">
+      <legend class="text-base font-semibold text-primary">Alergeni (Reg. (UE) 1169/2011, anexa II)</legend>
+      <p class="text-sm text-text-secondary">Bifați alergenii prezenți în produs (lista celor 14 categorii obligatorii de menționat pe etichetă).</p>
+      <div class="grid gap-2 sm:grid-cols-2">
+        {
+          ALLERGENS_1169_ANEXA_II.map(({ id, label }) => (
+            <label class="flex items-start gap-2 text-sm text-text-secondary">
+              <input type="checkbox" class="mt-1 shrink-0" data-fcd-allergen={id} />
+              <span>{label}</span>
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
+
+    <fieldset class="space-y-3">
+      <legend class="text-base font-semibold text-primary">Termen și păstrare</legend>
+      <div class="flex flex-wrap gap-4">
+        <label class="fcd-radio">
+          <input type="radio" name="fcd-shelf-kind" value="ddm" checked />
+          Data durabilității minimă
+        </label>
+        <label class="fcd-radio">
+          <input type="radio" name="fcd-shelf-kind" value="dlc" />
+          Data limită de consum
+        </label>
+      </div>
+      <div>
+        <label class="ut-label" for="fcd-shelf-date">Data termenului (opțional)</label>
+        <input class="ut-input" id="fcd-shelf-date" type="date" />
+      </div>
+      <div>
+        <label class="ut-label" for="fcd-storage">Condiții de păstrare (opțional)</label>
+        <input class="ut-input" id="fcd-storage" type="text" maxlength="200" placeholder="ex. la +4 °C" />
+      </div>
+      <div>
+        <label class="ut-label" for="fcd-qty">Cantitate / ambalare (opțional)</label>
+        <input class="ut-input" id="fcd-qty" type="text" maxlength="120" />
+      </div>
+    </fieldset>
+
+    <div>
+      <label class="ut-label" for="fcd-ref">Document de referință (rețetă, specificație internă, standard)</label>
+      <input class="ut-input" id="fcd-ref" type="text" maxlength="200" required />
+      <p class="ut-hint">Conform definiției din Codul consumului: produsul este conform cu un document tehnic normativ.</p>
+    </div>
+
+    <fieldset class="space-y-3">
+      <legend class="text-base font-semibold text-primary">Cumpărător și semnătură (opțional)</legend>
+      <div>
+        <label class="ut-label" for="fcd-buyer">Cumpărător</label>
+        <input class="ut-input" id="fcd-buyer" type="text" maxlength="160" />
+      </div>
+      <div class="grid gap-3 sm:grid-cols-3">
+        <div>
+          <label class="ut-label" for="fcd-place">Loc</label>
+          <input class="ut-input" id="fcd-place" type="text" maxlength="80" />
+        </div>
+        <div>
+          <label class="ut-label" for="fcd-date">Data</label>
+          <input class="ut-input" id="fcd-date" type="date" />
+        </div>
+        <div>
+          <label class="ut-label" for="fcd-sign-name">Nume semnatar</label>
+          <input class="ut-input" id="fcd-sign-name" type="text" maxlength="120" />
+        </div>
+      </div>
+      <div>
+        <label class="ut-label" for="fcd-sign-role">Funcție</label>
+        <input class="ut-input" id="fcd-sign-role" type="text" maxlength="80" placeholder="ex. administrator" />
+      </div>
+    </fieldset>
+
+    <p class="text-sm text-text-secondary">
+      Confidențialitate: conținutul formularului rămâne în browserul dumneavoastră. Opțional, salvăm local doar datele producătorului.
+      PostHog poate înregistra doar acțiunea (PDF, DOCX sau print), fără câmpurile completate.
+    </p>
+
+    <p class="ut-err hidden" id="fcd-err" role="alert"></p>
+
+    <div class="flex flex-wrap gap-3">
+      <button type="button" class="ut-btn ut-btn-primary" id="fcd-pdf">Salvează PDF</button>
+      <button type="button" class="ut-btn ut-btn-secondary" id="fcd-docx">Descarcă DOCX</button>
+      <button type="button" class="ut-btn ut-btn-secondary" id="fcd-print">Printează</button>
+    </div>
+  </div>
+</section>
+
+<script>
+  import type { FoodConformityPayload } from "../../lib/generators/types.ts";
+  import { localIsoDate } from "../../lib/unelte/dates.ts";
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
+  import { downloadFoodConformityPdfViaPrint } from "../../lib/unelte/document-export.ts";
+  import { downloadFoodConformityDocx } from "../../lib/unelte/food-conformity-docx.ts";
+
+  const STORAGE_KEY = "tapselo_fcd_producer";
+  const input = (id: string) => document.getElementById(id) as HTMLInputElement;
+  const text = (id: string) => input(id).value.trim();
+  const errEl = document.getElementById("fcd-err") as HTMLElement;
+  if (!input("fcd-date").value) input("fcd-date").value = localIsoDate();
+
+  function loadProducer() {
+    try {
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null") as Record<string, string> | null;
+      if (!data) return;
+      for (const [k, id] of [
+        ["name", "fcd-prod-name"],
+        ["cui", "fcd-prod-cui"],
+        ["addr", "fcd-prod-addr"],
+        ["san", "fcd-prod-san"],
+      ] as const) {
+        if (data[k]) input(id).value = data[k];
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+
+  function saveProducer() {
+    const data: Record<string, string> = {};
+    for (const [k, id] of [
+      ["name", "fcd-prod-name"],
+      ["cui", "fcd-prod-cui"],
+      ["addr", "fcd-prod-addr"],
+      ["san", "fcd-prod-san"],
+    ] as const) {
+      const v = text(id);
+      if (v) data[k] = v;
+    }
+    if (!Object.keys(data).length) return;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch {
+      /* ignore */
+    }
+  }
+  loadProducer();
+
+  function shelfKind(): "ddm" | "dlc" {
+    return (document.querySelector('input[name="fcd-shelf-kind"]:checked') as HTMLInputElement)?.value === "dlc"
+      ? "dlc"
+      : "ddm";
+  }
+
+  function allergenIds(): string[] {
+    return [...document.querySelectorAll<HTMLInputElement>("[data-fcd-allergen]:checked")].map((el) => el.dataset.fcdAllergen!);
+  }
+
+  function showError(msg: string): null {
+    errEl.textContent = msg;
+    errEl.classList.remove("hidden");
+    return null;
+  }
+
+  function collect(): FoodConformityPayload | null {
+    const producer_name = text("fcd-prod-name");
+    const product_name = text("fcd-product");
+    const ingredients = (document.getElementById("fcd-ingredients") as HTMLTextAreaElement).value.trim();
+    const reference_document = text("fcd-ref");
+    if (!producer_name) return showError("Completați denumirea producătorului.");
+    if (!product_name) return showError("Completați denumirea produsului.");
+    if (!ingredients) return showError("Completați lista de ingrediente.");
+    if (!reference_document) return showError("Completați documentul de referință.");
+    errEl.classList.add("hidden");
+    saveProducer();
+    const payload: FoodConformityPayload = {
+      producer_name,
+      product_name,
+      ingredients,
+      reference_document,
+      allergen_ids: allergenIds(),
+      shelf_life_kind: shelfKind(),
+    };
+    const optText = (key: keyof FoodConformityPayload, id: string) => {
+      const v = text(id);
+      if (v) (payload as Record<string, string>)[key] = v;
+    };
+    const optDate = (key: keyof FoodConformityPayload, id: string) => {
+      const v = input(id).value;
+      if (v) (payload as Record<string, string>)[key] = v;
+    };
+    optText("producer_tax_id", "fcd-prod-cui");
+    optText("producer_address", "fcd-prod-addr");
+    optText("producer_sanitary_auth", "fcd-prod-san");
+    optText("product_code", "fcd-code");
+    optText("batch_lot", "fcd-lot");
+    optDate("manufacture_date", "fcd-mfg");
+    optText("storage_conditions", "fcd-storage");
+    optText("quantity_packaging", "fcd-qty");
+    optText("buyer_name", "fcd-buyer");
+    optText("place", "fcd-place");
+    optDate("declaration_date", "fcd-date");
+    optText("signatory_name", "fcd-sign-name");
+    optText("signatory_role", "fcd-sign-role");
+    const shelf = input("fcd-shelf-date").value;
+    if (shelf) payload.shelf_life_date = shelf;
+    return payload;
+  }
+
+  function openPdf(action: "print" | "generate_pdf") {
+    const p = collect();
+    if (!p) return;
+    if (!downloadFoodConformityPdfViaPrint(p)) {
+      showError("Permiteți ferestrele pop-up pentru PDF sau print.");
+      return;
+    }
+    trackToolUsed("declaratie_conformitate_alimente", action);
+  }
+
+  document.getElementById("fcd-pdf")?.addEventListener("click", () => openPdf("generate_pdf"));
+  document.getElementById("fcd-print")?.addEventListener("click", () => openPdf("print"));
+  document.getElementById("fcd-docx")?.addEventListener("click", () => {
+    const p = collect();
+    if (!p) return;
+    downloadFoodConformityDocx(p);
+    trackToolUsed("declaratie_conformitate_alimente", "download");
+  });
+
+  document.getElementById("fcd-tool")?.addEventListener("input", saveProducer);
+</script>
+
+<style>
+  .fcd-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+  }
+</style>

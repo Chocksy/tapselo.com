@@ -4,6 +4,7 @@ import { renderCashOrder } from "../generators/cash-order.ts";
 import { renderNir } from "../generators/nir.ts";
 import { renderPurchaseSlip } from "../generators/purchase-slip.ts";
 import { renderWarehouseCard } from "../generators/warehouse-card.ts";
+import { renderFoodConformityDeclaration } from "../generators/food-conformity-declaration.ts";
 import type {
   AvizPayload,
   CashbookPayload,
@@ -12,6 +13,7 @@ import type {
   NirPayload,
   PurchaseSlipPayload,
   WarehouseCardPayload,
+  FoodConformityPayload,
 } from "../generators/types.ts";
 import { cashbookXlsx, downloadBlob, XLSX_MIME } from "./spreadsheet.ts";
 
@@ -92,4 +94,12 @@ export function avizHtml(payload: AvizPayload, pageSize: "A4" | "A5" = "A4", bla
 
 export function downloadAvizPdfViaPrint(payload: AvizPayload, pageSize: "A4" | "A5" = "A4"): boolean {
   return openPrintHtml(avizHtml(payload, pageSize));
+}
+
+export function foodConformityHtml(payload: FoodConformityPayload): string {
+  return renderFoodConformityDeclaration(payload, { ...LOCAL_DRAFT, kind: "food_conformity" }, { local: true });
+}
+
+export function downloadFoodConformityPdfViaPrint(payload: FoodConformityPayload): boolean {
+  return openPrintHtml(foodConformityHtml(payload));
 }

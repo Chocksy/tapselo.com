@@ -22,7 +22,8 @@ export type AnalyticsTool =
   | "afise_obligatorii"
   | "fisa_de_magazie"
   | "dispozitie_de_plata"
-  | "generator_aviz";
+  | "generator_aviz"
+  | "declaratie_conformitate_alimente";
 
 export type ToolAction =
   | "check"
