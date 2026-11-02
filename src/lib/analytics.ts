@@ -23,6 +23,7 @@ export type AnalyticsTool =
   | "fisa_de_magazie"
   | "dispozitie_de_plata"
   | "generator_aviz"
+  | "declaratie_conformitate_alimente"
   | "pv_anulare_bon";
 
 export type ToolAction =

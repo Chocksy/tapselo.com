@@ -1,0 +1,160 @@
+---
+import ToolShell from "../../components/ToolShell.astro";
+import DeclaratieConformitateAlimenteTool from "../../components/unelte/DeclaratieConformitateAlimenteTool.astro";
+import { internalPath } from "../../lib/internal-url.ts";
+import {
+  LEGAL_SOURCES,
+  SOURCES_ACCESSED,
+  VOLUNTARY_NOTICE,
+} from "../../lib/unelte/declaratie-conformitate-alimente.ts";
+import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
+
+const path = "/unelte/declaratie-de-conformitate-produse-alimentare/";
+const heading = "Declarație de conformitate pentru produse alimentare (model voluntar)";
+
+const faq = [
+  {
+    q: "Este obligatorie declarația de conformitate pentru prăjituri sau torturi?",
+    a: "Nu. Nicio lege română sau europeană găsită nu obligă producătorul de alimente să emită o declarație de conformitate pentru alimentul în sine. Magazinele o pot cere prin contract ca document voluntar.",
+  },
+  {
+    q: "Ce diferență este față de marcajul CE?",
+    a: "Marcajul CE și declarația de conformitate EC se aplică produselor din domeniile reglementate (Legea 608/2001, anexa nr. 1), nu alimentelor. Generatorul produce un model voluntar, fără marcaj CE.",
+  },
+  {
+    q: "Cine emite declarația pentru ambalajul alimentar?",
+    a: "Regulamentul (CE) nr. 1935/2004 art. 16 cere declarația scrisă de conformitate pentru materialele care vin în contact cu alimentele — de la furnizorul ambalajului, nu de la patiserie pentru produsul finit.",
+  },
+  {
+    q: "Ce trebuie pe etichetă în locul declarației?",
+    a: "Regulamentul (UE) 1169/2011 impune informații alimentare obligatorii: denumire, ingrediente, alergeni (anexa II), cantitate netă, termen, condiții de depozitare, operator etc. Declarația voluntară nu le înlocuiește.",
+  },
+  {
+    q: "Pot descărca modelul gratuit?",
+    a: "Da. Completați formularul și salvați PDF din fereastra de printare sau descărcați DOCX, local în browser, fără cont Tapselo.",
+  },
+  {
+    q: "Datele mele sunt trimise pe internet?",
+    a: "Conținutul formularului nu este trimis către serverele Tapselo pentru generare. PostHog poate înregistra doar că ați folosit unealta (PDF, DOCX sau print), fără câmpurile completate.",
+  },
+];
+
+const jsonLd = toolJsonLd({
+  path,
+  heading,
+  appName: "Declarație de conformitate produse alimentare Tapselo",
+  description:
+    "Generator gratuit de declarație de conformitate voluntară pentru patiserie, prăjituri și alte produse alimentare: PDF și DOCX în browser.",
+  faq,
+});
+
+const link = "font-semibold text-accent hover:underline";
+const S = LEGAL_SOURCES;
+---
+
+<ToolShell
+  title="Declarație de conformitate produse alimentare — model gratuit (patiserie, prăjituri, torturi) | Tapselo"
+  description="Model gratuit de declarație de conformitate voluntară pentru produse alimentare (patiserie, prăjituri, torturi): PDF și DOCX în browser, fără marcaj CE."
+  heading={heading}
+  path={path}
+  lead="Magazinul vă cere o declarație de conformitate pentru prăjituri sau torturi? Completați modelul voluntar, pe propria răspundere — nu este cerut de lege pentru alimentul în sine."
+  campaign="declaratie-conformitate-alimente"
+  ctaTitle="Etichete și stoc, fără hârtii duplicate"
+  ctaBody="În Tapselo țineți evidența produselor și alergenilor la raft. Tapselo e gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA."
+  related={[
+    { href: internalPath("/ghid/alergeni-1169-2011/"), label: "Alergeni la produse nepreambalate" },
+    { href: internalPath("/ghid/deschide-brutarie-patiserie/"), label: "Deschiderea unei brutării sau patiserii" },
+    { href: internalPath("/unelte/generator-nir/"), label: "Generator NIR" },
+  ]}
+  jsonLd={jsonLd}
+  faq={faq}
+>
+  <DeclaratieConformitateAlimenteTool />
+
+  <article class="site-prose prose-tapselo space-y-8 text-text-secondary leading-relaxed">
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Este obligatorie?</h2>
+      <p>
+        <strong class="text-primary">Nu</strong>, pentru alimentul în sine. {VOLUNTARY_NOTICE}
+      </p>
+      <p>
+        Regimul legal al declarației de conformitate <strong class="text-primary">CE</strong> vizează produsele din
+        domeniile reglementate (Legea nr. 608/2001): art. 1 — produse „din domeniile reglementate, prevăzute în anexa
+        nr. 1”; art. 2 — pot fi puse pe piață numai după evaluarea conformității și marcajului; art. 4 lit. h) —
+        „declarația de conformitate EC”; art. 12 — conformitatea se atestă prin declarația EC și marcajul CE. Anexa nr. 1
+        enumeră 28 de domenii (inclusiv ambalaje la pct. 21), <strong class="text-primary">fără alimente</strong>
+        (sursă: <a href={S.lege608.href} class={link}>{S.lege608.label}</a>).
+      </p>
+      <p>
+        Codul consumului definește declarația de conformitate la anexă pct. 16 ca informare, pe propria răspundere, că
+        produsul este conform cu un document tehnic normativ. Art. 52 reglementează obligația de informare a consumatorilor,
+        inclusiv asupra produselor alimentare. Art. 53 cere declarația de conformitate numai pentru „produsele de folosință
+        îndelungată”, și numai „dacă reglementările în vigoare prevăd” — fără cerință pentru alimente
+        (sursă: <a href={S.codConsum.href} class={link}>{S.codConsum.label}</a>).
+      </p>
+      <p>
+        Ordinul ANSVSA nr. 111/2008 reglementează <strong class="text-primary">înregistrarea</strong> activității
+        alimentare (art. 1–2), nu o declarație de conformitate pe produs
+        (sursă: <a href={S.ordinAnsvsa.href} class={link}>{S.ordinAnsvsa.label}</a>).
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Ce conține modelul</h2>
+      <p>Generatorul include câmpurile uzuale cerute de cumpărători în contract:</p>
+      <ul class="list-disc space-y-1 pl-5">
+        <li>date producător (denumire, CUI, sediu, autorizare sanitar-veterinară opțional);</li>
+        <li>produs (denumire, cod, lot, data fabricației);</li>
+        <li>ingrediente și cei 14 alergeni (anexa II la Reg. 1169/2011);</li>
+        <li>termen (DDM sau DLC), condiții de păstrare, cantitate/ambalare;</li>
+        <li>document tehnic normativ de referință, cumpărător opțional, loc, dată, semnătură.</li>
+      </ul>
+      <p>Nu include marcaj CE, formulări de certificare ANSVSA sau afirmații că documentul ar fi impus de lege.</p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Declarația pentru ambalaje (1935/2004)</h2>
+      <p>
+        Pentru <strong class="text-primary">materialele și obiectele</strong> destinate să vină în contact cu alimentele,
+        Regulamentul (CE) nr. 1935/2004 art. 16 prevede o declarație scrisă de conformitate, emisă de
+        <strong class="text-primary">furnizorul ambalajului</strong>, împreună cu documentația care o susține
+        (sursă: <a href={S.reg1935.href} class={link}>{S.reg1935.label}</a>). Patiseria nu înlocuiește această declarație
+        cu documentul voluntar pentru produsul finit.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Ce trebuie pe etichetă</h2>
+      <p>
+        Informațiile alimentare obligatorii sunt enumerate la Regulamentul (UE) nr. 1169/2011 art. 9 alin. (1): denumire,
+        ingrediente, alergeni (anexa II), cantitate netă, data durabilității minimă sau data limită de consum, condiții
+        de depozitare, numele și adresa operatorului etc.
+        (sursă: <a href={S.reg1169.href} class={link}>{S.reg1169.label}</a>).
+        Vedeți și ghidul
+        <a href={internalPath("/ghid/alergeni-1169-2011/")} class={link}>Alergeni la produse nepreambalate</a>.
+      </p>
+    </section>
+
+    <section id="surse">
+      <h2 class="font-display text-2xl italic text-primary">Surse</h2>
+      <ul class="list-disc space-y-3 pl-5 text-sm">
+        <li>
+          <a href={S.lege608.href} class={link}>S1 — {S.lege608.label}</a>: {S.lege608.summary} — accesat la {SOURCES_ACCESSED}.
+        </li>
+        <li>
+          <a href={S.codConsum.href} class={link}>S2 — {S.codConsum.label}</a>: {S.codConsum.summary} — accesat la {SOURCES_ACCESSED}.
+        </li>
+        <li>
+          <a href={S.ordinAnsvsa.href} class={link}>S3 — {S.ordinAnsvsa.label}</a>: {S.ordinAnsvsa.summary} — accesat la {SOURCES_ACCESSED}.
+        </li>
+        <li>
+          <a href={S.reg1169.href} class={link}>S4 — {S.reg1169.label}</a>: {S.reg1169.summary} — accesat la {SOURCES_ACCESSED}.
+        </li>
+        <li>
+          <a href={S.reg1935.href} class={link}>S4 — {S.reg1935.label}</a>: {S.reg1935.summary} — accesat la {SOURCES_ACCESSED}.
+        </li>
+      </ul>
+      <p class="text-sm">Nu este consultanță juridică.</p>
+    </section>
+  </article>
+</ToolShell>

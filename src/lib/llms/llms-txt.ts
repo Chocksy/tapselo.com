@@ -22,6 +22,10 @@ const ENTRIES: Record<string, Entry> = {
   },
   "/unelte/generator-nir/": { title: "Generator NIR", desc: "Întocmiți nota de intrare-recepție pentru marfa primită, cu TVA și adaos." },
   "/unelte/generator-aviz-de-insotire/": { title: "Aviz de însoțire a mărfii", desc: "Generează avizul de însoțire a mărfii, gata de printat." },
+  "/unelte/declaratie-de-conformitate-produse-alimentare/": {
+    title: "Declarație conformitate alimente",
+    desc: "Model voluntar de declarație de conformitate pentru produse alimentare, PDF și DOCX în browser.",
+  },
   "/unelte/fisa-de-magazie/": { title: "Fișă de magazie", desc: "Urmăriți intrările, ieșirile și stocul unui produs, document cu document." },
   "/unelte/generator-borderou-de-achizitie/": { title: "Borderou de achiziție", desc: "Generează borderoul de achiziție pentru produsele cumpărate de la persoane fizice." },
   "/unelte/calculator-adaos-comercial/": { title: "Calculator adaos comercial", desc: "De la cost la prețul de raft cu TVA și invers, cu rotunjire." },

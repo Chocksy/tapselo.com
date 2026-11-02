@@ -274,6 +274,33 @@ export interface AvizPayload {
   dispatch_time?: string;
 }
 
+/** Declarație de conformitate voluntară pentru produse alimentare (/unelte, TAP-033). */
+export interface FoodConformityPayload {
+  producer_name: string;
+  producer_tax_id?: string;
+  producer_address?: string;
+  producer_sanitary_auth?: string;
+  product_name: string;
+  product_code?: string;
+  batch_lot?: string;
+  manufacture_date?: string;
+  ingredients: string;
+  /** Subset of ALLERGENS_1169_ANEXA_II ids present in the product. */
+  allergen_ids: string[];
+  shelf_life_kind: "ddm" | "dlc";
+  /** YYYY-MM-DD */
+  shelf_life_date?: string;
+  storage_conditions?: string;
+  quantity_packaging?: string;
+  reference_document: string;
+  buyer_name?: string;
+  place?: string;
+  /** YYYY-MM-DD */
+  declaration_date?: string;
+  signatory_name?: string;
+  signatory_role?: string;
+}
+
 export interface PayloadByKind {
   flyer: FlyerPayload;
   labels: LabelsPayload;
@@ -283,6 +310,7 @@ export interface PayloadByKind {
   warehouse_card: WarehouseCardPayload;
   cash_order: CashOrderPayload;
   aviz: AvizPayload;
+  food_conformity: FoodConformityPayload;
 }
 
 export type ImageStatus = "pending" | "ready" | "failed" | "skipped";
