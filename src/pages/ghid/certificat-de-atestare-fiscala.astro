@@ -1,0 +1,259 @@
+---
+import GuideShell from "../../components/GuideShell.astro";
+import { OPERATOR_LEGAL_NAME } from "../../data/site.ts";
+import { markdownToHtml } from "../../lib/markdown.ts";
+import { internalPath } from "../../lib/internal-url.ts";
+import {
+  breadcrumbJsonLd,
+  breadcrumbLinks,
+  canonicalUrl,
+  faqPageJsonLd,
+  type FaqItem,
+} from "../../lib/unelte/jsonld.ts";
+
+const path = "/ghid/certificat-de-atestare-fiscala";
+const heading = "Certificat de atestare fiscală online: cum îl ceri din SPV";
+const description =
+  "Certificatul de atestare fiscală de la ANAF: cerere gratuită prin SPV, termen de cel mult 3 zile lucrătoare, valabilitate 30 sau 90 de zile. Diferența față de certificatul de la primărie.";
+const verifiedOn = "2026-11-02";
+
+const body = `
+**Certificatul de atestare fiscală** emis de organul fiscal **central** (ANAF) atestă situația obligațiilor fiscale administrate de acesta. Cererea este **gratuită** (fără taxă extrajudiciară de timbru), se poate depune **prin Spațiul privat virtual (SPV)**, iar legea fixează un termen de emitere de **maximum 3 zile lucrătoare** de la depunere și o perioadă de utilizare de **până la 30 de zile** (respectiv **până la 90 de zile** pentru anumite persoane fizice fără activitate economică independentă).
+
+## Ce este certificatul de atestare fiscală (ANAF vs primărie)
+
+Există **două documente distincte**, reglementate separat în Codul de procedură fiscală:
+
+| Document | Emitent | Temei principal |
+| --- | --- | --- |
+| Certificat de atestare fiscală **central** | Organul fiscal **central** (ANAF) | **Art. 158** CPF |
+| Certificat de atestare fiscală **local** | Organul fiscal **local** (primărie / taxe locale) | **Art. 159** CPF |
+
+Potrivit **art. 158 alin. (1)**, certificatul central se emite de organul fiscal central competent **la solicitarea** contribuabilului/plătitorului, dar și din oficiu sau la solicitarea altor autorități, în cazurile prevăzute de lege, precum și la solicitarea deținătorilor de titluri de participare.
+
+**Art. 158 alin. (2)** — certificatul reflectă obligațiile fiscale **restante în sold** în ultima zi a lunii **anterioare** depunerii cererii și nestinse până la data eliberării, plus creanțe bugetare individualizate în **titluri executorii** aflate în evidența ANAF. Prezența restanțelor în certificat **nu înseamnă** că documentul nu poate fi utilizat; conținutul descrie situația fiscală, iar instituția solicitantă decide ce acceptă.
+
+**Art. 159** reglementează certificatul **local**: se emite în **cel mult două zile lucrătoare**, este valabil **30 de zile**, iar **art. 159 alin. (5)** impune, la vânzarea clădirilor, terenurilor și mijloacelor de transport, prezentarea certificatului local privind obligațiile către **bugetul local** — alt document decât certificatul ANAF din SPV.
+
+## Cum îl ceri din SPV — persoane fizice
+
+Ghidul ANAF privind documentele transmisibile prin SPV pentru persoane fizice (**DocumentePF.pdf**) enumeră printre cererile pe care le puteți comunica Ministerului Finanțelor/ANAF:
+
+- **„Cerere de eliberare a certificatului de atestare fiscală”** (punctul 6 din lista documentelor emise de persoana fizică).
+
+Aceeași listă include și **„Certificatul de atestare fiscală”** printre documentele pe care ANAF le poate emite la cerere (punctul 5 din documentele emise de ANAF către PF).
+
+ANAF descrie SPV ca serviciu **fără cost**, accesibil **24h/24**, de pe dispozitive cu internet. **Nu detaliem aici pașii din meniul SPV** — interfața se poate schimba; urmați instrucțiunile afișate în SPV și documentele ANAF de mai sus atunci când selectați cererea de eliberare a certificatului de atestare fiscală.
+
+Potrivit **art. 1 alin. (3) lit. c)** din OPANAF nr. 3.654/2015 (forma consolidată, ultima modificare **26-12-2019** prin OPANAF nr. 3.008/2019), cererea/adresa de eliberare se poate depune și **prin intermediul serviciului „Spațiul privat virtual”**, pe lângă registratură și poștă recomandată.
+
+## Cum îl ceri din SPV — persoane juridice, PFA și alte forme
+
+Pentru **persoane juridice**, ghidul ANAF **DocumentePJ.pdf** prevede:
+
+- **Cerere de eliberare a certificatului de atestare fiscală** (punctul 3 din cererile comunicate de PJ către ANAF);
+- **Certificatul de atestare fiscală** printre documentele emise de ANAF la cererea PJ (punctul 2).
+
+Depunerea prin SPV este prevăzută la **art. 1 alin. (3) lit. c)** din OPANAF nr. 3.654/2015 (consolidat). Ca la persoanele fizice, **nu inventariem clicuri de meniu** — folosiți SPV conform ghidului ANAF și selectați cererea de eliberare a certificatului de atestare fiscală.
+
+## Pași generali în SPV (conform documentelor ANAF)
+
+1. **Deschideți SPV** — autentificați-vă în Spațiul privat virtual al ANAF (serviciu gratuit, conform ghidului ANAF DocumentePF.pdf sau DocumentePJ.pdf).
+2. **Depuneți cererea** — transmiteți „Cererea de eliberare a certificatului de atestare fiscală”, inclusă în listele oficiale ANAF pentru persoane fizice (DocumentePF.pdf, punctul 6) sau persoane juridice (DocumentePJ.pdf, punctul 3).
+3. **Primiți certificatul** — ANAF emite certificatul în maximum 3 zile lucrătoare de la depunere (art. 158 alin. (5) CPF), cu excepțiile legale pentru inspecție fiscală/radiere sau prelungiri când lipsesc declarații (art. 4 OPANAF 3.654/2015).
+
+**Art. 1 alin. (2)** din același ordin: cererea se depune la **organul fiscal central competent** pentru obligațiile pentru care se emite certificatul. Dacă a fost transmisă greșit, organul indică unitatea competentă (**art. 1 alin. (3^1)**, introdus prin OPANAF 3.008/2019).
+
+## Alte căi de depunere (ghișeu, poștă)
+
+**Art. 1 alin. (3)** din OPANAF nr. 3.654/2015 (consolidat) prevede depunerea cererii/adresei:
+
+- **a)** la **registratura** organului fiscal central competent;
+- **b)** prin **poștă**, cu scrisoare recomandată cu confirmare de primire;
+- **c)** prin intermediul serviciului **„Spațiul privat virtual”**;
+- plus alte canale instituite pentru autorități publice, instituții de credit etc. (lit. d–e), după caz.
+
+Toate căile sunt supuse aceleiași proceduri de verificare și termenelor legale; SPV rămâne varianta remote, fără deplasare.
+
+## Cât durează și cât este valabil
+
+| Situație | Termen de emitere | Perioadă de utilizare |
+| --- | --- | --- |
+| Cerere obișnuită (ANAF central) | **Maximum 3 zile lucrătoare** de la depunerea cererii (**art. 158 alin. (5)** CPF; **art. 5 alin. (1)** OPANAF 3.654/2015) | **Până la 30 de zile** de la eliberare (**art. 158 alin. (5)**) |
+| PF **fără** activitate economică independentă și **fără** profesie liberă | La fel (3 zile lucrătoare) | **Până la 90 de zile** de la eliberare (**art. 158 alin. (5)**) |
+| Contribuabil **supus inspecției fiscale**, certificat pentru **radiere** | **5 zile lucrătoare** de la decizia de impunere / decizia de nemodificare (**art. 158 alin. (6)**; **art. 5 alin. (3)** OPANAF) | Conform **art. 158 alin. (5)** |
+| Certificat **local** (primărie) | **Cel mult 2 zile lucrătoare** (**art. 159 alin. (3)**) | **30 de zile** (**art. 159 alin. (3)**) |
+
+**Art. 2** din OPANAF nr. 3.654/2015: eliberarea **nu este supusă taxelor extrajudiciare de timbru** (potrivit **art. 344** CPF).
+
+**Art. 4** din același ordin: dacă lipsesc declarații de impunere, termenul de eliberare se **prelungește** până la depunerea declarațiilor sau comunicarea deciziei de impunere din oficiu — ANAF **nu** garantează emiterea în ziua depunerii cererii.
+
+## Ce apare în certificat (secțiunile A–D)
+
+**Art. 6 alin. (1)** din OPANAF nr. 3.654/2015: certificatul cuprinde **4 secțiuni**:
+
+- **A** — „Obligații fiscale și alte obligații bugetare” (restante și titluri executorii, conform art. 6 alin. (2));
+- **B** — „Sume de rambursat/restituit”;
+- **C** — informații pentru verificarea eligibilității pentru fonduri nerambursabile (completată doar dacă o solicitați expres în cerere, **art. 6 alin. (7)**);
+- **D** — „Alte mențiuni” (detalieri, eșalonări, sume de încasat de la autorități contractante etc.).
+
+**Art. 3** din ordin descrie verificările ANAF înainte de emitere (dosar fiscal, fișă analitică, sume de restituit/rambursat, documente de la autorități contractante, după caz).
+
+## Pentru ce îl solicitați (exemple uzuale)
+
+Instituțiile cer certificatul ANAF central la **licitații**, **finanțări**, **radiere** din registre (cu mențiune specială în cerere — **art. 5 alin. (2)** OPANAF), verificări la **participare la societăți** (**art. 158 alin. (1)**) sau proceduri succesorale (reglementări conexe).
+
+La **vânzarea unui imobil, teren sau vehicul**, legea impune adesea certificatul **local** de la primărie (**art. 159 alin. (5)**), nu certificatul ANAF din SPV — verificați ce document cere notarul, banca sau autoritatea contractantă.
+
+Pentru evidența zilnică a magazinului (bonuri, casă, stocuri), certificatul de atestare fiscală **nu** înlocuiește registrele contabile sau [registrul de casă](${internalPath("/ghid/registrul-de-casa")}).
+`;
+
+const faq: FaqItem[] = [
+  {
+    q: "Certificatul de atestare fiscală de la ANAF costă ceva?",
+    a: "Nu. Potrivit art. 2 din OPANAF nr. 3.654/2015, eliberarea nu este supusă taxelor extrajudiciare de timbru (art. 344 CPF). SPV este descris de ANAF ca serviciu fără cost.",
+  },
+  {
+    q: "Pot solicita certificatul online prin SPV?",
+    a: "Da. Art. 1 alin. (3) lit. c) din OPANAF nr. 3.654/2015 (consolidat) permite depunerea prin intermediul serviciului „Spațiul privat virtual”. Ghidurile ANAF DocumentePF.pdf și DocumentePJ.pdf includ cererea de eliberare a certificatului de atestare fiscală printre documentele transmisibile prin SPV.",
+  },
+  {
+    q: "În cât timp îl emite ANAF?",
+    a: "Maximum 3 zile lucrătoare de la depunerea cererii (art. 158 alin. (5) CPF și art. 5 alin. (1) OPANAF 3.654/2015). Termen de 5 zile lucrătoare după decizia de impunere când sunteți în inspecție fiscală și solicitați certificat pentru radiere (art. 158 alin. (6)). Termenul poate fi prelungit dacă lipsesc declarații (art. 4 OPANAF).",
+  },
+  {
+    q: "Cât timp este valabil certificatul ANAF?",
+    a: "Poate fi utilizat pe o perioadă de până la 30 de zile de la eliberare (art. 158 alin. (5)). Pentru persoanele fizice care nu desfășoară activități economice în mod independent și nu exercită profesii libere, perioada este de până la 90 de zile (art. 158 alin. (5)).",
+  },
+  {
+    q: "Care este diferența față de certificatul de la primărie?",
+    a: "Certificatul ANAF (art. 158) acoperă obligațiile administrate de organul fiscal central. Certificatul local (art. 159) acoperă obligațiile către bugetul local și se emite în cel mult 2 zile lucrătoare, valabil 30 de zile; art. 159 alin. (5) îl cere la vânzarea clădirilor, terenurilor și vehiculelor.",
+  },
+  {
+    q: "Dacă am restanțe, pot folosi certificatul?",
+    a: "Certificatul descrie obligațiile restante și titlurile executorii (art. 158 alin. (2)). Legea nu spune că un certificat cu restanțe este inutilizabil; instituția căreia îl prezentați decide dacă îl acceptă.",
+  },
+  {
+    q: "Certificatul ANAF de pe SPV înlocuiește certificatul pentru impozit local la notar?",
+    a: "Nu neapărat. Pentru înstrăinarea clădirilor, terenurilor și mijloacelor de transport, art. 159 alin. (5) CPF impune certificat de atestare fiscală privind obligațiile către bugetul local — alt act decât certificatul central ANAF.",
+  },
+];
+
+const howToSteps = [
+  {
+    name: "Deschideți SPV",
+    text: "autentificați-vă în Spațiul privat virtual al ANAF (serviciu gratuit, conform ghidului ANAF DocumentePF.pdf sau DocumentePJ.pdf).",
+  },
+  {
+    name: "Depuneți cererea",
+    text: "Transmiteți „Cererea de eliberare a certificatului de atestare fiscală”, inclusă în listele oficiale ANAF pentru persoane fizice (DocumentePF.pdf, punctul 6) sau persoane juridice (DocumentePJ.pdf, punctul 3).",
+  },
+  {
+    name: "Primiți certificatul",
+    text: "ANAF emite certificatul în maximum 3 zile lucrătoare de la depunere (art. 158 alin. (5) CPF), cu excepțiile legale pentru inspecție fiscală/radiere sau prelungiri când lipsesc declarații (art. 4 OPANAF 3.654/2015).",
+  },
+];
+
+const crumbs = [
+  { name: "Acasă", path: "/" },
+  { name: "Ghid pentru magazine", path: "/ghid/" },
+  { name: heading, path },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: heading,
+    description,
+    dateModified: verifiedOn,
+    inLanguage: "ro-RO",
+    url: canonicalUrl(path),
+    mainEntityOfPage: canonicalUrl(path),
+    author: {
+      "@type": "Organization",
+      name: "Tapselo",
+      legalName: OPERATOR_LEGAL_NAME,
+      url: "https://tapselo.com",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Tapselo",
+      legalName: OPERATOR_LEGAL_NAME,
+      url: "https://tapselo.com",
+    },
+  },
+  faqPageJsonLd(faq),
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: "Cerere certificat de atestare fiscală prin SPV",
+    description:
+      "Depunerea cererii de certificat de atestare fiscală prin Spațiul privat virtual ANAF, conform ghidurilor ANAF și OPANAF nr. 3.654/2015.",
+    step: howToSteps.map((s, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+    })),
+  },
+  breadcrumbJsonLd(crumbs),
+];
+
+const sources = [
+  {
+    title:
+      "Legea nr. 207/2015 privind Codul de procedură fiscală (formă consolidată ANAF; art. 158–159)",
+    url: "https://static.anaf.ro/static/10/Anaf/cod_procedura/Cod_Procedura_Fiscala_2023.htm",
+  },
+  {
+    title: "Codul de procedură fiscală — Portal Legislativ (DetaliiDocument/258162)",
+    url: "https://legislatie.just.ro/Public/DetaliiDocument/258162",
+  },
+  {
+    title: "OPANAF nr. 3.654/2015 (consolidat; ultima modificare 26-12-2019, OPANAF 3.008/2019)",
+    url: "https://legislatie.just.ro/Public/DetaliiDocument/219392",
+  },
+  {
+    title: "OPANAF nr. 3.654/2015 — text ANAF (PDF)",
+    url: "https://static.anaf.ro/static/10/Anaf/legislatie/OPANAF_3654_2015.pdf",
+  },
+  {
+    title: "ANAF — Documente SPV persoane fizice (DocumentePF.pdf)",
+    url: "https://static.anaf.ro/static/10/Anaf/Informatii_R/SPV/DocumentePF.pdf",
+  },
+  {
+    title: "ANAF — Documente SPV persoane juridice (DocumentePJ.pdf)",
+    url: "https://static.anaf.ro/static/10/Anaf/Informatii_R/SPV/DocumentePJ.pdf",
+  },
+];
+---
+
+<GuideShell
+  title="Certificat de atestare fiscală online din SPV (PF și PJ) — pași, termen, valabilitate | Tapselo"
+  description={description}
+  heading={heading}
+  lead="Certificatul de atestare fiscală de la ANAF se solicită gratuit, inclusiv prin SPV; legea prevede emiterea în maximum 3 zile lucrătoare și o valabilitate de până la 30 de zile (până la 90 de zile pentru anumite persoane fizice fără activitate independentă). Nu confundați certificatul central ANAF cu certificatul local de la primărie."
+  sources={sources}
+  verifiedOn={verifiedOn}
+  campaign="certificat-de-atestare-fiscala"
+  breadcrumbs={breadcrumbLinks(crumbs)}
+  ctaTitle="Documente de magazin, fără promisiuni nerealiste"
+  ctaBody="Tapselo vă ajută cu vânzările, stocurile și bonurile fiscale zilnice — certificatul de atestare fiscală rămâne o cerere separată către ANAF, pe care o depuneți când o instituție o solicită."
+  jsonLd={jsonLd}
+  contentWidth="reading"
+>
+  <article class="kb-prose" set:html={markdownToHtml(body)} />
+
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Întrebări frecvente</h2>
+    <div class="mt-6 space-y-6">
+      {faq.map((item) => (
+        <div class="rounded-xl border border-border-light p-5">
+          <h3 class="text-lg font-semibold text-primary">{item.q}</h3>
+          <p class="mt-2 leading-relaxed text-text-secondary">{item.a}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+</GuideShell>
