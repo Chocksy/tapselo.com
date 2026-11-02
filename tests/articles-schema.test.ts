@@ -67,3 +67,34 @@ test("article paths match route prefix", () => {
     assert.equal(articlePath(a.slug), `/ghid/articole/${a.slug}/`);
   }
 });
+
+test("cod-qr-bon-fiscal reflects OUG 43/2026 suspension through 31 Oct 2027", () => {
+  const articles = parseArticlesFile(articlesJson);
+  const qr = articles.find((a) => a.slug === "cod-qr-bon-fiscal");
+  assert.ok(qr);
+  assert.equal(qr.updated, "2026-11-02");
+  assert.equal(qr.verifiedOn, "2026-11-02");
+  assert.match(qr.description, /31 octombrie 2027/);
+  assert.doesNotMatch(qr.description, /1 noiembrie 2026/);
+
+  const corpus = [qr.body, qr.description, ...(qr.faq ?? []).flatMap((f) => [f.q, f.a])].join("\n");
+  assert.match(corpus, /31 octombrie 2027 inclusiv/);
+  assert.match(corpus, /legislatie\.just\.ro\/Public\/DetaliiDocumentAfis\/315973/);
+  assert.match(corpus, /OUG 43\/2026/);
+  assert.doesNotMatch(corpus, /nu figurează pe legislatie\.just\.ro/i);
+  assert.doesNotMatch(corpus, /pot fi aplicate din nou/i);
+  assert.doesNotMatch(corpus, /pot fi din nou aplicate/i);
+  assert.doesNotMatch(corpus, /se încheie suspendarea/i);
+  assert.match(corpus, /termen inițial/i);
+  assert.match(corpus, /1 noiembrie 2026/);
+  assert.match(corpus, /2\.000–4\.000 lei/);
+  assert.match(corpus, /nu tipărește.*QR/i);
+  assert.match(corpus, /nu garantează/i);
+
+  const nodes = buildArticleJsonLd(qr, articles);
+  const faq = nodes.find((n) => n["@type"] === "FAQPage");
+  assert.ok(faq);
+  const faqText = JSON.stringify(faq);
+  assert.match(faqText, /31 octombrie 2027 inclusiv/);
+  assert.match(faqText, /OUG 43\/2026, art\. III/);
+});
