@@ -26,15 +26,15 @@ export type AllergenId = (typeof ALLERGENS_1169_ANEXA_II)[number]["id"];
 export const LEGAL_SOURCES = {
   lege608: {
     href: "https://legislatie.just.ro/Public/DetaliiDocument/70574",
-    label: "Legea nr. 608/2001 privind aprobarea reglementărilor tehnice",
+    label: "Legea nr. 608/2001 privind evaluarea conformității produselor",
     summary:
       "art. 1: se aplică produselor din domeniile reglementate, prevăzute în anexa nr. 1; art. 2: acestea pot fi puse pe piață numai după evaluarea conformității și marcajului; art. 4 lit. h): „declarația de conformitate EC”; art. 12: conformitatea se atestă prin declarația EC și marcajul CE. Anexa nr. 1 (28 de domenii, inclusiv ambalaje la pct. 21) — fără alimente.",
   },
   codConsum: {
-    href: "https://legislatie.just.ro/Public/DetaliiDocument/90596",
-    label: "Legea nr. 296/2004 privind Codul consumului (republicată)",
+    href: "https://legislatie.just.ro/Public/DetaliiDocumentAfis/267003",
+    label: "Legea nr. 296/2004 privind Codul consumului (text consolidat în vigoare)",
     summary:
-      "Anexă pct. 16 — definiție: „declarație de conformitate - declarația făcută de către un producător sau un prestator, prin care acesta informează, pe propria răspundere, despre faptul că un produs sau un serviciu este conform cu un document tehnic normativ”. art. 52: numai „produsele de folosință îndelungată” trebuie să fie însoțite de declarație, și numai „dacă reglementările în vigoare prevăd” — fără obligație pentru alimente.",
+      "Anexă pct. 16 — definiție: „declarație de conformitate - declarația făcută de către un producător sau un prestator, prin care acesta informează, pe propria răspundere, despre faptul că un produs sau un serviciu este conform cu un document tehnic normativ”. art. 52: obligația de informare a consumatorilor (inclusiv asupra produselor alimentare). art. 53: numai „produsele de folosință îndelungată” trebuie să fie însoțite de declarație, și numai „dacă reglementările în vigoare prevăd” — fără obligație pentru alimente.",
   },
   ordinAnsvsa: {
     href: "https://legislatie.just.ro/Public/DetaliiDocument/101005",

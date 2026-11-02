@@ -83,7 +83,9 @@ test("pagina declarație: notice deasupra formularului, title, JSON-LD", () => {
 test("pagina declarație: surse, fără promisiuni interzise, preț canon", () => {
   const html = dist(PAGE);
   assert.match(html, /70574/);
-  assert.match(html, /90596/);
+  assert.match(html, /267003/);
+  assert.match(html, /evaluarea conformității produselor/);
+  assert.match(html, /Art\. 53 cere declarația/);
   assert.match(html, /101005/);
   assert.match(html, /eur-lex\.europa\.eu\/eli\/reg\/2011\/1169/);
   assert.match(html, /eur-lex\.europa\.eu\/eli\/reg\/2004\/1935/);
