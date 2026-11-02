@@ -16,6 +16,10 @@ const ENTRIES: Record<string, Entry> = {
   "/unelte/verificare-cui/": { title: "Verificare CUI ANAF", desc: "Verifică o firmă după CUI în registrul public ANAF: TVA, TVA la încasare, e-Factura." },
   "/unelte/registru-de-casa/": { title: "Registru de casă", desc: "Completează și printează registrul de casă zilnic, cu soldul după fiecare înregistrare." },
   "/unelte/dispozitie-de-plata/": { title: "Dispoziție de plată", desc: "Generează dispoziția de plată sau încasare către casierie, gata de printat." },
+  "/unelte/proces-verbal-anulare-bon-fiscal/": {
+    title: "Proces verbal anulare bon fiscal",
+    desc: "Sesizare și decizie pentru dosarul art. 36 HG 479/2003, PDF și Word în browser.",
+  },
   "/unelte/generator-nir/": { title: "Generator NIR", desc: "Întocmiți nota de intrare-recepție pentru marfa primită, cu TVA și adaos." },
   "/unelte/generator-aviz-de-insotire/": { title: "Aviz de însoțire a mărfii", desc: "Generează avizul de însoțire a mărfii, gata de printat." },
   "/unelte/fisa-de-magazie/": { title: "Fișă de magazie", desc: "Urmăriți intrările, ieșirile și stocul unui produs, document cu document." },

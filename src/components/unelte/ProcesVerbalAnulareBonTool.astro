@@ -1,0 +1,320 @@
+---
+---
+
+<section class="ut-card" aria-labelledby="pv-title">
+  <h2 id="pv-title" class="font-display text-2xl italic text-primary">Generator proces verbal anulare bon fiscal</h2>
+  <p class="mt-2 text-sm text-text-secondary">
+    Completați datele bonului greșit, sesizarea (art. 36 lit. a)) și decizia de aprobare (lit. b)). Salvați PDF sau Word în browser — documentul nu pleacă pe server.
+  </p>
+
+  <div id="pv-blank" class="mt-4 flex flex-wrap items-center gap-4 rounded-lg border border-border-light bg-surface-elevated p-3">
+    <a href="/unelte/formulare/proces-verbal-anulare-bon-fiscal-a4.pdf" data-pv-blank="pdf" class="shrink-0" aria-label="Model necompletat PDF">
+      <img
+        src="/unelte/formulare/proces-verbal-anulare-bon-fiscal-preview.png"
+        width="600"
+        height="780"
+        alt="Model proces verbal anulare bon fiscal necompletat"
+        decoding="async"
+        class="h-auto w-24 rounded border border-border-light bg-white sm:w-28"
+      />
+    </a>
+    <p class="text-sm text-text-secondary">
+      <strong class="text-primary">Descarcă model necompletat:</strong>
+      <a href="/unelte/formulare/proces-verbal-anulare-bon-fiscal-a4.pdf" download data-pv-blank="pdf" class="font-semibold text-accent hover:underline">PDF</a>
+      ·
+      <a href="/unelte/formulare/proces-verbal-anulare-bon-fiscal.docx" download data-pv-blank="docx" class="font-semibold text-accent hover:underline">Word (.docx)</a>
+      <span class="block mt-1">Formular gol pentru completare de mână. Denumirea „proces verbal” este practică de piață — legea vorbește despre dosarul din art. 36.</span>
+    </p>
+  </div>
+
+  <div id="pv-tool" class="mt-6 space-y-4">
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="pv-company">Firmă (unitatea)</label>
+        <input class="ut-input" id="pv-company" type="text" maxlength="120" autocomplete="organization" />
+      </div>
+      <div>
+        <label class="ut-label" for="pv-cui">CUI (opțional)</label>
+        <input class="ut-input" id="pv-cui" type="text" maxlength="20" placeholder="RO12345678" autocomplete="off" />
+      </div>
+    </div>
+    <div>
+      <label class="ut-label" for="pv-workplace">Punct de lucru (opțional)</label>
+      <input class="ut-input" id="pv-workplace" type="text" maxlength="160" />
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="pv-amef-model">AMEF — model</label>
+        <input class="ut-input" id="pv-amef-model" type="text" maxlength="60" placeholder="Datecs FP-700" />
+      </div>
+      <div>
+        <label class="ut-label" for="pv-amef-serie">AMEF — serie</label>
+        <input class="ut-input" id="pv-amef-serie" type="text" maxlength="40" />
+      </div>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <label class="ut-label" for="pv-bon-nr">Bon nr.</label>
+        <input class="ut-input" id="pv-bon-nr" type="text" maxlength="20" inputmode="numeric" />
+      </div>
+      <div>
+        <label class="ut-label" for="pv-bon-date">Data bonului</label>
+        <input class="ut-input" id="pv-bon-date" type="date" />
+      </div>
+      <div>
+        <label class="ut-label" for="pv-bon-time">Ora:minut</label>
+        <input class="ut-input" id="pv-bon-time" type="time" step="60" />
+      </div>
+      <div>
+        <label class="ut-label" for="pv-bon-amount">Valoare bon (lei, opțional)</label>
+        <input class="ut-input" id="pv-bon-amount" type="text" inputmode="decimal" placeholder="0" />
+      </div>
+    </div>
+    <div>
+      <label class="ut-label" for="pv-products">Produs(e) înregistrate greșit</label>
+      <textarea class="ut-input min-h-[4rem]" id="pv-products" maxlength="500" rows="2"></textarea>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="pv-motiv">Motiv</label>
+        <select class="ut-select" id="pv-motiv">
+          <option value="pret_gresit">Preț greșit</option>
+          <option value="cantitate">Cantitate greșită</option>
+          <option value="produs">Produs greșit</option>
+          <option value="altul">Alt motiv</option>
+        </select>
+      </div>
+      <div>
+        <label class="ut-label" for="pv-motiv-detail">Detalii motiv (opțional)</label>
+        <input class="ut-input" id="pv-motiv-detail" type="text" maxlength="200" />
+      </div>
+    </div>
+    <div>
+      <label class="ut-label" for="pv-bon-corect">Nr. bon corect emis ulterior <span class="font-normal text-text-secondary">(opțional — practică, nu cerință legală)</span></label>
+      <input class="ut-input" id="pv-bon-corect" type="text" maxlength="20" />
+    </div>
+
+    <fieldset class="rounded-lg border border-border-light bg-surface-muted/40 p-4 space-y-4">
+      <legend class="px-1 text-sm font-semibold text-primary">Sesizare (art. 36 lit. a))</legend>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label class="ut-label" for="pv-ses-name">Nume și prenume</label>
+          <input class="ut-input" id="pv-ses-name" type="text" maxlength="120" autocomplete="name" />
+        </div>
+        <div>
+          <label class="ut-label" for="pv-ses-role">Funcția</label>
+          <input class="ut-input" id="pv-ses-role" type="text" maxlength="80" placeholder="Casier" />
+        </div>
+      </div>
+      <div>
+        <label class="ut-label" for="pv-ses-date">Data sesizării</label>
+        <input class="ut-input max-w-xs" id="pv-ses-date" type="date" />
+      </div>
+    </fieldset>
+
+    <fieldset class="rounded-lg border border-border-light bg-surface-muted/40 p-4 space-y-4">
+      <legend class="px-1 text-sm font-semibold text-primary">Decizie de aprobare (art. 36 lit. b))</legend>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label class="ut-label" for="pv-dec-name">Nume și prenume</label>
+          <input class="ut-input" id="pv-dec-name" type="text" maxlength="120" />
+        </div>
+        <div>
+          <label class="ut-label" for="pv-dec-role">Funcția</label>
+          <select class="ut-select" id="pv-dec-role">
+            <option value="Director financiar-contabil">Director financiar-contabil</option>
+            <option value="Contabil-șef">Contabil-șef</option>
+            <option value="Persoana care răspunde de gestionarea patrimoniului unității">Persoana care răspunde de gestionarea patrimoniului unității</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="ut-label" for="pv-dec-date">Data deciziei</label>
+        <input class="ut-input max-w-xs" id="pv-dec-date" type="date" />
+      </div>
+    </fieldset>
+
+    <fieldset class="ut-toggle-group space-y-2">
+      <legend class="ut-label">Checklist dosar (completați la păstrare)</legend>
+      <label class="flex items-start gap-2 text-sm text-text-secondary">
+        <input type="checkbox" id="pv-chk-nir" class="mt-1" />
+        Copie NIR de la ultima inventariere atașată (art. 36 lit. c))
+      </label>
+      <label class="flex items-start gap-2 text-sm text-text-secondary">
+        <input type="checkbox" id="pv-chk-nota" class="mt-1" />
+        Notă contabilă întocmită (art. 36 lit. d))
+      </label>
+    </fieldset>
+
+    <p class="text-sm text-text-secondary">
+      Confidențialitate: conținutul formularului rămâne în browser. Opțional, salvăm local doar denumirea firmei și CUI-ul. Analytics înregistrează doar acțiunea (PDF, Word sau formular gol), fără câmpuri din formular. Se trimite eveniment către PostHog (t.tapselo.com) când folosiți unealta pe tapselo.com.
+    </p>
+
+    <p class="ut-err hidden" id="pv-err" role="alert"></p>
+
+    <div class="flex flex-wrap gap-3">
+      <button type="button" class="ut-btn ut-btn-primary" id="pv-pdf">Salvează PDF</button>
+      <button type="button" class="ut-btn ut-btn-secondary" id="pv-docx">Descarcă Word</button>
+      <button type="button" class="ut-btn ut-btn-secondary" id="pv-print">Printează</button>
+    </div>
+  </div>
+</section>
+
+<script>
+  import type { PvAnulareBonPayload, PvAnulareMotiv } from "../../lib/generators/types.ts";
+  import { pvAnulareBonDocxBlocks } from "../../lib/generators/pv-anulare-bon.ts";
+  import { localIsoDate } from "../../lib/unelte/dates.ts";
+  import { parseRoNumber } from "../../lib/unelte/parse.ts";
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
+  import { downloadMinimalDocx } from "../../lib/unelte/minimal-docx.ts";
+  import { downloadPvAnulareBonPdfViaPrint, pvAnulareBonHtml, openPrintHtml } from "../../lib/unelte/document-export.ts";
+
+  const STORAGE_KEY = "tapselo_pv_anulare_unit";
+  const bonDate = document.getElementById("pv-bon-date") as HTMLInputElement;
+  const sesDate = document.getElementById("pv-ses-date") as HTMLInputElement;
+  const decDate = document.getElementById("pv-dec-date") as HTMLInputElement;
+  const errEl = document.getElementById("pv-err") as HTMLElement;
+  const today = localIsoDate();
+  if (!bonDate.value) bonDate.value = today;
+  if (!sesDate.value) sesDate.value = today;
+  if (!decDate.value) decDate.value = today;
+
+  function loadUnit() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw) as { company?: string; cui?: string };
+      if (data.company) (document.getElementById("pv-company") as HTMLInputElement).value = data.company;
+      if (data.cui) (document.getElementById("pv-cui") as HTMLInputElement).value = data.cui;
+    } catch {
+      /* ignore */
+    }
+  }
+
+  function saveUnit() {
+    const company = (document.getElementById("pv-company") as HTMLInputElement).value.trim();
+    const cui = (document.getElementById("pv-cui") as HTMLInputElement).value.trim();
+    if (!company && !cui) return;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ company, cui }));
+    } catch {
+      /* ignore */
+    }
+  }
+
+  loadUnit();
+  document.getElementById("pv-tool")?.addEventListener("input", saveUnit);
+
+  document.querySelectorAll("[data-pv-blank]").forEach((el) => {
+    el.addEventListener("click", () => {
+      const kind = (el as HTMLElement).dataset.pvBlank;
+      trackToolUsed("pv_anulare_bon", "download_blank", { format: kind === "docx" ? "docx" : "pdf" });
+    });
+  });
+
+  function showError(msg: string) {
+    errEl.textContent = msg;
+    errEl.classList.remove("hidden");
+  }
+
+  function hideError() {
+    errEl.classList.add("hidden");
+    errEl.textContent = "";
+  }
+
+  function collect(): PvAnulareBonPayload | null {
+    hideError();
+    const company = (document.getElementById("pv-company") as HTMLInputElement).value.trim();
+    const receipt_number = (document.getElementById("pv-bon-nr") as HTMLInputElement).value.trim();
+    const receipt_date = bonDate.value.trim();
+    const receipt_time = (document.getElementById("pv-bon-time") as HTMLInputElement).value.trim();
+    const products_wrong = (document.getElementById("pv-products") as HTMLInputElement).value.trim();
+    const sesizare_name = (document.getElementById("pv-ses-name") as HTMLInputElement).value.trim();
+    const sesizare_role = (document.getElementById("pv-ses-role") as HTMLInputElement).value.trim();
+    const sesizare_date = sesDate.value.trim();
+    const decizie_name = (document.getElementById("pv-dec-name") as HTMLInputElement).value.trim();
+    const decizie_role = (document.getElementById("pv-dec-role") as HTMLSelectElement).value;
+    const decizie_date = decDate.value.trim();
+    const motiv = (document.getElementById("pv-motiv") as HTMLSelectElement).value as PvAnulareMotiv;
+
+    if (!company) {
+      showError("Completați denumirea firmei.");
+      return null;
+    }
+    if (!receipt_number || !receipt_date || !receipt_time) {
+      showError("Completați numărul bonului, data și ora:minutul emiterii.");
+      return null;
+    }
+    if (!products_wrong) {
+      showError("Descrieți produsul sau produsele înregistrate greșit.");
+      return null;
+    }
+    if (!sesizare_name || !sesizare_role || !sesizare_date) {
+      showError("Completați sesizarea: nume, funcție și data.");
+      return null;
+    }
+    if (!decizie_name || !decizie_date) {
+      showError("Completați decizia: nume și data.");
+      return null;
+    }
+
+    const amountParsed = parseRoNumber((document.getElementById("pv-bon-amount") as HTMLInputElement).value);
+    let receipt_amount: number | undefined;
+    if (amountParsed.kind === "ok" && amountParsed.value >= 0) receipt_amount = amountParsed.value;
+
+    return {
+      company,
+      company_tax_id: (document.getElementById("pv-cui") as HTMLInputElement).value.trim() || undefined,
+      workplace: (document.getElementById("pv-workplace") as HTMLInputElement).value.trim() || undefined,
+      amef_model: (document.getElementById("pv-amef-model") as HTMLInputElement).value.trim() || undefined,
+      amef_series: (document.getElementById("pv-amef-serie") as HTMLInputElement).value.trim() || undefined,
+      receipt_number,
+      receipt_date,
+      receipt_time,
+      receipt_amount,
+      products_wrong,
+      motiv,
+      motiv_detail: (document.getElementById("pv-motiv-detail") as HTMLInputElement).value.trim() || undefined,
+      correct_receipt_number: (document.getElementById("pv-bon-corect") as HTMLInputElement).value.trim() || undefined,
+      sesizare_name,
+      sesizare_role,
+      sesizare_date,
+      decizie_name,
+      decizie_role,
+      decizie_date,
+      checklist_nir_attached: (document.getElementById("pv-chk-nir") as HTMLInputElement).checked,
+      checklist_nota_contabila: (document.getElementById("pv-chk-nota") as HTMLInputElement).checked,
+    };
+  }
+
+  function track(action: "generate_pdf" | "print" | "download_docx") {
+    trackToolUsed("pv_anulare_bon", action);
+  }
+
+  document.getElementById("pv-pdf")?.addEventListener("click", () => {
+    const p = collect();
+    if (!p) return;
+    if (!downloadPvAnulareBonPdfViaPrint(p)) {
+      showError("Permiteți ferestre popup pentru a salva PDF-ul.");
+      return;
+    }
+    track("generate_pdf");
+  });
+
+  document.getElementById("pv-print")?.addEventListener("click", () => {
+    const p = collect();
+    if (!p) return;
+    if (!openPrintHtml(pvAnulareBonHtml(p))) {
+      showError("Permiteți ferestre popup pentru print.");
+      return;
+    }
+    track("print");
+  });
+
+  document.getElementById("pv-docx")?.addEventListener("click", () => {
+    const p = collect();
+    if (!p) return;
+    downloadMinimalDocx(pvAnulareBonDocxBlocks(p), `proces-verbal-anulare-bon-${p.receipt_number}.docx`);
+    track("download_docx");
+  });
+</script>

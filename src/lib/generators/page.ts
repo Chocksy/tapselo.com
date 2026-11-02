@@ -23,7 +23,7 @@ export const KIND_TITLES: Record<string, string> = {
   cashbook: "Registrul de casă",
   warehouse_card: "Fișă de magazie",
   cash_order: "Dispoziție de plată/încasare",
-  aviz: "Aviz de însoțire a mărfii",
+  pv_anulare_bon: "Proces verbal anulare bon fiscal",
 };
 
 // ---------- number formatting (Romanian: 1.234,56) ----------

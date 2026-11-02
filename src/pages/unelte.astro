@@ -8,6 +8,7 @@ import {
   Calculator,
   ClipboardList,
   FileCheck,
+  FilePenLine,
   HandCoins,
   NotebookPen,
   Package,
@@ -70,6 +71,14 @@ const tools = [
     action: "Deschide generatorul",
     description:
       "Model 14-4-4: plată sau încasare către casierie, sumă în litere automat, verso beneficiar la plăți. PDF A4/A5 în browser.",
+  },
+  {
+    href: internalPath("/unelte/proces-verbal-anulare-bon-fiscal"),
+    title: "Proces verbal anulare bon fiscal",
+    icon: FilePenLine,
+    action: "Deschide generatorul",
+    description:
+      "Dosar art. 36 HG 479/2003: sesizare, decizie, checklist NIR și notă contabilă. PDF, Word și model gol — fără anulare în AMEF.",
   },
   {
     href: internalPath("/unelte/generator-nir"),
