@@ -54,6 +54,10 @@ const ENTRIES: Record<string, Entry> = {
   "/ghid/alergeni-1169-2011/": { title: "Alergeni la produse nepreambalate", desc: "Cum afișați informația despre cei 14 alergeni la produsele vândute nepreambalate." },
   "/ghid/e-transport/": { title: "RO e-Transport", desc: "Ce transporturi de bunuri cu risc fiscal ridicat se declară și cum se obține codul UIT." },
   "/ghid/registru-unic-de-control/": { title: "Registrul unic de control (RUC)", desc: "Cine trebuie să aibă registrul unic de control și unde se păstrează." },
+  "/ghid/certificat-de-atestare-fiscala/": {
+    title: "Certificat de atestare fiscală (SPV)",
+    desc: "Cererea gratuită de certificat de atestare fiscală la ANAF prin SPV, termenul legal și valabilitatea.",
+  },
   // Ghiduri: deschiderea unui magazin
   "/ghid/deschide-macelarie/": { title: "Deschiderea unei măcelării", desc: "Codul CAEN, înregistrarea DSVSA, acordul primăriei și casa de marcat." },
   "/ghid/deschide-brutarie-patiserie/": { title: "Deschiderea unei brutării sau patiserii", desc: "Codurile CAEN, DSVSA, acordul primăriei și casa de marcat." },
