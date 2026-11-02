@@ -49,7 +49,7 @@ function normalizeInternalPath(href: string): { path: string; hash: string } {
 }
 
 /** Static downloads served as files (e.g. /unelte/formulare/*.pdf), not HTML pages. */
-const STATIC_FILE = /\.(pdf|png|jpe?g|webp|svg|zip|xlsx|csv)$/i;
+const STATIC_FILE = /\.(pdf|png|jpe?g|webp|svg|zip|xlsx|csv|docx)$/i;
 
 /** Paths that should end with / (every HTML page except root and static files). */
 export function needsTrailingSlash(pathname: string): boolean {

@@ -14,6 +14,7 @@ export const toolLinks: SiteLink[] = [
   { href: internalPath("/unelte/verificare-cui"), label: "Verificare CUI ANAF" },
   { href: internalPath("/unelte/registru-de-casa"), label: "Registru de casă" },
   { href: internalPath("/unelte/dispozitie-de-plata"), label: "Dispoziție de plată" },
+  { href: internalPath("/unelte/proces-verbal-anulare-bon-fiscal"), label: "Proces verbal anulare bon fiscal" },
   { href: internalPath("/unelte/generator-nir"), label: "Generator NIR" },
   { href: internalPath("/unelte/generator-aviz-de-insotire"), label: "Aviz de însoțire a mărfii" },
   { href: internalPath("/unelte/fisa-de-magazie"), label: "Fișă de magazie" },

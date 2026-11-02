@@ -13,8 +13,11 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "playwright-core";
 import { BLANK_AVIZ } from "../src/lib/generators/aviz.ts";
 import { BLANK_CASH_ORDER } from "../src/lib/generators/cash-order.ts";
+import { BLANK_PV_ANULARE } from "../src/lib/generators/pv-anulare-bon.ts";
 import { BLANK_PURCHASE_SLIP } from "../src/lib/generators/purchase-slip.ts";
-import { avizHtml, cashOrderHtml, purchaseSlipHtml } from "../src/lib/unelte/document-export.ts";
+import { avizHtml, cashOrderHtml, purchaseSlipHtml, pvAnulareBonHtml } from "../src/lib/unelte/document-export.ts";
+import { buildMinimalDocx } from "../src/lib/unelte/minimal-docx.ts";
+import { writeFileSync } from "node:fs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "public/unelte/formulare");
@@ -26,6 +29,11 @@ const FORMS = {
   dispozitie: { base: "dispozitie-de-plata-incasare-14-4-4", html: (size) => cashOrderHtml(BLANK_CASH_ORDER, size, true) },
   aviz: { base: "aviz-de-insotire-a-marfii-14-3-6a", html: (size) => avizHtml(BLANK_AVIZ, size, true) },
   borderou: { base: "borderou-de-achizitie-14-4-13", html: (size) => purchaseSlipHtml(BLANK_PURCHASE_SLIP, size, true) },
+  pv_anulare: {
+    base: "proces-verbal-anulare-bon-fiscal",
+    html: () => pvAnulareBonHtml(BLANK_PV_ANULARE, true),
+    a4Only: true,
+  },
 };
 
 const names = process.argv.slice(2);
@@ -35,8 +43,9 @@ mkdirSync(OUT, { recursive: true });
 const browser = await chromium.launch({ executablePath: CHROME });
 try {
   for (const name of names.length ? names : Object.keys(FORMS)) {
-    const { base, html } = FORMS[name];
-    for (const size of ["A4", "A5"]) {
+    const { base, html, a4Only } = FORMS[name];
+    const sizes = a4Only ? ["A4"] : ["A4", "A5"];
+    for (const size of sizes) {
       const page = await browser.newPage();
       await page.setContent(html(size), { waitUntil: "load" });
       const file = join(OUT, `${base}-${size.toLowerCase()}.pdf`);
@@ -56,6 +65,12 @@ try {
     const box = await sheet.boundingBox();
     console.log(`${file} ${statSync(file).size} B, ${Math.round((box.width * PREVIEW_WIDTH) / 794)}x${Math.round((box.height * PREVIEW_WIDTH) / 794)}`);
     await page.close();
+
+    if (name === "pv_anulare") {
+      const docx = join(OUT, `${base}.docx`);
+      writeFileSync(docx, buildMinimalDocx(["PROCES VERBAL ANULARE BON FISCAL — model necompletat", "", "Completați sesizarea (art. 36 lit. a)), decizia (lit. b)) și checklist-ul dosarului.", ""]));
+      console.log(`${docx} ${statSync(docx).size} B`);
+    }
   }
 } finally {
   await browser.close();
