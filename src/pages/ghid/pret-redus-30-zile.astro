@@ -1,0 +1,148 @@
+---
+import GuideShell from "../../components/GuideShell.astro";
+import { OPERATOR_LEGAL_NAME } from "../../data/site.ts";
+import { TAPS_PRICE_CANON } from "../../data/tapselo-product-copy.ts";
+import { markdownToHtml } from "../../lib/markdown.ts";
+import {
+  breadcrumbJsonLd,
+  breadcrumbLinks,
+  canonicalUrl,
+  faqPageJsonLd,
+  type FaqItem,
+} from "../../lib/unelte/jsonld.ts";
+import { internalPath } from "../../lib/internal-url.ts";
+
+const path = "/ghid/pret-redus-30-zile";
+const heading = "Reduceri: prețul anterior, 30 zile";
+const description =
+  "La orice anunț de reducere (inclusiv de Black Friday), afișați prețul anterior conform HG 947/2000 art. 4^1: regulă generală Omnibus, 30 zile, 10 zile perisabile, produse noi sub 30 zile, reduceri treptate — cu surse oficiale și calculator de reducere.";
+const verifiedOn = "2026-11-06";
+
+const body = `
+## Ce preț anterior afișați la Black Friday?
+
+**Același preț anterior pe care îl cere legea pentru orice reducere:** la **Black Friday** (de exemplu **27 noiembrie 2026**) afișați prețul anterior potrivit **Hotărârii Guvernului nr. 947/2000, art. 4^1** (introdus prin **HG 686/2022**). Regula este **generală** — pentru **orice anunț de reducere a prețului**, nu numai pentru Black Friday; sezonul este doar momentul când reducerile sunt cele mai vizibile.
+
+Potrivit **art. 4^1 alin. (1)**, **orice anunț de reducere a prețului indică prețul anterior aplicat de vânzător în aceeași suprafață de vânzare**; **dovada** prețului anterior se prezintă **la solicitarea Autorității Naționale pentru Protecția Consumatorilor**.
+
+În continuare, **art. 4^1 alin. (2)–(5)** stabilesc cum calculați acel preț anterior:
+
+- **alin. (2)** — **Prețul anterior** este **cel mai scăzut preț practicat în aceeași suprafață de vânzare în ultimele 30 de zile** înainte de reducere.
+- **alin. (3)** — Pentru **produsele care se deteriorează ori se perimează rapid**, perioada este de **10 zile**.
+- **alin. (4)** — În cazul **produselor care au fost supuse comercializării pe o perioadă mai mică de 30 de zile**, prețul anterior este **cel mai scăzut preț practicat de comerciant în acea perioadă**; **perioada se menționează în mod clar**.
+- **alin. (5)** — În cazul în care reducerea este **majorată treptat pe parcursul aceleiași campanii de marketing**, prețul anterior este reprezentat de **prețul fără reducere practicat înaintea primei aplicări a reducerii**.
+
+**Exemplu (alin. (2)):** o cafea a costat **30 lei**, apoi **25 lei** timp de o săptămână, apoi iar **30 lei**. Dacă o puneți acum la **22 lei**, prețul tăiat afișat trebuie să fie **25 lei**, nu 30 lei: în **ultimele 30 de zile** înainte de această reducere, **cel mai scăzut preț practicat** a fost **25 lei**.
+
+**Ilustrare (alin. (5)):** în **aceeași campanie**, dacă mergeți **30 lei → 25 lei → 22 lei** fără să reveniți la 30 lei între timp, prețul anterior rămâne **30 lei** (prețul **fără reducere înaintea primei reduceri** din acea campanie), nu 25 lei.
+
+Puteți [calcula procentul de reducere față de prețul anterior cu calculatorul de reducere](${internalPath("/unelte/calculator-reducere")}).
+
+## Amenzi (sancțiuni)
+
+Pentru **nerespectarea** prevederilor **art. 4^1**, **art. 12 alin. (2)** din **HG 947/2000** (în forma modificată prin **HG 686/2022**) prevede **amendă de la 5.000 lei la 30.000 lei**. Consultați textul consolidat la **S1** și modificarea la **S2** în caseta „Surse”.
+
+## În magazin și în Tapselo
+
+**Sfat practic:** păstrați istoricul prețurilor pentru fiecare produs; la un control ANPC trebuie să puteți arăta de unde rezultă prețul anterior.
+
+Ce face Tapselo: pagina de oferte calculează prețul tăiat din istoricul de prețuri, cu **30 de zile** sau **10 zile** pentru produsele marcate perisabile. Tarifele produsului: **${TAPS_PRICE_CANON}**.
+`;
+
+const faq: FaqItem[] = [
+  {
+    q: "Prețul anterior la Black Friday e tot pe 30 de zile?",
+    a: "Da — potrivit art. 4^1 alin. (2) din HG 947/2000, prețul anterior este cel mai scăzut preț practicat în aceeași suprafață de vânzare în ultimele 30 de zile înainte de reducere, cu excepțiile de la alin. (3)–(5) (produse perisabile 10 zile; produse sub 30 zile pe raft; reduceri treptate în aceeași campanie). Black Friday nu schimbă această regulă generală.",
+  },
+  {
+    q: "Ce fac dacă produsul e nou în magazin?",
+    a: "Dacă produsul a fost comercializat mai puțin de 30 de zile, art. 4^1 alin. (4) cere ca prețul anterior să fie cel mai scăzut preț din acea perioadă, iar perioada să fie indicată în mod clar.",
+  },
+  {
+    q: "Unde calculez procentul de reducere?",
+    a: "Deschideți calculatorul de reducere Tapselo — introduceți prețul anterior și prețul cu reducere; procentul se calculează acolo.",
+    aHtml: `Deschideți <a href="${internalPath("/unelte/calculator-reducere/")}" class="font-semibold text-accent underline-offset-2 hover:underline">calculatorul de reducere</a> Tapselo — introduceți prețul anterior și prețul cu reducere; procentul se calculează acolo.`,
+  },
+];
+
+const crumbs = [
+  { name: "Acasă", path: "/" },
+  { name: "Ghid pentru magazine", path: "/ghid/" },
+  { name: heading, path },
+];
+
+const sources = [
+  {
+    title:
+      "S1 — HG 947/2000, formă consolidată (art. 4^1, art. 12 alin. (2); include modificările din HG 686/2022); listare și forma printabilă pe legislatie.just.ro",
+    url: "https://legislatie.just.ro/Public/DetaliiDocument/255257",
+  },
+  {
+    title: "HG 947/2000 — document de listare (forma anterioară consolidării curente)",
+    url: "https://legislatie.just.ro/Public/DetaliiDocument/24730",
+  },
+  {
+    title: "S2 — HG 686/2022 (modifică HG 947/2000; art. I pct. 3 — sancțiuni la art. 12)",
+    url: "https://legislatie.just.ro/Public/DetaliiDocument/255732",
+  },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: heading,
+    description,
+    dateModified: verifiedOn,
+    inLanguage: "ro-RO",
+    url: canonicalUrl(path),
+    mainEntityOfPage: canonicalUrl(path),
+    author: {
+      "@type": "Organization",
+      name: "Tapselo",
+      legalName: OPERATOR_LEGAL_NAME,
+      url: "https://tapselo.com",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Tapselo",
+      legalName: OPERATOR_LEGAL_NAME,
+      url: "https://tapselo.com",
+    },
+  },
+  faqPageJsonLd(faq),
+  breadcrumbJsonLd(crumbs),
+];
+---
+
+<GuideShell
+  title={`${heading} | Ghid Tapselo`}
+  description={description}
+  heading={heading}
+  lead="La orice anunț de reducere a prețului — inclusiv de Black Friday — afișați prețul anterior potrivit HG 947/2000 art. 4^1: regulă generală (Omnibus), nu o obligație doar pentru o singură zi din an."
+  sources={sources}
+  verifiedOn={verifiedOn}
+  updatedOn={verifiedOn}
+  campaign="pret-redus-30-zile"
+  breadcrumbs={breadcrumbLinks(crumbs)}
+  jsonLd={jsonLd}
+  contentWidth="reading"
+>
+  <article class="kb-prose" set:html={markdownToHtml(body)} />
+
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Întrebări frecvente</h2>
+    <div class="mt-6 space-y-6">
+      {faq.map((item) => (
+        <div class="rounded-xl border border-border-light p-5">
+          <h3 class="text-lg font-semibold text-primary">{item.q}</h3>
+          {item.aHtml ? (
+            <p class="mt-2 leading-relaxed text-text-secondary" set:html={item.aHtml} />
+          ) : (
+            <p class="mt-2 leading-relaxed text-text-secondary">{item.a}</p>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+</GuideShell>

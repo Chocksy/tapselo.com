@@ -6,7 +6,11 @@ import rules from "../../lib/kb/rules.json";
 import { internalPath } from "../../lib/internal-url.ts";
 
 export function getStaticPaths() {
-  return rules.map((rule) => ({ params: { id: rule.page.replace(/^\/ghid\//, "") }, props: { rule } }));
+  // Dedicated `.astro` pages under /ghid/ that reuse the same `page` slug in rules.json must be listed here, or Astro builds two routes for one URL.
+  const manualGuideSlugs = new Set(["pret-redus-30-zile"]);
+  return rules
+    .filter((rule) => !manualGuideSlugs.has(rule.page.replace(/^\/ghid\//, "")))
+    .map((rule) => ({ params: { id: rule.page.replace(/^\/ghid\//, "") }, props: { rule } }));
 }
 
 const RELATED_TOOLS: Record<string, { href: string; label: string }> = {
