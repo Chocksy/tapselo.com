@@ -1,0 +1,75 @@
+---
+// J2 "Host": Nea Tapselo at one fixed spot in the page (CSS sprite from public/mascots/, no library).
+// <Mascot spot="calc" pose="sparkles" rest="left" size={96} sizeSm={72} />
+// Behavior lives in src/scripts/mascot.ts. Pages opt out with <Layout mascot={false}>.
+import { mascotHtml, type MascotOpts } from "../data/mascot.ts";
+
+type Props = MascotOpts;
+---
+
+<Fragment set:html={mascotHtml(Astro.props)} />
+
+<script>
+  import "../scripts/mascot.ts";
+</script>
+
+<style is:global>
+  .ms { --sz: var(--s); position: relative; display: block; flex: none; width: var(--sz); height: var(--sz); pointer-events: none; transition: opacity .3s, transform .4s var(--ease-out-soft), visibility 0s; }
+  @media (max-width: 767.98px) { .ms { --sz: var(--sm, var(--s)); } }
+  .ms-f { position: absolute; left: 0; top: 0; width: var(--sz); height: var(--sz); }
+  .ms-f i { position: absolute; inset: 0; background-size: 300% 300%; background-repeat: no-repeat; transition: opacity .2s, transform .45s var(--ease-out-soft); }
+  .ms-r { background-position: var(--p); opacity: 0; transform: scale(.94); }
+  .ms.on .ms-r, html.ms-bye .ms-r { opacity: 1; transform: none; }
+  .ms.on .ms-d, html.ms-bye .ms-d { opacity: 0; }
+  html.ms-bye .ms-r { background-position: 0 0 !important; }
+  /* he takes clicks (src/scripts/mascot.ts) and breathes; the reading walker sits over the sub-nav tabs, so it stays click-through */
+  .ms[data-spot]:not([data-still]) .ms-f { pointer-events: auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .rd .ms .ms-f { pointer-events: none; cursor: default; }
+  .ms.bp .ms-b:not(.ms-b-on) { opacity: 0; }
+  @media (prefers-reduced-motion: no-preference) {
+    .ms[data-spot]:not([data-still]) .ms-f { transform-origin: 50% 90%; animation: ms-br 3.6s ease-in-out infinite; }
+    .rd .ms .ms-f { animation: none; }
+  }
+  @keyframes ms-br { 50% { transform: scale(1.012, 1.03); } }
+  /* peek: only the top part shows, the rest is cut at the edge he leans on */
+  .ms-pk { height: calc(var(--sz) * var(--pk)); clip-path: inset(-400px -800px 0 -800px); }
+
+  .ms-b { position: absolute; z-index: 5; padding: 8px 12px; border-radius: 12px; background: var(--color-paper-white); box-shadow: 0 0 0 1px var(--color-rule), 0 12px 24px -14px rgba(60, 45, 20, .4); font: 600 13.5px/1.3 var(--font-sans); letter-spacing: -.005em; color: var(--color-ink); white-space: nowrap; opacity: 0; transform: translateY(6px) scale(.96); transition: opacity .3s, transform .4s var(--ease-out-soft); }
+  .ms.on .ms-b, .ms-b-on { opacity: 1; transform: none; }
+  .ms-b::after { content: ""; position: absolute; width: 10px; height: 10px; background: inherit; transform: rotate(45deg); }
+  .ms-b-t { right: 8px; bottom: calc(100% + 4px); }
+  .ms-b-t::after { right: 28px; bottom: -5px; box-shadow: 1px 1px 0 var(--color-rule); }
+  .ms-b-l { right: calc(100% + 8px); top: 10px; }
+  .ms-b-l::after { right: -5px; top: 12px; box-shadow: 1px -1px 0 var(--color-rule); }
+  .ms-b-r { left: calc(100% + 4px); top: 0; }
+  .ms-b-r::after { left: -5px; top: 14px; box-shadow: -1px 1px 0 var(--color-rule); }
+
+  /* off on shopper pages, hidden for this visit after "Ascunde mascota" */
+  html:not([data-mascot]) :is(.ms, [data-ms-hide], [data-rd]) { display: none !important; }
+  html.ms-off .ms { opacity: 0; visibility: hidden; transform: translateY(6px) scale(.9); transition: opacity .3s, transform .4s var(--ease-out-soft), visibility 0s .4s; }
+  html.ms-off .rn-0 .ms { display: none; }
+
+  /* reduced motion: one static frame, his reaction (or the rest frame with data-keep) */
+  @media (prefers-reduced-motion: reduce) {
+    .ms:not([data-keep]) .ms-r { opacity: 1; transform: none; }
+    .ms:not([data-keep]) .ms-d { opacity: 0; }
+    .ms .ms-b:not(.ms-b-on) { display: none; }
+    /* the reading walker does not walk; a still face over the guide text is noise */
+    .rd .ms { display: none; }
+  }
+
+  /* "Ascunde mascota" (footer) */
+  .ms-hide { gap: 7px; }
+  .ms-hide i { width: 22px; height: 22px; flex: none; border-radius: 50%; background: var(--color-paper-white) url(/mascots/shopkeeper-reactions.webp) 0 0 / 300% 300% no-repeat; box-shadow: 0 0 0 1px var(--color-rule); }
+
+  /* guides: reading bar under the sub-nav; he hangs just under it (clear of the tab labels) and walks along it */
+  .rd { position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; z-index: 1; pointer-events: none; }
+  .rd > i { position: absolute; inset: 0; background: var(--color-stamp); transform: scaleX(0); transform-origin: left; transition: transform .4s var(--ease-out-soft); }
+  .rd .ms { position: absolute; left: 0; top: -5px; transition: transform .4s var(--ease-out-soft), opacity .3s, visibility 0s; }
+  .rd .ms-f { border-radius: 50%; background: var(--color-paper-white); box-shadow: 0 0 0 1px var(--color-rule), 0 6px 14px -8px rgba(60, 45, 20, .45); overflow: hidden; }
+  .rd .ms-f i { inset: -8%; }
+
+  /* sub-nav search, nothing found */
+  .rn-0 { display: flex; align-items: center; gap: 4px; padding: 10px 0 10px 14px; }
+  .rn-0 .rn-r0 { padding-left: 4px; }
+</style>

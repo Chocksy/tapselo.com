@@ -1,0 +1,43 @@
+---
+// G2 closing CTA with the availability line.
+const DEMO = "https://app.tapselo.com/?demo=1";
+const AV: [string, string, string][] = [
+  ["ok", "Beta:", "gratuit acum"],
+  ["y", "iPhone:", "în test"],
+  ["ok", "Card pe telefon:", "nou, iPhone XS+"],
+  ["ok", "Bon fiscal din telefon:", "pe Datecs"],
+  ["n", "Android:", "încă nu"],
+];
+---
+<section class="pp-band tear-top pc" data-moment="tear">
+  <div class="pp-rails" aria-hidden="true"></div>
+  <div class="site-container pc-in">
+    <div class="pc-b">
+      <div>
+        <div class="stamp-label">Începe</div>
+        <h2 class="pp-h2">Ai încercat pe ecran. <span>Acum pe telefonul tău.</span></h2>
+        <p class="pp-lead pc-l">Intră în cont, generează codul din admin și tastează-l în aplicația Tapselo POS.</p>
+      </div>
+      <div class="pp-ctas">
+        <a class="pp-btn" href={DEMO} data-tapselo-cta="phone-final">Încearcă demo <span aria-hidden="true">&rarr;</span></a>
+        <a class="pp-btn2" href="/#pricing">Vezi prețurile</a>
+      </div>
+    </div>
+    <ul class="pc-av">
+      {AV.map(([c, b, t]) => <li><i class={c}></i><b>{b}</b> {t}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .pc-in { padding-block: clamp(72px, 8vw, 104px) clamp(64px, 7vw, 88px); }
+  .pc-b { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; align-items: end; }
+  @media (min-width: 1024px) { .pc-b { grid-template-columns: minmax(0, 1fr) auto; gap: 40px; } }
+  .pc-l { max-width: 560px; margin-top: 18px; }
+  .pc-av { display: flex; flex-wrap: wrap; gap: 10px 30px; margin: 40px 0 0; padding: 22px 0 0; list-style: none; border-top: 1px solid var(--color-rule); font-size: 14.5px; color: var(--color-ink-2); }
+  .pc-av li { display: inline-flex; align-items: center; gap: 6px; }
+  .pc-av i { width: 8px; height: 8px; margin-right: 3px; border-radius: 50%; background: #10b981; }
+  .pc-av i.y { background: #f59e0b; }
+  .pc-av i.n { background: var(--color-paper-white); box-shadow: inset 0 0 0 1.5px var(--color-ink-3); }
+  .pc-av b { font-weight: 600; color: var(--color-ink); }
+</style>

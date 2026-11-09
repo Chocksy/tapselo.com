@@ -1,0 +1,235 @@
+---
+// G2 hero: title, then a clickable five-step sale on the kit phone. Step 1 is the kit scan loop, steps 2-5 the kit
+// sale screen with HTML overlays (payment sheet, sale done, Tap to Pay) drawn from the app's Svelte copy.
+// No JS or reduced motion: the stage shows step 3. With motion on, the steps advance by themselves until a click.
+import { PAY, svg } from "./icons.ts";
+import Mascot from "../Mascot.astro";
+const DEMO = "https://app.tapselo.com/?demo=1";
+const STEPS = [
+  { t: "Scanezi cu camera", d: "Codul de bare intră în coș" },
+  { t: "Vezi coșul", d: "Prețuri din catalogul magazinului" },
+  { t: "Alegi plata", d: "Numerar, rest sau tichete" },
+  { t: "Gata", d: "Restul afișat mare" },
+  { t: "Card pe telefon", d: "Clientul apropie cardul", isNew: true },
+];
+const PANELS = [
+  { h: "Scanezi cu camera", p: "Îndrepți camera spre codul de bare. Produsul intră direct în coș, fără cititor separat.", li: [["Coduri EAN", "EAN-13, EAN-8"], ["Alte coduri", "UPC-A, Code 128"], ["Produse la kg", "eticheta de la cântar"], ["Fără cod", "PLU sau nume"]] },
+  { h: "Vezi coșul", p: "Aceleași produse și prețuri ca la casa din magazin. Cauți și după nume sau PLU, în același câmp.", li: [["Catalog", "din admin"], ["Prețuri", "aceleași ca la casă"], ["Exemplu", "3 produse, 19.90 RON"]] },
+  { h: "Alegi plata", p: "Numerar exact, numerar cu rest sau tichete de masă, cu plată mixtă. Telefonul calculează restul.", li: [["Numerar", "exact sau cu rest"], ["Tichete", "și plată mixtă"], ["Card pe telefon", "Tap to Pay"]] },
+  { h: "Gata", p: "Vânzarea se salvează pe telefon, scade stocul și apare în admin lângă vânzările de la casă.", li: [["Primit", "50.00 RON"], ["Rest de dat", "30.10 RON"], ["Bon fiscal", "pe Datecs"]] },
+  { h: "Card pe telefon", p: "Clientul apropie cardul de iPhone. Plata trece prin contul Stripe al firmei tale. Fără abonament.", li: [["Telefon", "iPhone XS sau mai nou"], ["Internet", "necesar pentru card"], ["Pornești", "din admin, pe magazin"]], isNew: true },
+];
+---
+<section class="pp-band pd" id="demo">
+  <div class="site-container">
+    <div class="pd-ht">
+      <div>
+        <span class="pd-eb"><i></i>Aplicația Tapselo POS pentru iPhone · în test</span>
+        <h1 class="pp-h1 pd-h1">Casa de marcat <span>pe telefon.</span></h1>
+      </div>
+      <p class="pp-lead">Încearcă o vânzare chiar aici: scanezi, alegi plata, vezi restul. Apasă pe pași sau lasă ecranul să meargă singur.</p>
+    </div>
+
+    <div class="pd-dm" data-s="3" data-pd>
+      <div class="pd-sl">
+        <p class="pd-cap">O vânzare, pas cu pas</p>
+        <div class="pd-sbs">
+          {STEPS.map((s, i) => (
+            <button class:list={["pd-sb", { on: i === 2 }]} type="button" aria-current={i === 2 ? "step" : undefined}>
+              <i>{i + 1}</i><b>{s.t}{s.isNew && <span class="pp-tag pp-tag--ok">Nou</span>}</b><span>{s.d}</span>
+            </button>
+          ))}
+        </div>
+        <p class="pd-kb">Ecranul din mijloc e aplicația Tapselo POS, cu magazinul de test.</p>
+      </div>
+
+      <div class="pd-cz">
+        <span class="pd-gd pd-gd--t" aria-hidden="true"></span><span class="pd-gd pd-gd--b" aria-hidden="true"></span>
+        <div class="pd-ph pd-L1"><div class="ts-phone" data-shop="magazin" data-screen="scan" data-play="loop" data-w="330" role="img" aria-label="Aplicația Tapselo POS scanează un cod de bare cu camera"></div></div>
+        <div class="pd-ph pd-L2">
+          <div class="ts-phone" data-shop="magazin" data-screen="sale" data-play="static" data-w="330" role="img" aria-label="Coșul din aplicația Tapselo POS"></div>
+          <div class="pd-ov" aria-hidden="true">
+            <div class="pd-lx pd-lx3">
+              <div class="pd-dim"></div>
+              <div class="pd-sht">
+                <div class="pd-grab"></div>
+                <p class="o0">Incasare</p><p class="o1">19.90 RON</p>
+                {PAY.map(([ic, bg, fg, b, e], i) => (
+                  <div class:list={["pd-me", { hi: i === 1 }]}><u style={`background:${bg};color:${fg}`} set:html={svg(ic)} /><span><b>{b}</b><em>{e}</em></span></div>
+                ))}
+              </div>
+            </div>
+            <div class="pd-lx pd-lx4">
+              <div class="pd-dn">
+                <span class="pd-okc" set:html={svg("ok", 3)} />
+                <p class="o0" style="margin-top:18px">Vanzare finalizata</p>
+                <p class="o1" style="font-size:38px">19.90 RON</p>
+                <div class="pd-dsum"><div><span>Plata</span><b>Numerar · 50.00 primit</b></div><div class="rs"><span>Rest de dat</span><b>30.10 RON</b></div></div>
+                <div class="pd-nb">Vanzare noua</div>
+                <p class="pd-nbs">Se inchide singur in cateva secunde</p>
+              </div>
+            </div>
+            <div class="pd-lx pd-lx5">
+              <div class="pd-dim"></div>
+              <div class="pd-mdl"><p class="o0">Card pe telefon</p><p class="o1">19.90 RON</p><div class="pd-bar"><i></i></div><p class="o2">Banca confirma plata…</p><p class="o3">Nu inchide aplicatia</p></div>
+            </div>
+          </div>
+          <div class="pd-np" aria-hidden="true"></div>
+        </div>
+        <div class="pd-mascot" data-mascot-spot="phone"><Mascot spot="phone" pose="laugh" rest="left" size={96} sizeSm={72} peek={1} /></div>
+      </div>
+
+      <div class="pd-sx">
+        {PANELS.map((p, i) => (
+          <div class={`pd-pn pd-pn${i + 1}`}>
+            <em>Pasul {i + 1} din 5 {p.isNew && <span class="pp-tag pp-tag--ok">Nou</span>}</em>
+            <h2>{p.h}</h2>
+            <p>{p.p}</p>
+            <ul>{p.li.map(([k, v]) => <li><span>{k}</span><b>{v}</b></li>)}</ul>
+          </div>
+        ))}
+        <div class="pd-ctl"><button class="pp-btn2 pd-pv" type="button">Înapoi</button><button class="pp-btn pd-nx" type="button">Pasul următor <span aria-hidden="true">&rarr;</span></button></div>
+        <p class="pd-fn"><b>Bon fiscal:</b> telefonul trimite bonul la casa de marcat Datecs, prin rețea sau Bluetooth.</p>
+      </div>
+    </div>
+
+    <div class="pd-db">
+      <p>Demo-ul complet se deschide în browser, cu același magazin de test. Pe telefonul tău, aplicația se leagă de magazin cu un cod din admin.</p>
+      <a class="pp-btn" href={DEMO} data-tapselo-cta="phone-hero">Încearcă demo-ul complet <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pd { padding: clamp(40px, 5vw, 64px) 0 clamp(48px, 5vw, 64px); border-bottom: 1px solid var(--color-rule); }
+  .pd-ht { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: end; }
+  @media (min-width: 1024px) { .pd-ht { grid-template-columns: minmax(0, 1fr) 420px; gap: 60px; } }
+  .pd-eb { display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; margin-bottom: 18px; border-radius: 7px; background: var(--color-paper-white); box-shadow: 0 0 0 1px var(--color-rule); font-size: 13px; font-weight: 500; color: var(--color-ink-2); }
+  .pd-eb i { width: 7px; height: 7px; border-radius: 50%; background: #f59e0b; }
+  .pd-h1 { font-size: clamp(2.6rem, 4vw + .8rem, 4.25rem); }
+
+  /* Demo box: steps | phone | explainer */
+  .pd-dm { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); margin-top: 40px; border-radius: 12px; background: var(--color-paper-white); box-shadow: 0 0 0 1px var(--color-rule); overflow: hidden; }
+  @media (min-width: 1100px) { .pd-dm { grid-template-columns: 300px minmax(0, 1fr) 320px; height: 760px; } }
+
+  .pd-sl { display: flex; flex-direction: column; padding: 22px 18px; }
+  .pd-cap { margin: 0; padding: 6px 12px 12px; font: 500 11.5px/1 var(--font-mono); letter-spacing: .07em; text-transform: uppercase; color: var(--color-ink-3); }
+  .pd-sbs { display: flex; flex-direction: column; gap: 4px; }
+  .pd-sb { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: 28px 1fr; gap: 3px 12px; padding: 13px 12px; border-radius: 9px; transition: background-color .15s; }
+  .pd-sb:hover { background: var(--color-paper); }
+  .pd-sb:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .pd-sb i { grid-row: span 2; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font: 600 12px/1 var(--font-mono); font-style: normal; box-shadow: inset 0 0 0 1px var(--color-perf); color: var(--color-ink-2); background: var(--color-paper-white); }
+  .pd-sb b { display: flex; align-items: center; gap: 8px; font-size: 15.5px; font-weight: 600; color: var(--color-ink); }
+  .pd-sb > span { font-size: 13.5px; line-height: 1.4; color: var(--color-ink-3); }
+  .pd-sb.on { background: var(--color-paper); box-shadow: inset 0 0 0 1px var(--color-rule); }
+  .pd-sb.on i { background: var(--color-ink); color: var(--color-paper-white); box-shadow: none; }
+  .pd-sb .pp-tag { height: 19px; font-size: 10px; padding: 0 6px; }
+  .pd-kb { margin: auto 0 0; padding: 14px 12px 4px; border-top: 1px dashed var(--color-perf); font-size: 13px; line-height: 1.5; color: var(--color-ink-3); }
+
+  .pd-cz { position: relative; height: 760px; background: var(--color-paper) radial-gradient(var(--color-rule) 1px, transparent 1px) 0 0 / 16px 16px; overflow: hidden; }
+  .pd-gd { position: absolute; left: 50%; width: 400px; margin-left: -200px; border-top: 1px dashed var(--color-perf); }
+  .pd-gd--t { top: 34px; } .pd-gd--b { bottom: 34px; }
+  .pd-ph { position: absolute; left: 50%; top: 34px; width: 330px; height: 692px; margin-left: -165px; filter: drop-shadow(0 30px 40px rgba(15, 23, 42, .22)); }
+  .pd-mascot { position: absolute; right: 16px; bottom: 16px; }
+  /* narrow: the phone fills the canvas, so he only peeks up from the strip under it */
+  @media (max-width: 559.98px) { .pd-mascot { right: 22px; bottom: 0; } .pd-mascot :global(.ms-pk) { height: calc(var(--sz) * .62); } }
+  .pd-L1 { visibility: hidden; }
+  .pd-dm[data-s="1"] .pd-L1 { visibility: visible; }
+  .pd-dm[data-s="1"] .pd-L2 { visibility: hidden; }
+
+  /* Overlays in the phone's native 414 px space, zoomed to 330 px. */
+  .pd-ov { position: absolute; left: 12px; top: 122px; width: 390px; height: 734px; border-radius: 0 0 54px 54px; overflow: hidden; z-index: 200; zoom: .7971; font-family: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", var(--font-sans); color: #0f172a; font-variant-numeric: tabular-nums; line-height: 1.3; }
+  .pd-np { position: absolute; left: 292px; top: 70px; width: 48px; height: 48px; background: #fff; z-index: 199; zoom: .7971; }
+  .pd-ov p { margin: 0; }
+  .pd-lx { position: absolute; inset: 0; display: none; }
+  .pd-dm[data-s="3"] .pd-lx3, .pd-dm[data-s="4"] .pd-lx4, .pd-dm[data-s="5"] .pd-lx5 { display: block; }
+  .pd-dim { position: absolute; inset: 0; background: rgba(15, 23, 42, .42); }
+  .pd-sht { position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 18px 34px; border-radius: 26px 26px 0 0; background: #fff; }
+  .pd-grab { width: 44px; height: 5px; margin: 0 auto 14px; border-radius: 3px; background: #cbd5e1; }
+  .pd-ov .o0 { font-size: 14px; font-weight: 600; color: #64748b; }
+  .pd-ov .o1 { margin-top: 2px; font-size: 34px; font-weight: 800; letter-spacing: -.02em; }
+  .pd-ov .o2 { margin-top: 16px; font-size: 17px; font-weight: 700; }
+  .pd-ov .o3 { margin-top: 4px; font-size: 13px; color: #64748b; }
+  .pd-me { display: flex; align-items: center; gap: 14px; height: 68px; margin-top: 10px; padding: 0 14px; border-radius: 16px; box-shadow: inset 0 0 0 1.5px #e2e8f0; }
+  .pd-me.hi { box-shadow: inset 0 0 0 2px #2563eb; background: #f8fbff; }
+  .pd-me u { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; text-decoration: none; }
+  .pd-me u :global(svg) { width: 22px; height: 22px; }
+  .pd-me b { display: block; font-size: 17px; font-weight: 700; }
+  .pd-me em { display: block; margin-top: 2px; font-style: normal; font-size: 13.5px; color: #64748b; }
+  .pd-mdl { position: absolute; left: 18px; right: 18px; top: 200px; padding: 34px 22px 30px; border-radius: 22px; background: #fff; text-align: center; }
+  .pd-bar { height: 6px; margin: 20px 0 0; border-radius: 6px; background: #dbeafe; overflow: hidden; }
+  .pd-bar i { display: block; width: 34%; height: 100%; border-radius: 6px; background: #2563eb; animation: pd-mv 1.6s cubic-bezier(.2, .7, .2, 1) infinite; }
+  @keyframes pd-mv { from { transform: translateX(-100%); } to { transform: translateX(300%); } }
+  @media (prefers-reduced-motion: reduce) { .pd-bar i { animation: none; transform: translateX(100%); } }
+  .pd-dn { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; padding: 70px 20px 30px; background: #fff; text-align: center; }
+  .pd-okc { display: grid; place-items: center; width: 80px; height: 80px; border-radius: 50%; background: #d1fae5; color: #047857; }
+  .pd-okc :global(svg) { width: 55%; height: 55%; }
+  .pd-dsum { width: 100%; max-width: 300px; margin-top: 22px; padding: 2px 16px; border-radius: 18px; background: #f8fafc; text-align: left; }
+  .pd-dsum div { display: flex; justify-content: space-between; align-items: baseline; padding: 11px 0; font-size: 14px; color: #64748b; }
+  .pd-dsum div + div { border-top: 1px solid #e2e8f0; }
+  .pd-dsum b { color: #0f172a; }
+  .pd-dsum .rs b { font-size: 28px; font-weight: 800; color: #047857; }
+  .pd-dsum .rs span { font-weight: 600; color: #334155; }
+  .pd-nb { display: grid; place-items: center; width: 100%; height: 56px; margin-top: auto; border-radius: 14px; background: #2563eb; color: #fff; font-size: 18px; font-weight: 700; }
+  .pd-nbs { margin-top: 6px !important; font-size: 12px; color: #94a3b8; }
+
+  /* Explainer */
+  .pd-sx { position: relative; display: flex; flex-direction: column; padding: 34px 28px 28px; }
+  .pd-pn { display: none; }
+  .pd-dm[data-s="1"] .pd-pn1, .pd-dm[data-s="2"] .pd-pn2, .pd-dm[data-s="3"] .pd-pn3, .pd-dm[data-s="4"] .pd-pn4, .pd-dm[data-s="5"] .pd-pn5 { display: block; }
+  .pd-pn em { display: flex; align-items: center; gap: 10px; font: 500 12px/1 var(--font-mono); font-style: normal; color: var(--color-ink-3); }
+  .pd-pn h2 { margin: 14px 0 0; font-size: 28px; line-height: 1.1; font-weight: 600; letter-spacing: -.03em; color: var(--color-ink); }
+  .pd-pn p { margin: 14px 0 0; font-size: 16px; line-height: 1.55; color: var(--color-ink-2); }
+  .pd-pn ul { margin: 22px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--color-rule); }
+  .pd-pn li { display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--color-rule); font-size: 14px; color: var(--color-ink-2); }
+  .pd-pn li b { font-weight: 600; text-align: right; color: var(--color-ink); }
+  .pd-ctl { display: flex; gap: 10px; margin-top: 26px; }
+  .pd-ctl button { min-height: 44px; padding: 0 16px; font-size: 14.5px; }
+  .pd-fn { margin: auto 0 0; padding: 14px 16px; border-radius: 8px; border: 1px dashed var(--color-perf); font-size: 13.5px; line-height: 1.5; color: var(--color-ink-2); }
+  .pd-fn b { font-weight: 600; color: var(--color-ink); }
+
+  @media (min-width: 1100px) {
+    .pd-sl { border-right: 1px solid var(--color-rule); }
+    .pd-sx { border-left: 1px solid var(--color-rule); }
+  }
+  @media (max-width: 1099.98px) {
+    .pd-sl { order: 1; padding: 16px 12px 8px; border-bottom: 1px solid var(--color-rule); }
+    .pd-cz { order: 2; }
+    .pd-sx { order: 3; border-top: 1px solid var(--color-rule); }
+    .pd-sbs { flex-direction: row; overflow-x: auto; scrollbar-width: none; }
+    .pd-sb { flex: 0 0 auto; min-height: 44px; grid-template-columns: 26px auto; align-items: center; }
+    .pd-sb > span, .pd-kb { display: none; }
+    .pd-sb i { grid-row: auto; }
+    .pd-fn { margin-top: 24px; }
+  }
+
+  .pd-db { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-top: 22px; }
+  .pd-db p { flex: 1 1 320px; max-width: 640px; margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--color-ink-3); }
+  .pd-db .pp-btn { margin-left: auto; }
+  @media (max-width: 639.98px) { .pd-db .pp-btn { width: 100%; margin-left: 0; } }
+</style>
+
+<script>
+  const d = document.querySelector<HTMLElement>("[data-pd]");
+  const live = (el: HTMLElement) => {
+    const TS = (window as unknown as { TS?: { live: (e: HTMLElement) => boolean } }).TS;
+    return TS ? TS.live(el) : !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  };
+  if (d) {
+    const b = [...d.querySelectorAll<HTMLButtonElement>(".pd-sb")];
+    let k = 3, auto = true, t = 0;
+    const go = (n: number) => {
+      k = ((n + 4) % 5) + 1;
+      d.dataset.s = String(k);
+      b.forEach((x, i) => { x.classList.toggle("on", i === k - 1); if (i === k - 1) x.setAttribute("aria-current", "step"); else x.removeAttribute("aria-current"); });
+    };
+    const stop = () => { auto = false; clearTimeout(t); };
+    // ponytail: no viewport check; the kit loop already runs while the page is open. Hidden tab: wait, do not advance.
+    const tick = () => { if (!auto || !live(d)) return; if (!document.hidden) go(k + 1); t = window.setTimeout(tick, k === 1 ? 4200 : 3200); };
+    b.forEach((x, i) => x.addEventListener("click", () => { stop(); go(i + 1); }));
+    d.querySelector(".pd-nx")!.addEventListener("click", () => { stop(); go(k + 1); });
+    d.querySelector(".pd-pv")!.addEventListener("click", () => { stop(); go(k - 1); });
+    const start = () => { if (live(d)) { go(1); t = window.setTimeout(tick, 4200); } };
+    if (document.readyState === "loading") addEventListener("DOMContentLoaded", start); else start();
+  }
+</script>

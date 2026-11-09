@@ -1,12 +1,68 @@
 ---
-// Sticky “Pe pagină” sidebar for long /ghid/ articles (desktop only).
+// Right column of the guide and tool layouts (desktop only): sticky „Pe pagină” TOC built from the article
+// headings by guide-page-toc.client.ts, then a quiet hand-off card on the page's topic (H2 moment 05).
+// The hand-off shows only on Resurse pages (the ones with the sub-bar), never on legal pages.
+import { currentSubnav, findResource } from "../data/resources.ts";
+import { internalPath } from "../lib/internal-url.ts";
+import SiteLogo from "./SiteLogo.astro";
+import Mascot from "./Mascot.astro";
+
+/** mascot: on guides Nea Tapselo peeks over the hand-off card, static (his live spot is the reading bar). */
+const { mascot = false } = Astro.props as { mascot?: boolean };
+const path = Astro.url.pathname;
+const sub = currentSubnav(path);
+const res = findResource(path);
+const kind = !sub
+  ? null
+  : sub === "datecs" || res?.group === "datecs"
+    ? "datecs"
+    : /calculator-reducere|pret-redus-30-zile/.test(path)
+      ? "reducere"
+      : "casa";
 ---
 
-<aside class="guide-page-toc max-lg:hidden" aria-label="Cuprins" data-guide-page-toc hidden>
-  <nav class="guide-page-toc__nav guide-page-toc__scroll rounded-xl border border-border-light bg-surface-white p-5">
-    <p class="text-sm font-bold text-primary">Pe pagină</p>
-    <ul class="guide-page-toc__list mt-2 space-y-1" role="list"></ul>
+<aside class="guide-side" aria-label="Pe pagină">
+  <nav class="guide-page-toc" aria-label="Cuprins" data-guide-page-toc hidden>
+    <p class="stamp-label">Pe pagină</p>
+    <div class="guide-page-toc__scroll">
+      <ul class="guide-page-toc__list" role="list"></ul>
+    </div>
   </nav>
+
+  {kind && (
+    <div class="gh-card">
+      {mascot && <Mascot spot="handoff" pose="bliss" size={84} peek={0.6} still cls="gh-ms" />}
+      <p class="gh-k"><SiteLogo class="gh-logo" />În Tapselo</p>
+      {kind === "datecs" && (
+        <>
+          <p class="gh-t">Tapselo îți arată eroarea pe ecran, în română, cu pașii.</p>
+          <div class="gh-scr" aria-hidden="true">
+            <span class="gh-code">Datecs -100403</span>
+            <b>Lipsa hartie</b>
+            <span>Deschide capacul imprimantei si scoate miezul rolei goale.</span>
+            <span class="gh-step">Pasul 1 din 4</span>
+          </div>
+          <a class="gh-a" href={internalPath("/program-casa-de-marcat-pe-calculator/")} data-tapselo-cta="handoff-datecs">Vezi casa de marcat ›</a>
+        </>
+      )}
+      {kind === "reducere" && (
+        <>
+          <p class="gh-t">Reducerea o pui o dată în admin, casa o aplică singură.</p>
+          <ul class="gh-rows" role="list">
+            <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.5"/></svg><span><b>Cupoane</b>coduri de reducere pe bon</span></li>
+            <li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM18 18h3v3h-3z"/></svg><span><b>Oferte</b>pagină publică cu reduceri, link, QR și A4</span></li>
+          </ul>
+          <a class="gh-a" href={internalPath("/admin/")} data-tapselo-cta="handoff-reducere">Vezi adminul ›</a>
+        </>
+      )}
+      {kind === "casa" && (
+        <>
+          <p class="gh-t">Bonul, stocul și raportul Z, într-un singur program care merge și fără internet.</p>
+          <a class="gh-a" href={internalPath("/program-casa-de-marcat-pe-calculator/")} data-tapselo-cta="handoff-casa">Vezi casa de marcat ›</a>
+        </>
+      )}
+    </div>
+  )}
 </aside>
 
 <script>
@@ -15,55 +71,41 @@
   initGuidePageToc();
 </script>
 
-<style>
-  .guide-page-toc {
-    --guide-toc-sticky-top: 5.5rem;
-    --guide-toc-viewport-margin: 1.5rem;
-    position: sticky;
-    top: var(--guide-toc-sticky-top);
-    align-self: start;
-  }
+<style is:global>
+  .guide-side { --side-top: calc(var(--bar-h) + 52px + 1.5rem); position: sticky; top: var(--side-top); align-self: start; display: grid; gap: 16px; transition: top .24s var(--ease-out-soft); }
+  html[data-bar-hidden] .guide-side { top: calc(var(--side-top) - var(--bar-h)); }
+  @media (max-width: 1023.98px) { .guide-side { display: none; } }
+  @media (max-width: 1199.98px) { .guide-layout--tool > .guide-side { display: none; } }
 
-  .guide-page-toc__scroll {
-    max-height: calc(100vh - var(--guide-toc-sticky-top) - var(--guide-toc-viewport-margin));
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-border-light) transparent;
-  }
+  .guide-page-toc[hidden] { display: none; }
+  .guide-page-toc { padding: 4px 0 4px; }
+  .guide-page-toc .stamp-label { margin: 0 0 14px; }
+  .guide-page-toc__scroll { max-height: min(26rem, max(10rem, calc(100vh - var(--side-top) - 20rem))); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--color-rule) transparent; }
+  .guide-page-toc__list { list-style: none; padding: 0; margin: 0; border-left: 1px solid var(--color-rule); counter-reset: toc; }
+  .guide-page-toc__item { counter-increment: toc; display: flex; align-items: baseline; gap: 6px; }
+  .guide-page-toc__item::after { content: counter(toc, decimal-leading-zero); flex: none; font: 500 10.5px/1 var(--font-mono); color: var(--color-ink-3); }
+  /* Unlayered, so it beats the text-accent utilities the TOC script puts on each link. */
+  .guide-page-toc__link { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 6px; margin-left: -1px; padding: 5px 0 5px 13px; border-left: 2px solid transparent; font-size: 14px; line-height: 1.35; color: var(--color-ink-2); text-decoration: none; transition: color .15s; }
+  .guide-page-toc__link::after { content: ""; flex: 1 1 0; min-width: 0; align-self: flex-end; margin-bottom: 4px; height: 2px; background: radial-gradient(circle, var(--color-perf) .8px, transparent 1px) 0 0 / 5px 2px repeat-x; }
+  .guide-page-toc__item--h3 .guide-page-toc__link { padding-left: 25px; font-size: 13.5px; }
+  .guide-page-toc__link:hover { color: var(--color-ink); }
+  .guide-page-toc__link.is-active { color: var(--color-ink); font-weight: 600; border-left-color: var(--color-stamp); }
 
-  .guide-page-toc__scroll::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .guide-page-toc__scroll::-webkit-scrollbar-thumb {
-    background: var(--color-border-light);
-    border-radius: 3px;
-  }
-
-  .guide-page-toc__scroll::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .guide-page-toc__list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .guide-page-toc__item--h3 {
-    padding-left: 0.75rem;
-  }
-
-  .guide-page-toc__link {
-    display: block;
-    line-height: 1.35;
-    text-decoration: none;
-    transition: color 0.15s ease;
-  }
-
-  .guide-page-toc__link.is-active {
-    color: var(--color-primary);
-    font-weight: 600;
-  }
+  .gh-card { padding: 18px 18px 16px; border-radius: 12px; background: var(--color-paper-white); box-shadow: 0 0 0 1px var(--color-rule); }
+  .gh-card:has(> .gh-ms) { position: relative; margin-top: 46px; }
+  .ms.gh-ms { position: absolute; right: 22px; bottom: 100%; }
+  .gh-k { display: flex; align-items: center; gap: 8px; margin: 0; font: 500 11px/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--color-ink-3); }
+  .gh-logo { width: 14px; height: 14px; border-radius: 3px; display: block; }
+  .gh-t { margin: 12px 0 0; font-size: 15px; font-weight: 600; line-height: 1.45; letter-spacing: -.01em; color: var(--color-ink); }
+  .gh-scr { display: grid; gap: 3px; margin-top: 14px; padding: 12px 12px 10px; border-radius: 9px; background: #fff; box-shadow: 0 0 0 1px #f3c6cf, 0 6px 16px -10px rgba(60, 45, 20, .25); font-size: 12.5px; line-height: 1.4; color: var(--color-ink-2); }
+  .gh-scr b { font-size: 13.5px; color: var(--color-ink); }
+  .gh-scr .gh-step { margin-top: 4px; font-size: 11px; color: var(--color-ink-3); }
+  .gh-code { display: flex; align-items: center; gap: 6px; font: 600 10.5px/1.4 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--color-stamp); }
+  .gh-code::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .gh-rows { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; }
+  .gh-rows li { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 9px; background: #fff; box-shadow: 0 0 0 1px var(--color-rule); font-size: 12.5px; line-height: 1.4; color: var(--color-ink-2); }
+  .gh-rows svg { flex: none; margin-top: 2px; color: var(--color-ink-2); }
+  .gh-rows b { display: block; font-size: 13.5px; color: var(--color-ink); }
+  .gh-a { display: inline-block; margin-top: 14px; font-size: 14px; font-weight: 600; color: var(--color-accent); text-decoration: none; }
+  .gh-a:hover { color: var(--color-accent-hover); }
 </style>

@@ -1,0 +1,64 @@
+/* Shared look of the product pages (/admin/ and /casa-de-marcat-pe-telefon/): F1 and G2 layouts in the I1 "Bonul" paper look.
+   Tokens come from global.css (@theme). Device screens keep the app's own slate/white colors. */
+.pp {
+  --pp-em: #aaa290;
+  --pp-btn2: #ebe5d8;
+  --pp-btn2-ring: #ddd4c1;
+  --pp-ez: cubic-bezier(.2, .7, .2, 1);
+  color: var(--color-ink);
+  background: var(--color-paper);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+.pp a { text-decoration: none; }
+.pp :is(h1, h2, h3, h4, h5, h6) { font-family: var(--font-sans); font-style: normal; }
+
+/* Headings: Geist, tight, second line in warm gray. */
+:where(.pp) .pp-h1 { margin: 0; font-size: clamp(2.6rem, 5.4vw + .6rem, 5.5rem); line-height: .98; font-weight: 600; letter-spacing: -.045em; color: var(--color-ink); text-wrap: balance; }
+:where(.pp) .pp-h2 { margin: 16px 0 0; font-size: clamp(2rem, 3.2vw + .9rem, 3.5rem); line-height: 1.03; font-weight: 600; letter-spacing: -.04em; color: var(--color-ink); }
+:where(.pp) .pp-h1 > span:not(.mo-w), :where(.pp) .pp-h2 > span:not(.mo-w) { display: block; color: var(--pp-em); }
+:where(.pp) .pp-lead { margin: 0; font-size: 18px; line-height: 1.55; color: var(--color-ink-2); }
+
+/* Section head: title left, one line right. */
+:where(.pp) .pp-head { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: end; }
+@media (min-width: 1024px) { :where(.pp) .pp-head { grid-template-columns: minmax(0, 1fr) 420px; gap: 60px; } }
+
+/* Buttons: blue only on the main action. */
+:where(.pp) .pp-btn, :where(.pp) .pp-btn2 { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 24px; border-radius: 7px; font: 600 16px/1 var(--font-sans); white-space: nowrap; border: 0; cursor: pointer; transition: background-color .15s; }
+:where(.pp) .pp-btn { background: var(--color-accent); color: #fff; box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15), 0 1px 2px rgba(37, 99, 235, .3); }
+:where(.pp) .pp-btn:hover { background: var(--color-accent-hover); }
+:where(.pp) .pp-btn2 { background: var(--pp-btn2); color: var(--color-ink); box-shadow: inset 0 0 0 1px var(--pp-btn2-ring); }
+:where(.pp) .pp-btn2:hover { background: #e3dccc; }
+:where(.pp) .pp-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+:where(.pp) .pp-link { color: var(--color-accent); font-weight: 600; }
+:where(.pp) .pp-link:hover { color: var(--color-accent-hover); }
+
+/* Bands: paper and receipt-white, each later band starts with a torn edge (teeth in its own color). */
+:where(.pp) .pp-band { position: relative; background: var(--color-paper); --tear: var(--color-paper); }
+:where(.pp) .pp-band--white { background: var(--color-paper-white); --tear: var(--color-paper-white); }
+:where(.pp) .pp-pad { padding-block: clamp(72px, 9vw, 120px); }
+
+/* Dotted perforation along the container edges (I1). Put <div class="pp-rails" aria-hidden="true"></div> first in a band. */
+:where(.pp) .pp-rails { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+:where(.pp) .pp-rails::before, :where(.pp) .pp-rails::after { content: ""; position: absolute; top: 0; bottom: 0; width: 2px; background: radial-gradient(circle, var(--color-perf) .9px, transparent 1.1px) 0 0 / 2px 7px; }
+:where(.pp) .pp-rails::before { left: calc(50% - min(50%, var(--site-container-max) / 2) + var(--site-container-pad) - 2px); }
+:where(.pp) .pp-rails::after { right: calc(50% - min(50%, var(--site-container-max) / 2) + var(--site-container-pad) - 2px); }
+@media (max-width: 767.98px) { :where(.pp) .pp-rails::before, :where(.pp) .pp-rails::after { display: none; } }
+
+/* Small mono tags. */
+:where(.pp) .pp-tag { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 5px; background: var(--color-paper); box-shadow: inset 0 0 0 1px var(--color-rule); font: 600 11px/1 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--color-ink-2); white-space: nowrap; }
+:where(.pp) .pp-tag--ok { background: #ecfdf5; box-shadow: inset 0 0 0 1px #a7f3d0; color: #047857; }
+:where(.pp) .pp-tag--no { background: var(--color-paper-white); color: var(--color-ink-3); }
+
+/* Receipt card: paper-white with a torn bottom. */
+:where(.pp) .pp-receipt { position: relative; background: var(--color-paper-white); box-shadow: 0 0 0 1px var(--color-rule); }
+:where(.pp) .pp-receipt::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 9px; background: var(--color-paper-white); mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 18px 100%; }
+
+/* Inline svg icons from icons.ts. */
+.pp svg.i { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.pp .ic { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0; }
+
+/* Zoom-to-fit stages (fit.ts sets the exact zoom; these are the no-JS defaults). */
+.pp [data-fit] { transform-origin: 0 0; }
+:where(.pp) .pp-band > .site-container { position: relative; z-index: 1; }

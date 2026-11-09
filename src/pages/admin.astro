@@ -1,0 +1,72 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import Kit from "../components/Kit.astro";
+import ProductSubnav from "../components/admin/ProductSubnav.astro";
+import ProductFaq from "../components/admin/ProductFaq.astro";
+import AdminHero from "../components/admin/AdminHero.astro";
+import AdminFeatures from "../components/admin/AdminFeatures.astro";
+import AdminModules from "../components/admin/AdminModules.astro";
+import AdminCard from "../components/admin/AdminCard.astro";
+import AdminProof from "../components/admin/AdminProof.astro";
+import AdminCta from "../components/admin/AdminCta.astro";
+import { breadcrumbJsonLd, faqPageJsonLd, webApplicationJsonLd, type FaqItem } from "../lib/unelte/jsonld.ts";
+import "../components/admin/product-page.css";
+
+const PATH = "/admin/";
+const TITLE = "Adminul Tapselo: produse, NIR, rețete și rapoarte într-un loc";
+const DESC =
+  "Adminul Tapselo merge în browser, pe Windows, macOS, Linux și pe telefon. Prețuri, NIR din poza facturii, rețete cu cost, clienți, oferte și export SAGA sau Conta.";
+
+const faq: FaqItem[] = [
+  { q: "Trebuie să instalez ceva pentru admin?", a: "Nu. Adminul se deschide în browser, pe orice calculator. Pe telefon îl folosești în aplicația Tapselo, cu același cont și aceleași date." },
+  { q: "Cum ajung datele la contabil?", a: "Din Raport contabil exporți CSV pentru SAGA sau Conta: nomenclatorul de articole și liniile de vânzare pe interval. Ai și raportul de reduceri pe zi și pe cota TVA." },
+  { q: "Pot importa produsele pe care le am deja?", a: "Da. Încarci un export CSV sau Excel din SmartBill, Saga, Oblio, Facturis, MicroERP sau șablonul Tapselo." },
+  { q: "Ce văd angajații?", a: "Îi inviți din Membri. Casierii lucrează doar la casă. Cine face recepția vede Produse și Recepție, nu rapoartele." },
+  { q: "Ce se întâmplă cu adminul când casa nu are internet?", a: "Casa vinde mai departe și tipărește bonul. Vânzările ajung în admin când revine netul, iar în Dispozitive vezi fiecare casă și starea ei." },
+  { q: "Am mai multe magazine. Cum le țin separat?", a: "Fiecare magazin are modulele, casele și rapoartele lui. Schimbi magazinul din bara de sus. Plata cu cardul folosește un singur cont Stripe pe firmă." },
+];
+
+const jsonLd = [
+  webApplicationJsonLd({
+    name: "Tapselo Admin",
+    path: PATH,
+    description: DESC,
+    operatingSystem: "Web, Windows, macOS, Linux",
+    tapseloProductPricing: true,
+  }),
+  faqPageJsonLd(faq),
+  breadcrumbJsonLd([
+    { name: "Acasă", path: "/" },
+    { name: "Admin", path: PATH },
+  ]),
+];
+---
+<Layout title={TITLE} description={DESC} jsonLd={jsonLd} appJsonLd={false}>
+  <Navbar />
+  <main class="pp">
+    <Kit />
+    <ProductSubnav
+      crumbs={[{ label: "Produs", href: "/#features" }, { label: "Admin" }]}
+      links={[
+        { href: "#prezentare", label: "Prezentare" },
+        { href: "#functii", label: "Funcții" },
+        { href: "#module", label: "Module" },
+        { href: "#card", label: "Plăți cu cardul" },
+        { href: "#intrebari", label: "Întrebări" },
+      ]}
+      cta={{ href: "https://app.tapselo.com/?demo=1", label: "Vezi demo" }}
+    />
+    <AdminHero />
+    <AdminFeatures />
+    <AdminModules />
+    <AdminCard />
+    <AdminProof />
+    <ProductFaq id="intrebari" kicker="Întrebări" lead="Răspunsuri scurte. Pentru restul, deschide demo-ul: are produse, vânzări și un tur ghidat." items={faq} white>
+      Întrebări despre admin.
+    </ProductFaq>
+    <AdminCta />
+  </main>
+  <Footer />
+</Layout>

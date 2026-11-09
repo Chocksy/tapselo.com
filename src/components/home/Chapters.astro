@@ -1,0 +1,532 @@
+---
+// B2: three shop chapters, each in its POS accent. Magazin (white, blue), Brutărie (cream sheet, amber),
+// Cafenea (espresso sheet, orange). The kiosks loop on their own; the strips, tiles and tickets react to them.
+import "@fontsource/instrument-serif/latin-ext-400.css";
+const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+const TILES = [
+  { n: "Covrig simplu", e: "🥨", p: "2.00 RON", q: 2 },
+  { n: "Covrig cu susan", e: "🥨", p: "2.50 RON", q: 0, f: "filter:brightness(1.08) saturate(.8)" },
+  { n: "Croissant cu unt", e: "🥐", p: "5.00 RON", q: 1 },
+  { n: "Bagheta", e: "🥖", p: "5.50 RON", q: 1 },
+  { n: "Gogoasa", e: "🍩", p: "3.50 RON", q: 0 },
+  { n: "Cozonac la kg", e: "🍞", p: "45.00 RON / kg", q: 0, kg: true, f: "filter:hue-rotate(-10deg) saturate(1.6) brightness(.9)" },
+];
+const TICKETS = [
+  { s: 214, no: 38, who: "Ana", what: "Flat white", mod: "M · ovaz · +1 shot", gata: true },
+  { s: 151, no: 39, who: "Mihai", what: "2 × Cappuccino", mod: "L · +1 produs" },
+  { s: 88, no: 40, who: "La pachet", what: "Iced latte", mod: "L · ovaz" },
+  { s: 23, no: 41, who: "Ioana", what: "Espresso dublu", mod: "+1 produs" },
+];
+const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+---
+
+<section class="ch m canvas" id="magazin" data-moment="tear">
+  <div class="m-bar">
+    <div class="site-container m-bar-in">
+      <span class="k">Pentru magazinul tău</span>
+      <span class="r">Trei tipuri de magazin, trei ecrane de vânzare.</span>
+    </div>
+    <div class="scan away" aria-hidden="true">
+      <div class="site-container scan-in">
+        <span class="ok"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <span class="nm">APA PLATA 2L</span><span class="sub">2 buc</span>
+        <span class="q"><span>−</span><b>2</b><span>+</span></span>
+        <span class="tot"><small>5 produse</small><b>47.51 RON</b></span>
+      </div>
+    </div>
+  </div>
+  <div class="m-g">
+    <div class="m-left">
+      <div class="m-stage" data-fit="990">
+        <div class="kio"><div class="ts-kiosk" data-layout="scanare" data-w="744"></div></div>
+        <div class="pho"><div class="ts-phone" data-shop="magazin" data-screen="scan" data-w="236"></div></div>
+      </div>
+    </div>
+    <div class="m-right">
+      <div class="k">01 · Magazin alimentar · Scanare</div>
+      <h2 class="h">Scanerul ține ritmul cozii.</h2>
+      <p class="p">
+        Câmpul de cod are mereu focus, așa că orice cititor USB merge din prima. Bananele vin cu greutatea din cântar,
+        apa cu garanția pusă, iar cash exact e o singură apăsare.
+      </p>
+      <div class="qt">
+        <div><em>kg</em><b>Cântar Dibal</b><span>Greutatea vine din eticheta cu cod de bare.</span></div>
+        <div><em>NIR</em><b>Recepție din poză</b><span>Pozezi factura, NIR-ul și stocul se fac singure.</span></div>
+        <div><em>SGR</em><b>Garanția SGR</b><span>Cei 0,50 lei pe sticlă se adaugă singuri.</span></div>
+        <div><em>USB</em><b>Orice cititor</b><span>Și camera telefonului citește EAN-13.</span></div>
+      </div>
+      <div class="act"><a class="cta" href="#demo" data-demo="scanare">Vezi demo pentru magazin <Fragment set:html={arrow} /></a></div>
+      <div class="lay">Layoutul de vânzare: <b>Scanare</b> <span class="pill">disponibil</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="ch b canvas" id="brutarie" data-moment="tear">
+  <i class="grab" aria-hidden="true"></i>
+  <div class="site-container">
+    <div class="g">
+      <div class="t copy">
+        <div class="k">02 · Brutărie, covrigărie · Vitrina</div>
+        <h2 class="h">O atingere, încă <i>o bucată</i>.</h2>
+        <p class="p">
+          Ecranul arată ca vitrina ta: produse mari, cu bulina de bucăți pe fiecare. Zece covrigi înseamnă zece atingeri,
+          fără tastatură.
+        </p>
+        <div class="act">
+          <a class="cta" href="#demo" data-demo="vitrina">Vezi demo pentru brutărie <Fragment set:html={arrow} /></a>
+          <span class="lay"><span>Layoutul de vânzare: <b>Vitrina</b></span><span class="pill">în curând</span></span>
+        </div>
+      </div>
+      {
+        TILES.map((t, i) => (
+          <button type="button" class:list={["t pt", { on: t.q > 0 }]} data-n={t.n} data-kg={t.kg ? "1" : undefined} style={`--i:${i}`} aria-label={`Adaugă ${t.n}`}>
+            <span class="em" style={t.f} aria-hidden="true">{t.e}</span>
+            {t.kg && <span class="kg">la kg</span>}
+            <span class="bd" aria-hidden="true">{t.q}</span>
+            <span class="nm">{t.n}</span>
+            <span class="pr">{t.p}</span>
+          </button>
+        ))
+      }
+      <div class="t kt"><div data-fit="878"><div class="ts-kiosk" data-layout="vitrina" data-w="878"></div></div></div>
+      <div class="t phx"><div data-fit="240"><div class="ts-phone" data-shop="brutarie" data-screen="receiving" data-w="240"></div></div></div>
+      <div class="t ft"><div class="tp"><em>+1</em><b>O atingere = o bucată</b></div><span>Bulina de pe produs arată câte bucăți sunt în coș.</span></div>
+      <div class="t ft"><div class="tp"><em>kg</em><b>Produse la kg din cântar</b></div><span>Cozonacul și fursecurile se cântăresc, nu se tastează.</span></div>
+      <div class="t ft"><div class="tp"><em>lei</em><b>Rețete și producție</b></div><span>Vezi costul pe bucată. Ingredientele ies singure din stoc.</span></div>
+      <div class="t ft"><div class="tp"><em>10:00</em><b>Precomenzi</b></div><span>Torturile cu avans, gata de ridicat la ora stabilită.</span><span class="pill">în curând</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="ch c canvas" id="cafenea" data-moment="tear">
+  <i class="grab" aria-hidden="true"></i>
+  <div class="site-container">
+    <div class="rail">
+      <div class="rl"><div class="lb">La bar <span class="cnt">3</span></div><small>Comenzi plătite,<br /> în ordinea sosirii</small></div>
+      <div class="tk-w">
+        <div class="tks" aria-hidden="true">
+          {
+            TICKETS.map((t) => (
+              <div class:list={["tk", { gata: t.gata }]} data-s={t.s}>
+                <div class="t1"><b>#{t.no}</b>{t.who}<span class="tm">{mmss(t.s)}</span><span class="gt">✓ Gata</span></div>
+                <div class="t2">{t.what}</div>
+                <div class="t3">{t.mod}</div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+    <div class="c-g">
+      <div class="c-copy">
+        <div class="k">03 · Cafenea · Bar</div>
+        <h2 class="h">Flat white, M, ovăz, <span>un shot în plus.</span></h2>
+        <p class="p">
+          Atingi băutura și pleacă varianta casei. Mărimea, laptele și shotul se aleg <span class="nw">dintr-un</span> panou mic. Comanda plătită
+          ajunge direct la bar.
+        </p>
+        <div class="fr">
+          <div><em>01</em><p><b>Comenzi cu opțiuni <span class="pill">în curând</span></b><span>Mărime, lapte, shot extra, cu prețul pe fiecare.</span></p></div>
+          <div><em>02</em><p><b>Comenzi din Messenger, citite de AI</b><span>Clientul scrie, AI-ul scoate comanda. Tu doar o accepți.</span></p></div>
+          <div><em>03</em><p><b>Clienți și cupoane</b><span>Cuponul se aplică pe loc și vezi cât aduce fiecare.</span></p></div>
+        </div>
+        <div class="act">
+          <a class="cta" href="#demo" data-demo="bar">Vezi demo pentru cafenea <Fragment set:html={arrow} /></a>
+          <span class="lay">Layoutul de vânzare: <b>Bar</b> <span class="pill">în curând</span></span>
+        </div>
+      </div>
+      <div class="c-dev">
+        <div class="c-stage" data-fit="912">
+          <div class="kio"><div class="ts-kiosk" data-layout="bar" data-w="726"></div></div>
+          <div class="pho"><div class="ts-phone" data-shop="cafenea" data-screen="sale" data-w="200"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ch { position: relative; overflow: clip; }
+  .k { font: 500 12px/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; }
+  .h { margin: 0; font-family: var(--font-sans); font-style: normal; font-weight: 600; letter-spacing: -0.035em; text-wrap: balance; }
+  .p { margin: 0; font-size: 17px; line-height: 1.55; text-wrap: pretty; }
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 48px;
+    padding: 0 22px;
+    border-radius: 12px;
+    font: 600 15px/1 var(--font-sans);
+    white-space: nowrap;
+    transition: background-color 0.2s;
+  }
+  .cta :global(svg) { transition: transform 0.25s var(--ease-out-soft); }
+  .cta:hover :global(svg) { transform: translateX(3px); }
+  .lay { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; font: 500 12.5px/1.3 var(--font-mono); letter-spacing: 0.02em; }
+  .lay b { font-weight: 600; }
+  .pill { font: 600 10.5px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 8px; border-radius: 99px; white-space: nowrap; }
+
+  /* ---------- 01 magazin ---------- */
+  .m { background: #fff; color: #0f172a; }
+  .m-bar { position: relative; height: 64px; border-bottom: 1px solid #e2e8f0; background: #fff; z-index: 3; }
+  .m-bar-in { display: flex; align-items: center; gap: 28px; height: 100%; }
+  .m-bar .k { color: #64748b; }
+  .m-bar .r { margin-left: auto; font-size: 13px; font-weight: 500; color: #64748b; text-align: right; }
+  .scan {
+    position: absolute;
+    inset: 0 0 -1px;
+    z-index: 4;
+    background: #d1fae5;
+    border-bottom: 2px solid #10b981;
+    font-family: "Plus Jakarta Sans Variable", var(--font-sans);
+    color: #064e3b;
+    transition: transform 0.45s var(--ease-out-soft);
+  }
+  .scan-in { display: flex; align-items: center; gap: 16px; height: 100%; }
+  .scan.away { transform: translateY(-104%); }
+  .scan.fl { animation: fl 0.6s var(--ease-out-soft); }
+  @keyframes fl { 0% { background: #6ee7b7; } 100% { background: #d1fae5; } }
+  .scan .ok { width: 30px; height: 30px; border-radius: 50%; background: #10b981; display: grid; place-items: center; flex: none; }
+  .scan .nm { font-weight: 800; font-size: 22px; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .scan .sub { font-weight: 600; font-size: 13px; color: #047857; white-space: nowrap; }
+  .scan .q { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+  .scan .q span { width: 36px; height: 36px; border-radius: 10px; background: #10b981; color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 20px; }
+  .scan .q b { width: 44px; text-align: center; font-size: 18px; }
+  .scan .tot { display: flex; flex-direction: column; align-items: flex-end; padding-left: 20px; margin-left: 8px; border-left: 1px solid #a7f3d0; line-height: 1.1; white-space: nowrap; }
+  .scan .tot small { font-size: 12px; font-weight: 600; color: #047857; }
+  .scan .tot b { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .m-left { position: relative; background: #f1f5f9; padding: 32px 0 32px 24px; overflow: hidden; }
+  .m-left::after { content: ""; position: absolute; inset: 0; background: radial-gradient(60% 50% at 40% 30%, rgba(37, 99, 235, 0.07), transparent 70%); pointer-events: none; }
+  .m-stage { position: relative; flex: none; width: 990px; height: 520px; }
+  .m-stage .kio { position: absolute; left: 222px; top: 46px; }
+  .m-stage .pho { position: absolute; left: 0; top: 10px; z-index: 2; filter: drop-shadow(0 30px 40px rgba(15, 23, 42, 0.28)); }
+  .m-right { position: relative; z-index: 2; background: #fff; padding: 52px 0 56px; }
+  .m .k { color: #2563eb; }
+  .m .m-bar .k { color: #64748b; }
+  .m .h { font-size: clamp(2.25rem, 3vw + 0.6rem, 3.25rem); line-height: 1.02; margin-top: 18px; color: #0f172a; }
+  .m .p { color: #475569; margin-top: 18px; }
+  .qt { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 26px; }
+  .qt div { border-radius: 14px; box-shadow: inset 0 0 0 1px #e2e8f0; padding: 14px 14px 13px; background: #fff; }
+  .qt em { display: grid; place-items: center; width: 38px; height: 30px; border-radius: 8px; background: #dbeafe; color: #1d4ed8; font: 600 11.5px/1 var(--font-mono); font-style: normal; margin-bottom: 10px; }
+  .qt b { display: block; font-size: 14.5px; font-weight: 600; letter-spacing: -0.01em; }
+  .qt span { display: block; font-size: 12.5px; line-height: 1.4; color: #64748b; margin-top: 3px; }
+  .m .act { display: flex; align-items: center; gap: 16px; margin-top: 26px; }
+  .m .cta { background: #2563eb; color: #fff; }
+  .m .cta:hover { background: #1d4ed8; }
+  .m .lay { color: #64748b; margin-top: 16px; }
+  .m .lay b { color: #0f172a; }
+  .m .pill { background: #dcfce7; color: #166534; }
+  @media (min-width: 1100px) {
+    .m-g { --gut: max(var(--site-container-pad), calc((100vw - var(--site-container-max)) / 2 + var(--site-container-pad))); display: grid; grid-template-columns: minmax(0, 1fr) calc(var(--gut) + 400px); min-height: 776px; }
+    .m-left { display: flex; align-items: center; padding: 88px 0 40px 24px; }
+    .m-right { border-left: 1px solid #e2e8f0; padding: 52px var(--gut) 56px 46px; }
+  }
+  @media (max-width: 1099.98px) {
+    .m-g { display: flex; flex-direction: column-reverse; }
+    .m-right { width: 100%; max-width: var(--site-container-max); margin-inline: auto; padding-inline: var(--site-container-pad); }
+    .m-left { padding: 28px var(--site-container-pad); }
+  }
+  @media (max-width: 639.98px) {
+    /* Phones: kiosk on top, phone overlapping its lower right corner. */
+    .m-stage { --fit: 780; width: 780px; height: 700px; }
+    .m-stage .kio { left: 0; top: 0; }
+    .m-stage .pho { left: 544px; top: 196px; }
+    .m-bar .r { display: none; }
+    .scan .sub, .scan .q { display: none; }
+    .scan .tot { margin-left: auto; }
+    .scan .nm { font-size: 18px; }
+    .qt { grid-template-columns: 1fr; }
+    .m .act { flex-wrap: wrap; }
+  }
+
+  /* ---------- 02 brutarie ---------- */
+  .b {
+    margin-top: -40px;
+    border-radius: 40px 40px 0 0;
+    background: #faf6ef;
+    z-index: 5;
+    padding: 80px 0 96px;
+    color: #2a1a0a;
+    box-shadow: 0 -1px 0 #ecdcc4, 0 -30px 60px -30px rgba(80, 45, 10, 0.22);
+  }
+  .grab { position: absolute; left: 50%; top: 14px; width: 44px; height: 5px; margin-left: -22px; border-radius: 9px; background: #e4d3b8; }
+  .c .grab { background: #3a2d25; }
+  .g { display: grid; gap: 16px; }
+  .t { position: relative; border-radius: 18px; overflow: hidden; }
+  .copy { background: #fffdf8; box-shadow: inset 0 0 0 1px #ecdfcb; padding: 30px 36px; display: flex; flex-direction: column; }
+  .b .k { color: #b45309; }
+  .b .h { font: 400 clamp(2.5rem, 3.4vw + 0.5rem, 3.75rem)/1 "Instrument Serif", Georgia, serif; letter-spacing: -0.015em; margin-top: 16px; }
+  .b .h i { color: #b45309; font-style: italic; }
+  .b .p { color: #6b5640; margin-top: 14px; font-size: 16.5px; }
+  .b .act { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 22px; margin-top: auto; padding-top: 22px; }
+  .b .act .lay { flex-direction: column; align-items: flex-start; gap: 7px; }
+  .b .cta { background: #b45309; color: #fff; }
+  .b .cta:hover { background: #92400e; }
+  .b .lay { color: #7a6650; }
+  .b .lay b { color: #2a1a0a; }
+  .b .pill { background: #f4e3c8; color: #92400e; }
+  .pt {
+    all: unset;
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: inset 0 0 0 1px #ecdfcb;
+    padding: 18px 18px 16px;
+    min-height: 154px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.2s var(--ease-out-soft);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .pt:focus-visible { outline: 2px solid #b45309; outline-offset: 2px; }
+  .pt:active { transform: scale(0.97); }
+  .pt.on { box-shadow: inset 0 0 0 2px #b45309; }
+  .pt .em { width: 48px; height: 48px; border-radius: 12px; background: #f6eee1; display: grid; place-items: center; font-size: 26px; }
+  .pt .nm { margin-top: auto; padding-top: 12px; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: #2a1a0a; }
+  .pt .pr { font-size: 14px; color: #7a6650; margin-top: 3px; font-variant-numeric: tabular-nums; }
+  .pt .bd { position: absolute; right: 14px; top: 14px; min-width: 30px; height: 30px; padding: 0 9px; border-radius: 99px; background: #b45309; color: #fff; font: 700 15px/30px var(--font-sans); text-align: center; transform: scale(0); transition: transform 0.3s var(--ease-out-soft); }
+  .pt.on .bd { transform: scale(1); }
+  .pt .bd:global(.bump) { animation: bump 0.4s var(--ease-out-soft); }
+  @keyframes bump { 40% { transform: scale(1.28); } }
+  .pt .kg { position: absolute; right: 16px; top: 18px; font: 500 11px/1 var(--font-mono); color: #9a8468; }
+  .pt.on .kg { opacity: 0; }
+  .kt, .phx { background: #f1e6d4; }
+  .kt { padding: 24px; }
+  .phx { padding: 23px 29px; }
+  .phx > div { filter: drop-shadow(0 20px 28px rgba(80, 45, 10, 0.22)); }
+  .ft { background: #f1e6d4; padding: 20px 22px; }
+  .ft .tp { display: flex; align-items: center; gap: 12px; padding-right: 64px; }
+  .ft em { flex: none; display: grid; place-items: center; min-width: 40px; height: 40px; padding: 0 6px; border-radius: 11px; background: #fffdf8; color: #b45309; font: 600 13px/1 var(--font-mono); font-style: normal; box-shadow: inset 0 0 0 1px #e7d6bb; }
+  .ft b { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; }
+  .ft > span { display: block; font-size: 13.5px; line-height: 1.42; color: #6b5640; margin-top: 11px; }
+  .ft .pill { position: absolute; right: 16px; top: 16px; margin: 0; }
+  .ft:not(:has(.pill)) .tp { padding-right: 0; }
+  @media (min-width: 1100px) {
+    .g { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: minmax(154px, auto) minmax(154px, auto) auto auto; }
+    .copy { grid-area: 1 / 1 / 3 / 7; }
+    .pt:nth-of-type(1) { grid-area: 1 / 7 / 2 / 9; }
+    .pt:nth-of-type(2) { grid-area: 1 / 9 / 2 / 11; }
+    .pt:nth-of-type(3) { grid-area: 1 / 11 / 2 / 13; }
+    .pt:nth-of-type(4) { grid-area: 2 / 7 / 3 / 9; }
+    .pt:nth-of-type(5) { grid-area: 2 / 9 / 3 / 11; }
+    .pt:nth-of-type(6) { grid-area: 2 / 11 / 3 / 13; }
+    .kt { grid-area: 3 / 1 / 4 / 10; }
+    .phx { grid-area: 3 / 10 / 4 / 13; }
+    .ft { grid-column: span 3; }
+  }
+  @media (max-width: 1099.98px) {
+    .g { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .copy { grid-column: 1 / -1; padding: 28px; }
+    .pt { grid-column: span 2; }
+    .kt { grid-column: 1 / -1; }
+    .phx { display: none; }
+    .ft { grid-column: span 3; }
+  }
+  @media (max-width: 639.98px) {
+    .b { padding: 64px 0 64px; }
+    .copy { padding: 24px 20px; }
+    .pt { grid-column: span 3; min-height: 132px; padding: 14px; }
+    .pt .nm { font-size: 15.5px; }
+    .kt { padding: 12px; }
+    .ft { grid-column: 1 / -1; }
+  }
+
+  /* ---------- 03 cafenea ---------- */
+  .c {
+    margin-top: -40px;
+    border-radius: 40px 40px 0 0;
+    background: #1c1512;
+    z-index: 6;
+    padding: 68px 0 88px;
+    color: #f4ece4;
+    box-shadow: 0 -30px 60px -30px rgba(28, 21, 18, 0.5);
+    --bleed: max(var(--site-container-pad), calc((100vw - var(--site-container-max)) / 2 + var(--site-container-pad)));
+  }
+  .rail { position: relative; height: 120px; border-radius: 18px; background: #261d18; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06); display: flex; align-items: stretch; overflow: hidden; }
+  .rl { flex: none; width: 196px; padding: 22px 24px; border-right: 1px solid rgba(255, 255, 255, 0.07); display: flex; flex-direction: column; justify-content: space-between; }
+  .rl .lb { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 600; }
+  .rl .lb span { min-width: 28px; height: 28px; padding: 0 8px; border-radius: 99px; background: #c2410c; color: #fff; font: 700 14px/28px var(--font-sans); text-align: center; }
+  .rl small { font: 500 12px/1.3 var(--font-mono); color: #a8968a; }
+  .tk-w { flex: 1; position: relative; overflow: hidden; mask: linear-gradient(90deg, #000 88%, transparent); }
+  .tks { position: absolute; left: 16px; top: 16px; bottom: 16px; display: flex; gap: 12px; }
+  .tk { flex: none; width: 236px; border-radius: 12px; background: #33271f; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06); padding: 12px 14px; transition: width 0.5s var(--ease-out-soft), margin 0.5s var(--ease-out-soft), opacity 0.4s, transform 0.5s var(--ease-out-soft), background-color 0.3s; overflow: hidden; white-space: nowrap; }
+  .tk .t1 { display: flex; align-items: center; gap: 8px; height: 20px; font: 500 12px/1 var(--font-mono); color: #a8968a; }
+  .tk .t1 b { color: #fdba74; font-weight: 600; }
+  .tk .t1 .tm { margin-left: auto; }
+  .tk .t2 { font-size: 16px; font-weight: 600; margin-top: 8px; color: #f4ece4; }
+  .tk .t3 { font-size: 12.5px; color: #a8968a; margin-top: 3px; }
+  .tk .gt { display: none; align-items: center; gap: 5px; margin-left: auto; padding: 0 8px; height: 20px; border-radius: 99px; background: #16a34a; color: #fff; font: 600 11px/1 var(--font-sans); letter-spacing: 0.02em; }
+  .tk:global(.gata) { background: #173322; box-shadow: inset 0 0 0 1px rgba(74, 222, 128, 0.35); }
+  .tk:global(.gata) .gt { display: inline-flex; }
+  .tk:global(.gata) .tm { display: none; }
+  .tk:global(.in) { transform: translateX(60px); opacity: 0; }
+  .tk:global(.out) { width: 0; padding-left: 0; padding-right: 0; margin-right: -12px; opacity: 0; transform: translateY(-20px); }
+  .c-g { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; margin-top: 56px; align-items: start; }
+  .c .k { color: #fb923c; }
+  .c .h { font-size: clamp(2.25rem, 2.4vw + 0.8rem, 2.875rem); line-height: 1.04; margin-top: 18px; color: #f8efe6; }
+  .c .h span { color: #fdba74; }
+  .c .p { color: #bfae9f; margin-top: 18px; }
+  .fr { margin-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+  .fr div { display: flex; gap: 16px; padding: 13px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+  .fr p { margin: 0; }
+  .fr em { flex: none; width: 32px; font: 500 12px/22px var(--font-mono); color: #fb923c; font-style: normal; }
+  .fr b { display: block; font-size: 15.5px; font-weight: 600; color: #f4ece4; }
+  .fr span { display: block; font-size: 14px; color: #a8968a; margin-top: 2px; }
+  .fr .pill { display: inline-block; margin: 0 0 0 8px; vertical-align: 2px; }
+  .c .act { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 24px; }
+  .c .act .lay { flex-basis: 100%; }
+  .c .cta { background: #c2410c; color: #fff; }
+  .c .cta:hover { background: #ea580c; }
+  .c .lay { color: #a8968a; }
+  .c .lay b { color: #f4ece4; }
+  .c .pill { background: rgba(251, 146, 60, 0.14); color: #fdba74; }
+  .c-stage { position: relative; width: 912px; height: 440px; }
+  .c-stage .kio { position: absolute; left: 186px; top: 20px; z-index: 1; }
+  .c-stage .kio::before { content: ""; position: absolute; inset: -60px -40px; background: radial-gradient(50% 50% at 50% 50%, rgba(194, 65, 12, 0.22), transparent 70%); z-index: -1; }
+  .c-stage .pho { position: absolute; left: 0; top: 0; z-index: 2; filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.5)); }
+  @media (min-width: 1100px) {
+    .c-g { grid-template-columns: 416px minmax(0, 1fr); gap: 20px; }
+    .c-dev { margin-right: calc(-1 * var(--bleed)); padding-top: 4px; }
+  }
+  @media (max-width: 1099.98px) {
+    .c-stage { width: 726px; height: 415px; }
+    .c-stage .kio { left: 0; top: 0; }
+    .c-stage .pho { display: none; }
+    .c-stage { --fit: 726; }
+  }
+  @media (max-width: 639.98px) {
+    .c { padding: 56px 0 64px; }
+    .rail { height: auto; flex-direction: column; }
+    .rl { width: auto; flex-direction: row; align-items: center; padding: 14px 16px; border-right: 0; border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+    .rl small br { display: none; }
+    .rl small { text-align: right; max-width: 12rem; }
+    .tk-w { height: 96px; }
+    .tks { left: 12px; top: 12px; bottom: 12px; }
+    .tk { width: 200px; }
+    .c-g { margin-top: 36px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scan, .pt, .pt .bd, .tk { transition: none; }
+  }
+</style>
+
+<script>
+  import { live } from "./home.ts";
+
+  const money = (v: number | string) => (typeof v === "number" ? v.toFixed(2) : String(v).replace(/ RON$/, "")) + " RON";
+
+  /* 01: the scan strip follows the Scanare kiosk */
+  const km = document.querySelector<HTMLElement>("#magazin .ts-kiosk");
+  const sc = document.querySelector<HTMLElement>("#magazin .scan");
+  if (km && sc) {
+    let lines: Record<string, number> = {};
+    let hide = 0;
+    const $ = (s: string) => sc.querySelector<HTMLElement>(s)!;
+    km.addEventListener("ts:add", (e) => {
+      if (!live(sc)) return;
+      const d = (e as CustomEvent).detail || {};
+      const kg = d.qty % 1 !== 0;
+      lines[d.name] = kg ? 1 : d.qty;
+      $(".nm").textContent = d.name;
+      $(".sub").textContent = kg ? d.qty.toFixed(3) + " kg · din cantar" : d.qty + " buc";
+      $(".q b").textContent = kg ? "1" : String(d.qty);
+      $(".tot small").textContent = Object.values(lines).reduce((a, n) => a + n, 0) + " produse";
+      $(".tot b").textContent = money(d.total);
+      sc.classList.remove("away", "fl");
+      void sc.offsetWidth;
+      sc.classList.add("fl");
+      clearTimeout(hide);
+      hide = window.setTimeout(() => sc.classList.add("away"), 2600);
+    });
+    km.addEventListener("ts:sale", () => { lines = {}; clearTimeout(hide); sc.classList.add("away"); });
+  }
+
+  /* 02: product tiles mirror the Vitrina kiosk, and take real taps */
+  type Tile = HTMLElement & { _q: number };
+  const kv = document.querySelector<HTMLElement>("#brutarie .ts-kiosk");
+  const tiles = [...document.querySelectorAll<Tile>("#brutarie .pt")];
+  const setT = (t: Tile, q: number) => {
+    const b = t.querySelector<HTMLElement>(".bd")!;
+    t.classList.toggle("on", q > 0);
+    t._q = q;
+    b.textContent = t.dataset.kg ? (q ? q.toFixed(3).replace(/0+$/, "") + " kg" : "0") : String(q);
+    b.classList.remove("bump");
+    void b.offsetWidth;
+    if (q) b.classList.add("bump");
+  };
+  tiles.forEach((t) => {
+    t._q = Number(t.querySelector(".bd")!.textContent) || 0;
+    t.addEventListener("click", () => setT(t, t.dataset.kg ? t._q + 0.25 : t._q + 1));
+  });
+  kv?.addEventListener("ts:add", (e) => {
+    if (!live(kv)) return;
+    const d = (e as CustomEvent).detail || {};
+    tiles.forEach((t) => { if (t.dataset.n === d.name) setT(t, d.qty); });
+  });
+  kv?.addEventListener("ts:sale", () => { if (live(kv)) tiles.forEach((t) => setT(t, 0)); });
+
+  /* 03: paid orders from the Bar kiosk land on the rail, the oldest gets Gata */
+  const kb = document.querySelector<HTMLElement>("#cafenea .ts-kiosk");
+  const box = document.querySelector<HTMLElement>("#cafenea .tks");
+  const cnt = document.querySelector<HTMLElement>("#cafenea .cnt");
+  if (kb && box && cnt) {
+    let ord = 42;
+    let cur: { n: string; q: number }[] = [];
+    // Demo names for the order tickets.
+    const MOD: Record<string, string> = { "Flat white": "M · ovaz · +1 shot", "Iced latte": "L · ovaz", Mocha: "S", "Espresso dublu": "Normal", Cappuccino: "M", Latte: "M", Americano: "M", "Matcha latte": "M" };
+    const NAMES = ["Vlad", "Irina", "La pachet", "Sorin", "La masa 3", "Dana"];
+    const count = () => (cnt.textContent = String(box.querySelectorAll(".tk:not(.out):not(.gata)").length));
+    kb.addEventListener("ts:add", (e) => {
+      const d = (e as CustomEvent).detail || {};
+      const f = cur.find((x) => x.n === d.name);
+      if (f) f.q = d.qty;
+      else cur.push({ n: d.name, q: d.qty });
+    });
+    kb.addEventListener("ts:sale", () => {
+      if (!live(box)) return;
+      const it = cur.length ? cur : [{ n: "Cappuccino", q: 2 }, { n: "Flat white", q: 1 }];
+      cur = [];
+      const a = it[0], rest = it.length - 1;
+      const el = document.createElement("div");
+      el.className = "tk in";
+      el.dataset.s = "0";
+      // Astro scopes .tk styles by attribute; copy it from an existing ticket so the new one is styled.
+      const ref = box.querySelector(".tk");
+      ref?.getAttributeNames().filter((n) => n.startsWith("data-astro-cid")).forEach((n) => el.setAttribute(n, ""));
+      const sub = [MOD[a.n], rest ? "+" + rest + (rest > 1 ? " produse" : " produs") : ""].filter(Boolean).join(" · ");
+      el.innerHTML = ref ? ref.innerHTML : "";
+      el.querySelector(".t1 b")!.textContent = "#" + ord;
+      el.querySelector(".t1 b")!.nextSibling!.textContent = NAMES[ord % NAMES.length];
+      el.querySelector(".tm")!.textContent = "0:00";
+      el.querySelector(".t2")!.textContent = (a.q > 1 ? a.q + " × " : "") + a.n;
+      el.querySelector(".t3")!.textContent = sub;
+      ord++;
+      const old = box.querySelector<HTMLElement>(".tk.gata:not(.out)");
+      if (old) { old.classList.add("out"); setTimeout(() => old.remove(), 520); }
+      box.appendChild(el);
+      void el.offsetWidth;
+      el.classList.remove("in");
+      count();
+      setTimeout(() => {
+        if (!live(box)) return;
+        const n = box.querySelector(".tk:not(.gata):not(.out)");
+        if (n) { n.classList.add("gata"); count(); }
+      }, 2400);
+    });
+    setInterval(() => {
+      if (!live(box)) return;
+      box.querySelectorAll<HTMLElement>(".tk:not(.gata)").forEach((t) => {
+        const s = Number(t.dataset.s) + 1;
+        t.dataset.s = String(s);
+        t.querySelector(".tm")!.textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+      });
+    }, 1000);
+    count();
+  }
+</script>

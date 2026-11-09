@@ -1,0 +1,74 @@
+---
+// Sticky bar under the menu on product pages: breadcrumb left, section anchors right (F1/G2 sub-nav, I1 red marker on the current one).
+interface Crumb { label: string; href?: string }
+interface Link { href: string; label: string }
+interface Props { crumbs: Crumb[]; links: Link[]; cta?: Link }
+const { crumbs, links, cta } = Astro.props;
+---
+<div class="psn" data-psn>
+  <div class="site-container psn-in">
+    <ol class="psn-bc" aria-label="Breadcrumb">
+      {crumbs.map((c, i) => (
+        <li>
+          {i > 0 && <span class="psn-sl" aria-hidden="true">/</span>}
+          {c.href ? <a href={c.href}>{c.label}</a> : <b aria-current="page">{c.label}</b>}
+        </li>
+      ))}
+    </ol>
+    <div class="psn-links" role="navigation" aria-label="Pe această pagină">
+      {links.map((l, i) => <a href={l.href} class:list={[{ on: i === 0 }]}>{l.label}</a>)}
+      {cta && <a class="psn-cta" href={cta.href} data-tapselo-cta="subnav">{cta.label} <span aria-hidden="true">&rarr;</span></a>}
+    </div>
+  </div>
+</div>
+
+<style>
+  .psn { position: sticky; top: var(--pp-sticky-top, 0px); z-index: 40; height: 52px; background: color-mix(in srgb, var(--color-paper-white) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--color-rule); }
+  .psn-in { display: flex; align-items: center; gap: 24px; height: 52px; }
+  .psn-bc { display: flex; align-items: center; gap: 10px; margin: 0; padding: 0; list-style: none; font-size: 14px; color: var(--color-ink-3); white-space: nowrap; }
+  .psn-bc li { display: flex; align-items: center; gap: 10px; }
+  .psn-bc a { color: var(--color-ink-2); }
+  .psn-bc a:hover { color: var(--color-ink); }
+  .psn-bc b { color: var(--color-ink); font-weight: 600; }
+  .psn-sl { color: var(--color-perf); }
+  .psn-links { margin-left: auto; display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 500; color: var(--color-ink-2); overflow-x: auto; scrollbar-width: none; }
+  .psn-links::-webkit-scrollbar { display: none; }
+  .psn-links a { position: relative; display: flex; align-items: center; height: 52px; padding: 0 11px; white-space: nowrap; color: inherit; }
+  .psn-links a:hover { color: var(--color-ink); }
+  .psn-links a.on { color: var(--color-ink); font-weight: 600; }
+  .psn-links a.on::after { content: ""; position: absolute; left: 11px; right: 11px; bottom: -1px; height: 2px; background: var(--color-stamp); }
+  .psn-links .psn-cta { margin-left: 10px; color: var(--color-accent); font-weight: 600; }
+  @media (max-width: 767.98px) {
+    .psn-bc { display: none; }
+    .psn-links { margin-left: -11px; padding-right: 32px; mask: linear-gradient(90deg, #000 85%, transparent); }
+    .psn-links .psn-cta { display: none; }
+  }
+</style>
+
+<script>
+  // Scroll-spy: the anchor of the section under the bar gets the red marker.
+  const bar = document.querySelector<HTMLElement>("[data-psn]");
+  const links = bar ? [...bar.querySelectorAll<HTMLAnchorElement>(".psn-links a[href^='#']")] : [];
+  const targets = links.map((a) => document.getElementById(a.hash.slice(1))).filter((t): t is HTMLElement => !!t);
+  if (bar && targets.length) {
+    // Never above where an anchor jump lands a section (scroll-margin-top), or a click marks the previous one.
+    // Read on every call: --bar-h (and so the margin) changes at 1100px.
+    const landing = () => parseFloat(getComputedStyle(targets[0]).scrollMarginTop) + 4;
+    const row = bar.querySelector<HTMLElement>(".psn-links")!;
+    let last = -1;
+    const mark = () => {
+      const y = Math.max(bar.getBoundingClientRect().bottom + 80, landing());
+      let k = 0;
+      targets.forEach((t, i) => { if (t.getBoundingClientRect().top <= y) k = i; });
+      links.forEach((a, i) => a.classList.toggle("on", i === k));
+      if (k === last) return;
+      last = k;
+      // Phones: keep the marked link in view when the row scrolls sideways.
+      const r = links[k].getBoundingClientRect(), rr = row.getBoundingClientRect();
+      if (r.left < rr.left || r.right > rr.right) row.scrollTo({ left: row.scrollLeft + r.left - rr.left - 16, behavior: "smooth" });
+    };
+    let raf = 0;
+    addEventListener("scroll", () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(mark); }, { passive: true });
+    mark();
+  }
+</script>

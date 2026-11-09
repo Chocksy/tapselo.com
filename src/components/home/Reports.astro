@@ -1,0 +1,35 @@
+---
+// D1 "Rapoarte": what the admin shows, next to the live admin sales screen from the kit.
+const ITEMS = [
+  ["Recomandări automate", "Ce să promovezi și ce să scoți din raft."],
+  ["Orele de vârf", "Zilele aglomerate și tendința pe săptămâni."],
+  ["Produsele care contează", "Top vânzări și ce doar ocupă raftul."],
+  ["Profit pe produs", "Cât câștigi real pe fiecare produs."],
+];
+---
+
+<section class="hm-sec line" id="rapoarte" data-moment="tear">
+  <div class="site-container rg">
+    <div>
+      <p class="stamp-label">Rapoarte</p>
+      <h2 class="hm-h2">Vezi ce se vinde și<br />unde pierzi bani.</h2>
+      <p class="hm-lead">Fără să fii contabil. Totul vine din vânzările de la casă.</p>
+      <ul class="r4">{ITEMS.map(([b, s]) => <li><b>{b}</b><span>{s}</span></li>)}</ul>
+      <a class="hm-link" href="/admin/">Vezi adminul <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="ad canvas">
+      <div data-fit="700" data-fit-max="1.2"><div class="ts-admin" data-screen="sales" data-w="700"></div></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .rg { display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; align-items: center; }
+  @media (min-width: 1000px) { .rg { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 56px; } }
+  .r4 { list-style: none; margin: 32px 0 28px; padding: 0; display: grid; gap: 0 28px; }
+  @media (min-width: 560px) { .r4 { grid-template-columns: 1fr 1fr; } }
+  .r4 li { padding: 14px 0; border-top: 1px solid var(--color-rule); }
+  .r4 b { display: block; font-size: 15.5px; font-weight: 600; color: var(--color-ink); }
+  .r4 span { display: block; margin-top: 3px; font-size: 14.5px; line-height: 1.45; color: var(--color-ink-2); }
+  .ad > div { border-radius: 12px; overflow: hidden; box-shadow: 0 0 0 1px var(--color-rule), 0 40px 80px -40px rgba(60, 45, 20, 0.45); }
+</style>

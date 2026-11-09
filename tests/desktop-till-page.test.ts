@@ -41,7 +41,7 @@ test("phone/tablet section: answer-first copy, table rows, cdep + legislatie lin
   );
   assert.ok(t.includes("AMEF-V") && t.includes("nu este în vigoare"));
   assert.ok(t.includes("ce afișează o aplicație pe telefon fără casă de marcat nu este bon fiscal"));
-  for (const row of ["Calculator (Windows/macOS/Linux)", "Tabletă", "Telefon", "AMEF-V (casă de marcat virtuală)", "Doar inventar", "Nu în prezent"]) {
+  for (const row of ["Calculator (Windows/macOS/Linux)", "Tabletă", "Telefon", "AMEF-V (casă de marcat virtuală)", "Da, pe iPhone (bonul prin Datecs)", "Nu în prezent"]) {
     assert.ok(t.includes(row), `missing table row/cell: ${row}`);
   }
   assert.ok(article.includes(CDEP));

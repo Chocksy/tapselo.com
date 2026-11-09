@@ -1,0 +1,51 @@
+---
+// D1 "Echipamente": the hardware we tested, with the current phone facts.
+const ROWS: { b: string; s: string; nou?: boolean }[] = [
+  { b: "Casă de marcat fiscală", s: "Datecs FP-700 pe USB. Bon, raport X și Z, export ANAF. Deschide sertarul de bani după o vânzare cash." },
+  { b: "Cântar", s: "Dibal în rețea, testat pe D-900." },
+  { b: "Cititor coduri de bare", s: "Orice cititor USB. Telefonul citește EAN-13 și Code 128." },
+  { b: "Calculator", s: "Windows, macOS, Linux sau stickul Tapselo. Testat pe Shuttle X50V6." },
+  { b: "Telefon", s: "iPhone. Trimite bonul fiscal la Datecs prin rețea sau Bluetooth." },
+  { b: "Card pe telefon", s: "Încasezi cu cardul direct pe telefon, cu Tap to Pay. Fără abonament.", nou: true },
+];
+---
+
+<section class="hm-sec white tear-top" id="echipamente" data-moment="tear">
+  <div class="site-container eg">
+    <div>
+      <p class="stamp-label">Echipamente</p>
+      <h2 class="hm-h2">Ce am testat cu Tapselo.</h2>
+      <dl class="el">
+        {
+          ROWS.map((r) => (
+            <div>
+              <dt>{r.b}{r.nou && <span class="nou">Nou</span>}</dt>
+              <dd>{r.s}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+    <figure class="ev">
+      <div class="shot">
+        <img src="/videos/v2/equipment.jpg" width="1280" height="720" loading="lazy" decoding="async" alt="Ecranul de vânzare Tapselo, cu imprimanta conectată și butoanele rapide" />
+      </div>
+      <figcaption>Casa Tapselo: imprimanta fiscală, cântarul și cititorul se leagă de același ecran.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .eg { display: grid; gap: 48px; align-items: start; }
+  @media (min-width: 1000px) { .eg { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 64px; } }
+  .el { margin: 36px 0 0; border-top: 1px solid var(--color-rule); }
+  .el div { display: grid; gap: 4px 24px; padding: 16px 0; border-bottom: 1px solid var(--color-rule); }
+  @media (min-width: 640px) { .el div { grid-template-columns: 13rem minmax(0, 1fr); } }
+  dt { display: flex; align-items: center; gap: 8px; font-size: 15.5px; font-weight: 600; color: var(--color-ink); }
+  dd { margin: 0; font-size: 15px; line-height: 1.5; color: var(--color-ink-2); }
+  .nou { padding: 3px 7px; border-radius: 99px; background: #dcfce7; color: #166534; font: 600 10.5px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+  .ev { margin: 0; }
+  .shot { border-radius: 14px; overflow: hidden; background: #0c1324; box-shadow: 0 0 0 1px var(--color-rule), 0 30px 60px -30px rgba(60, 45, 20, 0.35); aspect-ratio: 1280 / 590; }
+  .shot img { display: block; width: 100%; height: auto; }
+  figcaption { margin-top: 14px; font: 500 12.5px/1.5 var(--font-mono); color: var(--color-ink-3); }
+</style>

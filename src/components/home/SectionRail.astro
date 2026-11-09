@@ -1,0 +1,138 @@
+---
+// N2: sticky section rail under the menu bar, with scroll-spy, a sliding pill and a progress line.
+const SHOPS = [
+  ["magazin", "Magazin", "#2563eb"],
+  ["brutarie", "Brutărie", "#b45309"],
+  ["cafenea", "Cafenea", "#c2410c"],
+];
+const REST = [
+  ["features", "Funcții"],
+  ["how-it-works", "Pornire"],
+  ["echipamente", "Echipamente"],
+  ["rapoarte", "Rapoarte"],
+  ["pricing", "Prețuri"],
+  ["faq", "Întrebări"],
+];
+---
+
+<nav class="hm-rail follows-bar" aria-label="Pe pagină" data-rail>
+  <div class="site-container in">
+    <span class="tag" aria-hidden="true">PE PAGINĂ</span>
+    <div class="sc">
+      <div class="row">
+        <span class="ind" aria-hidden="true"></span>
+        {SHOPS.map(([id, t, c]) => <a href={`#${id}`} data-s={id}><i style={`background:${c}`}></i>{t}</a>)}
+        <span class="sep" aria-hidden="true"></span>
+        {REST.map(([id, t]) => <a href={`#${id}`} data-s={id}>{t}</a>)}
+      </div>
+    </div>
+  </div>
+  <span class="pr" aria-hidden="true"></span>
+</nav>
+
+<style>
+  .hm-rail {
+    position: sticky;
+    top: var(--bar-h);
+    z-index: 40;
+    height: 58px;
+    background: rgba(255, 253, 247, 0.88);
+    backdrop-filter: blur(14px) saturate(1.5);
+    box-shadow: 0 1px 0 var(--color-rule);
+  }
+  .in { display: flex; align-items: center; gap: 18px; height: 100%; }
+  .tag { flex: none; font: 500 11px/1 var(--font-mono); letter-spacing: 0.12em; color: var(--color-ink-3); }
+  .sc { flex: 1; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  .sc::-webkit-scrollbar { display: none; }
+  .row { position: relative; display: flex; align-items: center; gap: 2px; width: max-content; }
+  a {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 13px;
+    border-radius: 99px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-ink-2);
+    white-space: nowrap;
+    transition: color 0.3s;
+  }
+  a:hover { color: var(--color-ink); }
+  a[aria-current] { color: var(--fg, #fff); }
+  i { width: 8px; height: 8px; border-radius: 50%; }
+  .sep { width: 1px; height: 18px; margin: 0 8px; background: var(--color-rule); }
+  .ind {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    height: 34px;
+    width: 0;
+    border-radius: 99px;
+    background: var(--bg, var(--color-ink));
+    opacity: 0;
+    transition: transform 0.6s var(--ease-out-soft), width 0.6s var(--ease-out-soft), background-color 0.6s, opacity 0.3s;
+  }
+  .pr {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background: var(--ln, var(--color-ink));
+    transition: width 0.6s var(--ease-out-soft), background-color 0.6s;
+  }
+  @media (max-width: 639.98px) {
+    .tag { display: none; }
+    .sc { mask: linear-gradient(90deg, #000 85%, transparent); margin-right: calc(-1 * var(--site-container-pad)); }
+    .row { padding-right: 56px; }
+  }
+</style>
+
+<script>
+  const rail = document.querySelector<HTMLElement>("[data-rail]")!;
+  const sc = rail.querySelector<HTMLElement>(".sc")!;
+  const ind = rail.querySelector<HTMLElement>(".ind")!;
+  const links = [...rail.querySelectorAll<HTMLAnchorElement>("a[data-s]")];
+  const secs = links.map((a) => document.getElementById(a.dataset.s!)).filter(Boolean) as HTMLElement[];
+  const COL: Record<string, [string, string, string]> = {
+    magazin: ["#dbeafe", "#1d4ed8", "#2563eb"],
+    brutarie: ["#f6e3c6", "#92400e", "#b45309"],
+    cafenea: ["#1c1512", "#fdba74", "#c2410c"],
+  };
+  let cur = "";
+  function set(id: string) {
+    if (id === cur) return;
+    cur = id;
+    const i = links.findIndex((a) => a.dataset.s === id);
+    links.forEach((a, j) => (j === i ? a.setAttribute("aria-current", "true") : a.removeAttribute("aria-current")));
+    const [bg, fg, ln] = COL[id] ?? ["#1d1b17", "#fff", "#1d1b17"];
+    rail.style.setProperty("--bg", bg);
+    rail.style.setProperty("--fg", fg);
+    rail.style.setProperty("--ln", ln);
+    const a = links[i];
+    ind.style.opacity = a ? "1" : "0";
+    (rail.querySelector(".pr") as HTMLElement).style.width = a ? ((i + 1) / links.length) * 100 + "%" : "0";
+    if (!a) return;
+    ind.style.transform = `translateX(${a.offsetLeft}px)`;
+    ind.style.width = a.offsetWidth + "px";
+    // Keep the active pill in view when the row scrolls sideways (phones).
+    const l = a.offsetLeft - sc.scrollLeft;
+    if (l < 0 || l + a.offsetWidth > sc.clientWidth) sc.scrollTo({ left: a.offsetLeft - 16, behavior: "smooth" });
+  }
+  // The active section is the last one whose top passed a line just under the rail. The line is never
+  // above where an anchor jump lands a section (its scroll-margin-top), or a click marks the previous one.
+  // Read on every call: --bar-h (and so the margin) changes at 1100px.
+  const landing = () => (secs[0] ? parseFloat(getComputedStyle(secs[0]).scrollMarginTop) + 4 : 0);
+  function spy() {
+    const y = Math.max(rail.getBoundingClientRect().bottom + 80, landing());
+    let id = "";
+    for (const s of secs) if (s.getBoundingClientRect().top <= y) id = s.id;
+    set(id);
+  }
+  addEventListener("scroll", spy, { passive: true });
+  addEventListener("resize", () => { const c = cur; cur = ""; set(c); });
+  spy();
+</script>

@@ -1,7 +1,10 @@
 ---
+// 404 (I1 + J2): cancelled receipt from the printer, Nea Tapselo dizzy behind the empty shelf.
+// K1 card 12 on load: the receipt shakes once (360 ms), then he wobbles (700 ms). Reduced motion: still.
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
+import Mascot from "../components/Mascot.astro";
 import { internalPath } from "../lib/internal-url.ts";
 ---
 
@@ -12,64 +15,129 @@ import { internalPath } from "../lib/internal-url.ts";
 >
   <Navbar />
 
-  <header class="bg-primary pt-28 pb-14 md:pt-32">
-    <div class="mx-auto max-w-3xl px-6 text-center">
-      <p class="text-sm font-semibold uppercase tracking-wide text-accent">Eroare 404</p>
-      <h1 class="mt-3 font-display text-4xl italic text-white sm:text-5xl">Pagina nu a fost găsită</h1>
-      <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">
-        Linkul este greșit, pagina a fost mutată sau nu există. Poți reveni la pagina principală sau la uneltele gratuite.
-      </p>
-    </div>
-  </header>
+  <main class="nf">
+    <div class="site-container nf-w">
+      <div class="nf-t">
+        <div class="nf-big dots">404<span class="nf-stp">ANULAT</span></div>
+        <h1>Pagina asta a ieșit din stoc.</h1>
+        <p class="nf-ld">Am căutat-o și în depozit. Linkul e vechi sau are o literă greșită. De aici ajungi sigur undeva util:</p>
+        <div class="nf-bt">
+          <a class="nf-b1" href="/">Pagina principală</a>
+          <a class="nf-b2" href={internalPath("/unelte")}>Unelte gratuite</a>
+          <a class="nf-b2" href={internalPath("/ghid")}>Ghid</a>
+          <a class="nf-b2" href="/#pricing">Prețuri</a>
+        </div>
+      </div>
 
-  <main class="bg-surface-white py-14">
-    <div class="mx-auto flex max-w-md flex-col items-center gap-4 px-6">
-      <a
-        href="/"
-        class="ut-btn ut-btn-primary w-full max-w-xs text-center no-underline"
-      >
-        Pagina principală
-      </a>
-      <a
-        href={internalPath("/unelte")}
-        class="ut-btn ut-btn-secondary w-full max-w-xs text-center no-underline"
-      >
-        Unelte gratuite
-      </a>
+      <div class="nf-sc" aria-hidden="true" data-moment="404">
+        <div class="nf-sh">
+          <span class="up"></span><span class="up r"></span>
+          <Mascot spot="404" pose="dizzy" rest="dizzy" size={140} sizeSm={96} peek={0.86} say="Era aici ieri…" sayAt="t" sayOn keep cls="nf-ms" />
+          <span class="s1"></span>
+          <span class="pt">404<small>0 buc.</small></span>
+          <span class="bx"></span><span class="bx b"></span>
+          <span class="s2"></span>
+        </div>
+        <div class="nf-pr">
+          <div class="pb"></div>
+          <div class="slot">
+            <div class="rc">
+              <div class="c t1">BON ANULAT</div>
+              <div class="c s">Casa 1 · tapselo.com</div>
+              <hr />
+              <div class="r"><span>PRODUS NEGASIT</span><span>0.00</span></div>
+              <div class="q" data-nf-path>/pagina-cautata</div>
+              <div class="r"><span>CANTITATE</span><span>0</span></div>
+              <hr />
+              <div class="tt"><span>TOTAL</span><b class="dots">0.00</b></div>
+              <div class="s">Nu s-a taxat nimic.</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 
   <Footer />
 </Layout>
 
-<style is:global>
-  .ut-btn {
-    display: inline-flex;
-    min-height: 2.75rem;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0.5rem;
-    padding: 0.5rem 1.1rem;
-    font-size: 0.875rem;
-    font-weight: 700;
-    cursor: pointer;
-    border: none;
-    transition: background 0.15s;
+<script>
+  const q = document.querySelector("[data-nf-path]");
+  if (q) q.textContent = location.pathname.length > 28 ? location.pathname.slice(0, 27) + "…" : location.pathname;
+</script>
+
+<style>
+  .nf { background: var(--color-paper); padding: 72px 0 96px; overflow-x: clip; }
+  .nf-w { display: grid; grid-template-columns: minmax(0, 1fr) 480px; gap: 64px; align-items: center; }
+  .nf-big { position: relative; display: inline-block; font-size: 132px; line-height: .9; color: var(--color-ink); }
+  .nf-stp { position: absolute; right: -112px; top: 30px; transform: rotate(-8deg); border: 2px solid var(--color-stamp); color: var(--color-stamp); border-radius: 6px; padding: 4px 9px; font: 700 15px var(--font-mono); letter-spacing: .14em; opacity: .85; }
+  .nf h1 { margin-top: 26px; font-size: 46px; line-height: 1.05; letter-spacing: -.035em; font-weight: 600; color: var(--color-ink); text-wrap: balance; }
+  .nf-ld { margin-top: 14px; max-width: 34rem; font-size: 17px; line-height: 1.55; color: var(--color-ink-2); text-wrap: pretty; }
+  .nf-bt { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .nf-bt a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 7px; font: 500 15px/1 var(--font-sans); transition: background-color .2s; }
+  .nf-b1 { background: #2563eb; color: #fff; font-weight: 600 !important; }
+  .nf-b1:hover { background: #1d4ed8; }
+  .nf-b2 { background: var(--color-paper-white); color: var(--color-ink); box-shadow: inset 0 0 0 1px #d9cfbb; }
+  .nf-b2:hover { background: #fff; }
+
+  /* scene: shelf on the left, printer with the cancelled receipt on the right */
+  .nf-sc { position: relative; height: 400px; }
+  .nf-sh { position: absolute; left: 0; top: 40px; width: 58%; height: 340px; }
+  .nf-sh .up { position: absolute; left: 0; top: 0; bottom: 0; width: 10px; border-radius: 2px; background: #ebe5d8; box-shadow: inset 0 0 0 1px #ddd4c1; }
+  .nf-sh .up.r { left: auto; right: 0; }
+  .nf-sh .s1, .nf-sh .s2 { position: absolute; left: 0; right: 0; height: 14px; border-radius: 3px; background: var(--color-paper-white); box-shadow: 0 0 0 1px var(--color-rule), 0 10px 18px -12px rgba(60, 45, 20, .35); }
+  .nf-sh .s1 { top: 170px; z-index: 3; }
+  .nf-sh .s2 { top: 300px; }
+  .nf-sh .pt { position: absolute; left: 34%; top: 184px; padding: 5px 10px 6px; border-radius: 0 0 6px 6px; background: var(--color-paper-white); box-shadow: 0 0 0 1px var(--color-rule); font: 600 12px/1.3 var(--font-mono); color: var(--color-stamp); text-align: center; }
+  .nf-sh .pt small { display: block; font-weight: 500; color: var(--color-ink-3); }
+  .nf-sh .bx { position: absolute; left: 12%; bottom: 40px; width: 34%; height: 58px; border-radius: 5px; background: #f0e8d8; box-shadow: inset 0 0 0 1px #e2d6bf; }
+  .nf-sh .bx.b { left: 52%; width: 28%; height: 44px; }
+  /* he stands behind the top plank: the peek cut sits in the middle of the plank */
+  .nf-sh :global(.ms.nf-ms) { position: absolute; left: 22%; bottom: calc(100% - 177px); z-index: 2; }
+  .nf-sh :global(.nf-ms .ms-f) { transform-origin: 50% 100%; animation: nf-wob .7s var(--ease-out-soft) .86s both; }
+
+  .nf-pr { position: absolute; right: 0; top: 0; width: 38%; }
+  .pb { height: 30px; border-radius: 8px; background: linear-gradient(#34312d, #24221f); box-shadow: inset 0 1px 0 #4a4640, 0 10px 20px -8px rgba(0, 0, 0, .4); position: relative; z-index: 1; }
+  .pb::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 12px; height: 5px; border-radius: 3px; background: #0c0b0a; }
+  .slot { margin: -17px 10px 0; }
+  .rc { position: relative; background: var(--color-paper-white); padding: 24px 14px 14px; font: 500 11.5px/1.55 var(--font-mono); color: #2b2823; box-shadow: 0 10px 22px -10px rgba(60, 45, 20, .4), 0 0 0 1px #ece5d6; animation: nf-shake .36s cubic-bezier(.36, .07, .19, .97) .5s both; }
+  .rc::after { content: ""; position: absolute; left: 0; right: 0; bottom: -9px; height: 9px; background: var(--color-paper-white); mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 12px 100%; }
+  .rc .c { text-align: center; }
+  .rc .t1 { font-weight: 700; font-size: 12.5px; color: var(--color-ink); letter-spacing: .04em; }
+  .rc .s { color: #9a937f; font-size: 10.5px; }
+  .rc hr { border: 0; border-top: 1px dashed #cfc6b2; margin: 8px 0; }
+  .rc .r { display: flex; justify-content: space-between; gap: 8px; white-space: nowrap; }
+  .rc .q { color: #9a937f; font-size: 10.5px; margin-top: -3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rc .tt { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; color: var(--color-ink); }
+  .rc .tt b { font-size: 30px; line-height: 1.1; }
+
+  @keyframes nf-shake { 10%, 90% { transform: translateX(-2px); } 20%, 80% { transform: translateX(4px); } 30%, 50%, 70% { transform: translateX(-7px); } 40%, 60% { transform: translateX(7px); } }
+  @keyframes nf-wob { 25% { transform: rotate(-5deg); } 60% { transform: rotate(4deg); } }
+  @media (prefers-reduced-motion: reduce) { .rc, .nf-sh :global(.nf-ms .ms-f) { animation: none; } }
+
+  @media (max-width: 1023.98px) {
+    .nf { padding: 40px 0 72px; }
+    .nf-w { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    .nf-sc { width: 100%; max-width: 480px; }
   }
-  .ut-btn-primary {
-    background: var(--color-accent);
-    color: #fff;
-  }
-  .ut-btn-primary:hover {
-    background: var(--color-accent-hover);
-  }
-  .ut-btn-secondary {
-    background: #fff;
-    color: var(--color-accent);
-    border: 1px solid var(--color-accent);
-  }
-  .ut-btn-secondary:hover {
-    background: var(--color-accent);
-    color: #fff;
+  @media (max-width: 767.98px) {
+    .nf-big { font-size: 96px; }
+    .nf-stp { right: -84px; top: 18px; font-size: 13px; }
+    .nf h1 { font-size: 34px; margin-top: 20px; }
+    .nf-ld { font-size: 16px; }
+    .nf-sc { height: 340px; }
+    .nf-sh { top: 30px; width: 54%; height: 300px; }
+    .nf-sh .s1 { top: 150px; }
+    .nf-sh .s2 { top: 262px; }
+    .nf-sh .pt { top: 164px; left: 30%; }
+    .nf-sh .bx { bottom: 38px; height: 44px; }
+    .nf-sh .bx.b { height: 34px; }
+    .nf-sh :global(.ms.nf-ms) { left: 18%; bottom: calc(100% - 157px); }
+    .nf-pr { width: 44%; }
+    .slot { margin: -17px 6px 0; }
+    .rc { padding: 22px 10px 12px; font-size: 10px; }
+    .rc .t1 { font-size: 11px; }
+    .rc .s, .rc .q { font-size: 9.5px; }
+    .rc .tt b { font-size: 24px; }
   }
 </style>

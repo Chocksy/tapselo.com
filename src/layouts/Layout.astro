@@ -1,7 +1,7 @@
 ---
 import "../styles/global.css";
 import PostHog from "../components/PostHog.astro";
-import SiteMascot from "../components/SiteMascot.astro";
+import { MASCOT_HIDDEN_KEY } from "../data/mascot.ts";
 import { OPERATOR_LEGAL_NAME, PFA_CUI } from "../data/site.ts";
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
   appJsonLd?: boolean;
   /** Absolute og:image/twitter:image URL for this page; defaults to the site OG image. */
   ogImage?: string;
-  /** Fixed corner mascot (marketing pages). Shopper pages pass false. */
+  /** Show Nea Tapselo's spots on this page (J2, src/components/Mascot.astro). Shopper pages pass false. */
   mascot?: boolean;
 }
 
@@ -43,7 +43,7 @@ const tapseloAppDescription =
 ---
 
 <!doctype html>
-<html lang="ro">
+<html lang="ro" data-mascot={mascot || undefined}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -60,7 +60,7 @@ const tapseloAppDescription =
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonicalUrl} />
-    <meta name="theme-color" content="#0f172a" />
+    <meta name="theme-color" content="#fffdf7" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -117,6 +117,7 @@ const tapseloAppDescription =
     ))}
 
     <meta name="generator" content={Astro.generator} />
+    {mascot && <script is:inline set:html={`try{sessionStorage.getItem(${JSON.stringify(MASCOT_HIDDEN_KEY)})==="1"&&document.documentElement.classList.add("ms-off")}catch(e){}`} />}
   </head>
   <body class="font-sans antialiased">
     <PostHog />
@@ -142,6 +143,5 @@ const tapseloAppDescription =
       });
 
     </script>
-    {mascot && <SiteMascot />}
   </body>
 </html>

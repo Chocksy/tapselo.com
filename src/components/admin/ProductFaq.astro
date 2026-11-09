@@ -1,0 +1,39 @@
+---
+// FAQ block of the product pages (F1/G2): title left, questions right. The same items feed the FAQPage JSON-LD in the page.
+import type { FaqItem } from "../../lib/unelte/jsonld.ts";
+interface Props { id: string; kicker: string; lead: string; items: FaqItem[]; white?: boolean }
+const { id, kicker, lead, items, white = false } = Astro.props;
+---
+<section id={id} class:list={["pp-band tear-top", { "pp-band--white": white }]} data-moment="tear">
+  <div class="pp-rails" aria-hidden="true"></div>
+  <div class="site-container pp-pad pfq">
+    <div>
+      <div class="stamp-label">{kicker}</div>
+      <h2 class="pp-h2"><slot /></h2>
+      <p class="pp-lead pfq-lead">{lead}</p>
+    </div>
+    <div class="pfq-list">
+      {items.map((it, i) => (
+        <details open={i === 0}>
+          <summary><h3>{it.q}</h3><i aria-hidden="true"></i></summary>
+          {it.aHtml ? <p set:html={it.aHtml} /> : <p>{it.a}</p>}
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .pfq { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  @media (min-width: 1024px) { .pfq { grid-template-columns: 460px minmax(0, 1fr); gap: 80px; } }
+  .pfq-lead { margin-top: 20px; }
+  .pfq-list { border-top: 1px solid var(--color-rule); }
+  details { border-bottom: 1px solid var(--color-rule); }
+  summary { position: relative; display: block; list-style: none; padding: 22px 44px 22px 0; cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+  summary h3 { margin: 0; font-size: 18px; line-height: 1.4; font-weight: 600; letter-spacing: -.01em; color: var(--color-ink); }
+  summary i { position: absolute; right: 4px; top: 28px; width: 13px; height: 13px; background: linear-gradient(var(--color-ink), var(--color-ink)) center / 13px 1.5px no-repeat, linear-gradient(var(--color-ink), var(--color-ink)) center / 1.5px 13px no-repeat; transition: transform .3s var(--ease-out-soft); }
+  details[open] summary i { background: linear-gradient(var(--color-ink), var(--color-ink)) center / 13px 1.5px no-repeat; }
+  details p { margin: -8px 0 0; padding: 0 0 22px; max-width: 640px; font-size: 16px; line-height: 1.55; color: var(--color-ink-2); }
+  details p :global(a) { color: var(--color-accent); font-weight: 600; }
+</style>

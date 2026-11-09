@@ -1,112 +1,209 @@
 ---
+// I1 paper footer (SPEC-r4 "Footer content"): five link columns, the barcode thank-you line, legal row,
+// and the K1 moment 09 QR to /demo/ (finder squares first, then a diagonal wave; CSS only, starts in view).
 import { Github } from "@lucide/astro";
 import { internalPath } from "../lib/internal-url.ts";
 import { CHATGPT_APP_URL } from "../lib/mcp/links.ts";
-import {
-  toolLinks,
-  ruleGuideLinks,
-  shopGuideLinks,
-  articleLinks,
-  guideHubLinks,
-} from "../lib/site-directory.ts";
+import { tools } from "../data/resources.ts";
 import OperatorLine from "./OperatorLine.astro";
 import SiteLogo from "./SiteLogo.astro";
 import WithdrawConsent from "./WithdrawConsent.astro";
+import Mascot from "./Mascot.astro";
+import qrSvg from "../assets/footer-qr-demo.svg?raw";
 
-const navClass = "text-sm font-medium text-text-on-primary-muted transition-colors hover:text-white";
-const colTitle = "text-xs font-bold uppercase tracking-wide text-text-on-primary-muted";
-const colLink = "text-sm text-text-on-primary-muted transition-colors hover:text-white";
+type L = { label: string; href: string; more?: boolean };
+const cols: { title: string; links: L[] }[] = [
+  {
+    title: "Produs",
+    links: [
+      { label: "Casa de marcat", href: "/program-casa-de-marcat-pe-calculator/" },
+      { label: "Casă de marcat pe telefon", href: "/casa-de-marcat-pe-telefon/" },
+      { label: "Admin", href: "/admin/" },
+      // ponytail: homepage anchors until /plata-cu-cardul/, /echipamente/, /functii/ and /preturi/ exist.
+      { label: "Plata cu cardul", href: "/#features" },
+      { label: "Echipamente", href: "/#echipamente" },
+      { label: "Toate funcțiile", href: "/#features" },
+      { label: "Prețuri", href: "/#pricing" },
+    ],
+  },
+  {
+    title: "Pentru",
+    links: [
+      { label: "Magazin alimentar", href: "/#magazin" },
+      { label: "Brutărie, patiserie, cofetărie", href: "/#brutarie" },
+      { label: "Cafenea și bar", href: "/#cafenea" },
+      { label: "Legume și fructe", href: "/ghid/deschide-legume-fructe/" },
+      { label: "Măcelărie", href: "/ghid/deschide-macelarie/" },
+    ],
+  },
+  {
+    title: "Unelte",
+    links: [
+      ...tools.filter((t) => t.hot).map((t) => ({ label: t.title, href: t.href })),
+      { label: `Toate uneltele (${tools.length})`, href: "/unelte/", more: true },
+    ],
+  },
+  {
+    title: "Ghid",
+    links: [
+      { label: "Erori Datecs", href: "/ghid/erori-datecs/" },
+      { label: "Raport Z", href: "/ghid/raport-z-memorie-fiscala-p7b/" },
+      { label: "Casă de marcat fără internet", href: "/ghid/articole/casa-de-marcat-fara-internet/" },
+      { label: "NIR", href: "/ghid/nir-nota-receptie/" },
+      { label: "Registrul de casă", href: "/ghid/registrul-de-casa/" },
+      { label: "Tot ghidul", href: "/ghid/", more: true },
+    ],
+  },
+  {
+    title: "Tapselo",
+    links: [
+      { label: "Comparație", href: "/comparatie/" },
+      { label: "Asistent AI", href: "/ai/" },
+      { label: "Demo", href: "/demo/" },
+      { label: "Contact", href: "/#contact" },
+      { label: "Intră în cont", href: "https://app.tapselo.com" },
+    ],
+  },
+];
+const legal: L[] = [
+  { label: "Confidențialitate", href: "/privacy/" },
+  { label: "Termeni", href: "/terms/" },
+  { label: "Acord de prelucrare a datelor", href: "/dpa/" },
+  { label: "Ștergerea datelor", href: "/data-deletion/" },
+  { label: "Extensie Verificare CUI", href: "/extensii/verificare-cui/confidentialitate/" },
+];
+
+// Decorative barcode: fixed bar widths from a tiny LCG so every build prints the same bars.
+let s = 11;
+let x = 0;
+let bars = "";
+while (x < 116) {
+  s = (s * 16807) % 2147483647;
+  const w = 1 + (s % 3);
+  bars += `<rect x="${x}" width="${w}" height="22"/>`;
+  x += w + 1 + ((s >> 3) % 3);
+}
+const barcode = `<svg viewBox="0 0 ${x} 22" width="${x}" height="22" preserveAspectRatio="none" aria-hidden="true" focusable="false">${bars}</svg>`;
 ---
 
-<footer class="border-t border-white/10 bg-primary py-12">
+<footer class="ft tear-top">
   <div class="site-container">
-    <div class="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
-      <div class="flex shrink-0 items-center gap-2 self-start">
-        <SiteLogo class="h-7 w-7 rounded" />
-        <span class="text-sm font-bold text-white">Tapselo POS</span>
-      </div>
-
-      <div class="grid flex-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-        <div>
-          <p class={colTitle}>Produs</p>
-          <div class="mt-3 flex flex-col gap-2">
-            <a href={internalPath("/#features")} class={colLink}>Funcționalități</a>
-            <a href={internalPath("/#how-it-works")} class={colLink}>Cum funcționează</a>
-            <a href={internalPath("/#echipamente")} class={colLink}>Echipamente</a>
-            <a href={internalPath("/program-gestiune-magazin")} class={colLink}>Program gestiune magazin</a>
-            <a href={internalPath("/demo")} class={colLink}>Demo</a>
-            <a href={internalPath("/#contact")} class={colLink}>Contact</a>
-          </div>
-        </div>
-        <div>
-          <p class={colTitle}>Unelte gratuite</p>
-          <ul class="mt-3 space-y-2">
-            <li><a href={internalPath("/unelte")} class={colLink}>Toate uneltele</a></li>
-            {toolLinks.map((item) => (
-              <li><a href={item.href} class={colLink}>{item.label}</a></li>
+    <div class="ft-cols">
+      {cols.map((c) => (
+        <nav aria-label={c.title}>
+          <h6>{c.title}</h6>
+          <ul role="list">
+            {c.links.map((l) => (
+              <li><a href={internalPath(l.href)} class:list={[{ al: l.more }]}>{l.label}{l.more && " ›"}</a></li>
             ))}
           </ul>
-        </div>
-        <div>
-          <p class={colTitle}>Ghid magazine</p>
-          <ul class="mt-3 space-y-2">
-            {guideHubLinks.map((item) => (
-              <li><a href={item.href} class={colLink}>{item.label}</a></li>
-            ))}
-            {ruleGuideLinks.map((item) => (
-              <li><a href={item.href} class={colLink}>{item.label}</a></li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <p class={colTitle}>Deschide magazin</p>
-          <ul class="mt-3 space-y-2">
-            {shopGuideLinks.map((item) => (
-              <li><a href={item.href} class={colLink}>{item.label}</a></li>
-            ))}
-          </ul>
-          <p class={`${colTitle} mt-6`}>Articole</p>
-          <ul class="mt-3 space-y-2">
-            {articleLinks.map((item) => (
-              <li><a href={item.href} class={colLink}>{item.label}</a></li>
-            ))}
-          </ul>
-        </div>
-      </div>
+        </nav>
+      ))}
     </div>
 
-    <div class="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 border-t border-white/10 pt-8">
-      <a href={internalPath("/unelte")} class={navClass}>Unelte gratuite</a>
-      <a href={internalPath("/ghid")} class={navClass}>Ghid</a>
-      <a href={internalPath("/ai")} class={navClass}>Asistent AI</a>
-      <a href={CHATGPT_APP_URL} target="_blank" rel="noopener noreferrer" class={navClass}>Deschideți în ChatGPT</a>
-      <a href={internalPath("/comparatie")} class={navClass}>Comparație</a>
-      <WithdrawConsent class={`${navClass} underline`} wrapClass="order-last basis-full text-center text-sm text-text-on-primary-muted" />
-      <a
-        href="https://github.com/Chocksy/tapselo-pos"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="text-text-on-primary-muted transition-colors hover:text-white"
-        aria-label="GitHub repository"
-      >
-        <Github class="h-4 w-4" />
+    <p class="ft-bc"><Fragment set:html={barcode} /><span>Vă mulțumim · Reveniți cu drag</span><Fragment set:html={barcode} /></p>
+
+    <div class="ft-bot ms-host">
+      <Mascot spot="footer" pose="smile" rest="sleepy" size={112} sizeSm={80} peek={0.72} say="Revin mâine la 8:00." sayAt="l" keep cls="ft-ms" />
+      <div class="ft-id">
+        <a href="/" class="ft-brand"><SiteLogo class="ft-logo" />Tapselo</a>
+        <span>© 2026 Tapselo</span>
+      </div>
+      <nav class="ft-legal" aria-label="Legal">
+        {legal.map((l) => <a href={internalPath(l.href)}>{l.label}</a>)}
+      </nav>
+    </div>
+
+    <div class="ft-meta">
+      <div class="ft-small">
+        <OperatorLine class="ft-op" />
+        <p class="ft-row">
+          <WithdrawConsent class="ft-lnk" wrapClass="ft-wc" />
+          <a href={CHATGPT_APP_URL} target="_blank" rel="noopener noreferrer" class="ft-lnk">Deschideți în ChatGPT</a>
+          <a href="https://github.com/Chocksy/tapselo-pos" target="_blank" rel="noopener noreferrer" class="ft-lnk ft-gh" aria-label="GitHub repository"><Github class="h-4 w-4" /></a>
+          <button type="button" class="ft-lnk ft-snd" data-sound-toggle aria-pressed="false" hidden><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path class="ft-snd-w" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>Sunete</button>
+          <button type="button" class="ft-lnk ms-hide" data-ms-hide><i aria-hidden="true"></i><span>Ascunde mascota</span></button>
+        </p>
+      </div>
+      <a class="ft-q" href={internalPath("/demo/")} data-ft-qr>
+        <span class="ft-qr" set:html={qrSvg} />
+        <span class="ft-qt"><b>Demo pe mobil</b>Demo pe telefon: scanează codul.</span>
       </a>
-    </div>
-
-    <div class="mt-8 flex flex-col items-center gap-3 text-center">
-      <OperatorLine />
-      <p class="text-sm text-text-on-primary-muted">&copy; 2026 Tapselo. Toate drepturile rezervate.</p>
-      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-        <a href={internalPath("/privacy")} class="text-xs text-text-on-primary-muted transition-colors hover:text-white">Confidențialitate</a>
-        <span class="text-xs text-text-on-primary-faint" aria-hidden="true">&middot;</span>
-        <a href={internalPath("/extensii/verificare-cui/confidentialitate/")} class="text-xs text-text-on-primary-muted transition-colors hover:text-white">Extensie Verificare CUI</a>
-        <span class="text-xs text-text-on-primary-faint" aria-hidden="true">&middot;</span>
-        <a href={internalPath("/data-deletion")} class="text-xs text-text-on-primary-muted transition-colors hover:text-white">Ștergerea datelor</a>
-        <span class="text-xs text-text-on-primary-faint" aria-hidden="true">&middot;</span>
-        <a href={internalPath("/terms")} class="text-xs text-text-on-primary-muted transition-colors hover:text-white">Termeni</a>
-        <span class="text-xs text-text-on-primary-faint" aria-hidden="true">&middot;</span>
-        <a href={internalPath("/dpa")} class="text-xs text-text-on-primary-muted transition-colors hover:text-white">Acord de prelucrare a datelor</a>
-      </div>
     </div>
   </div>
 </footer>
+
+<script>
+  import "../scripts/moments.ts";
+  const q = document.querySelector<HTMLElement>("[data-ft-qr]");
+  if (q && "IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const io = new IntersectionObserver((es) => {
+      if (!es.some((e) => e.isIntersecting)) return;
+      q.classList.add("go");
+      io.disconnect();
+    });
+    io.observe(q);
+  }
+</script>
+
+<style is:global>
+  .ft { --tear: #efe9dc; margin-top: 9px; background: #efe9dc; color: var(--color-ink-2); padding: 64px 0 36px; font-size: 14.5px; }
+  .ft a, .ft button { color: inherit; text-decoration: none; }
+  .ft-cols { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 28px; }
+  .ft h6 { margin: 0 0 18px; padding-bottom: 10px; font: 500 11px/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--color-ink-3); background: radial-gradient(circle, var(--color-perf) .9px, transparent 1.1px) 0 100% / 6px 2px repeat-x; }
+  .ft ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .ft-cols a { display: inline-block; padding: 3px 0; line-height: 1.5; color: var(--color-ink); transition: color .15s; }
+  .ft-cols a:hover { color: var(--color-accent); }
+  .ft-cols a.al { color: var(--color-accent); font-weight: 600; }
+  .ft-bc { display: flex; align-items: center; justify-content: center; gap: 18px; margin: 56px 0 0; font: 500 11.5px/1 var(--font-mono); letter-spacing: .22em; text-transform: uppercase; color: var(--color-ink-3); }
+  .ft-bc svg { fill: var(--color-ink); flex: none; }
+  .ft-bot.ms-host { position: relative; }
+  .ms.ft-ms { position: absolute; right: 42px; bottom: 100%; }
+  @media (max-width: 1099.98px) { .ft-bot.ms-host { margin-top: 84px; } .ms.ft-ms { right: 0; } }
+  .ft-bot { display: flex; align-items: center; justify-content: space-between; gap: 16px 32px; flex-wrap: wrap; margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--color-rule); }
+  .ft-id { display: flex; align-items: center; gap: 22px; color: var(--color-ink-2); }
+  .ft-brand { display: inline-flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 650; color: var(--color-ink) !important; }
+  .ft-logo { width: 24px; height: 24px; border-radius: 5px; }
+  .ft-legal { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+  .ft-legal a { padding: 4px 0; color: var(--color-ink-2); }
+  .ft-legal a:hover, .ft-lnk:hover { color: var(--color-ink); }
+  .ft-meta { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 18px; }
+  .ft-small { font-size: 12.5px; color: var(--color-ink-3); max-width: 60ch; }
+  .ft-small p { margin: 0; }
+  .ft-op { line-height: 1.6; }
+  .ft-row { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; margin-top: 8px !important; }
+  .ft-lnk { display: inline-flex; align-items: center; min-height: 32px; font: inherit; color: var(--color-ink-2); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-decoration-color: var(--color-rule); text-underline-offset: 3px; }
+  .ft-gh { text-decoration: none; }
+  .ft-snd { gap: 6px; text-decoration: none; }
+  .ft-snd .ft-snd-w { opacity: .3; }
+  .ft-snd[aria-pressed="true"] { color: var(--color-ink); }
+  .ft-snd[aria-pressed="true"] .ft-snd-w { opacity: 1; }
+  .ft-wc { color: var(--color-ink-2); }
+  .ft-q { flex: none; display: flex; align-items: center; gap: 14px; padding: 10px 16px 10px 10px; border-radius: 12px; background: var(--color-paper-white); box-shadow: 0 0 0 1px var(--color-rule); }
+  .ft-qr { display: block; width: 88px; height: 88px; color: var(--color-ink); }
+  .ft-qr svg { display: block; width: 100%; height: 100%; fill: currentColor; }
+  .ft-qr rect { transform-box: fill-box; transform-origin: center; }
+  .ft-q.go .ft-qr rect { animation: k1cell .16s var(--ease-out-soft) both; animation-delay: var(--d); }
+  @keyframes k1cell { from { opacity: 0; transform: scale(.3); } }
+  .ft-qt { display: grid; gap: 6px; max-width: 13ch; font-size: 12.5px; line-height: 1.4; color: var(--color-ink-2); }
+  .ft-qt b { font: 500 10.5px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--color-ink-3); }
+
+  @media (max-width: 1023.98px) {
+    .ft-cols { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 40px; }
+  }
+  @media (max-width: 767.98px) {
+    .ft { padding-top: 48px; }
+    .ft-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 20px; }
+    .ft-cols a { display: flex; align-items: center; min-height: 44px; padding: 6px 0; line-height: 1.3; }
+    .ft ul { gap: 0; }
+    .ft-bc { gap: 10px; letter-spacing: .14em; font-size: 10.5px; }
+    .ft-bc svg { width: 40px; }
+    .ft-q { display: none; }
+    .ft-legal a, .ft-lnk, .ft-brand { min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; }
+    /* 44x44 hit area around the 16px icon; negative margins keep the icon where it was. */
+    .ft-gh { min-width: 44px; justify-content: center; margin-inline: -14px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ft-q.go .ft-qr rect { animation: none; }
+  }
+</style>

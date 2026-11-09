@@ -54,7 +54,7 @@ const decisionRows: DecisionRow[] = [
   {
     criterion: "Pe ce rulează casa",
     tapselo: {
-      answer: "Windows, macOS, Linux (și imagine kiosk Linux); telefonul Android sau iPhone doar pentru inventar",
+      answer: "Windows, macOS, Linux (și imagine kiosk Linux); iPhone, cu bonul trimis la Datecs prin rețea sau Bluetooth; Android încă nu",
       href: SRC.tapselo,
     },
     smartbill: {
@@ -105,12 +105,12 @@ const decisionRows: DecisionRow[] = [
   },
   {
     criterion: "POS bancar (card)",
-    tapselo: { answer: "Nu încă (documentat pe tapselo.com)", href: SRC.tapselo },
+    tapselo: { answer: "Terminal bancar integrat: nu încă. Card direct pe iPhone, cu Tap to Pay: da (nou)", href: SRC.tapselo },
     smartbill: { answer: "Da; „Integrare POS Bancar”", href: SRC.smartbillPrice },
   },
   {
     criterion: "Sertar de bani",
-    tapselo: { answer: "Nu încă", href: SRC.tapselo },
+    tapselo: { answer: "Da, se deschide prin casa Datecs după o vânzare cash", href: SRC.tapselo },
     smartbill: {
       answer: "Da (în funcție de modelul casei; documentat în ajutor)",
       href: SRC.smartbillCase,
@@ -184,7 +184,7 @@ const faq: FaqItem[] = [
   },
   {
     q: "Merge Tapselo pe telefon sau tabletă pentru bon fiscal?",
-    a: "Nu pentru casă. Casa Tapselo rulează pe Windows, macOS și Linux. Pe telefon sau tabletă folosiți Tapselo doar pentru inventar și recepție. SmartBill POS rulează și pe Android, inclusiv pentru vânzare.",
+    a: "Da, pe iPhone: vindeți de pe telefon, iar bonul pleacă la casa de marcat Datecs prin rețea sau Bluetooth. Pentru Android și tabletă Tapselo nu are încă aplicație. SmartBill POS rulează și pe Android, inclusiv pentru vânzare.",
   },
   {
     q: "Pot muta produsele din SmartBill în Tapselo?",
@@ -257,9 +257,9 @@ const VERIFIED_RO = "22.10.2026";
       <h2 class="kb-h2">Verdict pe scurt</h2>
       <h3 class="kb-h3">Alegeți SmartBill POS dacă</h3>
       <ul>
-        <li>vânzarea de la tejghea trebuie să ruleze pe telefon sau tabletă Android (casa Tapselo nu rulează pe telefon; acolo aveți doar inventar);</li>
+        <li>vânzarea de la tejghea trebuie să ruleze pe telefon sau tabletă Android (Tapselo vinde de pe iPhone, dar nu are încă aplicație pentru Android);</li>
         <li>aveți casă Partner, Eltrade, Activa sau Adpos, sau alt model Datecs decât FP-700 — întrebați-ne despre modelul dumneavoastră înainte de migrare;</li>
-        <li>aveți nevoie de POS bancar legat de program sau de sertar de bani (Tapselo nu le suportă încă);</li>
+        <li>aveți nevoie de terminal POS bancar legat de program (Tapselo încasează cu cardul doar pe iPhone, cu Tap to Pay);</li>
         <li>folosiți deja SmartBill Facturare, Gestiune sau Conta, sau aveți magazine online legate de gestiune;</li>
         <li>vă ajută perioada de probă de 30 de zile documentată pe site-ul SmartBill.</li>
       </ul>
@@ -352,7 +352,7 @@ const VERIFIED_RO = "22.10.2026";
       <ul>
         <li><strong>Ce se mută:</strong> catalogul de produse (denumiri, coduri de bare, prețuri). Tapselo include import din programul vechi; formatul se stabilește la <a href={internalPath("/demo/")}>demo</a>.</li>
         <li><strong>Ce refaceți:</strong> configurarea casei (Datecs FP-700 pe USB), a cântarului Dibal și a utilizatorilor; activarea cu codul de 6 caractere.</li>
-        <li><strong>Ce pierdeți sau reconectați:</strong> POS bancar integrat și sertar (Tapselo nu le suportă încă); legătura cu SmartBill Facturare, Gestiune, Conta și magazinele online legate de gestiune.</li>
+        <li><strong>Ce pierdeți sau reconectați:</strong> terminalul POS bancar integrat (Tapselo încasează cu cardul doar pe iPhone, cu Tap to Pay); legătura cu SmartBill Facturare, Gestiune, Conta și magazinele online legate de gestiune.</li>
         <li><strong>Ce testați înainte:</strong> bon de test pe FP-700, raport X și Z, produs la kg cu eticheta Dibal, vânzare cu netul tăiat și sincronizare după reconectare, plus export .p7b.</li>
       </ul>
       <p><strong>De la Tapselo la SmartBill POS</strong></p>

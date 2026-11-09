@@ -1,0 +1,158 @@
+---
+// H2 sticky sub-bar on Resurse pages (/ghid/, /unelte/, /comparatie/, /ai/): Resurse label, the groups with the
+// current one marked in red, and a search over src/data/resources.ts. Renders nothing on other pages.
+import { SUBNAV, currentSubnav } from "../data/resources.ts";
+
+import Mascot from "./Mascot.astro";
+
+/** read: guides get the K1 reading bar under the sub-nav, with Nea Tapselo walking along it (J2 spot). */
+const { read = false } = Astro.props as { read?: boolean };
+const cur = currentSubnav(Astro.url.pathname);
+const SR = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>`;
+---
+
+{cur && (
+  <nav class="rn follows-bar" aria-label="Resurse" data-rn>
+    <div class="site-container rn-in">
+      <button type="button" class="rn-qb" aria-label="Caută o unealtă sau un ghid" data-rn-qb set:html={SR} />
+      <span class="rn-l">Resurse</span>
+      <div class="rn-sc" data-rn-sc>
+        {SUBNAV.map((s) => (
+          <a class="rn-a" href={s.href} aria-current={s.id === cur ? "page" : undefined}>{s.label}{"count" in s && <span class="rn-n">{s.count}</span>}</a>
+        ))}
+      </div>
+      <div class="rn-sq" data-rn-sq>
+        <Fragment set:html={SR} />
+        <input type="search" placeholder="Caută o unealtă sau un ghid" aria-label="Caută o unealtă sau un ghid" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="rn-rs" data-rn-q />
+        <kbd aria-hidden="true">/</kbd>
+        <button type="button" class="rn-x" aria-label="Închide căutarea" data-rn-x>×</button>
+        <div class="rn-rs" id="rn-rs" role="listbox" data-rn-rs></div>
+      </div>
+    </div>
+    {read && (
+      <div class="rd" data-rd aria-hidden="true"><i></i><Mascot spot="read" pose="smile" rest="right" size={34} sizeSm={34} /></div>
+    )}
+  </nav>
+)}
+
+<script>
+  import { searchResources, TYPE_LABEL } from "../data/resources.ts";
+  import { mascotHtml } from "../data/mascot.ts";
+
+  const rn = document.querySelector<HTMLElement>("[data-rn]");
+  if (rn) {
+    const sq = rn.querySelector<HTMLElement>("[data-rn-sq]")!;
+    const inp = rn.querySelector<HTMLInputElement>("[data-rn-q]")!;
+    const rs = rn.querySelector<HTMLElement>("[data-rn-rs]")!;
+    const sc = rn.querySelector<HTMLElement>("[data-rn-sc]")!;
+    const esc = (s: string) => s.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
+    let sel = 0;
+
+    // Phone: start the scrolling row at the current link.
+    const on = sc.querySelector<HTMLElement>("[aria-current]");
+    if (on && sc.scrollWidth > sc.clientWidth) sc.scrollLeft = on.offsetLeft - sc.offsetLeft - 4;
+
+    const render = () => {
+      const q = inp.value.trim();
+      const r = searchResources(q);
+      sel = 0;
+      if (!r.length) {
+        const ms = document.documentElement.hasAttribute("data-mascot") ? mascotHtml({ spot: "search", pose: "surprised", rest: "surprised", size: 64, sizeSm: 56 }) : "";
+        rs.innerHTML = `<div class="rn-0">${ms}<p class="rn-r0">Nimic pentru „${esc(q)}”. Încearcă „TVA”, „Z” sau „NIR”.</p></div>`;
+        return;
+      }
+      const hl = (t: string, at: number) =>
+        q && at >= 0 ? esc(t.slice(0, at)) + "<mark>" + esc(t.slice(at, at + q.length)) + "</mark>" + esc(t.slice(at + q.length)) : esc(t);
+      rs.innerHTML =
+        `<div class="rn-rh"><span>${q ? `${r.length} ${r.length === 1 ? "rezultat" : "rezultate"}` : "Cele mai căutate"}</span><span>Unelte și ghiduri</span></div>` +
+        `<div class="rn-rl">${r.slice(0, 7).map(({ r: x, at }, j) => `<a class="rn-rr${j ? "" : " sel"}" role="option" href="${x.href}"><i>${TYPE_LABEL[x.type]}</i><span><b>${hl(x.title, at)}</b><span class="rn-u">${x.href}</span></span></a>`).join("")}</div>` +
+        `<div class="rn-rf"><span><kbd>↑</kbd><kbd>↓</kbd> alegi · <kbd>Enter</kbd> deschizi</span><a href="/ghid/">Tot ghidul ›</a></div>`;
+    };
+    const rows = () => [...rs.querySelectorAll<HTMLAnchorElement>(".rn-rr")];
+    const move = (d: number) => {
+      const a = rows();
+      if (!a.length) return;
+      sel = (sel + d + a.length) % a.length;
+      a.forEach((x, i) => x.classList.toggle("sel", i === sel));
+    };
+    const show = (v: boolean) => {
+      sq.classList.toggle("on", v);
+      inp.setAttribute("aria-expanded", String(v));
+    };
+
+    inp.addEventListener("focus", () => { render(); show(true); });
+    inp.addEventListener("input", render);
+    inp.addEventListener("blur", () => setTimeout(() => { if (!sq.contains(document.activeElement)) show(false); }, 120));
+    inp.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); move(e.key === "ArrowDown" ? 1 : -1); }
+      if (e.key === "Enter") { e.preventDefault(); const a = rows()[sel]; if (a) location.href = a.href; }
+      if (e.key === "Escape") { inp.blur(); show(false); rn.classList.remove("q-open"); }
+    });
+    document.addEventListener("keydown", (e) => {
+      const t = e.target as HTMLElement;
+      if (e.key !== "/" || e.metaKey || e.ctrlKey || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) || t.isContentEditable) return;
+      e.preventDefault();
+      rn.classList.add("q-open");
+      inp.focus();
+    });
+    const qb = rn.querySelector<HTMLElement>("[data-rn-qb]")!;
+    qb.addEventListener("click", () => { rn.classList.add("q-open"); inp.focus(); });
+    rn.querySelector("[data-rn-x]")!.addEventListener("click", () => { inp.value = ""; show(false); rn.classList.remove("q-open"); qb.focus(); });
+  }
+</script>
+
+<style is:global>
+  .rn { position: sticky; top: var(--bar-h); z-index: 40; height: 52px; background: color-mix(in srgb, var(--color-paper-white) 94%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--color-rule); color: var(--color-ink-2); }
+  .rn a { color: inherit; text-decoration: none; }
+  .rn button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+  .rn-in { position: relative; display: flex; align-items: center; height: 52px; gap: 4px; }
+  .rn-l { flex: none; font-size: 14px; font-weight: 600; color: var(--color-ink); margin-right: 14px; padding-right: 18px; border-right: 1px solid var(--color-rule); line-height: 20px; }
+  .rn-sc { display: flex; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  .rn-sc::-webkit-scrollbar { display: none; }
+  .rn-a { position: relative; flex: none; height: 52px; display: flex; align-items: center; gap: 6px; padding: 0 10px; font-size: 14px; font-weight: 500; white-space: nowrap; transition: color .15s; }
+  .rn-a:hover { color: var(--color-ink); }
+  .rn-a .rn-n { font: 500 11px var(--font-mono); color: var(--color-ink-3); }
+  .rn-a[aria-current] { color: var(--color-ink); font-weight: 600; }
+  .rn-a[aria-current]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 0; height: 2px; background: var(--color-stamp); }
+  .rn-qb, .rn-x { display: none; }
+  .rn-sq { position: relative; flex: none; margin-left: auto; width: 300px; height: 36px; display: flex; align-items: center; gap: 8px; padding: 0 10px; border-radius: 8px; background: var(--color-paper); box-shadow: inset 0 0 0 1px var(--color-rule); color: var(--color-ink-3); transition: box-shadow .15s; }
+  .rn-sq:focus-within { background: var(--color-paper-white); box-shadow: inset 0 0 0 1px var(--color-accent), 0 0 0 3px #dbeafe; }
+  .rn-sq svg { flex: none; }
+  .rn-sq input { flex: 1; min-width: 0; height: 100%; border: 0; background: none; font: 400 14px var(--font-sans); color: var(--color-ink); outline: none; }
+  .rn-sq input::placeholder { color: var(--color-ink-3); }
+  .rn-sq input::-webkit-search-cancel-button { display: none; }
+  .rn kbd { font: 600 11px var(--font-mono); color: var(--color-ink); background: var(--color-paper-white); border-radius: 5px; padding: 2px 6px; box-shadow: 0 0 0 1px var(--color-rule), 0 2px 0 var(--color-rule); }
+  .rn-sq:focus-within > kbd { opacity: 0; }
+  .rn-rs { position: absolute; right: 0; top: 46px; width: 470px; max-width: calc(100vw - 32px); background: var(--color-paper-white); border-radius: 12px; box-shadow: 0 0 0 1px rgba(60, 50, 30, .1), 0 40px 80px -20px rgba(60, 45, 20, .28), 0 24px 48px -28px rgba(0, 0, 0, .3); color: var(--color-ink); opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .18s var(--ease-out-soft), transform .24s var(--ease-out-soft), visibility 0s .24s; z-index: 9; }
+  .rn-sq.on .rn-rs { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+  .rn-rh { display: flex; justify-content: space-between; padding: 14px 18px 8px; font: 500 11.5px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--color-ink-3); }
+  .rn-rl { padding: 0 8px 6px; }
+  .rn-rr { display: grid; grid-template-columns: 74px 1fr; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 9px; }
+  .rn-rr.sel, .rn-rr:hover { background: rgba(29, 27, 23, .05); }
+  .rn-rr.sel b { color: var(--color-accent); }
+  .rn-rr i { font: 600 10.5px/1 var(--font-mono); font-style: normal; letter-spacing: .05em; text-transform: uppercase; color: var(--color-ink-2); background: #f1ebde; box-shadow: inset 0 0 0 1px var(--color-rule); border-radius: 5px; padding: 5px 0; text-align: center; }
+  .rn-rr b { display: block; font-size: 14.5px; font-weight: 600; letter-spacing: -.01em; }
+  .rn-rr mark { background: #fef3c7; color: inherit; border-radius: 3px; padding: 0 1px; }
+  .rn-rr .rn-u { display: block; margin-top: 2px; font: 400 12px var(--font-mono); color: var(--color-ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rn-rf { display: flex; justify-content: space-between; align-items: center; padding: 10px 18px; border-top: 1px solid var(--color-rule); font-size: 13px; color: var(--color-ink-2); }
+  .rn-rf kbd { margin-right: 4px; font-size: 10.5px; padding: 1px 5px; }
+  .rn-rf a { color: var(--color-accent) !important; font-weight: 600; }
+  .rn-r0 { margin: 0; padding: 16px 18px; font-size: 14px; color: var(--color-ink-2); }
+
+  /* Below 1100px: search icon, then the links scroll sideways; the icon opens the field over the row. */
+  @media (max-width: 1099.98px) {
+    .rn { height: 50px; }
+    .rn-in { height: 50px; gap: 0; }
+    .rn-in.site-container { padding-left: 0; }
+    .rn-l { display: none; }
+    .rn-qb { flex: none; display: grid; place-items: center; width: 50px; height: 50px; border-right: 1px solid var(--color-rule) !important; color: var(--color-ink-2); margin-right: 4px; }
+    .rn-sc { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
+    .rn-a { height: 50px; padding: 0 12px; font-size: 14.5px; }
+    .rn-sq { display: none; position: absolute; left: 8px; right: 8px; top: 7px; width: auto; }
+    .rn.q-open .rn-sq { display: flex; background: var(--color-paper-white); }
+    .rn.q-open .rn-sq > kbd { display: none; }
+    .rn.q-open .rn-x { display: grid; place-items: center; width: 44px; height: 44px; margin-right: -12px; font-size: 22px; color: var(--color-ink-2); }
+    .rn-rs { left: -8px; right: -8px; width: auto; max-width: none; top: 44px; }
+    .rn-rr .rn-u { display: none; }
+  }
+</style>

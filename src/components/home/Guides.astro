@@ -1,0 +1,57 @@
+---
+// D1 "Ghiduri": four guides and the free tools.
+import { internalPath } from "../../lib/internal-url.ts";
+const GUIDES = [
+  ["Ghid", "Casa de marcat fără internet: ce cere ANAF", "/ghid/articole/casa-de-marcat-fara-internet/"],
+  ["Erori", "Erori casă de marcat Datecs, pe coduri", "/ghid/erori-datecs/"],
+  ["Cântar", "Cântar Dibal: PLU și etichete", "/ghid/cantar-dibal/"],
+  ["Legal", "Registrul unic de control (RUC)", "/ghid/registru-unic-de-control/"],
+];
+const TOOLS = [
+  ["Calculator TVA", "/unelte/calculator-tva/"],
+  ["Generator NIR", "/unelte/generator-nir/"],
+  ["Verificare CUI ANAF", "/unelte/verificare-cui/"],
+  ["Registru de casă", "/unelte/registru-de-casa/"],
+];
+---
+
+<section class="hm-sec line" id="ghiduri" data-moment="tear">
+  <div class="site-container">
+    <div class="hm-head">
+      <div>
+        <p class="stamp-label">Ghiduri</p>
+        <h2 class="hm-h2">Ghiduri pentru magazin.</h2>
+      </div>
+      <p class="hm-lead">
+        Unelte gratuite: {TOOLS.map(([t, u], i) => <><a href={internalPath(u)}>{t}</a>{i < TOOLS.length - 1 ? ", " : "."}</>)}
+      </p>
+    </div>
+    <ul class="g4">
+      {
+        GUIDES.map(([k, t, u]) => (
+          <li>
+            <a href={internalPath(u)}>
+              <em>{k}</em>
+              <b>{t}</b>
+              <span>Citește <span aria-hidden="true">→</span></span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .hm-lead a { color: var(--color-ink); text-decoration: underline; text-decoration-color: var(--color-perf); text-underline-offset: 3px; }
+  .hm-lead a:hover { text-decoration-color: currentColor; }
+  .g4 { list-style: none; margin: 48px 0 0; padding: 0; display: grid; gap: 14px; }
+  @media (min-width: 640px) { .g4 { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1000px) { .g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .g4 a { display: flex; flex-direction: column; height: 100%; min-height: 168px; padding: 20px; border-radius: 14px; background: var(--color-paper-white); box-shadow: inset 0 0 0 1px var(--color-rule); transition: transform 0.35s var(--ease-out-soft), box-shadow 0.35s var(--ease-out-soft); }
+  .g4 a:hover { transform: translateY(-3px); box-shadow: inset 0 0 0 1px #d6ccb6, 0 18px 36px -22px rgba(60, 45, 20, 0.35); }
+  .g4 em { font: 500 11px/1 var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; font-style: normal; color: var(--color-ink-3); }
+  .g4 b { margin-top: 12px; font-size: 16.5px; font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; color: var(--color-ink); text-wrap: balance; }
+  .g4 a > span { margin-top: auto; padding-top: 18px; font-size: 14.5px; font-weight: 600; color: #2563eb; }
+  @media (prefers-reduced-motion: reduce) { .g4 a, .g4 a:hover { transition: none; transform: none; } }
+</style>

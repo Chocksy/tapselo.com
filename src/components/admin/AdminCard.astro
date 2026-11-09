@@ -1,0 +1,99 @@
+---
+// F1 card payments: Stripe Connect steps from CardPaymentsPanel.svelte and the phone payment sheet (PaymentSheet.svelte).
+import Icon from "./Icon.astro";
+import PhoneFrame from "./PhoneFrame.astro";
+import PhonePaySheet from "./PhonePaySheet.astro";
+---
+<section class="pp-band pp-band--white tear-top ac" id="card" data-moment="tear">
+  <div class="pp-rails" aria-hidden="true"></div>
+  <div class="site-container pp-pad ac-g">
+    <div class="ac-tx">
+      <div class="stamp-label">Plăți cu cardul</div>
+      <h2 class="pp-h2">Telefonul devine terminal de card. <span>Fără abonament.</span></h2>
+      <p class="pp-lead ac-lead">Conectezi firma la Stripe din admin, o singură dată. La casă, casierul alege Card pe telefon, iar clientul apropie cardul de iPhone.</p>
+      <ul class="ac-ul">
+        <li>Un cont Stripe pe firmă, pentru toate magazinele</li>
+        <li>Pornești cardul pe telefon pe fiecare magazin</li>
+        <li>Dacă pică internetul în timpul plății, aplicația îți spune să nu ceri cardul din nou</li>
+        <li>Merge pe iPhone XS sau mai nou</li>
+      </ul>
+      <p class="ac-more"><a class="pp-link" href="/casa-de-marcat-pe-telefon/">Cum arată pe telefon <span aria-hidden="true">&rarr;</span></a></p>
+    </div>
+
+    <div class="ac-cs">
+      <div class="ac-bg" aria-hidden="true"></div>
+      <div class="ac-stc">
+        <div class="ac-aw">
+          <div class="ac-awb" aria-hidden="true"><i></i><i></i><i></i><span>Admin · Firme / Popas SRL</span></div>
+          <div class="ac-in">
+            <div class="ac-seg" aria-hidden="true"><span>Date firmă</span><span>Puncte<em>2</em></span><span class="on">Plăți card</span></div>
+            <h3>Încasează cu cardul pe telefon</h3>
+            <p class="ac-sub">Un cont Stripe pentru Popas SRL, pentru toate punctele de lucru.</p>
+            <p class="ac-sub">Fără abonament.</p>
+            <ol class="ac-stp">
+              <li><i class="c">1</i><div><b>Conectează firma la Stripe</b><small>CUI, administrator, IBAN. Se deschide în browser.</small></div></li>
+              <li><i>2</i><div><b>Stripe verifică datele</b><small>Nu trebuie să faci nimic. Te anunțăm aici.</small></div></li>
+              <li><i>3</i><div><b>Încasezi pe telefon</b><small>În casă, „Card pe telefon”.</small></div></li>
+            </ol>
+            <div class="ac-btn" aria-hidden="true">Conectează Stripe <Icon name="ext" /></div>
+            <p class="ac-cap">iPhone XS sau mai nou</p>
+          </div>
+        </div>
+        <div class="ac-crd" aria-hidden="true">
+          <div class="ac-row"><Icon name="store" /><b>Magazin Popas</b><span class="ac-chip">după conectare</span></div>
+          <div class="ac-row"><Icon name="store" /><b>Popas Gara</b><span class="ac-chip">după conectare</span></div>
+        </div>
+      </div>
+      <div class="ac-ph"><PhoneFrame zoom={0.66}><PhonePaySheet /></PhoneFrame></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ac-g { display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; }
+  @media (min-width: 1100px) { .ac-g { grid-template-columns: 460px minmax(0, 1fr); gap: 40px; } .ac-tx { padding-top: 40px; } }
+  .ac-lead { margin-top: 22px; }
+  .ac-ul { display: grid; gap: 14px; margin: 30px 0 0; padding: 0; list-style: none; }
+  .ac-ul li { display: flex; gap: 12px; font-size: 16px; line-height: 1.45; color: var(--color-ink); }
+  .ac-ul li::before { content: ""; flex-shrink: 0; width: 18px; height: 18px; margin-top: 2px; border-radius: 5px; box-shadow: inset 0 0 0 5px #dbeafe, inset 0 0 0 9px var(--color-accent); }
+  .ac-more { margin: 28px 0 0; font-size: 16px; }
+
+  .ac-cs { position: relative; height: 650px; font-family: "Plus Jakarta Sans Variable", var(--font-sans); color: #0f172a; line-height: 1.3; }
+  .ac-bg { position: absolute; inset: 0 calc(-1 * var(--site-container-pad) - 200px) 0 0; border-radius: 14px 0 0 14px; background: var(--color-paper) radial-gradient(var(--color-rule) 1px, transparent 1px) 0 0 / 16px 16px; box-shadow: inset 0 0 0 1px var(--color-rule); }
+  .ac-stc { position: absolute; left: 40px; top: 48px; width: 420px; }
+  .ac-aw { border-radius: 10px; background: #fff; overflow: hidden; box-shadow: 0 0 0 1px rgba(15, 23, 42, .1), 0 24px 48px -24px rgba(15, 23, 42, .3); }
+  .ac-awb { height: 28px; display: flex; align-items: center; gap: 6px; padding: 0 12px; border-bottom: 1px solid #eef0f3; background: #fbfbfc; font-size: 11px; color: #94a3b8; }
+  .ac-awb i { width: 9px; height: 9px; border-radius: 50%; background: #e2e5ea; }
+  .ac-awb span { flex: 1; text-align: center; margin-right: 40px; }
+  .ac-in { padding: 18px 20px 16px; }
+  .ac-seg { display: inline-flex; padding: 3px; border-radius: 9px; background: #f1f5f9; font-size: 12.5px; font-weight: 600; color: #64748b; margin-bottom: 14px; }
+  .ac-seg span { padding: 6px 12px; border-radius: 7px; }
+  .ac-seg span.on { background: #fff; color: #0f172a; box-shadow: 0 1px 2px rgba(15, 23, 42, .12); }
+  .ac-seg em { font-style: normal; margin-left: 5px; color: #94a3b8; }
+  .ac-in h3 { margin: 0; font-family: inherit; font-size: 15.5px; line-height: 1.3; font-weight: 700; }
+  .ac-sub { text-wrap: balance; margin: 3px 0 0; font-size: 13px; color: #64748b; }
+  .ac-stp { margin: 12px 0 0; padding: 6px 0 0; border-top: 1px solid #f1f5f9; list-style: none; }
+  .ac-stp li { display: flex; gap: 12px; padding: 8px 0; }
+  .ac-stp i { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: #f1f5f9; color: #64748b; font: 700 12px/1 var(--font-sans); font-style: normal; flex-shrink: 0; }
+  .ac-stp i.c { background: #2563eb; color: #fff; }
+  .ac-stp b { display: block; font-size: 13.5px; }
+  .ac-stp small { display: block; font-size: 12.5px; color: #64748b; margin-top: 1px; }
+  .ac-btn { display: flex; justify-content: center; align-items: center; gap: 6px; height: 42px; margin-top: 14px; border-radius: 9px; font-size: 13.5px; font-weight: 600; background: #2563eb; color: #fff; }
+  .ac-btn :global(svg.i) { width: 14px; height: 14px; }
+  .ac-cap { margin: 8px 0 2px; text-align: center; font-size: 11.5px; color: #64748b; }
+  .ac-crd { margin-top: 12px; border-radius: 12px; box-shadow: 0 0 0 1px #e5e7eb; background: #fff; padding: 4px 18px; }
+  .ac-row { display: flex; align-items: center; gap: 10px; min-height: 56px; border-bottom: 1px solid #f1f5f9; font-size: 13.5px; }
+  .ac-row:last-child { border: 0; }
+  .ac-row :global(svg.i) { color: #94a3b8; width: 15px; }
+  .ac-chip { margin-left: auto; padding: 3px 9px; border-radius: 99px; background: #f1f5f9; color: #64748b; font-size: 11.5px; font-weight: 600; box-shadow: inset 0 0 0 1px #e2e8f0; white-space: nowrap; }
+  .ac-ph { position: absolute; left: 488px; top: 44px; filter: drop-shadow(0 30px 40px rgba(15, 23, 42, .3)); }
+
+  @media (max-width: 767.98px) {
+    .ac-cs { height: auto; padding: 24px 16px 0; overflow: hidden; border-radius: 14px; }
+    .ac-bg { inset: 0; border-radius: 14px; }
+    .ac-stc { position: relative; left: auto; top: auto; width: auto; }
+    .ac-ph { position: relative; left: auto; top: auto; display: flex; justify-content: center; margin: 24px 0 -120px; }
+    .ac-ph :global(.pf) { zoom: .6 !important; }
+    .ac-cs { margin-bottom: 0; }
+  }
+</style>

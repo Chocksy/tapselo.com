@@ -1,0 +1,82 @@
+---
+// G2 "Ce primești": three cards, each with a small drawing from the app copy.
+import { svg } from "./icons.ts";
+const METHODS: [string, string, string, string][] = [
+  ["cash", "#d1fae5", "#065f46", "Numerar exact"],
+  ["calc", "#ecfdf5", "#047857", "Numerar cu rest"],
+  ["tick", "#fef3c7", "#92400e", "Tichete, plata mixta"],
+  ["nfc", "#dbeafe", "#1d4ed8", "Card pe telefon"],
+];
+---
+<section class="pp-band pp-band--white tear-top pv" id="ce-primesti" data-moment="tear">
+  <div class="pp-rails" aria-hidden="true"></div>
+  <div class="site-container pp-pad">
+    <div class="pp-head pv-hd">
+      <div>
+        <div class="stamp-label">Ce primești</div>
+        <h2 class="pp-h2">Nu e o aplicație separată. <span>E casa magazinului tău.</span></h2>
+      </div>
+      <p class="pp-lead">Telefonul folosește produsele, prețurile și stocul din admin. Vânzarea de pe telefon intră în aceleași rapoarte ca vânzările de la casă.</p>
+    </div>
+    <div class="pv-3">
+      <div class="pv-c">
+        <div class="pv-z" aria-hidden="true">
+          <div class="pv-fld"><span>Scaneaza, PLU sau nume</span><u set:html={svg("scan")} /></div>
+          <div class="pv-bcd"></div>
+          <div class="pv-chips"><em>EAN-13</em><em>EAN-8</em><em>UPC-A</em><em>Code 128</em></div>
+        </div>
+        <h3>Un câmp pentru tot</h3>
+        <p>Scanezi cu camera, tastezi PLU-ul sau scrii numele. Produsele la kg le adaugi din eticheta cântarului.</p>
+      </div>
+      <div class="pv-c">
+        <div class="pv-z" aria-hidden="true">
+          <div class="pv-ml">
+            {METHODS.map(([ic, bg, fg, t]) => (
+              <div><u style={`background:${bg};color:${fg}`} set:html={svg(ic)} />{t}{ic === "nfc" && <span class="pp-tag pp-tag--ok">Nou</span>}</div>
+            ))}
+          </div>
+        </div>
+        <h3>Încasezi cum plătește clientul</h3>
+        <p>Numerar cu restul afișat mare, tichete de masă, plată mixtă sau card direct pe telefon.</p>
+      </div>
+      <div class="pv-c">
+        <div class="pv-z pv-sy" aria-hidden="true">
+          <div><em>Admin</em><b>LAPTE 1.5% 1L</b><span>stoc 24</span></div>
+          <div><em>Telefon</em><b>Vandut 2 buc</b><span class="dn">&minus;2</span></div>
+          <div><em>Casa</em><b>LAPTE 1.5% 1L</b><span>stoc 22</span></div>
+        </div>
+        <h3>Același magazin, alt ecran</h3>
+        <p>Produsele, prețurile și stocul vin din admin. Vânzarea de pe telefon intră în rapoarte lângă cele de la casă.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pv-hd { margin-bottom: 56px; }
+  .pv-3 { display: grid; grid-template-columns: minmax(0, 1fr); border-radius: 10px; background: var(--color-paper-white); box-shadow: 0 0 0 1px var(--color-rule); overflow: hidden; }
+  @media (min-width: 900px) { .pv-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } .pv-c + .pv-c { border-left: 1px solid var(--color-rule); } }
+  @media (max-width: 899.98px) { .pv-c + .pv-c { border-top: 1px solid var(--color-rule); } }
+  .pv-c { padding: 30px 30px 34px; }
+  .pv-z { position: relative; height: 228px; padding: 22px; border-radius: 10px; border: 1px dashed var(--color-perf); background: var(--color-paper); overflow: hidden; font-family: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", var(--font-sans); }
+  .pv-c h3 { margin: 28px 0 0; font-size: 21px; font-weight: 600; letter-spacing: -.015em; color: var(--color-ink); }
+  .pv-c > p { margin: 8px 0 0; font-size: 15.5px; line-height: 1.55; color: var(--color-ink-2); }
+  .pv-fld { display: flex; gap: 8px; }
+  .pv-fld span { flex: 1; display: flex; align-items: center; height: 50px; padding: 0 12px; border-radius: 12px; background: #fff; box-shadow: inset 0 0 0 1.5px #2563eb; font-size: clamp(12.5px, 3.3vw, 15px); font-weight: 500; color: #94a3b8; white-space: nowrap; overflow: hidden; }
+  .pv-fld u { display: grid; place-items: center; flex: none; width: 50px; height: 50px; border-radius: 12px; background: #fff; box-shadow: inset 0 0 0 1.5px #e2e8f0; color: #334155; }
+  .pv-fld u :global(svg), .pv-ml u :global(svg) { width: 22px; height: 22px; }
+  .pv-bcd { position: relative; height: 46px; margin-top: 18px; border-radius: 2px; opacity: .75; background: repeating-linear-gradient(90deg, #0f172a 0 2px, transparent 2px 5px, #0f172a 5px 6px, transparent 6px 9px, #0f172a 9px 12px, transparent 12px 14px); }
+  .pv-bcd::after { content: ""; position: absolute; left: -6px; right: -6px; top: 22px; height: 2px; background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+  .pv-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 20px; }
+  .pv-chips em { padding: 7px; border-radius: 7px; background: #fff; box-shadow: inset 0 0 0 1px #e4e7ec; font: 500 11.5px/1 var(--font-mono); font-style: normal; white-space: nowrap; color: #334155; }
+  .pv-ml { display: grid; gap: 7px; }
+  .pv-ml div { display: flex; align-items: center; gap: 11px; height: 41px; padding: 0 12px; border-radius: 10px; background: #fff; box-shadow: inset 0 0 0 1px #e4e7ec; font-size: 13.5px; font-weight: 600; color: #0f172a; }
+  .pv-ml u { display: grid; place-items: center; flex: none; width: 26px; height: 26px; border-radius: 7px; }
+  .pv-ml u :global(svg) { width: 15px; height: 15px; }
+  .pv-ml .pp-tag { margin-left: auto; }
+  .pv-sy div { display: flex; align-items: center; gap: 10px; height: 52px; margin-bottom: 8px; padding: 0 14px; border-radius: 10px; background: #fff; box-shadow: inset 0 0 0 1px #e4e7ec; font-size: 13px; font-weight: 500; color: #334155; }
+  .pv-sy em { flex: none; width: 64px; font: 500 11px/1 var(--font-mono); font-style: normal; text-transform: uppercase; letter-spacing: .06em; color: #6b7280; }
+  .pv-sy b { flex: 1; min-width: 0; font-weight: 700; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pv-sy span { font-weight: 600; white-space: nowrap; color: #0f172a; }
+  .pv-sy span.dn { color: #b91c1c; }
+</style>

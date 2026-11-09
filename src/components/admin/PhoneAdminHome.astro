@@ -1,0 +1,26 @@
+---
+// Admin home on the phone: store picker, "Bine ai revenit", six tiles and the bottom nav (apps/admin phone layout).
+import Icon from "./Icon.astro";
+import IconChip from "./IconChip.astro";
+const tiles = [
+  ["clip", "Comenzi", "Comenzile clientilor cu termene si plati", "indigo"],
+  ["pkg", "Produse", "Catalog, preturi, disponibilitate", "blue"],
+  ["truck", "Receptie marfa", "Receptioneaza produse de la furnizori", "cyan"],
+  ["chef", "Retete", "Cost pe produs si productia zilei", "amber"],
+  ["bar", "Rapoarte vanzari", "Veniturile, produsele si tendintele", "rose"],
+  ["users", "Clienti", "Telefon, email, acord pentru oferte", "teal"],
+];
+const nav = [["clip", "Comenzi"], ["pkg", "Produse"], ["chef", "Retete"], ["bar", "Vanzari"], ["truck", "Receptie"], ["gear", "Setari"]];
+---
+<div class="ahd"><img src="/logo-64.png" alt="" width="32" height="32" /><span class="st">Magazin Popas</span><span class="ib"><Icon name="srch" /></span></div>
+<div class="ph1">
+  <h4>Bine ai revenit</h4>
+  <p>Ce faci azi in magazin?</p>
+  <div class="pt">
+    {tiles.map(([i, b, s, t]) => <div><IconChip name={i} tone={t} /><b>{b}</b><span>{s}</span></div>)}
+  </div>
+</div>
+<div class="bn">
+  <nav>{nav.map(([i, l], k) => <span class:list={[{ on: k === 0 }]}><Icon name={i} />{l}</span>)}</nav>
+  <span><Icon name="scan" /></span>
+</div>

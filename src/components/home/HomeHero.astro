@@ -1,0 +1,639 @@
+---
+// Homepage hero: D1/I1 headline + A1 live demo (interactive kiosk driven by a ghost cursor until
+// the visitor clicks, Datecs printer that prints the receipt at the end of each sale, phone that
+// follows the shop type) + I1 stats strip with a tear edge.
+import Mascot from "../Mascot.astro";
+
+const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+---
+
+<section class="hero" id="top">
+  <div class="site-container hx">
+    <div>
+      <span class="eb"><b>BETA</b>Gratuit acum · fără card</span>
+      <h1>Vinzi non-stop,<br /><span>cu sau fără net.</span></h1>
+    </div>
+    <div>
+      <p class="hp">
+        <a href="/program-casa-de-marcat-pe-calculator/">Casa de marcat</a> pe orice calculator, pentru magazin, brutărie sau
+        cafenea. Bonul fiscal iese și când pică netul, iar vânzările ajung în admin când revine.
+      </p>
+      <div class="hb">
+        <a class="hm-btn" href="https://app.tapselo.com/?demo=1" data-tapselo-cta="hero" data-moment="scan"
+          ><span class="mo-bc" aria-hidden="true"></span>Încearcă demo <Fragment set:html={arrow} /></a
+        >
+        <a class="hm-btn2" href="#pricing">Vezi prețurile</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="band">
+    <div class="site-container band-in">
+      <span class="try">ÎNCEARCĂ</span>
+      <span class="band-t"
+        ><b class="bt-l">Atinge un produs. Plătește. Bonul iese pe loc.</b><b class="bt-s">Așa arată o vânzare. Ca să încerci tu, apasă Încearcă demo.</b>
+        <span class="demo">Demo-ul merge singur până dai tu primul clic.</span><span class="me">Acum casa e a ta.</span></span
+      >
+    </div>
+  </div>
+
+  <div class="site-container">
+    <div class="stage canvas" id="demo" data-hero-demo>
+      <div class="win">
+        <div class="bar">
+          <div class="tl" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="title"><span class="dot"></span><span class="tt">Magazin Popas</span><span class="cs">· Casa 1</span></div>
+          <div class="seg" role="group" aria-label="Tip de magazin">
+            <button type="button" data-l="scanare" aria-pressed="true"><span class="dot" style="background:#2563eb"></span>Magazin alimentar</button>
+            <button type="button" data-l="vitrina" aria-pressed="false"><span class="dot" style="background:#b45309"></span>Brutărie</button>
+            <button type="button" data-l="bar" aria-pressed="false"><span class="dot" style="background:#c2410c"></span>Cafenea</button>
+          </div>
+        </div>
+        <div class="scrbox">
+          <div class="scr" data-fit="1062">
+            <div class="ts-kiosk" data-layout="scanare" data-play="interactive" data-state="cart" data-w="1084"></div>
+            <div class="ghost" aria-hidden="true">
+              <i></i><svg width="22" height="26" viewBox="0 0 22 26"><path d="M2 2l17 10.5-7.4 1.6 4.3 8.6-3.3 1.6-4.3-8.7L2 21z" fill="#1d1b17" stroke="#fff" stroke-width="2" stroke-linejoin="round"></path></svg><em>DEMO</em>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="side">
+        <div class="prn">
+          <div class="pb" aria-hidden="true"><div class="lcd dots">21.50</div><s>DATECS FP-700</s><u><i></i><i></i><i></i></u></div>
+          <div class="slot">
+            <div class="rc" aria-live="polite" aria-label="Bon fiscal din demo"></div>
+          </div>
+          <span class="ok"><i><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></i>Bon fiscal tipărit</span>
+        </div>
+        <div class="phw">
+          <div data-fit="200"><div class="ts-phone" data-shop="magazin" data-screen="sale" data-w="200"></div></div>
+        </div>
+        <div class="mascot-spot" data-mascot-spot="hero"><Mascot spot="hero" pose="heart" rest="left" size={104} sizeSm={80} say="Bon tipărit. Următorul!" /></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ss tear-top">
+    <div class="site-container ss-g">
+      <p class="ss-lead">Merge cu echipamentul pe care îl ai deja.</p>
+      <div><b class="dots">20 min</b><span>de la stick la prima vânzare</span></div>
+      <div><b class="dots">0 lei</b><span>licențe, acum și după beta</span></div>
+      <div><b class="dots">FP-700</b><span>Datecs, bon fiscal pe USB</span></div>
+      <div><b class="dots">D-900</b><span>Cântar Dibal, fără tastat</span></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    background: var(--color-paper);
+    padding-top: clamp(2.5rem, 6vw, 5.25rem);
+    overflow: hidden;
+  }
+  .hx {
+    display: grid;
+    gap: 1.75rem 3.5rem;
+    align-items: end;
+    position: relative;
+    z-index: 2;
+  }
+  @media (min-width: 1024px) {
+    .hx { grid-template-columns: minmax(0, 1fr) 24rem; }
+  }
+  .eb {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 30px;
+    padding-right: 12px;
+    border-radius: 6px;
+    background: var(--color-paper-white);
+    box-shadow: 0 0 0 1px var(--color-rule);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-ink-2);
+    overflow: hidden;
+  }
+  .eb b {
+    display: grid;
+    place-items: center;
+    height: 30px;
+    padding: 0 9px;
+    background: var(--color-stamp);
+    color: #fff;
+    font: 600 11px var(--font-mono);
+    letter-spacing: 0.1em;
+  }
+  h1 {
+    margin: 18px 0 0;
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-weight: 600;
+    font-size: clamp(2.875rem, 5.4vw + 0.5rem, 5.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+    color: var(--color-ink);
+  }
+  h1 span { color: #aaa290; }
+  .hp {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--color-ink-2);
+    text-wrap: pretty;
+  }
+  .hp a { color: var(--color-ink); text-decoration: underline; text-decoration-color: var(--color-perf); text-underline-offset: 3px; }
+  .hp a:hover { text-decoration-color: currentColor; }
+  .hb { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+
+  /* band */
+  .band {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    border-block: 1px solid var(--color-rule);
+    position: relative;
+    z-index: 2;
+  }
+  .band-in {
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px 16px;
+    padding-block: 10px;
+    font-size: 16px;
+    color: var(--color-ink-3);
+    text-align: center;
+  }
+  .try {
+    flex: none;
+    font: 600 12px/1 var(--font-mono);
+    letter-spacing: 0.14em;
+    color: #fff;
+    background: var(--color-ink);
+    padding: 7px 11px 7px 12px;
+    border-radius: 99px;
+  }
+  .band-t b { font-weight: 500; color: var(--color-ink); }
+  .me { display: none; }
+  :global(.hm-mine) .me { display: inline; }
+  :global(.hm-mine) .demo { display: none; }
+  /* Below 700px the kiosk is a thumbnail: the strip says what it shows and points to the real demo. */
+  .bt-s { display: none; }
+  @media (max-width: 699.98px) {
+    .bt-l, .demo, .me, :global(.hm-mine) .me { display: none; }
+    .bt-s { display: inline; }
+  }
+
+  /* stage */
+  .stage {
+    position: relative;
+    margin-top: 22px;
+    padding-bottom: 0;
+  }
+  @media (min-width: 1024px) {
+    .stage {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 232px;
+      gap: 22px;
+      height: var(--stage-h, 600px);
+      overflow: hidden;
+      margin-bottom: -9px;
+    }
+  }
+  .win {
+    position: relative;
+    z-index: 3;
+    min-width: 0;
+    border-radius: 14px 14px 0 0;
+    background: #fff;
+    box-shadow: 0 0 0 1px #e4ddcd, 0 30px 70px -30px rgba(60, 45, 20, 0.3), 0 12px 24px -16px rgba(60, 45, 20, 0.14);
+    align-self: start;
+  }
+  .bar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+    min-height: 46px;
+    padding: 0 12px 0 16px;
+    border-bottom: 1px solid #ececef;
+  }
+  .tl { display: flex; gap: 8px; }
+  .tl span { width: 12px; height: 12px; border-radius: 50%; background: #ff5f57; }
+  .tl span + span { background: #febc2e; }
+  .tl span + span + span { background: #28c840; }
+  .title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: #71717a; white-space: nowrap; }
+  .title .cs { color: #a1a1aa; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; background: #2563eb; }
+  .seg { justify-self: end; display: flex; padding: 3px; border-radius: 9px; background: #f1f1f3; }
+  .seg button {
+    all: unset;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font: 500 13px var(--font-sans);
+    color: #52525b;
+    padding: 5px 11px;
+    border-radius: 7px;
+    white-space: nowrap;
+    transition: background-color 0.25s var(--ease-out-soft), color 0.25s;
+  }
+  .seg button[aria-pressed="true"] { background: #fff; color: var(--color-ink); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 0 0 0.5px rgba(0, 0, 0, 0.06); }
+  .seg button:focus-visible { outline: 2px solid #2563eb; outline-offset: 1px; }
+  .scrbox { overflow: hidden; }
+  .scr { position: relative; width: 1062px; height: 598px; overflow: hidden; }
+  .scr > :global(.ts-kiosk) { margin: -10.9px; }
+  .scr :global(.ts-kiosk [data-a]:focus-visible) { outline: 3px solid #2563eb; outline-offset: -3px; }
+
+  /* ghost cursor */
+  .ghost {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 20;
+    pointer-events: none;
+    transform: translate(820px, 300px);
+    transition: transform 0.78s var(--ease-out-soft), opacity 0.4s;
+  }
+  .ghost svg { display: block; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25)); transition: transform 0.14s; }
+  .ghost:global(.dn) svg { transform: scale(0.86); }
+  .ghost i { position: absolute; left: -15px; top: -15px; width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--hm-acc, #2563eb); opacity: 0; }
+  .ghost:global(.dn) i { animation: ring 0.5s var(--ease-out-soft); }
+  .ghost em {
+    position: absolute;
+    left: 20px;
+    top: 22px;
+    font: 600 11px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+    color: #fff;
+    background: var(--hm-acc, #2563eb);
+    padding: 4px 7px;
+    border-radius: 5px;
+    font-style: normal;
+    white-space: nowrap;
+  }
+  .ghost:global(.gone) { opacity: 0; }
+  @keyframes ring { 0% { opacity: 0.9; transform: scale(0.4); } 100% { opacity: 0; transform: scale(1.5); } }
+
+  /* printer + receipt */
+  .side { position: relative; min-width: 0; }
+  .prn { position: relative; z-index: 3; }
+  .pb {
+    position: relative;
+    height: 66px;
+    border-radius: 12px 12px 9px 9px;
+    background: linear-gradient(#34312d, #24221f);
+    box-shadow: inset 0 1px 0 #4a4640, 0 10px 20px -8px rgba(0, 0, 0, 0.4);
+    padding: 10px 12px;
+  }
+  .lcd {
+    width: max-content;
+    min-width: 92px;
+    height: 30px;
+    padding-left: 7px;
+    border-radius: 4px;
+    background: #1b2a1f;
+    box-shadow: inset 0 0 0 1px #0d140f;
+    color: #9fe6b2;
+    font-size: 22px;
+    line-height: 30px;
+    text-align: right;
+    padding-right: 7px;
+  }
+  .pb s { position: absolute; right: 12px; top: 12px; text-decoration: none; font: 600 8.5px var(--font-mono); letter-spacing: 0.12em; color: #8d877c; }
+  .pb u { position: absolute; right: 12px; top: 28px; display: flex; gap: 5px; }
+  .pb u i { width: 13px; height: 8px; border-radius: 2px; background: #45413b; }
+  .pb::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 9px; height: 5px; border-radius: 3px; background: #0c0b0a; }
+  .slot { position: relative; margin: -14px 7px 0; overflow: hidden; padding: 0 9px 14px; }
+  .rc {
+    position: relative;
+    background: var(--color-paper-white);
+    padding: 14px 13px 12px;
+    font: 500 11px/1.5 var(--font-mono);
+    color: #2b2823;
+    box-shadow: 0 10px 22px -10px rgba(60, 45, 20, 0.4), 0 0 0 1px #ece5d6;
+  }
+  .rc::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -8px;
+    height: 8px;
+    background: var(--color-paper-white);
+    mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 12px 100%;
+  }
+  .rc:global(.go) { animation: print 1.5s steps(15, end) both; }
+  @keyframes print { from { transform: translateY(-101%); } to { transform: none; } }
+  .rc :global(.c) { text-align: center; }
+  .rc :global(.t1) { font-weight: 700; font-size: 12px; color: var(--color-ink); letter-spacing: 0.04em; }
+  .rc :global(.s) { color: #9a937f; font-size: 10px; }
+  .rc :global(hr) { border: 0; border-top: 1px dashed #cfc6b2; margin: 7px 0; }
+  .rc :global(.r) { display: flex; justify-content: space-between; gap: 8px; white-space: nowrap; }
+  .rc :global(.r span:first-child) { overflow: hidden; text-overflow: ellipsis; }
+  .rc :global(.q) { color: #9a937f; font-size: 10px; margin-top: -2px; }
+  .rc :global(.tt) { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; color: var(--color-stamp); }
+  .rc :global(.tt b) { font-family: var(--font-dots); font-weight: 900; font-variation-settings: "ROND" 100; font-size: 26px; line-height: 1.1; letter-spacing: 0.02em; color: var(--color-ink); }
+  .ok {
+    position: absolute;
+    left: 50%;
+    bottom: -4px;
+    translate: -50% 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font: 600 12.5px/1 var(--font-sans);
+    color: #065f46;
+    background: #ecfdf5;
+    box-shadow: 0 0 0 1px #a7f3d0, 0 8px 18px -8px rgba(6, 95, 70, 0.4);
+    border-radius: 99px;
+    padding: 5px 10px 5px 5px;
+    white-space: nowrap;
+    z-index: 4;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.3s, transform 0.4s var(--ease-out-soft);
+  }
+  .ok:global(.on) { opacity: 1; transform: none; }
+  .ok i { width: 17px; height: 17px; border-radius: 50%; background: #10b981; display: grid; place-items: center; }
+  .phw { position: relative; z-index: 2; }
+  .phw > div { width: 200px; filter: drop-shadow(0 24px 30px rgba(60, 45, 20, 0.28)); }
+  @media (min-width: 1024px) {
+    .phw { position: absolute; left: 16px; top: var(--ph-top, 300px); }
+  }
+  /* J2: Nea Tapselo behind the counter edge, between kiosk and phone (clear of the phone's scanner hint); heart on every sale */
+  .mascot-spot { position: absolute; right: 196px; bottom: -8px; z-index: 4; }
+  @media (min-width: 1024px) { .mascot-spot :global(.ms) { --sz: 84px; } }
+  @media (max-width: 1023.98px) {
+    .side { padding-bottom: 60px; }
+    .mascot-spot { right: 4px; bottom: 0; }
+    .mascot-spot :global(.ms-b) { display: none; }
+  }
+
+  /* phone and tablet: window on top, printer and phone side by side under it */
+  @media (max-width: 1023.98px) {
+    .side { display: flex; align-items: flex-start; gap: 16px; margin-top: 18px; }
+    .prn { flex: 1 1 0; min-width: 0; max-width: 260px; }
+    .phw { flex: 0 0 40%; min-width: 0; max-width: 200px; padding-bottom: 8px; }
+    .ok { position: relative; left: auto; bottom: auto; translate: none; margin: 4px 0 0 8px; }
+    .stage { padding-bottom: 28px; }
+  }
+  @media (max-width: 767.98px) {
+    .bar { grid-template-columns: 1fr; padding: 8px; }
+    .tl, .title { display: none; }
+    .seg { justify-self: stretch; }
+    .seg button { flex: 1; justify-content: center; min-height: 44px; padding: 0 6px; font-size: 13px; gap: 6px; }
+  }
+  @media (max-width: 639.98px) {
+    .band-in { flex-direction: column; align-items: flex-start; text-align: left; padding-block: 14px; }
+  }
+  @media (max-width: 420px) {
+    .seg button .dot { display: none; }
+    .pb s { display: none; }
+  }
+
+  /* stats strip */
+  .ss { position: relative; z-index: 4; background: var(--color-paper-white); --tear: var(--color-paper-white); }
+  .ss-g { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ss-g > div { padding: 22px 0 24px; border-top: 1px dashed var(--color-rule); }
+  .ss-g > div:nth-child(odd) { padding-left: 18px; border-left: 1px dashed var(--color-rule); }
+  .ss-lead { grid-column: 1 / -1; margin: 0; padding: 26px 0 20px; font-size: 17px; font-weight: 600; line-height: 1.35; letter-spacing: -0.01em; color: var(--color-ink); }
+  .ss b { display: block; font-size: clamp(28px, 3vw, 38px); line-height: 1; letter-spacing: 0.01em; color: var(--color-ink); white-space: nowrap; }
+  .ss span { display: block; margin-top: 9px; font-size: 14px; line-height: 1.35; color: var(--color-ink-2); }
+  @media (min-width: 1024px) {
+    .ss-g { grid-template-columns: 1.25fr repeat(4, minmax(0, 1fr)); min-height: 128px; }
+    .ss-lead { grid-column: auto; padding: 30px 22px 0 0; }
+    .ss-g > div, .ss-g > div:nth-child(odd) { padding: 26px 0 24px 22px; border-top: 0; border-left: 1px dashed var(--color-rule); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rc:global(.go) { animation: none; }
+    .ok, .ghost { transition: none; }
+  }
+</style>
+
+<script>
+  import { onKit, reduced, live } from "./home.ts";
+
+  type Row = [string, string, string];
+  type Shop = { n: string; st: string; shop: string; c: string; cas: string; last: Row[]; lt: string; lm: string; seq: [string, string?][] };
+
+  const root = document.querySelector<HTMLElement>("[data-hero-demo]")!;
+  const K = root.querySelector<HTMLElement & { ts?: any }>(".ts-kiosk")!;
+  const scr = root.querySelector<HTMLElement>(".scr")!;
+  const G = root.querySelector<HTMLElement>(".ghost")!;
+  const paper = root.querySelector<HTMLElement>(".rc")!;
+  const ok = root.querySelector<HTMLElement>(".ok")!;
+  const lcd = root.querySelector<HTMLElement>(".lcd")!;
+  const phW = root.querySelector<HTMLElement>(".phw [data-fit]")!;
+  const tt = root.querySelector<HTMLElement>(".tt")!;
+  const tdot = root.querySelector<HTMLElement>(".title .dot")!;
+  const segs = root.querySelectorAll<HTMLButtonElement>(".seg button");
+  const hero = root.closest("section")!;
+
+  // Demo shops. Store and cashier names are invented for the demo.
+  const SH: Record<string, Shop> = {
+    scanare: { n: "Magazin Popas", st: "MAGAZIN POPAS", shop: "magazin", c: "#2563eb", cas: "Ana",
+      last: [["PAINE ALBA", "1 x 5.50", "5.50"], ["UNT 200G", "1 x 11.50", "11.50"], ["COVRIGI", "3 x 1.50", "4.50"]], lt: "21.50", lm: "Numerar",
+      seq: [["add", "cafea"], ["add", "covrigi"], ["add", "covrigi"], ["pay"], ["add", "lapte"], ["add", "paine"], ["add", "oua"], ["add", "apa"], ["add", "rosii"], ["pay"]] },
+    vitrina: { n: "Covrigăria Centru", st: "COVRIGARIA CENTRU", shop: "brutarie", c: "#b45309", cas: "Maria",
+      last: [["COVRIG SIMPLU", "4 x 2.00", "8.00"], ["CROISSANT CU UNT", "1 x 5.00", "5.00"]], lt: "13.00", lm: "Numerar",
+      seq: [["add", "c2"], ["add", "c2"], ["add", "b1"], ["pay"], ["add", "c1"], ["add", "c1"], ["add", "c1"], ["add", "s2"], ["add", "p3"], ["pay"]] },
+    bar: { n: "Bar Centru", st: "BAR CENTRU", shop: "cafenea", c: "#c2410c", cas: "Radu",
+      last: [["CAPPUCCINO", "1 x 14.00", "14.00"], ["CROISSANT UNT", "1 x 9.00", "9.00"]], lt: "23.00", lm: "Card",
+      seq: [["tab", "lapte"], ["add", "Latte"], ["tab", "pat"], ["add", "Cookie ciocolata"], ["pay"], ["tab", "esp"], ["add", "Espresso dublu"], ["tab", "lapte"], ["add", "Cappuccino"], ["add", "Flat white"], ["pay"]] },
+  };
+  let lay = "scanare", ign = 0, gen = 0, mine = false, snap: Row[] | null = null, nr = 420;
+  const esc = (s: unknown) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]!);
+  const T = (s?: string | null) => (s || "").replace(/\s+/g, " ").trim();
+  const clock = () => { const d = new Date(); return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); };
+
+  function recp(rows: Row[], total: string, method: string, anim: boolean) {
+    const S = SH[lay], x = rows.length > 3 ? rows.slice(0, 2) : rows;
+    paper.innerHTML =
+      `<div class="c t1">${S.st}</div><div class="c s">Casa 1 · ${S.cas} · ${anim ? clock() : "08:41"}</div><div class="c" style="font-weight:600;margin-top:3px">BON FISCAL</div><hr>` +
+      x.map((r) => `<div class="r"><span>${esc(r[0].toUpperCase())}</span><span>${esc(r[2])}</span></div><div class="q">${esc(r[1])}</div>`).join("") +
+      (x.length < rows.length ? `<div class="q">+ inca ${rows.length - x.length} produse</div>` : "") +
+      `<hr><div class="tt"><span>TOTAL</span><b data-moment="total">${esc(total)}</b></div>` +
+      `<div class="r s"><span>${esc(method.toUpperCase())}</span><span>Bon nr. ${String(nr).padStart(4, "0")}</span></div>`;
+    lcd.textContent = total;
+    paper.classList.remove("go");
+    ok.classList.remove("on");
+    if (anim && !reduced()) {
+      void paper.offsetWidth;
+      paper.classList.add("go");
+      setTimeout(() => ok.classList.add("on"), 1300);
+    } else ok.classList.add("on");
+  }
+
+  function grab(): Row[] {
+    const rows: [string, string, string][] = [];
+    if (lay === "scanare")
+      K.querySelectorAll(".ts-row").forEach((r) => rows.push([T(r.querySelector(".ts-nm")?.textContent), T(r.querySelector(".ts-calc")?.textContent).replace("×", "x"), T(r.querySelector(".ts-lt")?.textContent)]));
+    else if (lay === "vitrina")
+      K.querySelectorAll(".ts-ln").forEach((r) => rows.push([T(r.querySelector(".ts-lnn")?.textContent), T(r.querySelector(".ts-lnm")?.textContent).replace("×", "x"), T(r.querySelector(".ts-lns")?.textContent)]));
+    else
+      K.querySelectorAll(".ts-ln").forEach((r) => {
+        const b = T(r.querySelector(".ts-b")?.textContent), mq = b.match(/^(\d+) × (.*)$/);
+        rows.push([mq ? mq[2] : b, T(r.querySelector(".ts-m")?.textContent), T(r.querySelector(".ts-amt")?.textContent)]);
+      });
+    return rows.map((r) => [r[0], r[1], r[2].replace(/\s*RON/, "")]);
+  }
+
+  K.addEventListener("click", (e) => { if ((e.target as Element).closest("[data-a=pay]") && K.querySelector(".ts-row,.ts-ln")) snap = grab(); }, true);
+  K.addEventListener("ts:add", (e) => { const d = (e as CustomEvent).detail; if (d && typeof d.total === "number") lcd.textContent = d.total.toFixed(2); });
+  K.addEventListener("ts:sale", (e) => {
+    const d = (e as CustomEvent).detail;
+    if (Date.now() - ign < 1700) return;
+    nr++;
+    recp(snap && snap.length ? snap : [["Produse", d.items + " linii", d.total.toFixed(2)]], d.total.toFixed(2), d.method, true);
+    snap = null;
+  });
+
+  function setPhone(shop: string) {
+    const o = phW.querySelector<HTMLElement & { ts?: any }>(".ts-phone");
+    o?.ts?.stop();
+    phW.innerHTML = `<div class="ts-phone" data-shop="${shop}" data-screen="sale" data-w="200"></div>`;
+    window.TS?.mount(phW);
+  }
+
+  function apply(l: string) {
+    lay = l;
+    const S = SH[l];
+    gen++;
+    ign = Date.now();
+    segs.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.l === l)));
+    tt.textContent = S.n;
+    tdot.style.background = S.c;
+    hero.style.setProperty("--hm-acc", S.c);
+    K.ts.setLayout(l);
+    K.ts.stop();
+    setPhone(S.shop);
+    recp(S.last, S.lt, S.lm, false);
+    if (!mine && !reduced()) ghost(gen);
+  }
+  segs.forEach((b) => b.addEventListener("click", () => onKit(K, () => { if (b.dataset.l !== lay) apply(b.dataset.l!); })));
+  // "Vezi demo pentru ..." links in the chapters jump here and switch the demo to that shop.
+  document.querySelectorAll<HTMLElement>("[data-demo]").forEach((a) =>
+    a.addEventListener("click", () => onKit(K, () => { if (a.dataset.demo !== lay) apply(a.dataset.demo!); })),
+  );
+
+  // Ghost cursor: drives the real kiosk with synthetic clicks until the visitor clicks it.
+  const wait = (ms: number, g: number) =>
+    new Promise<void>((res, rej) => {
+      let left = ms;
+      const t = () => {
+        if (g !== gen || mine) return rej(0);
+        if (left <= 0) return res();
+        setTimeout(() => { if (live(K)) left -= 100; t(); }, 100);
+      };
+      t();
+    });
+  function go(node: Element, dx: number, dy: number) {
+    const a = scr.getBoundingClientRect(), b = node.getBoundingClientRect(), k = a.width / 1062 || 1;
+    G.style.transform = `translate(${(b.left - a.left) / k + (b.width / k) * dx}px,${(b.top - a.top) / k + (b.height / k) * dy}px)`;
+  }
+  const q = (st: [string, string?]) => (st[0] === "pay" ? K.querySelector(".ts-fin") : K.querySelector(`[data-a=${st[0]}][data-v="${st[1]}"]`));
+  async function ghost(g: number) {
+    G.classList.remove("gone");
+    try {
+      await wait(900, g);
+      for (;;) {
+        for (const st of SH[lay].seq) {
+          const n = q(st);
+          if (!n) continue;
+          go(n, st[0] === "pay" ? 0.38 : 0.5, 0.55);
+          await wait(st[0] === "pay" ? 950 : 820, g);
+          G.classList.add("dn");
+          (q(st) as HTMLElement | null)?.click();
+          await wait(160, g);
+          G.classList.remove("dn");
+          await wait(st[0] === "pay" ? 3600 : st[0] === "tab" ? 300 : 420, g);
+        }
+      }
+    } catch {}
+  }
+  const takeOver = () => {
+    if (mine) return;
+    mine = true;
+    gen++;
+    G.classList.add("gone");
+    hero.classList.add("hm-mine");
+  };
+  K.addEventListener("pointerdown", (e) => { if (e.isTrusted) takeOver(); }, true);
+
+  // Keyboard: the kit draws div tiles; make every action (except "Anuleaza cosul", which the
+  // hold-to-cancel moment owns) a focusable button, after each kit render.
+  const ACT = "[data-a]:not([data-a=clr])";
+  const ROWACT: Record<string, string> = { dec: "Scade cantitatea", inc: "Crește cantitatea", del: "Șterge produsul" };
+  const label = (x: HTMLElement) => {
+    const r = ROWACT[x.dataset.a!];
+    if (r) {
+      const n = T(x.closest(".ts-row, .ts-ln")?.querySelector(".ts-nm, .ts-lnn, .ts-b")?.textContent);
+      return n ? `${r}: ${n}` : r;
+    }
+    // Product tiles: name and price, without the emoji and the count badge.
+    const nm = T(x.querySelector(".ts-nm, .ts-tn")?.textContent);
+    if (nm) return [nm, T(x.querySelector(".ts-tp")?.textContent)].filter(Boolean).join(", ");
+    const w = document.createTreeWalker(x, NodeFilter.SHOW_TEXT), parts: string[] = [];
+    while (w.nextNode()) parts.push(w.currentNode.textContent || "");
+    return T(parts.join(" ").replace(/\p{Extended_Pictographic}|️/gu, "")) || x.dataset.v || "";
+  };
+  let back = "", backAt = 0;
+  const mark = () => {
+    K.querySelectorAll<HTMLElement>(ACT).forEach((x) => {
+      if (!x.hasAttribute("tabindex")) x.tabIndex = 0;
+      if (!x.matches("button")) x.setAttribute("role", "button");
+      const l = label(x);
+      if (l && x.getAttribute("aria-label") !== l) x.setAttribute("aria-label", l);
+    });
+    // The kit re-renders on each action and drops focus; put it back on the same control (or the
+    // first one) for a few seconds after a key press, so the next Tab or Enter continues from there.
+    if (back && Date.now() - backAt < 4000 && !K.contains(document.activeElement)) {
+      const [a, v] = back.split("|");
+      const n = K.querySelector<HTMLElement>(`[data-a="${a}"]${v ? `[data-v="${CSS.escape(v)}"]` : ""}`) || K.querySelector<HTMLElement>(ACT);
+      n?.focus({ preventScroll: true });
+    }
+  };
+  new MutationObserver(mark).observe(K, { childList: true, subtree: true });
+  // Below 700px the devices are a thumbnail (the strip points to the real demo): no taps, no Tab stops.
+  const thumb = matchMedia("(max-width: 699.98px)");
+  const devs = [K, root.querySelector<HTMLElement>(".phw")!];
+  const fit = () => devs.forEach((d) => (d.inert = thumb.matches));
+  fit();
+  thumb.addEventListener("change", fit);
+  K.addEventListener("keydown", (e) => {
+    const x = (e.target as Element).closest<HTMLElement>(ACT);
+    if (!x || (e.key !== "Enter" && e.key !== " ") || e.repeat) return;
+    e.preventDefault();
+    takeOver();
+    back = `${x.dataset.a}|${x.dataset.v || ""}`;
+    backAt = Date.now();
+    x.click();
+    mark();
+  });
+  addEventListener("pointerdown", () => (back = ""), true);
+  K.addEventListener("focusout", (e) => { if (e.relatedTarget && !K.contains(e.relatedTarget as Node)) back = ""; });
+
+  // Desktop: the stage is as tall as the window plus a bit of phone; the phone sits under the receipt.
+  const win = root.querySelector<HTMLElement>(".win")!;
+  const prn = root.querySelector<HTMLElement>(".prn")!;
+  const size = () => {
+    root.style.setProperty("--stage-h", Math.round(win.offsetHeight + 64) + "px");
+    root.style.setProperty("--ph-top", Math.round(prn.offsetHeight - 26) + "px");
+  };
+  new ResizeObserver(size).observe(win);
+  new ResizeObserver(size).observe(prn);
+
+  recp(SH.scanare.last, SH.scanare.lt, SH.scanare.lm, false);
+  onKit(K, () => {
+    K.ts.stop();
+    mark();
+    if (!reduced()) ghost(gen);
+    else G.classList.add("gone");
+  });
+</script>

@@ -1,0 +1,348 @@
+---
+// F1 feature tabs: nine admin jobs on the left, a 900 x 524 media pane on the right that plays the real app
+// recordings (public/videos/v2/*.mp4, cropped to the app window). Only the active clip loads, and only once the
+// section is near the screen. The card tab is HTML rebuilt from the admin and POS Svelte screens.
+import PhoneFrame from "./PhoneFrame.astro";
+import PhoneTapWait from "./PhoneTapWait.astro";
+import Icon from "./Icon.astro";
+
+interface Tab {
+  title: string;
+  desc: string;
+  isNew?: boolean;
+  /** Clip name in /videos/v2/ (poster in /videos/admin/). */
+  v?: string;
+  /** Light dotted pane (phone recording or HTML screen). */
+  lt?: boolean;
+  /** Clip segment start / end, in seconds. */
+  a?: number;
+  b?: number;
+  /** Hand-picked zoom keyframes t:scale:originX%:originY%. */
+  z?: string;
+  /** Step captions t:text. */
+  s: string;
+}
+
+const tabs: Tab[] = [
+  { title: "Rețete și cost", desc: "Știi cât te costă un produs înainte să-i pui prețul.", v: "recipes", a: 2, b: 22.3, z: "2:1.45:0:0|4.6:1|12.2:1.3:50:0|16.4:1", s: "2:Rețeta îți arată costul pe bucată|4.5:Notezi ce ai produs azi|8:Ingredientele ies singure din stoc|16:Registrul de producție se face singur" },
+  { title: "Recepție NIR din poză", desc: "Factura furnizorului devine NIR și stoc.", v: "receiving", lt: true, a: 1.5, b: 24.2, s: "1.5:Fotografiezi factura furnizorului|7.5:Produsele se completează singure|11:Confirmi produsele cu o atingere|20.5:Finalizezi, stocul crește singur" },
+  { title: "Rapoarte și export SAGA/Conta", desc: "Contabilul primește un fișier, nu un teanc de bonuri.", v: "reports", a: 2, b: 14.3, s: "2:Ultimele 30 de zile, față de luna trecută|8.5:Z-urile zilnice, sincronizate cu ANAF" },
+  { title: "Campanii email și WhatsApp", desc: "Readuci clienții cu un mesaj scris pentru ei.", v: "campaigns", a: 5, b: 22.8, s: "5:Alegi cui îi scrii|7.5:Cine a cumpărat cafea luna asta|13:Mesajul, cu numele clientului și cuponul|19.5:Previzualizezi exact ce primește fiecare" },
+  { title: "Oferte cu QR", desc: "Reducerile zilei, pe o pagină pe care o deschide oricine.", v: "offers", a: 2, b: 25.3, s: "2:Un link al magazinului, cu ofertele zilei|4.5:Alegi tema: piață, hipermarket sau brutărie|10:Prețul minim din ultimele 30 de zile, pus singur|15.5:Foaia A4 pentru vitrină, dintr-un clic|20:Clientul o deschide din link sau din QR" },
+  { title: "Comenzi din Messenger cu AI", desc: "Mesajele de pe pagina de Facebook devin comenzi.", v: "orders", a: 2, b: 16.3, s: "2:Clientul scrie pe Messenger|4.5:AI-ul scoate comanda din mesaj|7:Accepți, formularul e deja completat|12.5:Comanda intră în listă, pe ziua ei" },
+  { title: "Clienți și cupoane", desc: "Clienții fideli primesc reducerea lor la casă.", v: "customers", a: 1.5, b: 24.8, z: "16.4:1.2:50:0|18.8:1", s: "1.5:Ofertele zilei, direct pe casă|5.5:Cuponul se aplică pe loc|10:Clienții tăi, cu acordul pentru oferte|16.5:Vezi cât aduce fiecare cupon|19.5:Pagina ta de oferte, gata de trimis" },
+  { title: "Dispozitive", desc: "Vezi de acasă dacă fiecare casă e pornită.", v: "equipment", a: 14.5, b: 34.3, s: "14.5:Toate terminalele, într-un singur loc|20:Cântare Dibal în rețea, produsele trimise singure|25:Z-urile ajung la ANAF, verificate zilnic|28.5:Codurile PLU 1-999 pentru cântare" },
+  { title: "Plăți cu cardul", desc: "Telefonul devine terminal de card, prin Stripe.", isNew: true, lt: true, s: "0:Pornești cardul pe telefon pentru fiecare magazin|3.5:Casierul alege Card pe telefon, clientul apropie cardul" },
+];
+const first = tabs[0];
+const firstStep = first.s.split("|")[0].replace(/^[\d.]+:/, "");
+---
+<section class="pp-band pp-band--white tear-top af" id="functii" data-moment="tear">
+  <div class="pp-rails" aria-hidden="true"></div>
+  <div class="site-container pp-pad">
+    <div class="pp-head">
+      <div>
+        <div class="stamp-label">Ce faci din admin</div>
+        <h2 class="pp-h2">Ce țineai în caiet și în Excel, <span>acum se face singur.</span></h2>
+      </div>
+      <p class="pp-lead">Costul pe bucată, NIR-ul și exportul pentru contabil se fac din același loc. Alege una și vezi cum arată.</p>
+    </div>
+
+    <div class="af-bd" data-af>
+      <div class="af-tl" role="tablist" aria-label="Funcții din admin">
+        {tabs.map((t, i) => (
+          <button type="button" role="tab" id={`af-tab-${i}`} aria-controls={`af-pn-${i}`} aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1} class:list={[{ on: i === 0 }]}>
+            <span class="af-t">{t.title}{t.isNew && <em>Nou</em>}</span>
+            <span class="af-d">{t.desc}</span>
+            <span class="af-pb" aria-hidden="true"><i></i></span>
+          </button>
+        ))}
+      </div>
+
+      <div class="af-media">
+        <div class="af-md">
+          <div class="af-st" data-fit="900">
+            {tabs.map((t, i) => (
+              <div
+                class:list={["af-pn", { lt: t.lt, on: i === 0 }]}
+                id={`af-pn-${i}`}
+                role="tabpanel"
+                aria-labelledby={`af-tab-${i}`}
+                data-v={t.v}
+                data-a={t.a}
+                data-b={t.b}
+                data-z={t.z}
+                data-s={t.s}
+              >
+                {t.v && !t.lt && <video muted playsinline preload="none" aria-label={`Înregistrare din admin: ${t.title}`} poster={i === 0 ? `/videos/admin/${t.v}.jpg` : undefined}></video>}
+                {t.v && t.lt && <div class="vp"><div><video muted playsinline preload="none" aria-label={`Înregistrare din aplicație: ${t.title}`}></video></div></div>}
+
+                {t.v === "receiving" && (
+                  <div class="aw" style="left:356px;top:140px;width:516px" aria-hidden="true">
+                    <div class="awb"><i></i><i></i><i></i><span>Tapselo Admin · app.tapselo.com</span></div>
+                    <div style="padding:14px 14px 6px"><b style="font-size:14px">Receptie marfa</b><div style="font-size:11px;color:#64748b">3 documente · Toate · Ciorne · Finalizate</div></div>
+                    <table class="tb">
+                      <tr><th>FURNIZOR</th><th>FACTURA</th><th>STATUS</th><th class="r">COST TOTAL</th></tr>
+                      <tr class="hl"><td>Agro Legume SRL</td><td>4821</td><td><span class="ok">Finalizat</span></td><td class="r"><b>426,90 lei</b></td></tr>
+                      <tr><td>Pâine Bună Distribuție SRL</td><td>PB 5512</td><td><span class="ok">Finalizat</span></td><td class="r">320,00 lei</td></tr>
+                      <tr><td>Distribuție Băuturi SRL</td><td>DB 2026-18834</td><td><span class="ok">Finalizat</span></td><td class="r">418,80 lei</td></tr>
+                    </table>
+                  </div>
+                )}
+
+                {t.v === "reports" && (
+                  <div class="ex" aria-hidden="true">
+                    <b>Export pentru contabil (SAGA / Conta)</b>
+                    <p>Nomenclator articole sau linii de vanzare pe interval. Plus raport reduceri pe zi si cota TVA.</p>
+                    <div class="sel">SAGA (mapare Nepreluat)<Icon name="chev" /></div>
+                    <div style="display:flex;gap:8px"><span class="gb"><Icon name="dl" />Articole (nomenclator)</span><span class="gb"><Icon name="dl" />Iesiri / linii vanzari</span></div>
+                  </div>
+                )}
+
+                {!t.v && (
+                  <Fragment>
+                    <div class="aw cw" aria-hidden="true">
+                      <div class="awb"><i></i><i></i><i></i><span>Tapselo Admin · app.tapselo.com</span></div>
+                      <div class="cwi">
+                        <div class="bc"><span>Firme</span> / Popas SRL</div>
+                        <h5>Popas SRL</h5>
+                        <div class="seg"><span>Date firmă</span><span>Puncte<em>2</em></span><span class="on">Plăți card</span></div>
+                        <div class="crd">
+                          <div class="srow"><Icon name="store" /><div><b>Magazin Popas</b><small>Card pe telefon pornit</small></div><span class="tg on"></span></div>
+                          <div class="srow"><Icon name="store" /><div><b>Popas Gara</b><small>Card pe telefon oprit</small></div><span class="tg"></span></div>
+                        </div>
+                        <div class="sbtn">Deschide contul Stripe <Icon name="ext" /></div>
+                      </div>
+                    </div>
+                    <div class="cph"><PhoneFrame zoom={0.56}><PhoneTapWait /></PhoneFrame></div>
+                  </Fragment>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="af-mt">
+          <span class="af-stp"><span class="af-dots" aria-hidden="true"><i class="on"></i></span><span class="af-sx" aria-live="polite">{firstStep}</span></span>
+          <span class="af-cnt"><span class="af-src">Înregistrare din aplicație ·</span> <b class="af-n">01</b> / {String(tabs.length).padStart(2, "0")}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .af-bd { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; margin-top: 56px; }
+  @media (min-width: 1024px) { .af-bd { grid-template-columns: 260px minmax(0, 1fr); margin-top: 64px; } }
+
+  /* Tab list */
+  .af-tl { display: flex; flex-direction: column; }
+  .af-tl button { all: unset; box-sizing: border-box; position: relative; display: block; padding: 11px 0 11px 18px; cursor: pointer; border-radius: 6px; }
+  .af-tl button::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 1px; background: var(--color-rule); }
+  .af-tl button.on::before { width: 2px; background: var(--color-stamp); }
+  .af-tl button:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .af-t { display: flex; align-items: center; gap: 8px; font-size: 15.5px; line-height: 22px; font-weight: 600; letter-spacing: -.01em; color: var(--color-ink-2); }
+  .af-tl button.on .af-t, .af-tl button:hover .af-t { color: var(--color-ink); }
+  .af-t em { font: 600 11px/1 var(--font-sans); font-style: normal; padding: 4px 7px; border-radius: 99px; background: #d1fae5; color: #047857; }
+  .af-d { display: none; margin-top: 3px; font-size: 14px; line-height: 20px; color: var(--color-ink-2); }
+  .af-tl button.on .af-d { display: block; }
+  .af-pb { display: none; height: 2px; margin-top: 8px; background: rgba(29, 27, 23, .07); }
+  .af-tl button.on .af-pb { display: block; }
+  .af-pb i { display: block; height: 100%; background: var(--color-stamp); transform-origin: 0 50%; transform: scaleX(0); }
+
+  @media (max-width: 1023.98px) {
+    .af-tl { flex-direction: row; gap: 8px; overflow-x: auto; padding: 2px 2px 6px; margin: 0 calc(-1 * var(--site-container-pad)); padding-inline: var(--site-container-pad); scrollbar-width: none; }
+    .af-tl::-webkit-scrollbar { display: none; }
+    .af-tl button { flex: none; display: flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 99px; background: var(--color-paper); box-shadow: inset 0 0 0 1px var(--color-rule); }
+    .af-tl button::before, .af-d, .af-tl button.on .af-d, .af-pb, .af-tl button.on .af-pb { display: none; }
+    .af-t { font-size: 14px; white-space: nowrap; }
+    .af-tl button.on { background: var(--color-ink); box-shadow: none; }
+    .af-tl button.on .af-t { color: #fff; }
+  }
+
+  /* Media pane: a fixed 900 x 524 stage, zoomed to fit (fit.ts). */
+  .af-media { min-width: 0; }
+  .af-md { position: relative; border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 0 0 1px rgba(29, 27, 23, .1), 0 40px 80px -30px rgba(60, 45, 20, .28), 0 24px 48px -28px rgba(0, 0, 0, .2); }
+  .af-st { position: relative; width: 900px; height: 524px; font-family: "Plus Jakarta Sans Variable", var(--font-sans); color: #0f172a; line-height: 1.3; }
+  .af-pn { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .5s var(--ease-out-soft), visibility 0s .5s; }
+  .af-pn.on { opacity: 1; visibility: visible; transition: opacity .5s var(--ease-out-soft); }
+  .af-pn > video { position: absolute; left: -150px; top: -14px; width: 1200px; height: 675px; max-width: none; display: block; transition: transform 1.1s cubic-bezier(.65, 0, .35, 1); }
+  .af-pn.lt { background: #f4f5f7 radial-gradient(#dfe3e8 1px, transparent 1px) 0 0 / 16px 16px; }
+  .vp { position: absolute; left: 84px; top: 18px; width: 236px; height: 488px; padding: 7px; box-sizing: border-box; border-radius: 40px; background: #0b0b0f; box-shadow: 0 30px 50px -20px rgba(15, 23, 42, .45); }
+  .vp > div { position: relative; width: 222px; height: 474px; border-radius: 33px; overflow: hidden; background: #fff; }
+  .vp video { position: absolute; left: -466px; top: -21px; width: 1152px; height: 648px; max-width: none; }
+
+  .aw { position: absolute; border-radius: 10px; background: #fff; overflow: hidden; box-shadow: 0 0 0 1px rgba(15, 23, 42, .1), 0 24px 48px -24px rgba(15, 23, 42, .3); }
+  .awb { height: 28px; display: flex; align-items: center; gap: 6px; padding: 0 12px; border-bottom: 1px solid #eef0f3; background: #fbfbfc; font-size: 11px; color: #94a3b8; }
+  .awb i { width: 9px; height: 9px; border-radius: 50%; background: #e2e5ea; }
+  .awb span { flex: 1; text-align: center; margin-right: 40px; }
+  .tb { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .tb th { text-align: left; padding: 9px 10px; font-size: 10px; letter-spacing: .06em; color: #64748b; font-weight: 600; border-bottom: 1px solid #eef0f3; background: none; }
+  .tb td { padding: 10px; border-bottom: 1px solid #f1f5f9; white-space: nowrap; }
+  .tb tr.hl td { background: #eff6ff; }
+  .tb .r { text-align: right; }
+  .ok { display: inline-block; padding: 2px 7px; border-radius: 99px; background: #dcfce7; color: #166534; font-size: 10.5px; font-weight: 600; }
+
+  .ex { position: absolute; right: 22px; bottom: 22px; width: 340px; padding: 16px; border-radius: 12px; background: #fff; box-shadow: 0 0 0 1px rgba(15, 23, 42, .1), 0 24px 40px -16px rgba(15, 23, 42, .35); transform: translateY(12px); opacity: 0; transition: transform .5s .6s var(--ease-out-soft), opacity .5s .6s; }
+  .af-pn.on .ex { transform: none; opacity: 1; }
+  .ex b { display: block; font-size: 13px; }
+  .ex p { margin: 4px 0 10px; font-size: 11px; line-height: 1.45; color: #64748b; }
+  .sel, .gb { display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border-radius: 7px; font-size: 11.5px; font-weight: 600; box-shadow: inset 0 0 0 1px #e2e8f0; color: #334155; background: #fff; }
+  .sel { justify-content: space-between; margin-bottom: 8px; font-weight: 500; }
+  .gb :global(svg.i) { width: 13px; height: 13px; }
+
+  /* Card tab */
+  .cw { left: 28px; top: 84px; width: 560px; }
+  .cwi { padding: 22px 26px; }
+  .bc { font-size: 12px; color: #64748b; }
+  .bc span { color: #2563eb; }
+  .cwi h5 { margin: 4px 0 14px; font-family: inherit; font-size: 20px; font-weight: 700; letter-spacing: -.01em; }
+  .seg { display: inline-flex; padding: 3px; border-radius: 9px; background: #f1f5f9; font-size: 12.5px; font-weight: 600; color: #64748b; margin-bottom: 16px; }
+  .seg span { padding: 6px 12px; border-radius: 7px; }
+  .seg span.on { background: #fff; color: #0f172a; box-shadow: 0 1px 2px rgba(15, 23, 42, .12); }
+  .seg em { font-style: normal; margin-left: 5px; color: #94a3b8; }
+  .crd { border-radius: 12px; box-shadow: 0 0 0 1px #e5e7eb; background: #fff; padding: 4px 18px; }
+  .srow { display: flex; align-items: center; gap: 10px; min-height: 56px; border-bottom: 1px solid #f1f5f9; }
+  .srow:last-child { border: 0; }
+  .srow b { display: block; font-size: 13.5px; font-weight: 600; }
+  .srow small { display: block; font-size: 12px; color: #64748b; }
+  .srow :global(svg.i) { color: #94a3b8; width: 15px; }
+  .tg { position: relative; margin-left: auto; width: 44px; height: 24px; border-radius: 99px; background: #e2e8f0; flex-shrink: 0; }
+  .tg::after { content: ""; position: absolute; left: 2px; top: 2px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, .2); }
+  .tg.on { background: #2563eb; }
+  .tg.on::after { transform: translateX(20px); }
+  .sbtn { display: flex; justify-content: center; align-items: center; gap: 6px; height: 42px; margin-top: 14px; border-radius: 9px; font-size: 13.5px; font-weight: 600; box-shadow: inset 0 0 0 1px #e2e8f0; color: #334155; }
+  .sbtn :global(svg.i) { width: 14px; height: 14px; }
+  .cph { position: absolute; left: 612px; top: 24px; }
+
+  /* Caption row */
+  .af-mt { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 16px; font: 500 12px/1.4 var(--font-mono); letter-spacing: .03em; color: var(--color-ink-3); }
+  .af-stp { display: flex; align-items: center; gap: 10px; min-width: 0; color: var(--color-ink-2); }
+  .af-dots { display: flex; gap: 4px; flex: none; }
+  .af-dots :global(i) { width: 14px; height: 3px; border-radius: 2px; background: var(--color-rule); }
+  .af-dots :global(i.on) { background: var(--color-stamp); }
+  .af-cnt { flex: none; white-space: nowrap; }
+  .af-cnt b { color: var(--color-ink); font-weight: 500; }
+  @media (max-width: 767.98px) {
+    .af-mt { flex-direction: column; align-items: flex-start; }
+    .af-src { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .af-pn, .af-pn.on, .ex, .af-pn > video { transition: none; }
+    .ex { transform: none; opacity: 1; }
+  }
+</style>
+
+<script>
+  // Port of the F1 tab player: auto-advances through the clips, the progress rule follows the clip time,
+  // and step captions change at the given seconds. Reduced motion: a still frame of each segment, no auto-advance.
+  import "./fit.ts";
+
+  type Pane = HTMLElement & { vd?: HTMLVideoElement; zk: number[][]; st: [number, string][] };
+  const R = document.querySelector<HTMLElement>("[data-af]");
+  const rm = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const live = (el: HTMLElement) => {
+    const TS = (window as unknown as { TS?: { live: (e: HTMLElement) => boolean } }).TS;
+    return TS ? TS.live(el) : !rm();
+  };
+
+  if (R) {
+    const tabs = [...R.querySelectorAll<HTMLButtonElement>("[role=tab]")];
+    const panes = [...R.querySelectorAll<HTMLElement>(".af-pn")] as Pane[];
+    const nn = R.querySelector(".af-n")!, src = R.querySelector(".af-src")!, dots = R.querySelector(".af-dots")!, sx = R.querySelector(".af-sx")!;
+    const list = R.querySelector<HTMLElement>(".af-tl")!;
+    panes.forEach((p) => {
+      p.zk = (p.dataset.z || "").split("|").filter(Boolean).map((x) => x.split(":").map(Number));
+      p.st = (p.dataset.s || "").split("|").map((x) => { const i = x.indexOf(":"); return [Number(x.slice(0, i)), x.slice(i + 1)]; });
+      p.vd = p.querySelector("video") ?? undefined;
+    });
+
+    let cur = 0, t0 = performance.now(), lastStep = -1, inView = false;
+    const HT = 7000;
+    // Still frame for reduced motion: first keyframe (every 4.1667 s in all clips) 3 s into the segment.
+    const rt = (a: number) => Math.ceil((a + 3) / 4.1667) * 4.1667 + 0.05;
+
+    function step(p: Pane, t: number) {
+      let k = 0;
+      p.st.forEach((s, i) => { if (t >= s[0]) k = i; });
+      if (k === lastStep) return;
+      lastStep = k;
+      dots.innerHTML = p.st.map((_, i) => `<i class="${i === k ? "on" : ""}"></i>`).join("");
+      sx.textContent = p.st[k][1];
+    }
+    function zm(p: Pane, t: number) {
+      if (!p.vd || p.vd.closest(".vp")) return;
+      let z = [0, 1, 0, 0];
+      p.zk.forEach((k) => { if (t >= k[0]) z = k; });
+      const v = p.vd.style, o = `${150 + (z[2] || 0) * 9}px ${14 + (z[3] || 0) * 5.24}px`;
+      if (z[1] !== 1) v.transformOrigin = o;
+      v.transform = z[1] === 1 ? "" : `scale(${z[1]})`;
+    }
+    function load(p: Pane) {
+      const v = p.vd;
+      if (!v || !inView) return;
+      const a = Number(p.dataset.a), still = rm();
+      if (!v.src) {
+        v.poster = `/videos/admin/${p.dataset.v}.jpg`;
+        if (still) v.preload = "auto";
+        v.src = `/videos/v2/${p.dataset.v}.mp4#t=${still ? rt(a) : a}`;
+      }
+      const go = () => {
+        try { v.currentTime = still ? rt(a) : a; } catch { /* not seekable yet */ }
+        if (!still) v.play().catch(() => {});
+      };
+      v.readyState > 0 ? go() : v.addEventListener("loadedmetadata", go, { once: true });
+    }
+    function set(k: number, focus = false) {
+      cur = k; lastStep = -1; t0 = performance.now();
+      tabs.forEach((e, i) => { const on = i === k; e.classList.toggle("on", on); e.setAttribute("aria-selected", String(on)); e.tabIndex = on ? 0 : -1; });
+      panes.forEach((e, i) => e.classList.toggle("on", i === k));
+      if (focus) tabs[k].focus();
+      // Keep the active pill visible in the phone layout without scrolling the page.
+      if (list.scrollWidth > list.clientWidth) list.scrollTo({ left: tabs[k].offsetLeft - 24, behavior: rm() ? "auto" : "smooth" });
+      nn.textContent = String(k + 1).padStart(2, "0");
+      const p = panes[k];
+      src.textContent = p.vd ? "Înregistrare din aplicație ·" : "Ecran refăcut din aplicație ·";
+      panes.forEach((e) => { if (e.vd && e !== p) e.vd.pause(); });
+      load(p);
+      const a = p.vd ? Number(p.dataset.a) : 0, t = p.vd && rm() ? rt(a) : a;
+      step(p, t); zm(p, t);
+      tabs[k].querySelector<HTMLElement>(".af-pb i")!.style.transform = "scaleX(0)";
+    }
+
+    tabs.forEach((e, i) => {
+      e.addEventListener("click", () => set(i));
+      e.addEventListener("keydown", (x) => {
+        const d = x.key === "ArrowDown" || x.key === "ArrowRight" ? 1 : x.key === "ArrowUp" || x.key === "ArrowLeft" ? -1 : 0;
+        if (d) { x.preventDefault(); set((i + d + tabs.length) % tabs.length, true); }
+      });
+    });
+
+    new IntersectionObserver((es) => {
+      inView = es[0].isIntersecting;
+      if (inView) load(panes[cur]);
+      else panes[cur].vd?.pause();
+    }, { rootMargin: "200px 0px" }).observe(R);
+
+    set(0);
+    setInterval(() => {
+      if (!inView || rm() || !live(R)) return;
+      const p = panes[cur], b = tabs[cur].querySelector<HTMLElement>(".af-pb i")!;
+      let f: number, t: number;
+      if (p.vd) {
+        const a = Number(p.dataset.a), e = Number(p.dataset.b);
+        t = p.vd.currentTime;
+        if (p.vd.paused && p.vd.readyState > 2) p.vd.play().catch(() => {});
+        f = (t - a) / (e - a);
+        if (t >= e) { set((cur + 1) % tabs.length); return; }
+      } else {
+        t = (performance.now() - t0) / 1000;
+        f = (t * 1000) / HT;
+        if (f >= 1) { set((cur + 1) % tabs.length); return; }
+      }
+      b.style.transform = `scaleX(${Math.max(0, Math.min(1, f))})`;
+      step(p, t);
+      zm(p, p.vd ? Math.max(t, Number(p.dataset.a)) : t);
+    }, 120);
+  }
+</script>

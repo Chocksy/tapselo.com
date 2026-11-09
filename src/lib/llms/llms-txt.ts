@@ -92,7 +92,15 @@ const ENTRIES: Record<string, Entry> = {
   "/program-gestiune-magazin/": { title: "Program gestiune magazin", desc: "Gestiunea stocurilor, recepția mărfii și vânzarea, în același program." },
   "/program-casa-de-marcat-pe-calculator/": {
     title: "Program casă de marcat pe calculator",
-    desc: "Program POS pe Windows, macOS și Linux cu imprimantă fiscală Datecs; telefonul doar pentru inventar și ce este legal pe dispozitive.",
+    desc: "Program POS pe Windows, macOS și Linux cu imprimantă fiscală Datecs, vânzare și pe iPhone, și ce este legal pe dispozitive.",
+  },
+  "/casa-de-marcat-pe-telefon/": {
+    title: "Casă de marcat pe telefon",
+    desc: "Tapselo pe iPhone: vânzare de pe telefon, bonul fiscal trimis la casa de marcat Datecs prin rețea sau Bluetooth, card cu Tap to Pay.",
+  },
+  "/admin/": {
+    title: "Adminul Tapselo",
+    desc: "Adminul în browser: prețuri, NIR din poza facturii, rețete cu cost, clienți, oferte și export SAGA sau Conta.",
   },
   "/ai/": {
     title: "Tapselo în Claude și ChatGPT",
@@ -101,7 +109,7 @@ const ENTRIES: Record<string, Entry> = {
 };
 
 const SUMMARY =
-  "Tapselo este un program pentru casa de marcat, destinat magazinelor mici din România. Casa (programul de vânzare) rulează pe Windows, macOS și Linux; telefoanele se folosesc doar pentru gestiunea stocului. Pe tapselo.com găsiți și unelte gratuite, ghiduri cu reguli fiscale verificate și o comparație a programelor de casă de marcat.";
+  "Tapselo este un program pentru casa de marcat, destinat magazinelor mici din România. Casa (programul de vânzare) rulează pe Windows, macOS și Linux; pe iPhone se vinde și de pe telefon, iar bonul fiscal pleacă la casa de marcat Datecs prin rețea sau Bluetooth. Pe tapselo.com găsiți și unelte gratuite, ghiduri cu reguli fiscale verificate și o comparație a programelor de casă de marcat.";
 
 const hubs = (prefix: string) => guideHubLinks.filter((l) => l.href.startsWith(prefix));
 
@@ -112,7 +120,7 @@ export function llmsSections(): { heading: string; links: SiteLink[] }[] {
     { heading: "Unelte gratuite", links: [abs("/unelte"), ...toolLinks] },
     { heading: "Ghiduri", links: [...hubs("/ghid"), ...datecsErrorPageLinks, ...ruleGuideLinks, ...shopGuideLinks, ...articleLinks] },
     { heading: "Comparații", links: hubs("/comparatie") },
-    { heading: "Despre Tapselo", links: ["/", "/demo", "/program-gestiune-magazin", "/program-casa-de-marcat-pe-calculator", "/ai"].map(abs) },
+    { heading: "Despre Tapselo", links: ["/", "/demo", "/program-gestiune-magazin", "/program-casa-de-marcat-pe-calculator", "/casa-de-marcat-pe-telefon", "/admin", "/ai"].map(abs) },
   ];
 }
 

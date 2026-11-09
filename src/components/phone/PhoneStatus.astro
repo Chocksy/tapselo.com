@@ -1,0 +1,48 @@
+---
+// G2 "Ce merge azi": the honest status table.
+const ROWS: [string, "ok" | "new" | "no", string][] = [
+  ["Vânzare pe telefon", "ok", "Coș, căutare după nume sau PLU, numerar cu rest, tichete."],
+  ["Scanare cu camera", "ok", "EAN-13, EAN-8, UPC-A, Code 128. Și eticheta de la cântar."],
+  ["Stoc și rapoarte", "ok", "Fiecare vânzare scade stocul și apare în admin."],
+  ["Card pe telefon", "new", "Tap to Pay pe iPhone XS sau mai nou, prin Stripe."],
+  ["Bon fiscal din telefon", "ok", "Telefonul trimite bonul la casa de marcat Datecs, prin rețea sau Bluetooth."],
+  ["Android", "no", "Aplicația e doar pentru iPhone deocamdată."],
+];
+const TAG = { ok: ["pp-tag pp-tag--ok", "Merge"], new: ["pp-tag pp-tag--ok", "Nou"], no: ["pp-tag pp-tag--no", "Încă nu"] } as const;
+---
+<section class="pp-band pp-band--white tear-top pst" id="ce-merge-azi" data-moment="tear">
+  <div class="pp-rails" aria-hidden="true"></div>
+  <div class="site-container pp-pad">
+    <div class="pp-head pst-hd">
+      <div>
+        <div class="stamp-label">Ce merge azi</div>
+        <h2 class="pp-h2">Ce ai văzut merge. <span>Doar Android lipsește încă.</span></h2>
+      </div>
+      <p class="pp-lead">Aplicația pentru iPhone e în test. Lista de mai jos spune exact ce poți folosi și ce urmează.</p>
+    </div>
+    <table class="pst-tb">
+      <caption class="sr-only">Ce poți folosi azi în aplicația Tapselo POS pentru iPhone</caption>
+      <thead class="sr-only"><tr><th scope="col">Funcție</th><th scope="col">Stare</th><th scope="col">Detalii</th></tr></thead>
+      <tbody>
+        {ROWS.map(([f, s, d]) => (
+          <tr><th scope="row">{f}</th><td><span class={TAG[s][0]}>{TAG[s][1]}</span></td><td>{d}</td></tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<style>
+  .pst-hd { margin-bottom: 56px; }
+  .pst-tb { width: 100%; border-collapse: collapse; border-top: 1px solid var(--color-ink); font-size: 15.5px; }
+  .pst-tb tr { border-bottom: 1px solid var(--color-rule); }
+  .pst-tb th, .pst-tb td { padding: 17px 24px 17px 0; text-align: left; vertical-align: middle; }
+  .pst-tb th { width: 280px; font-weight: 600; color: var(--color-ink); }
+  .pst-tb td:nth-child(2) { width: 130px; }
+  .pst-tb td:last-child { padding-right: 0; line-height: 1.45; color: var(--color-ink-2); }
+  @media (max-width: 767.98px) {
+    .pst-tb tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; padding: 16px 0; }
+    .pst-tb th, .pst-tb td { width: auto !important; padding: 0; }
+    .pst-tb td:last-child { grid-column: 1 / -1; }
+  }
+</style>

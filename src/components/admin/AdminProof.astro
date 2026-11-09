@@ -1,0 +1,34 @@
+---
+// F1 proof strip: facts about the admin as it ships today. No customer counts.
+const FACTS = [
+  { n: "21", u: "de zone", d: "De la Comenzi și Recepție la Cote TVA și Membri." },
+  { n: "10", u: "module", d: "Pornite separat pe fiecare magazin, din Setări." },
+  { n: "SAGA", u: "/ Conta", d: "Export CSV cu articole și linii de vânzare." },
+  { n: "Ctrl K", u: "", d: "Sari la orice pagină din admin, din tastatură." },
+];
+---
+<section class="pp-band pp-band--white tear-top apf" data-moment="tear" aria-labelledby="apf-h">
+  <div class="pp-rails" aria-hidden="true"></div>
+  <div class="site-container apf-in">
+    <h2 id="apf-h" class="apf-h">Ce găsești în admin azi. <span>Fără promisiuni.</span></h2>
+    <ul class="apf-l">
+      {FACTS.map((f) => (
+        <li><b><span class="dots">{f.n}</span>{f.u && <em>{f.u}</em>}</b><p>{f.d}</p></li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .apf-in { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; padding-block: 56px; }
+  @media (min-width: 1024px) { .apf-in { grid-template-columns: 260px minmax(0, 1fr); gap: 48px; align-items: center; } }
+  .apf .apf-h { margin: 0; font-size: 22px; line-height: 1.25; font-weight: 600; letter-spacing: -.02em; color: var(--color-ink); }
+  .apf-h span { display: block; color: var(--pp-em); }
+  .apf-l { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 20px; margin: 0; padding: 0; list-style: none; }
+  @media (min-width: 768px) { .apf-l { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .apf-l li { padding-left: 16px; border-left: 1px dashed var(--color-perf); }
+  .apf-l b { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; font-weight: 600; color: var(--color-ink); }
+  .apf-l .dots { font-size: 34px; line-height: 1; }
+  .apf-l em { font-style: normal; font-size: 15px; color: var(--color-ink-2); }
+  .apf-l p { margin: 8px 0 0; font-size: 14px; line-height: 1.45; color: var(--color-ink-2); }
+</style>
