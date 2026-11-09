@@ -1,0 +1,71 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import Kit from "../components/Kit.astro";
+import ProductSubnav from "../components/admin/ProductSubnav.astro";
+import ProductFaq from "../components/admin/ProductFaq.astro";
+import PhoneDemo from "../components/phone/PhoneDemo.astro";
+import PhoneValue from "../components/phone/PhoneValue.astro";
+import PhoneSteps from "../components/phone/PhoneSteps.astro";
+import PhoneStatus from "../components/phone/PhoneStatus.astro";
+import PhoneRelated from "../components/phone/PhoneRelated.astro";
+import PhoneCta from "../components/phone/PhoneCta.astro";
+import { breadcrumbJsonLd, faqPageJsonLd, webApplicationJsonLd, type FaqItem } from "../lib/unelte/jsonld.ts";
+import "../components/admin/product-page.css";
+
+const PATH = "/casa-de-marcat-pe-telefon/";
+const TITLE = "Casa de marcat pe telefon: aplicația Tapselo POS pentru iPhone";
+const DESC =
+  "Vinzi de pe iPhone: scanezi cu camera, încasezi numerar, tichete sau card pe telefon, iar bonul fiscal pleacă la casa de marcat Datecs prin rețea sau Bluetooth.";
+
+const faq: FaqItem[] = [
+  { q: "Telefonul tipărește bon fiscal?", a: "Da. Telefonul trimite bonul la casa de marcat Datecs, prin rețea sau Bluetooth. Vânzarea scade stocul și apare în admin. Clientului salvat cu email îi poți trimite o copie informativă a bonului." },
+  { q: "Ce telefon îmi trebuie?", a: "Un iPhone cu aplicația Tapselo POS. Pentru plata cu cardul pe telefon ai nevoie de iPhone XS sau mai nou. Pentru Android nu avem încă aplicație." },
+  { q: "Ce coduri citește camera?", a: "EAN-13, EAN-8, UPC-A și Code 128. În același câmp poți tasta PLU-ul sau scrie numele produsului. Produsele la kg le adaugi scanând eticheta de la cântar." },
+  { q: "Cum leg telefonul de magazin?", a: "În admin apeși „Generează cod de activare” și tastezi codul de 6 caractere în aplicație. Telefonul primește produsele, prețurile și stocul magazinului." },
+  { q: "Pot încasa cu cardul pe telefon?", a: "Da. Conectezi firma la Stripe din admin (CUI, administrator, IBAN), Stripe verifică datele, apoi pornești „Card pe telefon” pentru magazin. Clientul apropie cardul de iPhone. Fără abonament." },
+  { q: "Merge și fără internet?", a: "Vânzarea se salvează întâi pe telefon și urcă în admin când revine netul. Plata cu cardul pe telefon are nevoie de internet." },
+];
+
+const jsonLd = [
+  webApplicationJsonLd({
+    name: "Tapselo POS pentru iPhone",
+    path: PATH,
+    description: DESC,
+    operatingSystem: "iOS",
+    tapseloProductPricing: true,
+  }),
+  faqPageJsonLd(faq),
+  breadcrumbJsonLd([
+    { name: "Acasă", path: "/" },
+    { name: "Casă de marcat pe telefon", path: PATH },
+  ]),
+];
+---
+<Layout title={TITLE} description={DESC} jsonLd={jsonLd} appJsonLd={false}>
+  <Navbar />
+  <main class="pp">
+    <Kit />
+    <ProductSubnav
+      crumbs={[{ label: "Funcții", href: "/#features" }, { label: "Casă de marcat pe telefon" }]}
+      links={[
+        { href: "#demo", label: "Demo" },
+        { href: "#ce-primesti", label: "Ce primești" },
+        { href: "#pasi", label: "Pași" },
+        { href: "#ce-merge-azi", label: "Ce merge azi" },
+        { href: "#intrebari", label: "Întrebări" },
+      ]}
+    />
+    <PhoneDemo />
+    <PhoneValue />
+    <PhoneSteps />
+    <PhoneStatus />
+    <ProductFaq id="intrebari" kicker="Întrebări" lead="Ce întreabă de obicei magazinele după ce încearcă demo-ul." items={faq}>
+      Întrebări frecvente.
+    </ProductFaq>
+    <PhoneRelated />
+    <PhoneCta />
+  </main>
+  <Footer />
+</Layout>

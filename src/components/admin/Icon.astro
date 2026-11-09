@@ -1,0 +1,7 @@
+---
+// One stroke icon from icons.ts. Decorative: aria-hidden.
+import { ICON } from "./icons.ts";
+interface Props { name: string; class?: string }
+const { name, class: cls = "i" } = Astro.props;
+---
+<svg class={cls} viewBox="0 0 24 24" aria-hidden="true"><path d={ICON[name] ?? ""} /></svg>

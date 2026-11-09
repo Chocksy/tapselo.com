@@ -1,0 +1,127 @@
+---
+// I1 pricing head with the beta receipt (already printed, static) + D1 plans after beta.
+import Mascot from "../Mascot.astro";
+
+const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+const OFFER = ["Casa de marcat pe PC", "Aplicatia pe telefon", "Admin si rapoarte", "Licente", "Actualizari"];
+const INCL = ["Casa care merge și fără internet", "Bon fiscal pe Datecs", "Cântar Dibal integrat", "Rapoarte cu recomandări", "Inventar, rețete, recepție", "Clienți, cupoane, oferte"];
+---
+
+<section class="hm-sec white tear-top" id="pricing" data-moment="tear">
+  <div class="site-container">
+    <div class="ph">
+      <div>
+        <p class="stamp-label">Prețuri</p>
+        <h2 class="hm-h2">Beta gratuit acum.<br /><span class="mut">0 lei licențe.</span><Mascot spot="pricing" pose="star" rest="left" size={68} sizeSm={44} view hover=".ph h2, .ph .hm-btn" cls="pr-ms" /></h2>
+        <p class="hm-lead">Toate funcțiile, fără card. După beta: Start 79 lei pe lună pentru o casă, Magazin 129 lei pe lună pentru două case.</p>
+        <div class="hb">
+          <a class="hm-btn" href="https://app.tapselo.com/?demo=1" data-tapselo-cta="pricing">Încearcă demo <Fragment set:html={arrow} /></a>
+          <span class="mo-key"><a class="hm-btn2" href="https://app.tapselo.com" data-tapselo-cta="pricing" data-moment="drawer">Începe gratuit</a><span class="mo-dw" aria-hidden="true"><b>0.00 RON</b></span></span>
+        </div>
+        <ul class="ck">
+          <li>Fără card</li>
+          <li>Gata în 20 de minute</li>
+          <li>După beta: +39 lei pe casă</li>
+        </ul>
+      </div>
+      <div class="rw" aria-hidden="true">
+        <div class="slot"></div>
+        <div class="rc">
+          <p class="c t1">TAPSELO · BETA</p>
+          <p class="c s">Oferta de azi</p>
+          <hr />
+          {OFFER.map((o) => <p class="r"><span>{o}</span><span>0.00</span></p>)}
+          <hr />
+          <p class="tt"><span>TOTAL LEI</span><b class="dots">0.00</b></p>
+          <p class="r s"><span>Dupa beta, de la</span><span>79.00 / luna</span></p>
+          <hr />
+          <p class="c s">Datecs FP-700 · Dibal · USB</p>
+          <span class="stamp">BETA</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="beta" id="planuri"><i aria-hidden="true"></i><b>Beta: totul e gratuit acum.</b><span>Fără card, fără contract. Te anunțăm cu 30 de zile înainte de prețurile de mai jos.</span></div>
+
+    <div class="plans">
+      <div class="pl">
+        <h3>Start</h3>
+        <span class="for">Pentru cafenele și magazine mici</span>
+        <p class="pr"><b class="dots">79</b><small>lei / lună + TVA</small></p>
+        <p class="cs">1 casă de marcat</p>
+        <a class="hm-btn2 w" href="https://app.tapselo.com" data-tapselo-cta="pricing">Începe gratuit</a>
+      </div>
+      <div class="pl fe">
+        <h3>Magazin <span class="rec">Recomandat</span></h3>
+        <span class="for">Pentru magazine alimentare</span>
+        <p class="pr"><b class="dots">129</b><small>lei / lună + TVA</small></p>
+        <p class="cs">2 case de marcat</p>
+        <a class="hm-btn w" href="https://app.tapselo.com" data-tapselo-cta="pricing">Începe gratuit</a>
+      </div>
+      <div class="pl inc">
+        <h3>Ambele planuri includ</h3>
+        <ul>{INCL.map((i) => <li>{i}</li>)}</ul>
+        <dl>
+          <div><dt>Casă în plus</dt><dd><b class="dots">+39</b> lei</dd></div>
+          <div><dt>Magazin în plus</dt><dd><b class="dots">+99</b> lei</dd></div>
+          <div><dt>Licențe</dt><dd><b class="z">0</b> lei</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* J2: star eyes on "0 lei", once in view and on hover of the title or the buttons */
+  /* stands on the "0 lei" line, head kept under the line above */
+  .ph :global(.ms.pr-ms) { display: inline-block; vertical-align: baseline; margin: 0 0 -.28em .14em; }
+  .ph { display: grid; gap: 48px; align-items: start; }
+  @media (min-width: 1000px) { .ph { grid-template-columns: minmax(0, 1fr) 316px; gap: 80px; } }
+  .ph .hm-lead { max-width: 34rem; margin-top: 22px; }
+  .hb { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .ck { list-style: none; margin: 26px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; font: 500 12.5px/1.4 var(--font-mono); color: var(--color-ink-3); }
+  .ck li::before { content: "✓ "; color: #16a34a; }
+
+  /* static receipt under a printer slot */
+  .rw { position: relative; max-width: 316px; width: 100%; justify-self: center; }
+  .slot { height: 28px; border-radius: 9px; background: linear-gradient(#34312d, #24221f); box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.4); }
+  .rc { position: relative; margin: -12px 14px 0; padding: 22px 15px 14px; background: var(--color-paper-white); box-shadow: 0 0 0 1px #ece5d6, 0 18px 30px -16px rgba(60, 45, 20, 0.35); font: 500 11.5px/1.55 var(--font-mono); color: #2b2823; }
+  .rc::after { content: ""; position: absolute; left: 0; right: 0; bottom: -8px; height: 8px; background: var(--color-paper-white); mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 12px 100%; }
+  .rc p { margin: 0; }
+  .c { text-align: center; }
+  .t1 { font-weight: 700; font-size: 12.5px; letter-spacing: 0.06em; color: var(--color-ink); }
+  .s { color: #9a937f; font-size: 10.5px; }
+  .rc hr { border: 0; border-top: 1px dashed #cfc6b2; margin: 10px 0; }
+  .r { display: flex; justify-content: space-between; gap: 8px; }
+  .tt { display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: var(--color-ink); }
+  .tt b { font-size: 30px; line-height: 1.1; }
+  .stamp { position: absolute; left: 44%; top: 56%; padding: 3px 9px; border: 2px solid var(--color-stamp); border-radius: 5px; color: var(--color-stamp); font: 700 13px/1.2 var(--font-mono); letter-spacing: 0.14em; transform: rotate(-12deg); opacity: 0.88; }
+
+  /* plans */
+  .beta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-top: 72px; padding: 14px 18px; border: 1.5px dashed #86efac; border-radius: 12px; background: #f0fdf4; font-size: 15px; color: #166534; }
+  .beta i { width: 8px; height: 8px; border-radius: 50%; background: #16a34a; }
+  .beta span { color: #15803d; }
+  .plans { display: grid; gap: 14px; margin-top: 14px; }
+  @media (min-width: 900px) { .plans { grid-template-columns: 1fr 1fr 1.3fr; } }
+  .pl { display: flex; flex-direction: column; padding: 26px; border-radius: 16px; background: var(--color-paper); box-shadow: inset 0 0 0 1px var(--color-rule); }
+  .pl.fe { background: #fff; box-shadow: inset 0 0 0 2px #2563eb, 0 24px 48px -28px rgba(37, 99, 235, 0.45); }
+  .pl h3 { margin: 0; display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 600; color: var(--color-ink); }
+  .rec { padding: 3px 8px; border-radius: 99px; background: #dbeafe; color: #1d4ed8; font: 600 10.5px/1.2 var(--font-mono); letter-spacing: 0.04em; }
+  .for { margin-top: 4px; font-size: 14px; color: var(--color-ink-2); }
+  .pr { display: flex; align-items: baseline; gap: 8px; margin: 26px 0 0; }
+  .pr b { font-size: 56px; line-height: 1; color: var(--color-ink); }
+  .pr small { font-size: 13.5px; color: var(--color-ink-3); }
+  .cs { margin: 10px 0 24px; font-size: 15px; color: var(--color-ink); }
+  .w { width: 100%; justify-content: center; margin-top: auto; }
+  .inc ul { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 8px 16px; font-size: 14.5px; color: var(--color-ink-2); }
+  @media (min-width: 480px) { .inc ul { grid-template-columns: 1fr 1fr; } }
+  .inc li { display: flex; gap: 8px; }
+  .inc li::before { content: "✓"; color: #16a34a; font-weight: 700; }
+  .inc dl { margin: 20px 0 0; border-top: 1px dashed var(--color-perf); }
+  .inc dl div { display: flex; justify-content: space-between; align-items: baseline; padding: 9px 0; border-bottom: 1px dashed var(--color-perf); font-size: 14.5px; }
+  .inc dt { color: var(--color-ink-2); }
+  .inc dd { margin: 0; color: var(--color-ink-2); }
+  .inc dd b { font-size: 22px; color: var(--color-ink); }
+  /* ponytail: a lone Doto 0 reads as a diamond at this size, so this one digit uses the receipt mono font. */
+  .inc dd b.z { font: 600 22px/1 var(--font-mono); }
+</style>

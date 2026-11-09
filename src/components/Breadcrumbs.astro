@@ -8,15 +8,23 @@ interface Props {
 const { items } = Astro.props;
 ---
 
-<nav aria-label="Breadcrumb" class="text-sm font-medium text-text-on-primary">
+<nav aria-label="Breadcrumb" class="bc">
   {items.map((item, i) => (
     <>
-      {i > 0 && <span class="mx-2 text-text-on-primary-faint" aria-hidden="true">/</span>}
+      {i > 0 && <span class="bc-s" aria-hidden="true">/</span>}
       {item.href ? (
-        <a href={item.href} class="transition-colors hover:text-white">{item.label}</a>
+        <a href={item.href}>{item.label}</a>
       ) : (
-        <span class="text-white" aria-current="page">{item.label}</span>
+        <span class="bc-c" aria-current="page">{item.label}</span>
       )}
     </>
   ))}
 </nav>
+
+<style is:global>
+  .bc { font-size: 14px; line-height: 1.5; color: var(--color-ink-3); }
+  .bc a { color: inherit; text-decoration: none; transition: color .15s; }
+  .bc a:hover { color: var(--color-ink); }
+  .bc-s { margin: 0 9px; color: var(--color-perf); }
+  .bc-c { color: var(--color-ink); font-weight: 500; }
+</style>

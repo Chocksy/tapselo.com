@@ -1,0 +1,401 @@
+---
+// C1 bento in the I1 receipt look: every tile moves (kiosk loop, offline queue, phones, scale label,
+// recipe rows, offers clip, Messenger order, campaign checks). Reduced motion shows the finished state.
+const arrow = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+// Decorative QR (not a real code): seeded pixels plus the three finder squares.
+function qr(n = 25, seed = 7) {
+  let s = seed;
+  const rnd = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
+  const fin = (x: number, y: number) => {
+    const f = (a: number, b: number) => a >= 0 && a < 7 && b >= 0 && b < 7;
+    for (const [ox, oy] of [[0, 0], [n - 7, 0], [0, n - 7]]) if (f(x - ox, y - oy)) {
+      const a = x - ox, b = y - oy;
+      return a === 0 || a === 6 || b === 0 || b === 6 || (a > 1 && a < 5 && b > 1 && b < 5) ? 1 : 0;
+    }
+    return -1;
+  };
+  let d = "";
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+    const v = fin(x, y);
+    if (v === 1 || (v === -1 && rnd() > 0.52)) d += `M${x} ${y}h1v1h-1z`;
+  }
+  return `<svg viewBox="-1 -1 ${n + 2} ${n + 2}" shape-rendering="crispEdges" aria-hidden="true"><path fill="#1d1b17" d="${d}"/></svg>`;
+}
+---
+
+<section class="bento tear-top" id="features" data-moment="tear">
+  <div class="site-container">
+    <div class="hm-head">
+      <div>
+        <p class="stamp-label">Funcții</p>
+        <h2 class="hm-h2">Tot ce ai nevoie la casă.<br /><span class="mut">Nimic în plus.</span></h2>
+      </div>
+      <div>
+        <p class="hm-lead">Casa, telefonul și adminul lucrează ca un singur sistem. Tot ce vezi aici merge azi, gratuit cât ține beta.</p>
+        <a class="hm-link" href="#how-it-works">Vezi tot turul <Fragment set:html={arrow} /></a>
+      </div>
+    </div>
+
+    <div class="grid canvas" data-bento>
+      <article class="t dk hero">
+        <div class="m">
+          <div class="kio"><div data-fit="740"><div class="ts-kiosk" data-layout="scanare" data-w="740"></div></div></div>
+          <span class="net" aria-hidden="true"><b></b><span>Offline</span></span>
+          <div class="q" aria-hidden="true">
+            <div class="hd"><span class="n"><b class="dots">3</b><span>bonuri tipărite<br />și salvate pe casă</span></span><span class="st">Fără internet</span></div>
+            <ul>
+              <li><small>BON NR.</small><b class="dots">0418</b><span>38.40 · NUMERAR</span><em>· pe casă</em></li>
+              <li><small>BON NR.</small><b class="dots">0419</b><span>12.90 · CARD</span><em>· pe casă</em></li>
+              <li><small>BON NR.</small><b class="dots">0420</b><span>26.00 · TICHETE</span><em>· pe casă</em></li>
+            </ul>
+          </div>
+        </div>
+        <div class="cap"><h3>Vinzi și fără internet</h3><p>Bonul iese la imprimanta de lângă casă. Vânzările urcă în admin când revine netul.</p></div>
+      </article>
+
+      <article class="t dk rec">
+        <div class="m"><div class="ph"><div class="ts-phone" data-shop="magazin" data-screen="receiving" data-w="214"></div></div></div>
+        <div class="cap"><h3>Recepție din poza facturii</h3><p>Pozezi factura, produsele se completează singure. Confirmi, iar NIR-ul și stocul sunt gata.</p></div>
+      </article>
+
+      <article class="t inv">
+        <div class="m"><div class="ph"><div class="ts-phone" data-shop="magazin" data-screen="inventory" data-w="214"></div></div></div>
+        <div class="cap"><h3>Inventar cu telefonul</h3><p>Scanezi cu camera telefonului și numeri pe loc, la raft. Adminul arată ce merită verificat.</p></div>
+      </article>
+
+      <article class="t sc">
+        <div class="m">
+          <div class="lbl" aria-hidden="true">
+            <h4>TELEMEA DE OAIE <span>PLU 2</span></h4>
+            <div class="lcd">
+              <div><small>KG</small><b class="kg">0.485</b></div>
+              <div><small>LEI / KG</small><b>42.90</b></div>
+              <div><small>TOTAL</small><b class="tot">20.81</b></div>
+            </div>
+            <div class="bars"></div>
+            <code>2 000002 004853</code>
+          </div>
+        </div>
+        <div class="cap"><h3>Cântar Dibal</h3><p>Prețurile pleacă în cântar, greutatea vine din etichetă.</p></div>
+      </article>
+
+      <article class="t cr rc">
+        <div class="m">
+          <div class="rcp" aria-hidden="true">
+            <h4>Pâine de casă 500g<small>lot 20 buc.</small></h4>
+            <ul>
+              <li><span>Făină 000</span><i></i><b>6 kg</b></li>
+              <li><span>Apă</span><i></i><b>3,6 l</b></li>
+              <li><span>Drojdie proaspătă</span><i></i><b>120 g</b></li>
+              <li><span>Sare</span><i></i><b>120 g</b></li>
+            </ul>
+            <footer><span>Cost lot 36,80 lei<br />Cost / buc.</span><b class="dots">1,84 lei</b></footer>
+          </div>
+        </div>
+        <div class="cap"><h3>Rețete și producție <span class="tag"><i></i>Brutărie</span></h3><p>Vezi costul pe bucată. Ingredientele ies singure din stoc.</p></div>
+      </article>
+
+      <article class="t dk of">
+        <div class="m">
+          <div class="shot">
+            <video muted loop playsinline preload="none" data-a="1" data-b="24.4" poster="/videos/v2/offers.jpg" aria-hidden="true">
+              <source src="/videos/v2/offers.webm" type="video/webm" />
+              <source src="/videos/v2/offers.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="ov">
+            <div class="a4" aria-hidden="true">
+              <header><small>Ofertele zilei</small><b>OFERTE</b><i></i></header>
+              <ul>
+                <li>Cafea boabe 500g<b>34,99</b></li>
+                <li>Ciocolată cu lapte 100g<b>4,99</b></li>
+                <li>Suc de portocale 2L<b>8,99</b></li>
+                <li>Ulei de floarea-soarelui 1L<b>8,49</b></li>
+              </ul>
+              <footer><Fragment set:html={qr()} />Scanează pentru toate ofertele</footer>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><h3>Pagina de oferte cu QR</h3><p>Un link cu ofertele zilei. Clienții îl deschid din QR, iar foaia A4 pentru vitrină iese <span class="nw">dintr-un clic</span>.</p></div>
+      </article>
+
+      <article class="t dk or">
+        <div class="m">
+          <div class="ui" aria-hidden="true">
+            <div class="bub"><i>MS</i><div><small>Mihai Stan</small><p>Bună! Aș vrea un platou de brânzeturi pentru 12 persoane, sâmbătă seara.</p></div></div>
+            <div class="card ord"><div><small>Comandă nouă din mesaj <i>AI</i></small><b>Platou brânzeturi, 12 persoane</b><em>Sâmbătă, 18:00 · ridicare</em></div><u>Acceptă</u><s>Ignoră</s></div>
+          </div>
+          <span class="ms" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C6.4 2 2 6.1 2 11.7c0 2.9 1.2 5.5 3.2 7.2v3.1l3-1.6c1.2.3 2.5.5 3.8.5 5.6 0 10-4.1 10-9.7S17.6 2 12 2zm1 13-2.6-2.7-5 2.7 5.5-5.8 2.6 2.7 4.9-2.7L13 15z"></path></svg></span>
+        </div>
+        <div class="cap"><h3>Comenzi din Messenger cu AI</h3><p>Clientul scrie, AI-ul scoate comanda din mesaj. Tu doar o accepți.</p></div>
+      </article>
+
+      <article class="t cp">
+        <div class="m">
+          <div class="ui card cpl" aria-hidden="true">
+            <h4>Au cumpărat cafea recent<span>WhatsApp</span></h4>
+            <ul><li><i>AP</i>Andrei Popescu<b></b></li><li><i>MI</i>Maria Ionescu<b></b></li><li><i>RȚ</i>Raluca Țurcanu<b></b></li></ul>
+            <div class="cpn"><span>Cupon personal</span><code>CAFEA10</code><b>−10%</b></div>
+          </div>
+        </div>
+        <div class="cap"><h3>Campanii pe WhatsApp</h3><p>Doar clienților care au acceptat, cu numele și cuponul lor.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bento { background: var(--color-paper-white); --tear: var(--color-paper-white); }
+  .grid { display: grid; gap: 14px; margin-top: 56px; }
+  .t { position: relative; border-radius: 22px; overflow: hidden; background: var(--color-paper-white); box-shadow: inset 0 0 0 1px var(--color-rule); isolation: isolate; transition: transform 0.45s var(--ease-out-soft), box-shadow 0.45s var(--ease-out-soft); }
+  .t:hover { transform: translateY(-4px); box-shadow: inset 0 0 0 1px #d6ccb6, 0 24px 48px -20px rgba(60, 45, 20, 0.28); }
+  .t.dk { background: #201d19; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06); color: #f6f2e9; }
+  .t.dk:hover { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 24px 48px -20px rgba(30, 20, 10, 0.55); }
+  .t.cr { background: #f6f1e6; }
+  .m { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+  .cap { position: absolute; left: 26px; right: 26px; bottom: 22px; z-index: 2; }
+  .cap h3 { margin: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 18px; line-height: 1.3; font-weight: 600; letter-spacing: -0.015em; color: inherit; }
+  .cap p { margin: 4px 0 0; font-size: 15px; line-height: 1.42; color: var(--color-ink-2); text-wrap: pretty; }
+  .dk .cap p { color: #b3aa98; }
+  .tag { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px 5px 8px; border-radius: 99px; font: 500 10.5px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; background: var(--color-paper-white); color: #92400e; box-shadow: 0 0 0 1px #eee3d0; }
+  .tag i { width: 7px; height: 7px; border-radius: 50%; background: #b45309; }
+
+  /* hero: offline */
+  .hero { background: radial-gradient(120% 90% at 100% 0%, #2c2620 0%, #201d19 58%); }
+  .hero .kio { position: absolute; left: -11px; right: 24px; top: 22px; filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.45)); }
+  .hero .cap { right: 360px; bottom: 26px; }
+  .hero .cap h3 { font-size: 26px; letter-spacing: -0.025em; }
+  .hero .cap p { font-size: 16px; }
+  .net { position: absolute; left: 70%; top: 34px; z-index: 2; display: inline-flex; align-items: center; gap: 5px; height: 20px; padding: 0 8px 0 6px; border-radius: 99px; font: 700 10px/1 var(--font-mono); letter-spacing: 0.04em; background: #fee2e2; color: #b91c1c; box-shadow: 0 0 0 3px #201d19; transition: background-color 0.3s, color 0.3s; }
+  .net b { width: 6px; height: 6px; border-radius: 50%; background: #dc2626; }
+  .net:global(.on) { background: #d1fae5; color: #047857; }
+  .net:global(.on) b { background: #10b981; }
+  .q { position: absolute; right: 24px; bottom: 22px; z-index: 2; width: 324px; padding: 12px 12px 14px; border-radius: 14px; background: #2a2621; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 24px 50px -16px rgba(0, 0, 0, 0.7); }
+  .q .hd { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .q .n { display: flex; align-items: center; gap: 10px; }
+  .q .n b { font-size: 34px; line-height: 1; color: #f6f2e9; min-width: 22px; }
+  .q .n span { font-size: 12.5px; line-height: 1.3; color: #b3aa98; }
+  .q .st { flex: none; padding: 5px 9px; border-radius: 6px; background: rgba(200, 56, 79, 0.18); color: #f19aa8; font: 500 11px/1 var(--font-mono); transition: background-color 0.3s, color 0.3s; }
+  .q:global(.on) .st { background: rgba(16, 185, 129, 0.16); color: #6ee7b7; }
+  .q ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .q li { position: relative; padding: 8px 8px 12px; background: var(--color-paper-white); color: var(--color-ink); font: 500 9.5px/1.35 var(--font-mono); transition: opacity 0.3s, transform 0.4s var(--ease-out-soft); }
+  .q li::after { content: ""; position: absolute; left: 0; right: 0; bottom: -5px; height: 6px; background: var(--color-paper-white); mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 8px 100%; }
+  .q li small { display: block; color: var(--color-ink-3); font-size: 8.5px; }
+  .q li b { display: block; font-size: 22px; line-height: 1.2; margin: 2px 0 4px; }
+  .q li span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .q li em { font-style: normal; color: var(--color-stamp); }
+  .q li:global(.ok) em { color: #047857; }
+  .q li:global(.off) { opacity: 0.25; transform: translateY(-6px); }
+
+  /* phones */
+  .ph { position: absolute; right: 30px; top: 26px; }
+  .rec { background: radial-gradient(80% 120% at 100% 0%, #2c2620, #201d19 70%); }
+  .rec .cap, .inv .cap { right: auto; width: 236px; }
+
+  /* scale label */
+  .sc { background: #eef3fb; box-shadow: inset 0 0 0 1px #dbe5f5; }
+  .lbl { position: absolute; left: 26px; right: 26px; top: 26px; padding: 14px 16px 10px; background: #fff; border-radius: 6px; box-shadow: 0 0 0 1px #d6e3fb, 0 16px 28px -16px rgba(37, 99, 235, 0.45); animation: lbl 7s var(--ease-out-soft) infinite; }
+  .lbl h4 { margin: 0; display: flex; justify-content: space-between; font: 700 11px/1 var(--font-sans); letter-spacing: 0.03em; color: var(--color-ink); }
+  .lbl h4 span { color: #2563eb; font-family: var(--font-mono); font-weight: 500; }
+  .lcd { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #d6dbe3; }
+  .lcd small { display: block; font: 500 8.5px/1 var(--font-mono); letter-spacing: 0.08em; color: var(--color-ink-3); }
+  .lcd b { display: block; margin-top: 5px; font-family: var(--font-mono); font-weight: 600; font-variant-numeric: tabular-nums; font-size: 21px; line-height: 1; color: var(--color-ink); }
+  .lcd div:last-child b { color: #2563eb; }
+  .bars { height: 30px; margin: 10px 0 4px; background: repeating-linear-gradient(90deg, #1d1b17 0 2px, transparent 2px 4px, #1d1b17 4px 5px, transparent 5px 8px, #1d1b17 8px 11px, transparent 11px 12px, #1d1b17 12px 13px, transparent 13px 16px); }
+  .lbl code { display: block; text-align: center; font: 500 9px/1 var(--font-mono); letter-spacing: 0.18em; color: #475569; }
+  @keyframes lbl { 0% { transform: translateY(-120%); } 14%, 94% { transform: none; } 100% { transform: translateY(-120%); } }
+
+  /* recipe */
+  .rcp { position: absolute; left: 26px; right: 26px; top: 26px; padding: 13px 16px 0; background: var(--color-paper-white); box-shadow: 0 0 0 1px #eee3d0, 0 16px 30px -18px rgba(60, 45, 20, 0.4); font-family: var(--font-mono); color: var(--color-ink); }
+  .rcp::after { content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 8px; background: var(--color-paper-white); mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 12px 100%; }
+  .rcp h4 { margin: 0 0 6px; display: flex; justify-content: space-between; align-items: baseline; font: 600 13px/1.2 var(--font-sans); }
+  .rcp h4 small { font: 500 10.5px/1 var(--font-mono); color: var(--color-ink-3); }
+  .rcp ul { list-style: none; margin: 0; padding: 0; }
+  .rcp li { display: flex; align-items: baseline; gap: 6px; height: 21px; font-size: 11.5px; color: #3b372f; animation: row 7s var(--ease-out-soft) infinite; }
+  .rcp li i { flex: 1; border-bottom: 1px dotted #cbc1ab; transform: translateY(-3px); }
+  .rcp li:nth-child(2) { animation-delay: 0.35s; }
+  .rcp li:nth-child(3) { animation-delay: 0.7s; }
+  .rcp li:nth-child(4) { animation-delay: 1.05s; }
+  @keyframes row { 0%, 14%, 100% { background: transparent; } 6% { background: #fdecc8; } }
+  .rcp footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 8px; padding: 10px 0 12px; border-top: 1px dashed #cbc1ab; font-size: 10.5px; line-height: 1.5; color: #b45309; }
+  .rcp footer b { font-size: 25px; line-height: 1; color: #b45309; }
+
+  /* offers */
+  .of { background: radial-gradient(90% 70% at 0% 100%, #2c2620 0%, #201d19 60%); }
+  .shot { position: absolute; left: 28px; top: 28px; right: -1px; height: 456px; border-radius: 12px 0 0 0; overflow: hidden; background: #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 18px 40px -18px rgba(0, 0, 0, 0.5); mask: linear-gradient(#000 80%, transparent); }
+  .shot video { position: absolute; display: block; width: 998px; height: 562px; left: -187px; top: -12px; object-fit: cover; }
+  .ov { transition: transform 0.6s var(--ease-out-soft); }
+  .t:hover .ov { transform: translateY(-6px); }
+  .a4 { position: absolute; right: 24px; top: 214px; z-index: 2; width: 150px; height: 212px; border-radius: 6px; background: #fff; overflow: hidden; box-shadow: 0 30px 50px -18px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(0, 0, 0, 0.08); transform: rotate(3deg); animation: a4 9s ease-in-out infinite; color: #1d1b17; }
+  .a4 header { height: 52px; background: #dc2626; color: #fff; padding: 9px 10px; position: relative; overflow: hidden; }
+  .a4 header b { display: block; font-size: 19px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+  .a4 header small { font-size: 7.5px; opacity: 0.85; }
+  .a4 header i { position: absolute; right: -14px; bottom: -22px; width: 52px; height: 52px; border-radius: 50%; background: #facc15; }
+  .a4 ul { list-style: none; margin: 0; padding: 6px 10px 0; }
+  .a4 li { display: flex; justify-content: space-between; align-items: center; gap: 6px; padding: 5px 0; border-bottom: 1px solid #f1ede4; font-size: 7.5px; font-weight: 600; line-height: 1.15; }
+  .a4 li b { flex: none; background: #facc15; padding: 2px 4px; border-radius: 3px; font-size: 9px; font-weight: 800; }
+  .a4 footer { display: flex; align-items: center; gap: 7px; padding: 7px 10px 0; font: 500 6.5px/1.3 var(--font-mono); color: #64748b; }
+  .a4 footer :global(svg) { width: 34px; height: 34px; flex: none; }
+  @keyframes a4 { 50% { transform: rotate(3deg) translateY(-8px); } }
+
+  /* Messenger order and campaigns */
+  .ui { position: absolute; left: 24px; right: 24px; top: 20px; font-family: "Plus Jakarta Sans Variable", var(--font-sans); color: #0f172a; }
+  .card { border-radius: 12px; background: #fff; box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.07), 0 16px 30px -18px rgba(15, 23, 42, 0.4); }
+  .ms { position: absolute; right: 18px; top: 14px; z-index: 2; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, #0866ff, #a033ff); box-shadow: 0 0 0 4px #201d19; animation: pg 3.2s var(--ease-out-soft) infinite; }
+  @keyframes pg { 0% { box-shadow: 0 0 0 4px #201d19, 0 0 0 4px rgba(8, 102, 255, 0.5); } 70%, 100% { box-shadow: 0 0 0 4px #201d19, 0 0 0 16px rgba(8, 102, 255, 0); } }
+  .bub { display: flex; gap: 9px; max-width: 300px; padding-right: 44px; }
+  .bub > i { flex: none; width: 28px; height: 28px; border-radius: 50%; background: #3b352d; color: #e8e2d6; font: 600 11px/28px var(--font-sans); text-align: center; font-style: normal; }
+  .bub small { display: block; margin: 0 0 3px 2px; font-size: 11px; color: #a39a88; }
+  .bub p { margin: 0; padding: 8px 12px; border-radius: 4px 16px 16px 16px; background: #332e27; color: #ebe5d8; font-size: 12.5px; line-height: 1.4; }
+  .ord { position: absolute; left: 0; right: 0; top: 84px; display: flex; align-items: center; gap: 12px; padding: 10px 12px; animation: ord 7s var(--ease-out-soft) infinite; }
+  .ord div { flex: 1; min-width: 0; }
+  .ord small { display: flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 11px; font-weight: 600; color: #64748b; }
+  .ord small i { padding: 2px 5px; border-radius: 5px; background: #eef2ff; color: #4f46e5; font: 600 9.5px/1.2 var(--font-mono); font-style: normal; }
+  .ord b { display: block; margin-top: 3px; font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ord em { display: block; white-space: nowrap; margin-top: 2px; font-size: 11.5px; font-style: normal; color: #64748b; }
+  .ord u { flex: none; padding: 8px 13px; border-radius: 9px; background: #1d1b17; color: #fff; font-size: 12.5px; font-weight: 600; text-decoration: none; animation: acc 7s var(--ease-out-soft) infinite; }
+  .ord s { flex: none; font-size: 12.5px; color: #64748b; text-decoration: none; }
+  @media (max-width: 420px) { .ord s { display: none; } }
+  @keyframes ord { 0%, 100% { box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.07), 0 16px 30px -18px rgba(15, 23, 42, 0.4); } 10% { box-shadow: 0 0 0 4px rgba(8, 102, 255, 0.45), 0 16px 30px -18px rgba(15, 23, 42, 0.4); } 30% { box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.07), 0 16px 30px -18px rgba(15, 23, 42, 0.4); } }
+  @keyframes acc { 0%, 58% { background: #1d1b17; transform: none; } 62% { transform: scale(0.93); } 66%, 100% { background: #16a34a; transform: none; } }
+  .cpl { top: 18px; padding: 9px 12px 10px; }
+  .cpl h4 { margin: 0 0 3px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 600; color: #64748b; }
+  .cpl h4 span { padding: 3px 7px; border-radius: 99px; background: #dcfce7; color: #15803d; font-size: 10.5px; }
+  .cpl ul { list-style: none; margin: 0; padding: 0; }
+  .cpl li { display: flex; align-items: center; gap: 8px; height: 25px; font-size: 12.5px; font-weight: 600; }
+  .cpl li i { flex: none; width: 20px; height: 20px; border-radius: 50%; background: #dbeafe; color: #1d4ed8; font: 700 9.5px/20px var(--font-sans); text-align: center; font-style: normal; }
+  .cpl li b { margin-left: auto; width: 16px; height: 16px; border-radius: 50%; background: #22c55e; box-shadow: inset 0 0 0 4px #22c55e, inset 0 0 0 9px #fff; animation: chk 7s var(--ease-out-soft) infinite; }
+  @keyframes chk { 0% { transform: scale(0.4); background: #e2e8f0; box-shadow: none; } 8%, 100% { transform: none; } }
+  .cpl li:nth-child(2) b { animation-delay: 0.25s; }
+  .cpl li:nth-child(3) b { animation-delay: 0.5s; }
+  .cpn { display: flex; align-items: center; justify-content: space-between; margin-top: 7px; padding: 7px 10px; border-radius: 9px; border: 1.5px dashed #93c5fd; background: #eff6ff; font-size: 11.5px; color: #1e40af; }
+  .cpn code { font: 600 13px/1 var(--font-mono); color: #1d4ed8; letter-spacing: 0.06em; }
+  .cpn b { font-size: 14px; font-weight: 700; color: #1d4ed8; }
+
+  /* Loops pause offscreen (.canvas.off) and stop for reduced motion. */
+  .grid:global(.off) *, .grid:global(.off) { animation-play-state: paused !important; }
+
+  @media (min-width: 1100px) {
+    .grid { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: repeat(4, 280px); }
+    .hero { grid-column: 1 / 8; grid-row: 1 / 3; }
+    .rec { grid-column: 8 / 13; grid-row: 1; }
+    .inv { grid-column: 8 / 13; grid-row: 2; }
+    .sc { grid-column: 1 / 4; grid-row: 3; }
+    .rc { grid-column: 4 / 8; grid-row: 3; }
+    .of { grid-column: 8 / 13; grid-row: 3 / 5; }
+    .or { grid-column: 1 / 5; grid-row: 4; }
+    .cp { grid-column: 5 / 8; grid-row: 4; }
+    /* 280px row: keep the recipe receipt clear of the caption */
+    .rcp { top: 14px; padding-top: 11px; }
+    .rcp li { height: 19px; }
+    .rcp footer { margin-top: 6px; padding: 8px 0 10px; }
+    /* side tiles are 430-492px wide: a smaller phone, caption stops before it */
+    .ph { scale: 0.8; transform-origin: top right; }
+    .rec .cap, .inv .cap { right: 221px; width: auto; }
+  }
+  /* Narrower screens: media on top, caption under it, in normal flow. */
+  @media (max-width: 1099.98px) {
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .hero, .of { grid-column: 1 / -1; }
+    .t { display: flex; flex-direction: column; }
+    .m { position: relative; inset: auto; flex: none; height: var(--mh, 230px); }
+    .cap, .hero .cap, .rec .cap, .inv .cap { position: static; width: auto; padding: 4px 22px 22px; margin-top: auto; }
+    .hero { --mh: auto; }
+    .hero .m { padding: 20px 20px 0; }
+    .hero .kio { position: relative; left: auto; right: auto; top: auto; }
+    .net { display: none; }
+    .q { position: relative; right: auto; bottom: auto; width: auto; max-width: 420px; margin: -48px 0 16px auto; }
+    .ph { right: 50%; transform: translateX(50%); top: 22px; }
+    .rec, .inv { --mh: 280px; }
+    .rec .m, .inv .m { mask: linear-gradient(#000 78%, transparent); }
+    .sc, .rc { --mh: 250px; }
+    .of { --mh: 420px; }
+    .or, .cp { --mh: 200px; }
+    .t:hover { transform: none; }
+  }
+  @media (max-width: 639.98px) {
+    .grid { grid-template-columns: minmax(0, 1fr); }
+    .hero .cap h3 { font-size: 22px; }
+    .q { margin: 12px 0 16px; max-width: none; }
+    .of { --mh: 360px; }
+    .shot { height: 330px; }
+    .a4 { top: 150px; right: 16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lbl, .rcp li, .a4, .ms, .ord, .ord u, .cpl li b { animation: none; }
+    .ord u { background: #16a34a; }
+    .t, .t:hover, .ov, .t:hover .ov { transition: none; transform: none; }
+    .a4 { transform: rotate(3deg); }
+  }
+</style>
+
+<script>
+  import { reduced, live } from "./home.ts";
+
+  const R = document.querySelector<HTMLElement>("[data-bento]")!;
+
+  // Offers clip: plays only while on screen and motion is allowed; loops the 1 s to 24.4 s part.
+  const v = R.querySelector<HTMLVideoElement>("video")!;
+  const a = Number(v.dataset.a), b = Number(v.dataset.b);
+  const clampT = () => { if (v.currentTime < a || v.currentTime > b) v.currentTime = a; };
+  v.addEventListener("loadedmetadata", clampT);
+  v.addEventListener("timeupdate", () => { if (v.currentTime > b) v.currentTime = a; });
+  if (!reduced()) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { v.preload = "auto"; v.play().catch(() => {}); } else v.pause();
+    }, { rootMargin: "100px 0px" }).observe(v);
+  }
+
+  // Offline queue: three receipts print offline, then go up to the admin when the net is back.
+  const q = R.querySelector<HTMLElement>(".q")!;
+  const net = R.querySelector<HTMLElement>(".net")!;
+  const num = q.querySelector<HTMLElement>(".n b")!;
+  const lab = q.querySelector<HTMLElement>(".n span")!;
+  const st = q.querySelector<HTMLElement>(".st")!;
+  const lis = [...q.querySelectorAll<HTMLElement>("li")];
+  function set(n: number, on: boolean, done: number) {
+    num.textContent = String(n);
+    q.classList.toggle("on", on);
+    net.classList.toggle("on", on);
+    net.lastElementChild!.textContent = on ? "Online" : "Offline";
+    st.textContent = on ? "Internet revenit" : "Fără internet";
+    lab.innerHTML = on ? (n ? "bonuri rămase<br>de trimis în admin" : "bonuri în așteptare.<br>Totul e în admin.") : "bonuri tipărite<br>și salvate pe casă";
+    lis.forEach((l, i) => {
+      const ok = on && i < done;
+      l.classList.toggle("ok", ok);
+      l.classList.toggle("off", !on && i >= n);
+      l.querySelector("em")!.textContent = ok ? "· în admin" : "· pe casă";
+    });
+  }
+  if (reduced()) set(3, false, 0);
+  else {
+    let k = 0;
+    const tick = () => {
+      if (!live(R)) return void setTimeout(tick, 1200);
+      const s = k++ % 8;
+      if (s < 4) set(s, false, 0);
+      else if (s < 7) set(6 - s, true, s - 3);
+      else set(0, true, 3);
+      setTimeout(tick, s === 3 ? 2200 : s === 7 ? 2400 : 1300);
+    };
+    setTimeout(tick, 600);
+
+    // Scale: the weight settles like a real scale, the total follows.
+    const kg = R.querySelector<HTMLElement>(".kg")!, tot = R.querySelector<HTMLElement>(".tot")!;
+    const weigh = () => {
+      if (!live(R)) return void setTimeout(weigh, 1200);
+      const t0 = performance.now();
+      const f = (t: number) => {
+        const p = Math.min(1, (t - t0) / 900), e = 1 - Math.pow(1 - p, 3);
+        const x = Math.max(0, 0.485 * e + (p < 1 ? Math.sin(p * 18) * 0.004 * (1 - p) : 0));
+        kg.textContent = x.toFixed(3);
+        tot.textContent = (x * 42.9).toFixed(2);
+        if (p < 1) requestAnimationFrame(f);
+      };
+      requestAnimationFrame(f);
+      setTimeout(weigh, 7000);
+    };
+    setTimeout(weigh, 200);
+  }
+</script>

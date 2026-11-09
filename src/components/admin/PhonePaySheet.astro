@@ -1,0 +1,14 @@
+---
+// Payment sheet, from apps/pos PaymentSheet.svelte copy.
+import Icon from "./Icon.astro";
+import PhoneCart from "./PhoneCart.astro";
+---
+<PhoneCart />
+<div class="sh">
+  <header><b>Incasare</b><span>Total <strong>47.51 RON</strong></span></header>
+  <div class="pm tp"><span class="ic" style="background:#2563eb;color:#fff"><Icon name="nfc" /></span><div><b>Card pe telefon</b><small>Clientul apropie cardul</small></div><span class="gt">Gata</span></div>
+  <div class="pm"><span class="ic" style="background:#d1fae5;color:#065f46"><Icon name="cash" /></span><div><b>Numerar exact</b><small>Clientul da fix 47.51 RON</small></div></div>
+  <div class="pm"><span class="ic" style="background:#ecfdf5;color:#047857"><Icon name="calc" /></span><div><b>Numerar cu rest</b><small>Calculez restul</small></div></div>
+  <div class="pm"><span class="ic" style="background:#dbeafe;color:#1d4ed8"><Icon name="card" /></span><div><b>Card pe alt POS</b><small>Terminalul bancii</small></div></div>
+  <div class="pm"><span class="ic" style="background:#fef3c7;color:#92400e"><Icon name="tick" /></span><div><b>Tichete</b><small>Tichete de masa, plata mixta</small></div></div>
+</div>

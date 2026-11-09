@@ -1,0 +1,199 @@
+---
+// F1 modules: the real module switches from Setări (FEATURE_META, REQUIRES and toggleWizardFeature in apps/admin)
+// next to the admin home tiles. A switch turns the matching tiles on or off, like in the app.
+import IconChip from "./IconChip.astro";
+
+// [key, icon, tone, name, description]
+const MODULES: [string, string, string, string, string][] = [
+  ["retail_pos", "store", "rose", "Vanzare in magazin", "Preturi, adaos, repricing, case de marcat"],
+  ["orders", "clip", "indigo", "Comenzi", "Comenzi la cerere, mementouri, profit"],
+  ["messenger_ai", "spark", "violet", "Mesaje AI", "Sugestii de comenzi din Messenger"],
+  ["raw_stock", "boxes", "orange", "Stoc materii prime", "Cantitati pentru ingrediente"],
+  ["recipes", "chef", "amber", "Retete", "Cost pe produs din ingrediente"],
+  ["reminders", "bell", "sky", "Mementouri", "Date de expirare si alerte"],
+  ["customers", "users", "teal", "Clienti", "Clienti cu telefon sau email, acord pentru oferte"],
+  ["coupons", "tick", "fuchsia", "Cupoane", "Coduri de reducere pe bon"],
+  ["offers_page", "badge", "lime", "Oferte", "Pagina publica cu reducerile magazinului"],
+  ["campaigns", "mega", "cyan", "Campanii", "Oferte pe email si WhatsApp catre clientii cu acord"],
+];
+// [module key ("" = always on), icon, tone, name, description]
+const TILES: [string, string, string, string, string][] = [
+  ["orders", "clip", "indigo", "Comenzi", "Comenzile clientilor cu termene si plati"],
+  ["", "pkg", "blue", "Produse", "Catalog, preturi, disponibilitate"],
+  ["", "truck", "cyan", "Receptie marfa", "Receptioneaza produse de la furnizori"],
+  ["recipes", "chef", "amber", "Retete", "Cost pe produs si productia zilei"],
+  ["recipes", "file", "orange", "Registre productie", "Raport zilnic, bon de consum, loturi"],
+  ["reminders", "bell", "sky", "Mementouri", "Date de expirare si alerte"],
+  ["customers", "users", "teal", "Clienti", "Telefon, email, acord pentru oferte"],
+  ["coupons", "tick", "fuchsia", "Cupoane", "Coduri de reducere pe bon"],
+  ["offers_page", "badge", "lime", "Oferte", "Pagina publica cu reduceri, link, QR si A4"],
+  ["campaigns", "mega", "cyan", "Campanii", "Oferte pe email si WhatsApp"],
+  ["retail_pos", "bar", "rose", "Rapoarte vanzari", "Veniturile, produsele si tendintele"],
+  ["retail_pos", "file", "green", "Raport contabil", "Export SAGA/Conta, reduceri pe zi si cota TVA"],
+  ["orders", "piggy", "green", "Profit", "Incasari, costuri si profit pe luna"],
+  ["retail_pos", "mon", "slate", "Dispozitive", "Monitorizeaza terminalele POS"],
+  ["retail_pos", "scale", "amber", "Coduri cantar", "Codurile PLU (1-999) pentru cantare"],
+  ["retail_pos", "inv", "blue", "Inventar", "Vizualizeaza si gestioneaza stocurile"],
+  ["retail_pos", "pct", "slate", "Cote TVA", "Cotele de TVA folosite la vanzare"],
+  ["", "mem", "indigo", "Membri", "Invita si administreaza echipa"],
+];
+const ON = ["retail_pos", "orders", "raw_stock", "recipes", "customers", "coupons", "offers_page"];
+const onCount = TILES.filter(([m]) => !m || ON.includes(m)).length;
+---
+<section class="pp-band tear-top am" id="module" data-moment="tear">
+  <div class="pp-rails" aria-hidden="true"></div>
+  <div class="site-container pp-pad">
+    <div class="pp-head">
+      <div>
+        <div class="stamp-label">Module</div>
+        <h2 class="pp-h2">Pornești doar ce folosești.</h2>
+      </div>
+      <p class="pp-lead">Un minimarket nu are nevoie de rețete, o cofetărie nu are nevoie de cântar la casă. Alegi din Setări, pe fiecare magazin. Ce e oprit dispare din aplicație.</p>
+    </div>
+
+    <div class="am-g" data-am data-on={ON.join(",")}>
+      <div>
+        <div class="am-set">
+          <header><b>Module</b><p>Alege ce foloseste acest magazin. Ce e oprit dispare din aplicatie.</p></header>
+          <div class="am-ml">
+            {MODULES.map(([key, icon, tone, name, desc]) => (
+              <div class="am-row">
+                <IconChip name={icon} tone={tone} />
+                <div class="am-tx"><b id={`am-${key}`}>{name}</b><small data-desc={desc}>{desc}</small></div>
+                <button type="button" class:list={["am-tg", { on: ON.includes(key) }]} role="switch" aria-checked={ON.includes(key) ? "true" : "false"} aria-labelledby={`am-${key}`} data-f={key}></button>
+              </div>
+            ))}
+          </div>
+        </div>
+        <p class="am-hint">Apasă un comutator: prima pagină se schimbă ca în admin.</p>
+      </div>
+
+      <div class="am-hw" aria-label="Prima pagină din admin" role="img">
+        <div class="am-awb" aria-hidden="true"><i></i><i></i><i></i><span>Tapselo Admin · app.tapselo.com</span></div>
+        <div class="am-tiles" aria-hidden="true">
+          {TILES.map(([m, icon, tone, name, desc]) => (
+            <div class:list={["am-tile", { off: m && !ON.includes(m) }]} data-m={m}>
+              <IconChip name={icon} tone={tone} />
+              <div><b>{name}</b><small>{desc}</small></div>
+              {name === "Comenzi" && <span class="am-x off" data-m2="messenger_ai">Mesaje AI</span>}
+            </div>
+          ))}
+        </div>
+        <div class="am-ft" aria-hidden="true"><span>Prima pagină din admin</span><span class="am-cnt">{onCount} din {TILES.length} pagini pornite</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .am-g { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; margin-top: 48px; }
+  @media (min-width: 1024px) { .am-g { grid-template-columns: 420px minmax(0, 1fr); gap: 40px; margin-top: 56px; } }
+  .am-set, .am-hw { font-family: "Plus Jakarta Sans Variable", var(--font-sans); color: #0f172a; line-height: 1.3; }
+  .am-set { border-radius: 12px; background: #fff; box-shadow: 0 0 0 1px var(--color-rule), 0 20px 40px -28px rgba(60, 45, 20, .3); overflow: hidden; }
+  .am-set > header { padding: 16px 20px; border-bottom: 1px solid #eef0f3; }
+  .am-set > header b { font-size: 15px; }
+  .am-set > header p { margin: 3px 0 0; font-size: 12.5px; color: #64748b; }
+  .am-row { display: flex; align-items: center; gap: 12px; min-height: 53px; padding: 0 20px; border-bottom: 1px solid #f3f4f6; }
+  .am-row:last-child { border: 0; }
+  .am-row :global(.ic), .am-tile :global(.ic) { width: 34px; height: 34px; border-radius: 9px; }
+  .am-tx { min-width: 0; }
+  .am-tx b { display: block; font-size: 13.5px; }
+  .am-tx small { display: block; font-size: 11.5px; color: #64748b; }
+  .am-tx small :global(em) { font-style: normal; color: #d97706; }
+  .am-tg { position: relative; margin-left: auto; width: 44px; height: 24px; padding: 0; border: 0; border-radius: 99px; background: #e2e8f0; flex-shrink: 0; cursor: pointer; transition: background-color .2s; }
+  .am-tg::before { content: ""; position: absolute; inset: -10px -4px; }
+  .am-tg::after { content: ""; position: absolute; left: 2px; top: 2px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, .2); transition: transform .2s var(--ease-out-soft); }
+  .am-tg.on { background: #2563eb; }
+  .am-tg.on::after { transform: translateX(20px); }
+  .am-tg.dis { opacity: .5; cursor: default; }
+  .am-tg:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+  .am-hint { margin: 16px 0 0; font: 500 12.5px/1.5 var(--font-mono); letter-spacing: .02em; color: var(--color-ink-3); }
+
+  .am-hw { position: relative; border-radius: 12px; background: #f8fafc; box-shadow: 0 0 0 1px var(--color-rule), 0 20px 40px -28px rgba(60, 45, 20, .3); overflow: hidden; padding-bottom: 44px; }
+  .am-awb { height: 28px; display: flex; align-items: center; gap: 6px; padding: 0 12px; border-bottom: 1px solid #eef0f3; background: #fff; font-size: 11px; color: #94a3b8; }
+  .am-awb i { width: 9px; height: 9px; border-radius: 50%; background: #e2e5ea; }
+  .am-awb span { flex: 1; text-align: center; margin-right: 40px; }
+  .am-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 16px; }
+  .am-tile { position: relative; display: flex; gap: 11px; align-items: flex-start; min-height: 80px; padding: 12px; border-radius: 12px; background: #fff; box-shadow: 0 0 0 1px #e5e7eb; transition: opacity .35s, filter .35s, box-shadow .35s; }
+  .am-tile b { display: block; font-size: 13.5px; }
+  .am-tile small { display: block; margin-top: 2px; font-size: 11.5px; line-height: 1.35; color: #64748b; }
+  .am-tile.off { opacity: .38; filter: grayscale(1); background: transparent; }
+  .am-tile.off::after { content: "Oprit"; position: absolute; right: 10px; top: 10px; font-size: 10px; font-weight: 600; color: #64748b; }
+  .am-tile.hi { box-shadow: 0 0 0 2px #2563eb, 0 10px 24px -10px rgba(37, 99, 235, .5); }
+  .am-x { position: absolute; right: 10px; bottom: 10px; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 99px; background: #f5f3ff; color: #7c3aed; }
+  .am-x.off { display: none; }
+  .am-ft { position: absolute; left: 18px; right: 18px; bottom: 14px; display: flex; justify-content: space-between; gap: 12px; font: 500 12px var(--font-mono); color: #94a3b8; }
+
+  @media (max-width: 767.98px) {
+    .am-row { padding: 0 14px; }
+    .am-tx small { white-space: normal; }
+    .am-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 12px; }
+    .am-tile { flex-direction: column; gap: 8px; }
+    .am-ft span:first-child { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .am-tile, .am-tg, .am-tg::after { transition: none; } }
+</style>
+
+<script>
+  // Module switches, ported from F1 (REQUIRES + toggleWizardFeature in apps/admin): turning on Retete also turns on
+  // Stoc materii prime; turning a module off also turns off what needs it. A short demo loop runs until the first tap.
+  const root = document.querySelector<HTMLElement>("[data-am]");
+  if (root) {
+    const REQ: Record<string, string> = { recipes: "raw_stock", customers: "retail_pos", coupons: "retail_pos", offers_page: "retail_pos", campaigns: "customers" };
+    const tgs = [...root.querySelectorAll<HTMLButtonElement>(".am-tg")];
+    const NM = Object.fromEntries(tgs.map((t) => [t.dataset.f!, document.getElementById(`am-${t.dataset.f}`)!.textContent!]));
+    const tiles = [...root.querySelectorAll<HTMLElement>(".am-tile")];
+    const cnt = root.querySelector(".am-cnt")!;
+    const x = root.querySelector<HTMLElement>(".am-x")!;
+    const rm = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let on = (root.dataset.on || "").split(",");
+
+    const blk = (f: string, s: string[]) => (REQ[f] && !s.includes(REQ[f]) ? `Necesita modulul ${NM[REQ[f]]}` : null);
+    function tog(f: string) {
+      const v = !on.includes(f);
+      if (v && f !== "recipes" && blk(f, on)) return;
+      let n = v ? [...on, f] : on.filter((y) => y !== f);
+      if (v && f === "recipes" && !n.includes("raw_stock")) n.push("raw_stock");
+      if (!v) {
+        let d = true;
+        while (d) { const k = n.filter((y) => !blk(y, n)); d = k.length !== n.length; n = k; }
+      }
+      const add = n.filter((y) => !on.includes(y));
+      on = n;
+      draw(add);
+    }
+    function draw(add: string[] = []) {
+      tgs.forEach((t) => {
+        const f = t.dataset.f!, b = blk(f, on), isOn = on.includes(f);
+        t.classList.toggle("on", isOn);
+        t.classList.toggle("dis", !!b && !isOn);
+        t.setAttribute("aria-checked", String(isOn));
+        const s = t.previousElementSibling!.querySelector<HTMLElement>("small")!;
+        if (b && !isOn && f !== "recipes") s.innerHTML = `<em>${b}</em>`;
+        else s.textContent = s.dataset.desc!;
+      });
+      let c = 0;
+      tiles.forEach((t) => {
+        const m = t.dataset.m!, o = !m || on.includes(m);
+        c += Number(o);
+        t.classList.toggle("off", !o);
+        if (m && add.includes(m) && !rm()) { t.classList.add("hi"); setTimeout(() => t.classList.remove("hi"), 1100); }
+      });
+      x.classList.toggle("off", !on.includes("messenger_ai"));
+      cnt.textContent = `${c} din ${tiles.length} pagini pornite`;
+    }
+
+    let user = false;
+    tgs.forEach((t) => t.addEventListener("click", () => { user = true; tog(t.dataset.f!); }));
+    draw();
+
+    let visible = false;
+    new IntersectionObserver((es) => { visible = es[0].isIntersecting; }).observe(root);
+    const demo = ["campaigns", "messenger_ai", "campaigns", "messenger_ai"];
+    let di = 0;
+    setInterval(() => {
+      if (user || rm() || !visible || document.hidden) return;
+      tog(demo[di++ % demo.length]);
+    }, 3200);
+  }
+</script>

@@ -1,73 +1,524 @@
 ---
-import { Menu, X } from "@lucide/astro";
-import { internalPath } from "../lib/internal-url.ts";
+// E1 menu bar on every marketing page: Produs, Pentru, Resurse panels (one box that grows from the chosen
+// trigger, K1 moment 07 gray pill), phone menu with accordions. Sticky; hides on scroll down, returns on scroll up.
+// Contract for sticky sub-bars: html[data-bar-hidden] while hidden, --bar-h for its height (global.css).
 import SiteLogo from "./SiteLogo.astro";
+import { tools, GUIDE_GROUPS, groupCount, guides } from "../data/resources.ts";
 
-const links = [
-  [internalPath("/#features"), "Funcții"],
-  [internalPath("/#echipamente"), "Echipamente"],
-  [internalPath("/#pricing"), "Prețuri"],
-  [internalPath("/ghid"), "Ghid"],
-  [internalPath("/ai"), "Asistent AI"],
-  ["https://app.tapselo.com", "Intră în cont"],
+const svg = (d: string, s = 18, w = 1.8) =>
+  `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const I: Record<string, string> = {
+  pc: '<rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>',
+  ph: '<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/>',
+  cd: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',
+  ad: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>',
+  eq: '<path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/>',
+  fx: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  cm: '<path d="M12 3v18M5 7h14M5 7l-3 7h6zM19 7l-3 7h6z"/>',
+  ai: '<path d="M12 3l2 5.5 5.5 2-5.5 2L12 18l-2-5.5-5.5-2 5.5-2z"/>',
+};
+const CH = svg('<path d="m6 9 6 6 6-6"/>', 13, 2.4);
+const CHB = svg('<path d="m6 9 6 6 6-6"/>', 18, 2.2);
+const SR = svg('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>', 16, 2);
+
+type Item = { ic: string; name: string; href: string; line: string; tag?: string };
+// Pages that do not exist yet point to the homepage sections.
+const PRODUCT: [string, Item[]][] = [
+  ["Vânzare", [
+    { ic: "pc", name: "Casa de marcat", href: "/program-casa-de-marcat-pe-calculator/", line: "Pe orice PC, bon pe Datecs, și fără net" },
+    { ic: "ph", name: "Casă de marcat pe telefon", href: "/casa-de-marcat-pe-telefon/", line: "Cauți produsul sau scanezi cu camera", tag: "Nou" },
+    { ic: "cd", name: "Plata cu cardul", href: "/#features", line: "Tap to Pay pe telefon. Fără abonament", tag: "Nou" },
+  ]],
+  ["Administrare", [
+    { ic: "ad", name: "Admin", href: "/admin/", line: "Stoc, rețete, rapoarte și campanii" },
+    { ic: "eq", name: "Echipamente", href: "/#echipamente", line: "Datecs FP-700, cântar Dibal, cititor USB" },
+    { ic: "fx", name: "Toate funcțiile", href: "/#features", line: "Recepție NIR, cupoane, oferte și altele" },
+  ]],
 ];
+const SHOPS = [
+  { c: "s-m", img: "kiosk-scanare", tag: "Ecran Scanare", soon: "", name: "Magazin alimentar", text: "Scanezi codul, cântarul pune greutatea, bonul iese pe Datecs.", href: "/#magazin", guide: "/ghid/deschide-minimarket-alimentara/", guideLabel: "Ghid: Cum deschizi o alimentară", dot: "#2563eb" },
+  { c: "s-b", img: "kiosk-vitrina", tag: "Ecran Vitrină", soon: "în curând", name: "Brutărie, patiserie, cofetărie", text: "O atingere pe covrig, o bucată în coș. Pâinea la kg vine din cântar.", href: "/#brutarie", guide: "/ghid/deschide-brutarie-patiserie/", guideLabel: "Ghid: Cum deschizi o brutărie", dot: "#b45309" },
+  { c: "s-c", img: "kiosk-bar", tag: "Ecran Bar", soon: "în curând", name: "Cafenea și bar", text: "Comenzi cu număr, ovăz și shot în plus pe același rând.", href: "/#cafenea", guide: "/ghid/deschide-cafenea-bistro/", guideLabel: "Ghid: Cum deschizi o cafenea", dot: "#c2410c" },
+];
+const MORE: Item[] = [
+  { ic: "cm", name: "Comparație", href: "/comparatie/", line: "Tapselo lângă alte programe POS" },
+  { ic: "ai", name: "Asistent AI", href: "/ai/", line: "Tapselo în Claude și ChatGPT" },
+];
+const TRIGGERS = [["pr", "Produs"], ["pe", "Pentru"], ["re", "Resurse"]] as const;
+const AR = '<span class="sb-ar" aria-hidden="true">›</span>';
 ---
 
-<nav class="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur-sm border-b border-white/10">
-  <div class="site-container flex items-center justify-between py-3.5">
-    <a href="/" class="flex items-center gap-2.5 text-base font-bold text-white">
-      <SiteLogo class="h-8 w-8 rounded" />
-      Tapselo
-    </a>
+<div class="sb-scrim" aria-hidden="true"></div>
+<header class="sb" data-sb>
+  <nav aria-label="Principal">
+    <div class="site-container sb-in">
+      <a class="sb-brand" href="/"><SiteLogo class="sb-logo" />Tapselo</a>
 
-    <div class="hidden items-center gap-6 lg:flex xl:gap-8">
-      {links.map(([href, label]) => (
-        <a
-          href={href}
-          class="text-sm font-medium text-text-on-primary transition-colors hover:text-white"
-          {...(href === "https://app.tapselo.com" ? { "data-tapselo-cta": "header" } : {})}
-        >{label}</a>
-      ))}
-      <a href="https://app.tapselo.com/?demo=1" data-tapselo-cta="header" class="rounded-md bg-accent px-5 py-2 text-sm font-bold text-white transition-all hover:bg-accent-hover active:scale-[0.97]">Încearcă demo</a>
+      <div class="sb-trs" data-trs>
+        <span class="sb-pill" aria-hidden="true"></span>
+        {TRIGGERS.map(([p, t]) => (
+          <button type="button" class="sb-t" data-p={p} aria-expanded="false" aria-controls={`sb-${p}`}>{t} <Fragment set:html={CH} /></button>
+        ))}
+        <a class="sb-t" href="/#pricing">Prețuri</a>
+      </div>
+
+      <span class="sb-sp"></span>
+      <a class="sb-login" href="https://app.tapselo.com" data-tapselo-cta="header">Intră în cont</a>
+      <a class="sb-cta" href="https://app.tapselo.com/?demo=1" data-tapselo-cta="header">Încearcă demo <Fragment set:html={svg('<path d="M5 12h14M13 6l6 6-6 6"/>', 15, 2.4)} /></a>
+      <button type="button" class="sb-burger" aria-label="Deschide meniul" aria-expanded="false" aria-controls="sb-mm" data-mm-open>
+        <Fragment set:html={svg('<path d="M4 7h16M4 12h16M4 17h16"/>', 20, 2.2)} />
+      </button>
+
+      <div class="sb-pos" data-pos>
+        <div class="sb-dd" data-dd>
+          <span class="sb-bg" data-bg></span>
+          <i class="sb-ct" data-ct></i>
+
+          <div class="sb-pa sb-p-pr" id="sb-pr" data-pa="pr">
+            {PRODUCT.map(([h, items]) => (
+              <div class="sb-col">
+                <p class="sb-h6">{h}</p>
+                {items.map((it) => (
+                  <a class="sb-it" href={it.href}>
+                    <span class="sb-ic" set:html={svg(I[it.ic])} />
+                    <span><span class="sb-nm">{it.name}{it.tag && <em>{it.tag}</em>}</span><span class="sb-ln">{it.line}</span></span>
+                  </a>
+                ))}
+              </div>
+            ))}
+            <div class="sb-side">
+              <p class="sb-h6">Nou</p>
+              <a class="sb-fc" href="/casa-de-marcat-pe-telefon/">
+                <span class="sb-fm"><img data-src="/menu/phone-sale.webp" alt="" width="148" height="311" decoding="async" /></span>
+                <span class="sb-fb"><b>Casa de marcat pe telefon</b><span class="sb-fd">Cauți produsul după nume sau scanezi codul cu camera.</span><u>Vezi pagina <Fragment set:html={AR} /></u></span>
+              </a>
+            </div>
+            <div class="sb-ft"><span>Beta gratuit acum · 0 lei licențe</span><a href="/#pricing">Vezi prețurile <Fragment set:html={AR} /></a></div>
+          </div>
+
+          <div class="sb-pa sb-p-pe" id="sb-pe" data-pa="pe">
+            <div class="sb-ph6"><b>PENTRU MAGAZINUL TĂU</b><span>Același cont. Ecranul de vânzare se potrivește cu ce vinzi.</span></div>
+            <div class="sb-cds">
+              {SHOPS.map((s) => (
+                <div class={`sb-cd ${s.c}`}>
+                  <span class="sb-cm"><img data-src={`/menu/${s.img}.webp`} alt="" width="282" height="162" decoding="async" /></span>
+                  <div class="sb-cbd">
+                    <span class="sb-tg">{s.tag}{s.soon && <i>· {s.soon}</i>}</span>
+                    <span class="sb-cn">{s.name}</span>
+                    <span class="sb-cp">{s.text}</span>
+                    <div class="sb-cl"><a href={s.href}>Vezi pagina <Fragment set:html={AR} /></a><a href={s.guide}>{s.guideLabel} <Fragment set:html={AR} /></a></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div class="sb-ft"><span>Toate trei: același admin, aceleași rapoarte, același Datecs.</span><a href="/comparatie/">Comparație cu alte programe <Fragment set:html={AR} /></a></div>
+          </div>
+
+          <div class="sb-pa sb-p-re" id="sb-re" data-pa="re">
+            <div class="sb-col sb-col-u">
+              <p class="sb-h6">Unelte gratuite · {tools.length} <a href="/unelte/">Toate uneltele <Fragment set:html={AR} /></a></p>
+              <div class="sb-tl">{tools.map((t) => <a class:list={[{ hot: t.hot }]} href={t.href}>{t.title}</a>)}</div>
+            </div>
+            <div class="sb-col">
+              <p class="sb-h6">Ghiduri · {guides.length} <a href="/ghid/">Tot ghidul <Fragment set:html={AR} /></a></p>
+              {GUIDE_GROUPS.map((gr) => (
+                <a class="sb-gg" href={`/ghid/#${gr.id}`}><span class="sb-gn">{gr.label}<span class="sb-n">{groupCount(gr.id)}</span></span><span class="sb-gs">{gr.blurb}</span></a>
+              ))}
+            </div>
+            <div class="sb-side">
+              <p class="sb-h6">Mai mult</p>
+              {MORE.map((it) => (
+                <a class="sb-it" href={it.href}>
+                  <span class="sb-ic" set:html={svg(I[it.ic])} />
+                  <span><span class="sb-nm">{it.name}</span><span class="sb-ln">{it.line}</span></span>
+                </a>
+              ))}
+            </div>
+            <div class="sb-ft"><i>Cele mai folosite unelte</i></div>
+          </div>
+        </div>
+      </div>
     </div>
+  </nav>
+</header>
 
-    <button id="mobile-menu-btn" class="text-white lg:hidden" aria-label="Toggle menu">
-      <Menu class="h-5 w-5" id="menu-open-icon" />
-      <X class="hidden h-5 w-5" id="menu-close-icon" />
-    </button>
-  </div>
-
-  <div id="mobile-menu" class="hidden border-t border-white/10 bg-primary lg:hidden">
-    <div class="flex flex-col gap-4 px-6 py-6">
-      {links.map(([href, label]) => (
-        <a
-          href={href}
-          class="text-sm font-medium text-text-on-primary hover:text-white"
-          {...(href === "https://app.tapselo.com" ? { "data-tapselo-cta": "header" } : {})}
-        >{label}</a>
-      ))}
-      <a href="https://app.tapselo.com/?demo=1" data-tapselo-cta="header" class="rounded-md bg-accent px-5 py-2 text-center text-sm font-bold text-white hover:bg-accent-hover">Încearcă demo</a>
+<div class="mm" id="sb-mm" data-mm role="dialog" aria-modal="true" aria-label="Meniu" hidden>
+    <div class="mm-h">
+      <a class="sb-brand" href="/"><SiteLogo class="sb-logo" />Tapselo</a>
+      <button type="button" class="mm-x" aria-label="Închide meniul" data-mm-close set:html={svg('<path d="M18 6 6 18M6 6l12 12"/>', 20, 2.2)} />
     </div>
-  </div>
-</nav>
+    <details class="mm-acc">
+      <summary>Produs <Fragment set:html={CHB} /></summary>
+      <div class="mm-bd">
+        {PRODUCT.flatMap(([, items]) => items).map((it) => (
+          <a class="sb-it" href={it.href}>
+            <span class="sb-ic" set:html={svg(I[it.ic])} />
+            <span><span class="sb-nm">{it.name}{it.tag && <em>{it.tag}</em>}</span><span class="sb-ln">{it.line}</span></span>
+          </a>
+        ))}
+      </div>
+    </details>
+    <details class="mm-acc">
+      <summary>Pentru <Fragment set:html={CHB} /></summary>
+      <div class="mm-bd">
+        {SHOPS.map((s) => <a class="mm-sl" href={s.href}><i style={`background:${s.dot}`}></i>{s.name}</a>)}
+      </div>
+    </details>
+    <details class="mm-acc" data-mm-re>
+      <summary>Resurse <Fragment set:html={CHB} /></summary>
+      <div class="mm-bd">
+        <label class="mm-q"><Fragment set:html={SR} /><input type="search" placeholder="Caută o unealtă sau un ghid" aria-label="Caută o unealtă sau un ghid" autocomplete="off" data-mm-q /></label>
+        <div class="mm-rs" data-mm-rs hidden></div>
+        <div data-mm-list>
+          <a class="mm-sl" href="/unelte/">Unelte gratuite<span class="sb-n">{tools.length}</span></a>
+          <p class="mm-h6">Ghiduri · {guides.length}</p>
+          {GUIDE_GROUPS.map((gr) => <a class="mm-sl" href={`/ghid/#${gr.id}`}>{gr.label}<span class="sb-n">{groupCount(gr.id)}</span></a>)}
+          <a class="mm-sl mm-sep" href="/comparatie/">Comparație</a>
+          <a class="mm-sl" href="/ai/">Asistent AI</a>
+        </div>
+      </div>
+    </details>
+    <a class="mm-pl" href="/#pricing">Prețuri <Fragment set:html={svg('<path d="m9 6 6 6-6 6"/>', 18, 2.2)} /></a>
+    <div class="mm-pb">
+      <a class="mm-o" href="https://app.tapselo.com" data-tapselo-cta="header">Intră în cont</a>
+      <a class="sb-cta" href="https://app.tapselo.com/?demo=1" data-tapselo-cta="header">Încearcă demo</a>
+    </div>
+</div>
 
 <script>
-  const btn = document.getElementById("mobile-menu-btn");
-  const menu = document.getElementById("mobile-menu");
-  const openIcon = document.getElementById("menu-open-icon");
-  const closeIcon = document.getElementById("menu-close-icon");
+  import { searchResources, TYPE_LABEL } from "../data/resources.ts";
 
-  btn?.addEventListener("click", () => {
-    menu?.classList.toggle("hidden");
-    openIcon?.classList.toggle("hidden");
-    closeIcon?.classList.toggle("hidden");
-  });
+  const root = document.documentElement;
+  const bar = document.querySelector<HTMLElement>("[data-sb]")!;
+  const trs = bar.querySelector<HTMLElement>("[data-trs]")!;
+  const pill = trs.querySelector<HTMLElement>(".sb-pill")!;
+  const ts = [...trs.querySelectorAll<HTMLButtonElement>("button.sb-t")];
+  const allT = [...trs.querySelectorAll<HTMLElement>(".sb-t")];
+  const pos = bar.querySelector<HTMLElement>("[data-pos]")!;
+  const dd = bar.querySelector<HTMLElement>("[data-dd]")!;
+  const bg = bar.querySelector<HTMLElement>("[data-bg]")!;
+  const ct = bar.querySelector<HTMLElement>("[data-ct]")!;
+  const ps = [...dd.querySelectorAll<HTMLElement>("[data-pa]")];
+  const ORD: Record<string, number> = { pr: 0, pe: 1, re: 2 };
+  let cur: string | null = null;
+  let tm = 0;
 
-  menu?.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      menu?.classList.add("hidden");
-      openIcon?.classList.remove("hidden");
-      closeIcon?.classList.add("hidden");
+  // K1 07: one pill slides between triggers (transform only; scaleX from a 100px base).
+  const movePill = (t: HTMLElement | null) => {
+    if (!t) return void pill.classList.remove("on");
+    const snap = !pill.classList.contains("on");
+    pill.classList.toggle("snap", snap);
+    pill.style.transform = `translateX(${t.offsetLeft}px) scaleX(${t.offsetWidth / 100})`;
+    if (snap) void pill.offsetWidth;
+    pill.classList.add("on");
+    if (snap) requestAnimationFrame(() => pill.classList.remove("snap"));
+  };
+
+  const place = (p: string, snap: boolean) => {
+    const t = ts.find((x) => x.dataset.p === p)!;
+    const pa = ps.find((x) => x.dataset.pa === p)!;
+    const W = pa.offsetWidth;
+    const maxH = Math.max(...ps.map((x) => x.offsetHeight));
+    const H = pa.offsetHeight;
+    const host = pos.parentElement!.getBoundingClientRect();
+    const cx = trs.offsetLeft + t.offsetLeft + t.offsetWidth / 2;
+    // Keep the box 16px inside the viewport.
+    const L = Math.max(16 - host.left, Math.min(cx - W * 0.3, innerWidth - 16 - host.left - W));
+    dd.classList.toggle("snap", snap);
+    dd.style.width = W + "px";
+    dd.style.height = maxH + "px";
+    pos.style.transform = `translateX(${L}px)`;
+    bg.style.transform = `scaleY(${H / maxH})`;
+    dd.style.setProperty("--ox", cx - L + "px");
+    ct.style.transform = `translateX(${cx - L - 6}px) rotate(45deg)`;
+  };
+
+  // Menu thumbnails load on the first open only (the panels are hidden on every page until then).
+  let imgs = false;
+  const open = (p: string) => {
+    clearTimeout(tm);
+    if (cur === p) return;
+    if (!imgs) {
+      imgs = true;
+      for (const im of dd.querySelectorAll<HTMLImageElement>("img[data-src]")) im.src = im.dataset.src!;
+    }
+    const was = cur;
+    for (const x of ps) {
+      const k = ORD[x.dataset.pa!], i = ORD[p];
+      x.classList.toggle("on", k === i);
+      x.classList.toggle("l", k < i);
+      x.classList.toggle("r", k > i);
+    }
+    place(p, !was);
+    if (!was) void dd.offsetWidth;
+    dd.classList.add("show");
+    root.dataset.menuOpen = "";
+    for (const x of ts) x.setAttribute("aria-expanded", String(x.dataset.p === p));
+    movePill(ts.find((x) => x.dataset.p === p)!);
+    cur = p;
+    if (!was) requestAnimationFrame(() => dd.classList.remove("snap"));
+  };
+
+  const close = () => {
+    clearTimeout(tm);
+    if (!cur) return;
+    cur = null;
+    dd.classList.remove("show");
+    delete root.dataset.menuOpen;
+    for (const x of ts) x.setAttribute("aria-expanded", "false");
+    if (!trs.matches(":hover")) movePill(null);
+  };
+  const later = () => { clearTimeout(tm); tm = window.setTimeout(close, 260); };
+
+  ts.forEach((t, i) => {
+    t.addEventListener("pointerenter", (e) => {
+      if (e.pointerType === "touch") return;
+      clearTimeout(tm);
+      tm = window.setTimeout(() => open(t.dataset.p!), cur ? 0 : 70);
+    });
+    // A mouse click only opens (hover already did); mouse users close by leaving. Keyboard (detail 0) and touch toggle.
+    let pt = "";
+    t.addEventListener("pointerdown", (e) => (pt = e.pointerType));
+    t.addEventListener("click", (e) => {
+      const mouse = e.detail > 0 && ((e as PointerEvent).pointerType || pt) === "mouse";
+      if (cur === t.dataset.p && !mouse) close();
+      else open(t.dataset.p!);
+    });
+    t.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        open(t.dataset.p!);
+        setTimeout(() => ps.find((x) => x.dataset.pa === t.dataset.p)?.querySelector("a")?.focus(), 40);
+      }
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        ts[(i + (e.key === "ArrowRight" ? 1 : ts.length - 1)) % ts.length].focus();
+      }
     });
   });
+  for (const t of allT) t.addEventListener("pointerenter", () => { if (!cur || !t.dataset.p) movePill(t); });
+  trs.querySelector("a.sb-t")!.addEventListener("pointerenter", () => close());
+  trs.addEventListener("pointerleave", () => { if (!cur) movePill(null); });
+  for (const z of [trs, dd]) {
+    z.addEventListener("pointerleave", later);
+    z.addEventListener("pointerenter", () => clearTimeout(tm));
+  }
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || !cur) return;
+    const t = ts.find((x) => x.dataset.p === cur);
+    const had = bar.contains(document.activeElement);
+    close();
+    if (had) t?.focus();
+  });
+  bar.addEventListener("focusout", (e) => { if (!bar.contains(e.relatedTarget as Node)) close(); });
+  document.addEventListener("pointerdown", (e) => { if (cur && !bar.contains(e.target as Node)) close(); });
+  addEventListener("resize", () => { if (cur) place(cur, true); });
+
+  // Hide on scroll down, show on scroll up; never while a menu is open or focused.
+  let lastY = scrollY;
+  addEventListener("scroll", () => {
+    const y = scrollY, d = y - lastY;
+    if (Math.abs(d) < 6) return;
+    const hide = d > 0 && y > 160 && !cur && !bar.contains(document.activeElement);
+    if (hide) root.dataset.barHidden = "";
+    else delete root.dataset.barHidden;
+    lastY = y;
+  }, { passive: true });
+  bar.addEventListener("focusin", () => delete root.dataset.barHidden);
+
+  // Phone menu.
+  const mm = document.querySelector<HTMLElement>("[data-mm]")!;
+  const burger = bar.querySelector<HTMLButtonElement>("[data-mm-open]")!;
+  // Modal: while open, everything outside it is inert and Tab cycles inside it.
+  let outside: HTMLElement[] = [];
+  const setInert = (on: boolean) => {
+    if (!on) return void (outside.forEach((x) => (x.inert = false)), (outside = []));
+    for (let n: HTMLElement = mm; n !== document.body && n.parentElement; n = n.parentElement)
+      for (const s of n.parentElement.children as HTMLCollectionOf<HTMLElement>)
+        if (s !== n && !s.inert) (s.inert = true), outside.push(s);
+  };
+  const mmOpen = (on: boolean) => {
+    if (mm.hidden === !on) return;
+    mm.hidden = !on;
+    burger.setAttribute("aria-expanded", String(on));
+    root.classList.toggle("mm-lock", on);
+    setInert(on);
+    if (on) mm.querySelector<HTMLElement>("[data-mm-close]")!.focus();
+    else burger.focus();
+  };
+  const tabbable = () =>
+    [...mm.querySelectorAll<HTMLElement>("a[href], button, input, summary")].filter((x) => x.getClientRects().length && (x.checkVisibility?.() ?? true));
+  burger.addEventListener("click", () => mmOpen(true));
+  mm.querySelector("[data-mm-close]")!.addEventListener("click", () => mmOpen(false));
+  document.addEventListener("keydown", (e) => {
+    if (mm.hidden) return;
+    if (e.key === "Escape") return mmOpen(false);
+    if (e.key !== "Tab") return;
+    const f = tabbable(), a = document.activeElement as HTMLElement | null;
+    const i = a ? f.indexOf(a) : -1;
+    if (i < 0 || (e.shiftKey && i === 0) || (!e.shiftKey && i === f.length - 1)) {
+      e.preventDefault();
+      f[e.shiftKey ? (i <= 0 ? f.length - 1 : i - 1) : i < 0 || i === f.length - 1 ? 0 : i + 1]?.focus();
+    }
+  });
+  mm.addEventListener("click", (e) => { if ((e.target as HTMLElement).closest("a")) mmOpen(false); });
+
+  const q = mm.querySelector<HTMLInputElement>("[data-mm-q]")!;
+  const rs = mm.querySelector<HTMLElement>("[data-mm-rs]")!;
+  const list = mm.querySelector<HTMLElement>("[data-mm-list]")!;
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
+  q.addEventListener("input", () => {
+    const v = q.value.trim();
+    rs.hidden = !v;
+    list.hidden = !!v;
+    if (!v) return;
+    const r = searchResources(v);
+    rs.innerHTML = r.length
+      ? r.slice(0, 8).map(({ r }) => `<a class="mm-sl" href="${r.href}"><em>${TYPE_LABEL[r.type]}</em>${esc(r.title)}</a>`).join("")
+      : `<p class="mm-r0">Nimic pentru „${esc(v)}”. Încearcă „TVA”, „Z” sau „NIR”.</p>`;
+  });
 </script>
+
+<style is:global>
+  .sb-scrim { position: fixed; inset: 0; z-index: 49; background: rgba(246, 242, 233, .55); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity .2s var(--ease-out-soft); }
+  html[data-menu-open] .sb-scrim { opacity: 1; }
+  .sb { position: sticky; top: 0; z-index: 50; height: var(--bar-h); background: color-mix(in srgb, var(--color-paper-white) 94%, transparent); backdrop-filter: blur(8px); transition: transform .24s var(--ease-out-soft); color: var(--color-ink); }
+  .sb::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: radial-gradient(circle, var(--color-perf) .9px, transparent 1.1px) 0 0 / 6px 2px; pointer-events: none; }
+  html[data-bar-hidden] .sb { transform: translateY(-100%); }
+  .sb a { color: inherit; text-decoration: none; }
+  .sb button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+  .sb-in { position: relative; display: flex; align-items: center; height: var(--bar-h); }
+  .sb-brand { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 650; letter-spacing: -.02em; margin-right: 30px; }
+  .sb-logo { width: 30px; height: 30px; display: block; border-radius: 7px; }
+  .sb-trs { position: relative; display: flex; align-items: center; }
+  .sb .sb-t { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 13px; border-radius: 8px; font-size: 15px; font-weight: 500; color: #3b372f; transition: color .15s; }
+  .sb-t:hover, .sb-t[aria-expanded="true"] { color: var(--color-ink); }
+  .sb-t svg { color: var(--color-ink-3); transition: transform .24s var(--ease-out-soft); }
+  .sb-t[aria-expanded="true"] svg { transform: rotate(180deg); color: var(--color-ink); }
+  .sb-pill { position: absolute; left: 0; top: 50%; margin-top: -20px; width: 100px; height: 40px; border-radius: 8px; background: rgba(29, 27, 23, .06); transform-origin: 0 50%; opacity: 0; transition: transform .12s var(--ease-out-soft), opacity .12s var(--ease-out-soft); pointer-events: none; }
+  .sb-pill.on { opacity: 1; }
+  .sb-pill.snap { transition: opacity .12s var(--ease-out-soft); }
+  .sb-sp { flex: 1; }
+  .sb-login { font-size: 15px; font-weight: 500; padding: 0 14px; height: 40px; display: inline-flex; align-items: center; border-radius: 8px; transition: background .15s; }
+  .sb-login:hover { background: rgba(29, 27, 23, .06); }
+  .sb .sb-cta, .mm .sb-cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 7px; background: var(--color-accent); color: #fff; font-size: 15px; font-weight: 600; transition: background .15s; }
+  .sb .sb-cta:hover { background: var(--color-accent-hover); }
+  .sb-burger { display: none; width: 44px; height: 44px; border-radius: 12px; background: rgba(29, 27, 23, .06) !important; place-items: center; margin-left: 10px; }
+
+  /* Dropdown: one box; position and height move with transform only. */
+  .sb-pos { position: absolute; left: 0; top: calc(var(--bar-h) + 8px); z-index: 2; transition: transform .24s var(--ease-out-soft); pointer-events: none; }
+  .sb-dd { position: relative; opacity: 0; visibility: hidden; transform: translateY(-4px) scale(.97); transform-origin: var(--ox, 50%) 0; transition: opacity .16s var(--ease-out-soft), transform .16s var(--ease-out-soft), visibility 0s .16s; }
+  .sb-dd.show { opacity: 1; visibility: visible; transform: none; pointer-events: auto; transition: opacity .24s var(--ease-out-soft), transform .24s var(--ease-out-soft); }
+  .sb-pos:has(.sb-dd.snap), .sb-dd.snap .sb-bg, .sb-dd.snap .sb-ct { transition: none; }
+  .sb-bg { position: absolute; inset: 0; border-radius: 12px; background: var(--color-paper-white); box-shadow: 0 0 0 1px rgba(60, 50, 30, .1), 0 50px 100px -20px rgba(60, 45, 20, .25), 0 30px 60px -30px rgba(0, 0, 0, .25); transform-origin: 0 0; transition: transform .24s var(--ease-out-soft); }
+  .sb-ct { position: absolute; left: 0; top: -6px; width: 12px; height: 12px; background: var(--color-paper-white); border-radius: 2px 0 0 0; box-shadow: -1px -1px 0 rgba(60, 50, 30, .1); transition: transform .24s var(--ease-out-soft); }
+  .sb-pa { position: absolute; left: 0; top: 0; width: 1010px; opacity: 0; visibility: hidden; transition: opacity .2s var(--ease-out-soft), transform .32s var(--ease-out-soft), visibility 0s .32s; }
+  .sb-pa.l { transform: translateX(-36px); }
+  .sb-pa.r { transform: translateX(36px); }
+  .sb-pa.on { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+  .sb-h6 { margin: 0 0 10px; padding: 0 12px 12px; border-bottom: 1px solid var(--color-rule); font: 500 11.5px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--color-ink-3); display: flex; justify-content: space-between; }
+  .sb-h6 a { color: var(--color-accent); text-transform: none; letter-spacing: 0; font: 600 13px var(--font-sans); }
+  .sb-it { display: flex; gap: 14px; align-items: flex-start; padding: 10px 12px; border-radius: 10px; transition: background .15s; }
+  .sb-it:hover { background: rgba(29, 27, 23, .045); }
+  .sb-it:hover .sb-nm { color: var(--color-accent); }
+  .sb-ic { flex: none; width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; background: #fff; box-shadow: 0 0 0 1px var(--color-rule), 0 1px 2px rgba(60, 50, 30, .06); color: var(--color-ink); }
+  .sb-nm { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; letter-spacing: -.01em; transition: color .15s; }
+  .sb-nm em { font: 600 10.5px/1 var(--font-mono); font-style: normal; letter-spacing: .05em; text-transform: uppercase; padding: 4px 6px; border-radius: 5px; background: #dcfce7; color: #166534; }
+  .sb-ln { display: block; margin-top: 3px; font-size: 14px; color: var(--color-ink-2); line-height: 1.35; }
+  .sb-ft { display: flex; align-items: center; justify-content: space-between; height: 52px; padding: 0 28px; border-top: 1px solid var(--color-rule); font-size: 14px; color: var(--color-ink-2); }
+  .sb-ft a { color: var(--color-accent); font-weight: 600; }
+  .sb-ft i { font-style: normal; display: inline-flex; align-items: center; gap: 8px; }
+  .sb-ft i::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--color-accent); }
+  .sb-ar { display: inline-block; transition: transform .2s var(--ease-out-soft); }
+  .sb a:hover .sb-ar { transform: translateX(3px); }
+  .sb-col { padding: 26px 16px 14px; }
+  .sb-side { grid-row: 1 / 3; grid-column: 3; background: #f9f5ec; border-left: 1px solid var(--color-rule); border-radius: 0 12px 12px 0; padding: 26px 22px 22px; }
+  .sb-side .sb-h6 { padding: 0 0 12px; }
+  .sb-p-pr { display: grid; grid-template-columns: 1fr 1fr 290px; }
+  .sb-p-pr .sb-ft, .sb-p-re .sb-ft { grid-column: 1 / 3; }
+  .sb-fc { display: block; background: #fff; border-radius: 12px; box-shadow: 0 0 0 1px var(--color-rule); overflow: hidden; transition: box-shadow .2s, transform .2s var(--ease-out-soft); }
+  .sb-fc:hover { box-shadow: 0 0 0 1px #bfdbfe, 0 14px 28px -16px rgba(37, 99, 235, .45); transform: translateY(-1px); }
+  .sb-fm { display: block; height: 150px; position: relative; overflow: hidden; background: linear-gradient(#eff6ff, #f8fafc); }
+  .sb-fm::after { content: ""; position: absolute; left: 0; right: 0; top: 96px; height: 1px; background: linear-gradient(90deg, transparent, #93c5fd, transparent); }
+  .sb-fm img { position: absolute; left: 62px; top: 16px; width: 148px; height: auto; filter: drop-shadow(0 14px 22px rgba(15, 23, 42, .25)); }
+  .sb-fb { display: block; padding: 14px 16px 16px; }
+  .sb-fb b { display: block; font-size: 15px; font-weight: 600; }
+  .sb-fd { display: block; margin: 4px 0 10px; font-size: 13.5px; line-height: 1.45; color: var(--color-ink-2); }
+  .sb-fb u { text-decoration: none; font-size: 13.5px; font-weight: 600; color: var(--color-accent); }
+  .sb-ph6 { display: flex; align-items: baseline; gap: 14px; padding: 22px 28px 0; }
+  .sb-ph6 b { font: 500 11.5px var(--font-mono); letter-spacing: .08em; color: var(--color-ink-3); }
+  .sb-ph6 span { font-size: 14px; color: var(--color-ink-2); }
+  .sb-cds { display: flex; gap: 16px; padding: 16px 24px 22px; }
+  .sb-cd { width: 310px; border-radius: 12px; overflow: hidden; box-shadow: 0 0 0 1px var(--cb); background: var(--cs); color: var(--ci); transition: box-shadow .25s, transform .25s var(--ease-out-soft); }
+  .sb-cd:hover { box-shadow: 0 0 0 1.5px var(--ca), 0 16px 30px -16px var(--ca); transform: translateY(-2px); }
+  .sb-cm { display: block; height: 146px; position: relative; overflow: hidden; background: var(--cm); }
+  .sb-cm img { position: absolute; left: 14px; top: 16px; width: 282px; height: auto; border-radius: 8px; box-shadow: 0 10px 24px -10px rgba(0, 0, 0, .45); }
+  .sb-cbd { padding: 14px 18px 16px; }
+  .sb-tg { display: inline-flex; gap: 6px; font: 600 10.5px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; padding: 5px 7px; border-radius: 5px; background: var(--ct); color: var(--ck); }
+  .sb-tg i { font-style: normal; opacity: .75; }
+  .sb-cn { display: block; margin-top: 10px; font-size: 17px; font-weight: 600; letter-spacing: -.01em; }
+  .sb-cp { display: block; margin-top: 5px; font-size: 14px; line-height: 1.45; color: var(--cl); min-height: 40px; }
+  .sb-cl { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--cb); }
+  .sb-cl a { font-size: 14px; font-weight: 600; color: var(--ca); }
+  .sb-cl a + a { font-weight: 500; color: var(--cl); font-size: 13.5px; }
+  .sb-cl a + a:hover { color: var(--ci); }
+  .s-m { --cs: #fff; --cb: #e5e7eb; --ci: #0f172a; --cl: #4b5563; --ca: #2563eb; --ct: #dbeafe; --ck: #1d4ed8; --cm: linear-gradient(#eff6ff, #f8fafc); }
+  .s-b { --cs: #faf6ef; --cb: #eadfcb; --ci: #2b1d10; --cl: #6b5440; --ca: #b45309; --ct: #f3e3c8; --ck: #92400e; --cm: #f3eadb; }
+  .s-c { --cs: #1c1512; --cb: #3a2a22; --ci: #f6ede4; --cl: #cdbdb0; --ca: #fb923c; --ct: rgba(194, 65, 12, .3); --ck: #fdba74; --cm: #261c17; }
+  .sb-p-pe .sb-ft { background: #f9f5ec; border-radius: 0 0 12px 12px; }
+  .sb-p-re { display: grid; grid-template-columns: 1fr 290px 230px; }
+  .sb-col-u { padding-left: 20px; }
+  .sb-tl { display: grid; grid-template-rows: repeat(8, auto); grid-auto-flow: column; column-gap: 8px; }
+  .sb-tl a { display: flex; align-items: center; gap: 10px; height: 36px; padding: 0 12px; border-radius: 8px; font-size: 14.5px; font-weight: 500; white-space: nowrap; transition: background .15s, color .15s; }
+  .sb-tl a:hover { background: rgba(29, 27, 23, .045); color: var(--color-accent); }
+  .sb-tl a::before { content: ""; flex: none; width: 5px; height: 5px; border-radius: 50%; background: var(--color-perf); }
+  .sb-tl a.hot::before { background: var(--color-accent); }
+  .sb-gg { display: block; padding: 8px 12px; border-radius: 9px; transition: background .15s; }
+  .sb-gg:hover { background: rgba(29, 27, 23, .045); }
+  .sb-gg:hover .sb-gn { color: var(--color-accent); }
+  .sb-gn { display: flex; align-items: center; justify-content: space-between; font-size: 14.5px; font-weight: 600; letter-spacing: -.01em; transition: color .15s; }
+  .sb-gn .sb-n, .mm-sl .sb-n { font: 500 11.5px/1 var(--font-mono); color: var(--color-ink-3); background: #f1ebde; padding: 4px 7px; border-radius: 99px; }
+  .sb-gs { display: block; margin-top: 2px; font-size: 13px; color: var(--color-ink-2); white-space: nowrap; }
+
+  /* Phone and tablet: burger + full screen menu. */
+  @media (max-width: 1099.98px) {
+    .sb-trs, .sb-login, .sb-pos { display: none; }
+    .sb-burger { display: grid; }
+  }
+  @media (max-width: 639.98px) {
+    .sb .sb-in > .sb-cta { display: none; }
+    .sb-brand { font-size: 18px; }
+  }
+  .mm { position: fixed; inset: 0; z-index: 60; overflow-y: auto; overscroll-behavior: contain; background: var(--color-paper-white); padding-bottom: 32px; }
+  .mm[hidden] { display: none; }
+  .mm a { color: inherit; text-decoration: none; }
+  .mm button { font: inherit; color: inherit; border: 0; padding: 0; cursor: pointer; }
+  html.mm-lock { overflow: hidden; }
+  .mm-h { height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px 0 20px; border-bottom: 1px solid var(--color-rule); }
+  .mm-h .sb-brand { margin: 0; font-size: 18px; }
+  .mm-x { width: 44px; height: 44px; border-radius: 12px; background: rgba(29, 27, 23, .06); display: grid; place-items: center; }
+  .mm-acc { border-bottom: 1px solid var(--color-rule); }
+  .mm-acc summary { list-style: none; display: flex; align-items: center; justify-content: space-between; height: 58px; padding: 0 22px 0 20px; font-size: 18px; font-weight: 600; letter-spacing: -.01em; cursor: pointer; }
+  .mm-acc summary::-webkit-details-marker { display: none; }
+  .mm-acc summary svg { color: var(--color-ink-3); transition: transform .24s var(--ease-out-soft); }
+  .mm-acc[open] summary svg { transform: rotate(180deg); color: var(--color-ink); }
+  .mm-bd { padding: 0 10px 12px; }
+  .mm-bd .sb-it { padding: 8px 10px; gap: 12px; }
+  .mm-bd .sb-ic { width: 30px; height: 30px; border-radius: 8px; }
+  .mm-bd .sb-nm { font-size: 15.5px; }
+  .mm-bd .sb-ln { font-size: 13px; margin-top: 1px; }
+  .mm-sl { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 10px; font-size: 15.5px; font-weight: 500; }
+  .mm-sl i { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .mm-sl .sb-n { margin-left: auto; }
+  .mm-sl em { flex: none; width: 74px; text-align: center; font: 600 10px/1 var(--font-mono); font-style: normal; letter-spacing: .05em; text-transform: uppercase; color: var(--color-ink-2); background: #f1ebde; border-radius: 5px; padding: 5px 0; }
+  .mm-sep { margin-top: 4px; border-top: 1px solid var(--color-rule); }
+  .mm-h6 { margin: 6px 10px 2px; font: 500 11.5px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--color-ink-3); }
+  .mm-q { display: flex; align-items: center; gap: 10px; height: 44px; margin: 0 6px 6px; padding: 0 12px; border-radius: 10px; background: var(--color-paper); box-shadow: inset 0 0 0 1px var(--color-rule); color: var(--color-ink-3); }
+  .mm-q input { flex: 1; min-width: 0; height: 100%; border: 0; background: none; font: 400 16px var(--font-sans); color: var(--color-ink); outline: none; }
+  .mm-q:focus-within { box-shadow: inset 0 0 0 1px var(--color-accent), 0 0 0 3px #dbeafe; }
+  .mm-r0 { padding: 10px; font-size: 14px; color: var(--color-ink-2); }
+  .mm-pl { display: flex; align-items: center; justify-content: space-between; height: 58px; padding: 0 22px 0 20px; font-size: 18px; font-weight: 600; border-bottom: 1px solid var(--color-rule); }
+  .mm-pb { display: flex; gap: 10px; padding: 16px 16px 0; }
+  .mm-pb a { flex: 1; height: 50px !important; border-radius: 10px !important; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; }
+  .mm-o { box-shadow: inset 0 0 0 1px var(--color-perf); }
+</style>

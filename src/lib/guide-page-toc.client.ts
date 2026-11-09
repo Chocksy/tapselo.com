@@ -33,6 +33,8 @@ function collectHeadings(root: HTMLElement): TocItem[] {
   const items: TocItem[] = [];
   for (const el of root.querySelectorAll("h2, h3")) {
     if (!(el instanceof HTMLElement)) continue;
+    // Card titles (e.g. "Articole legate") are links, not sections; side by side they confuse the spy.
+    if (el.closest("a")) continue;
     const title = el.textContent?.trim();
     if (!title) continue;
     const level = el.tagName === "H3" ? 3 : 2;
@@ -110,7 +112,8 @@ export function initGuidePageToc(): void {
       }
       if (current) setActive(current);
     },
-    { rootMargin: "-20% 0px -70% 0px", threshold: [0, 0.1, 1] },
+    // Top edge just above where an anchor jump lands a heading (scroll-margin-top: bar + 4.5rem = 144px).
+    { rootMargin: "-140px 0px -50% 0px", threshold: [0, 0.1, 1] },
   );
 
   for (const item of items) observer.observe(item.el);

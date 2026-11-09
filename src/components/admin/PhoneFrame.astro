@@ -1,0 +1,74 @@
+---
+// HTML iPhone drawn at native 390 x 844 (outer 414 x 868), for app screens the kit does not draw:
+// the admin home, the Tap to Pay wait and the payment sheet. Screens are rebuilt from the app's Svelte copy
+// (no diacritics inside app screens, money as 47.51 RON). Size it with `zoom`.
+interface Props { zoom?: number; class?: string }
+const { zoom = 1, class: cls } = Astro.props;
+---
+<div class:list={["pf", cls]} style={`zoom:${zoom}`} aria-hidden="true">
+  <div class="pf-scr">
+    <div class="pf-stb">9:41<i></i></div>
+    <slot />
+  </div>
+</div>
+
+<style is:global>
+  .pf { position: relative; width: 414px; height: 868px; border-radius: 64px; background: #0b0b0f; padding: 12px; box-shadow: inset 0 0 0 2px #2a2a30; box-sizing: border-box; }
+  .pf::before { content: ""; position: absolute; left: 50%; top: 24px; width: 122px; height: 36px; margin-left: -61px; border-radius: 20px; background: #000; z-index: 3; }
+  .pf-scr { position: relative; width: 390px; height: 844px; border-radius: 52px; overflow: hidden; background: #f8fafc; font-family: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", var(--font-sans); color: #0f172a; line-height: 1.3; }
+  .pf-stb { display: flex; justify-content: space-between; align-items: center; height: 54px; padding: 6px 30px 0 38px; font-size: 16px; font-weight: 700; }
+  .pf-stb i { width: 62px; height: 12px; background: linear-gradient(90deg, #0f172a 0 4px, transparent 4px 6px, #0f172a 6px 10px, transparent 10px 12px, #0f172a 12px 16px, transparent 16px 18px, #0f172a 18px 22px, transparent 22px 34px, #0f172a 34px 60px); border-radius: 2px; }
+
+  /* Admin home (phone) */
+  .pf .ahd { display: flex; align-items: center; gap: 10px; padding: 8px 18px 14px; }
+  .pf .ahd img { width: 32px; height: 32px; border-radius: 8px; }
+  .pf .ahd .st { display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 10px; background: #fff; box-shadow: 0 0 0 1px #e2e8f0; font-size: 14px; font-weight: 600; }
+  .pf .ahd .st::after { content: ""; width: 6px; height: 6px; border: solid #64748b; border-width: 0 1.5px 1.5px 0; transform: rotate(45deg) translate(-2px, -1px); }
+  .pf .ahd .ib { margin-left: auto; width: 36px; height: 36px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 1px #e2e8f0; display: grid; place-items: center; color: #475569; }
+  .pf .ph1 { padding: 4px 18px 0; }
+  .pf .ph1 h4 { margin: 0; font-family: inherit; font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
+  .pf .ph1 > p { margin: 4px 0 16px; font-size: 14px; color: #64748b; }
+  .pf .pt { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .pf .pt > div { padding: 14px; border-radius: 16px; background: #fff; box-shadow: 0 0 0 1px #e2e8f0, 0 1px 2px rgba(15, 23, 42, .04); }
+  .pf .pt b { display: block; margin-top: 10px; font-size: 15px; }
+  .pf .pt span:not(.ic) { display: block; margin-top: 2px; font-size: 12.5px; line-height: 1.35; color: #64748b; }
+  .pf .bn { position: absolute; left: 14px; right: 14px; bottom: 30px; display: flex; gap: 10px; }
+  .pf .bn nav { flex: 1; display: flex; height: 62px; padding: 4px; border-radius: 99px; background: rgba(255, 255, 255, .92); box-shadow: 0 0 0 1px rgba(15, 23, 42, .08), 0 10px 30px rgba(15, 23, 42, .14); }
+  .pf .bn nav span { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border-radius: 99px; font-size: 10px; font-weight: 600; color: #64748b; }
+  .pf .bn nav span.on { background: #eff6ff; color: #2563eb; }
+  .pf .bn nav svg.i { width: 21px; height: 21px; }
+  .pf .bn > span { width: 62px; height: 62px; border-radius: 50%; display: grid; place-items: center; color: #2563eb; background: rgba(255, 255, 255, .92); box-shadow: 0 0 0 1px rgba(15, 23, 42, .08), 0 10px 30px rgba(15, 23, 42, .14); }
+  .pf .bn > span svg.i { width: 24px; height: 24px; }
+
+  /* Cart behind a modal or sheet */
+  .pf .cart { padding: 6px 18px; }
+  .pf .cart > div { display: flex; justify-content: space-between; height: 54px; align-items: center; border-bottom: 1px solid #e2e8f0; font-size: 15px; font-weight: 600; }
+  .pf .cart small { display: block; font-size: 12px; color: #64748b; font-weight: 500; }
+  .pf .dim { position: absolute; inset: 0; background: rgba(15, 23, 42, .42); }
+
+  /* Tap to Pay wait */
+  .pf .mod { position: absolute; left: 16px; right: 16px; top: 250px; padding: 30px 24px; border-radius: 24px; background: #fff; text-align: center; }
+  .pf .mod small { font-size: 14px; color: #64748b; }
+  .pf .mod strong { display: block; margin-top: 4px; font-size: 34px; font-weight: 800; letter-spacing: -.02em; }
+  .pf .mod b { display: block; font-size: 17px; }
+  .pf .mod p { margin: 4px 0 0; font-size: 13px; color: #64748b; }
+  .pf .bar { position: relative; height: 6px; margin: 18px 0 14px; border-radius: 9px; background: #dbeafe; overflow: hidden; }
+  .pf .bar::after { content: ""; position: absolute; left: 0; top: 0; width: 33%; height: 100%; border-radius: 9px; background: #2563eb; animation: pf-bar 1.4s cubic-bezier(.2, .7, .2, 1) infinite; }
+  @keyframes pf-bar { from { transform: translateX(-100%); } to { transform: translateX(300%); } }
+  @media (prefers-reduced-motion: reduce) { .pf .bar::after { animation: none; left: 33%; } }
+
+  /* Payment sheet */
+  .pf .sh { position: absolute; left: 0; right: 0; bottom: 0; padding: 22px 16px 40px; border-radius: 30px 30px 0 0; background: #fff; }
+  .pf .sh header { display: flex; justify-content: space-between; align-items: center; padding: 0 6px 14px; }
+  .pf .sh header b { font-size: 20px; }
+  .pf .sh header span { font-size: 15px; color: #64748b; }
+  .pf .sh header strong { color: #0f172a; font-weight: 800; }
+  .pf .pm { display: flex; align-items: center; gap: 12px; min-height: 66px; padding: 8px 12px; margin-top: 8px; border-radius: 18px; box-shadow: inset 0 0 0 1px #e2e8f0; }
+  .pf .pm.tp { box-shadow: inset 0 0 0 2px #2563eb; background: #eff6ff; }
+  .pf .pm .ic { width: 48px; height: 48px; border-radius: 12px; }
+  .pf .pm .ic svg.i { width: 26px; height: 26px; }
+  .pf .pm b { display: block; font-size: 16px; }
+  .pf .pm small { display: block; font-size: 13.5px; color: #64748b; }
+  .pf .pm .gt { margin-left: auto; display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 99px; background: #d1fae5; color: #065f46; font-size: 12px; font-weight: 700; }
+  .pf .pm .gt::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #10b981; }
+</style>

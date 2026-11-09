@@ -1,0 +1,83 @@
+---
+// G2 "Pornești în trei pași": activation code from the admin (DeviceActivation copy), typed on the phone.
+import { svg } from "./icons.ts";
+---
+<section class="pp-band tear-top ps" id="pasi" data-moment="tear">
+  <div class="pp-rails" aria-hidden="true"></div>
+  <div class="site-container pp-pad">
+    <div class="pp-head ps-hd">
+      <div>
+        <div class="stamp-label">Pe telefonul tău</div>
+        <h2 class="pp-h2">Pornești în trei pași.</h2>
+      </div>
+      <p class="pp-lead">Ai nevoie de un cont Tapselo și de aplicația Tapselo POS pe iPhone. Nimic de instalat în magazin.</p>
+    </div>
+    <ol class="ps-3">
+      <li class="ps-st">
+        <div class="ps-z ps-z1" aria-hidden="true">
+          <div class="ps-adn"><b>Adauga dispozitiv nou</b><span>Genereaza un cod de activare si introdu-l in aplicatia POS pentru a conecta un nou dispozitiv.</span><em><i set:html={svg("plus", 2.5)} />Genereaza cod de activare</em></div>
+        </div>
+        <span class="ps-n">01 · în admin</span>
+        <h3>Generezi un cod</h3>
+        <p>Din admin, un clic pe „Generează cod de activare”.</p>
+      </li>
+      <li class="ps-st">
+        <div class="ps-z ps-z2" aria-hidden="true">
+          <div><p class="ps-ct">Activare dispozitiv</p><div class="ps-code"><em>A</em><em>7</em><em>K</em><em>2</em><em>9</em><em>Q</em></div></div>
+        </div>
+        <span class="ps-n">02 · 6 caractere</span>
+        <h3>Îl tastezi pe telefon</h3>
+        <p>În aplicația Tapselo POS. Telefonul devine o casă a magazinului.</p>
+      </li>
+      <li class="ps-st">
+        <div class="ps-z ps-z3" aria-hidden="true">
+          <div class="ps-ac">
+            <span class="ps-okc" set:html={svg("ok", 3)} />
+            <p class="ps-l">Vanzare finalizata</p>
+            <p class="ps-t">19.90 RON</p>
+            <div class="ps-rs"><span>Rest de dat</span><b>30.10 RON</b></div>
+          </div>
+        </div>
+        <span class="ps-n">03 · gata</span>
+        <h3>Vinzi</h3>
+        <p>Scanezi, încasezi, iar vânzarea scade stocul și ajunge în admin.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .ps-hd { margin-bottom: 56px; }
+  .ps-3 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; margin: 0; padding: 0; list-style: none; }
+  @media (min-width: 900px) {
+    .ps-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+    .ps-st:not(:last-child)::after { content: ""; position: absolute; top: 120px; right: -24px; width: 24px; border-top: 1px dashed var(--color-perf); }
+  }
+  .ps-st { position: relative; }
+  .ps-z { height: 240px; padding: 22px; border-radius: 10px; border: 1px dashed var(--color-perf); background: var(--color-paper); overflow: hidden; font-family: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", var(--font-sans); color: #0f172a; }
+  .ps-z p { margin: 0; }
+  .ps-z1 { padding: 34px 30px; }
+  .ps-z2, .ps-z3 { display: grid; place-items: center; }
+  .ps-n { display: block; margin-top: 22px; font: 500 13px/1 var(--font-mono); color: var(--color-ink-3); }
+  .ps-st h3 { margin: 10px 0 0; font-size: 21px; font-weight: 600; letter-spacing: -.015em; color: var(--color-ink); }
+  .ps-st > p { margin: 6px 0 0; font-size: 15.5px; line-height: 1.5; color: var(--color-ink-2); }
+  .ps-adn { padding: 18px 20px; border-radius: 10px; background: #eff6ff; box-shadow: inset 0 0 0 1px #bfdbfe; }
+  .ps-adn b { display: block; font-size: 14px; color: #1e3a8a; }
+  .ps-adn span { display: block; margin-top: 5px; font-size: 12.5px; line-height: 1.45; color: #1d4ed8; }
+  .ps-adn em { display: inline-flex; align-items: center; gap: 6px; height: 32px; margin-top: 12px; padding: 0 12px; border-radius: 7px; background: #2563eb; color: #fff; font-style: normal; font-size: 12.5px; font-weight: 600; }
+  .ps-adn i { display: inline-flex; width: 14px; height: 14px; }
+  .ps-adn i :global(svg) { width: 14px; height: 14px; }
+  .ps-ct { margin-bottom: 16px !important; text-align: center; font-size: 14px; font-weight: 600; }
+  .ps-code { display: flex; gap: 8px; }
+  .ps-code em { display: grid; place-items: center; width: 44px; height: 58px; border-radius: 10px; border: 1.5px solid #e4e7ec; background: #fff; font: 600 27px/1 var(--font-mono); font-style: normal; }
+  .ps-code em:nth-child(-n+4) { border-color: #2563eb; }
+  .ps-code em:nth-child(4) { margin-right: 10px; }
+  .ps-ac { width: 100%; max-width: 270px; padding: 18px 20px; border-radius: 12px; background: #fff; box-shadow: 0 0 0 1px #e4e7ec, 0 18px 40px -22px rgba(15, 23, 42, .25); text-align: center; }
+  .ps-okc { display: grid; place-items: center; width: 44px; height: 44px; margin: 0 auto; border-radius: 50%; background: #d1fae5; color: #047857; }
+  .ps-okc :global(svg) { width: 55%; height: 55%; }
+  .ps-l { margin-top: 10px !important; font-size: 12.5px; font-weight: 600; color: #64748b; }
+  .ps-t { font-size: 26px; font-weight: 800; letter-spacing: -.02em; }
+  .ps-rs { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-top: 10px; padding: 9px 12px; border-radius: 10px; background: #f8fafc; font-size: 12.5px; color: #334155; }
+  .ps-rs b { font-size: 20px; font-weight: 800; color: #047857; white-space: nowrap; }
+  @media (max-width: 389.98px) { .ps-code { gap: 5px; } .ps-code em { width: 38px; } }
+</style>

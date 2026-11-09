@@ -12,7 +12,7 @@ const links = [...txt.matchAll(/^- \[([^\]]+)\]\((\S+)\): (.+)$/gm)];
 test("llmstxt.org format: H1, blockquote summary, ## sections with link lists", () => {
   const lines = txt.split("\n");
   assert.equal(lines[0], "# Tapselo");
-  assert.match(lines[2], /^> Tapselo .*casa de marcat.*Windows, macOS și Linux.*telefoanele .*gestiunea stocului/);
+  assert.match(lines[2], /^> Tapselo .*casa de marcat.*Windows, macOS și Linux.*iPhone.*Datecs prin rețea sau Bluetooth/);
   assert.deepEqual([...txt.matchAll(/^## (.+)$/gm)].map((m) => m[1]), ["Unelte gratuite", "Ghiduri", "Comparații", "Despre Tapselo"]);
   assert.equal(txt.match(/^# /gm)?.length, 1);
   for (const l of lines.filter((x) => x.startsWith("- "))) assert.match(l, /^- \[[^\]]+\]\(https:\/\/tapselo\.com\/\S*\): \S/, l);

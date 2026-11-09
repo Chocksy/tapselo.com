@@ -75,7 +75,7 @@ const faq: FaqItem[] = [
   },
   {
     q: "Pot folosi programul de casă de marcat pe telefon?",
-    a: "Da, la unele. SmartBill POS scrie că merge pe Android, Noxta pe Android și iOS, iar Conexa pe iPad și Android. Casa Tapselo rulează pe Windows, macOS și Linux; pe Android și iPhone, Tapselo e doar pentru inventar.",
+    a: "Da, la unele. SmartBill POS scrie că merge pe Android, Noxta pe Android și iOS, iar Conexa pe iPad și Android. Tapselo rulează pe Windows, macOS și Linux, iar pe iPhone vinzi și de pe telefon: bonul pleacă la casa de marcat Datecs prin rețea sau Bluetooth. Pentru Android, Tapselo nu are încă aplicație.",
   },
   {
     q: "Ce case de marcat merg cu Tapselo?",
@@ -224,11 +224,11 @@ const ext = { rel: "noopener", target: "_blank" };
 
       <div id="tapselo" class="bestof-vendor">
         <h3 class="kb-h3">1. Tapselo, cel mai bun pentru magazinul alimentar mic cu calculator la tejghea și internet instabil</h3>
-        <p>Tapselo e programul nostru, făcut pentru magazine alimentare mici, băcănii și brutării. Casa de marcat rulează pe calculator cu Windows, macOS sau Linux (există și o imagine Tapselo pentru kiosk, pe Linux). Telefonul Android sau iPhone îl folosești doar pentru inventar și recepția de marfă, nu pentru bon fiscal. Pașii de conectare a casei de marcat la calculator și ce e legal pe telefon sau tabletă sunt în ghidul <a href={internalPath("/program-casa-de-marcat-pe-calculator/")}>program de casă de marcat pe calculator</a>.</p>
+        <p>Tapselo e programul nostru, făcut pentru magazine alimentare mici, băcănii și brutării. Casa de marcat rulează pe calculator cu Windows, macOS sau Linux (există și o imagine Tapselo pentru kiosk, pe Linux). Pe iPhone vinzi și de pe telefon: bonul fiscal pleacă la casa de marcat Datecs prin rețea sau Bluetooth. Pentru Android nu există încă aplicație. Pașii de conectare a casei de marcat la calculator și ce e legal pe telefon sau tabletă sunt în ghidul <a href={internalPath("/program-casa-de-marcat-pe-calculator/")}>program de casă de marcat pe calculator</a>.</p>
         <p><strong>Fără internet:</strong> când pică netul, vânzarea continuă. Bonul fiscal iese la imprimanta legată local, vânzările rămân pe calculator și se sincronizează în panoul de administrare când revine conexiunea.</p>
         <p><strong>Echipamente, conform tapselo.com:</strong> imprimanta fiscală Datecs FP-700 pe USB (testată E2E; bon fiscal, raport X și Z, jurnal electronic, export .p7b pentru ANAF), Daisy și Tremol (driver în produs; validare la instalare cu suport), cântarul Dibal în rețea testat pe D-900 (PLU 1-999), și orice cititor de coduri de bare pe USB. {TAPS_FISCAL_INSTALL_SUPPORT}</p>
         <p><strong>Inclus în ambele planuri:</strong> recepția de marfă din poza facturii (confirmi liniile, iar NIR-ul și stocul se completează), inventarul cu telefonul, rețetele și producția, rapoartele de vânzări și importul produselor din programul vechi.</p>
-        <p><strong>Limitări de știut:</strong> Tapselo nu merge încă cu terminale de card, sertar de bani, imprimante pe rețea sau Bluetooth. Nu are aplicație de casă pe telefon.</p>
+        <p><strong>Limitări de știut:</strong> Tapselo nu merge încă cu terminale de card legate de program (cardul îl încasezi direct pe iPhone, cu Tap to Pay). Nu are încă aplicație pentru Android.</p>
         <p><strong>Preț:</strong> gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA (79 lei pentru o casă, 129 lei pentru două case). Te anunțăm cu 30 de zile înainte de trecerea la tarif.</p>
         <p>Poți vedea fluxul în <a href={DEMO} data-tapselo-cta="bestof-inline">demo-ul Tapselo</a>.</p>
         <p class="bestof-fit"><strong>Potrivit pentru:</strong> magazine alimentare, băcănii și brutării cu una sau două case, care vând la kg și nu vor să se oprească atunci când pică netul. Nu e alegerea potrivită dacă vrei POS bancar legat de program. Pentru alte mărci de casă decât Datecs FP-700, Daisy sau Tremol, întreabă-ne despre model înainte.</p>
@@ -313,10 +313,10 @@ const ext = { rel: "noopener", target: "_blank" };
             <tr class="is-tapselo">
               <th scope="row">Tapselo <span class="bestof-note">(produsul nostru)</span></th>
               <td>Da: vânzări salvate local, sincronizare la revenire</td>
-              <td>Windows, macOS, Linux; Android și iPhone doar pentru inventar</td>
+              <td>Windows, macOS, Linux și iPhone; Android încă nu</td>
               <td>{TAPS_FISCAL_PRINTERS_TABLE}</td>
               <td>Dibal în rețea (testat pe D-900)</td>
-              <td>Nu încă</td>
+              <td>Nu încă; card direct pe iPhone (Tap to Pay)</td>
               <td>Da, în ambele planuri (recepție din poza facturii, NIR)</td>
               <td>gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA</td>
               <td>Beta, fără card</td>
@@ -410,12 +410,12 @@ const ext = { rel: "noopener", target: "_blank" };
               <th scope="row">Magazin alimentar mic, calculator la tejghea, Datecs FP-700, cântar Dibal, internet instabil</th>
               <td>Tapselo</td>
               <td>Vânzare fără internet, Dibal testat, recepție din poza facturii</td>
-              <td>Să nu ai nevoie de POS bancar legat de program sau de sertar</td>
+              <td>Să nu ai nevoie de POS bancar legat de program</td>
             </tr>
             <tr>
               <th scope="row">Vinzi de pe telefon sau tabletă, la tejghea, la stand sau la masă</th>
-              <td>SmartBill POS, Noxta, Conexa</td>
-              <td>Toate trei scriu că rulează pe Android (Noxta și Conexa și pe iOS sau iPad)</td>
+              <td>Tapselo (iPhone), SmartBill POS, Noxta, Conexa</td>
+              <td>Tapselo trimite bonul la Datecs prin rețea sau Bluetooth; celelalte trei scriu că rulează pe Android (Noxta și Conexa și pe iOS sau iPad)</td>
               <td>Dacă modelul tău de casă de marcat e pe lista lor</td>
             </tr>
             <tr>

@@ -1,0 +1,9 @@
+---
+// Tinted square with an icon, as on the admin home tiles.
+import Icon from "./Icon.astro";
+import { TONE } from "./icons.ts";
+interface Props { name: string; tone: string; size?: number }
+const { name, tone, size } = Astro.props;
+const style = `${TONE[tone] ?? TONE.slate}${size ? `;width:${size}px;height:${size}px` : ""}`;
+---
+<span class="ic" style={style}><Icon name={name} /></span>

@@ -40,7 +40,7 @@ const { barcodeApi } = Astro.props;
       <p class="ut-hint" id="vat-amount-hint">La „Adaugă TVA” introdu prețul fără TVA; la „Extrage TVA”, prețul cu TVA inclus.</p>
     </div>
 
-    <dl class="ut-result" id="vat-result" aria-live="polite"></dl>
+    <dl class="ut-result" id="vat-result" aria-live="polite" data-moment="result"></dl>
   </div>
 
   {barcodeApi && (

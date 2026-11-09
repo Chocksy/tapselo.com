@@ -1,0 +1,51 @@
+---
+// D1 FAQ in two columns. Text comes from homepage-faq.ts, the same source as the FAQPage JSON-LD.
+import { internalPath } from "../../lib/internal-url.ts";
+import { homepageFaq } from "../../lib/homepage-faq.ts";
+const GUIDE = "ghidul casa de marcat fără internet";
+---
+
+<section class="hm-sec line" id="faq" data-moment="tear">
+  <div class="site-container fg">
+    <div>
+      <p class="stamp-label">Întrebări</p>
+      <h2 class="hm-h2">Întrebări frecvente.</h2>
+      <p class="hm-lead">Răspunsuri scurte despre casa de marcat, offline și prețuri.</p>
+    </div>
+    <div class="ql">
+      {
+        homepageFaq.map((item, i) => {
+          const [pre, post] = item.a.split(GUIDE);
+          return (
+            <details open={i === 0}>
+              <summary>{item.q}<i aria-hidden="true"></i></summary>
+              <p>
+                {post !== undefined ? (
+                  <>{pre}<a href={internalPath("/ghid/articole/casa-de-marcat-fara-internet/")}>{GUIDE}</a>{post}</>
+                ) : (
+                  item.a
+                )}
+              </p>
+            </details>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .fg { display: grid; gap: 40px; }
+  @media (min-width: 1000px) { .fg { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 64px; } }
+  .ql { border-top: 1px solid var(--color-rule); }
+  details { border-bottom: 1px solid var(--color-rule); }
+  summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px; padding: 14px 0; list-style: none; cursor: pointer; font-size: 16.5px; font-weight: 600; color: var(--color-ink); }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover { color: #1d4ed8; }
+  summary i { position: relative; flex: none; width: 14px; height: 14px; }
+  summary i::before, summary i::after { content: ""; position: absolute; left: 0; top: 6px; width: 14px; height: 2px; border-radius: 2px; background: currentColor; transition: transform 0.3s var(--ease-out-soft); }
+  summary i::after { transform: rotate(90deg); }
+  details[open] summary i::after { transform: rotate(0deg); }
+  details p { margin: 0; padding: 0 32px 20px 0; font-size: 15.5px; line-height: 1.6; color: var(--color-ink-2); }
+  details a { color: #1d4ed8; text-decoration: underline; text-underline-offset: 3px; }
+</style>

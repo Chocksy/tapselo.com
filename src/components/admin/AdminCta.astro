@@ -1,0 +1,24 @@
+---
+// F1 closing CTA, set as a torn receipt.
+const DEMO = "https://app.tapselo.com/?demo=1";
+---
+<section class="pp-band tear-top acta" data-moment="tear">
+  <div class="pp-rails" aria-hidden="true"></div>
+  <div class="site-container pp-pad">
+    <div class="pp-receipt acta-r">
+      <div class="stamp-label">Încearcă</div>
+      <h2 class="pp-h2">Deschide adminul demo. <span>Datele sunt deja acolo.</span></h2>
+      <p class="pp-lead acta-l">Gratuit cât ține beta, fără card. Același cont merge la casă, pe telefon și în admin.</p>
+      <div class="pp-ctas acta-c">
+        <a class="pp-btn" href={DEMO} data-tapselo-cta="admin-final">Încearcă demo <span aria-hidden="true">&rarr;</span></a>
+        <a class="pp-btn2" href="https://app.tapselo.com">Intră în cont</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .acta-r { max-width: 760px; margin: 0 auto; padding: clamp(32px, 5vw, 56px); text-align: center; }
+  .acta-l { max-width: 520px; margin: 18px auto 0; }
+  .acta-c { justify-content: center; margin-top: 30px; }
+</style>

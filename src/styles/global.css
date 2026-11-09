@@ -1,11 +1,13 @@
 @import "@fontsource/instrument-serif/latin-ext-400-italic.css";
 @import "@fontsource-variable/geist/index.css";
+@import "@fontsource-variable/doto/rond.css";
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
-  --font-mono: ui-monospace, "SF Mono", monospace;
+  /* I1: headings are Geist 600 too; Instrument Serif is no longer used for titles. */
+  --font-display: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
   /* Enterprise tokens — matched to POS app palette */
   --color-primary: #0f172a;
@@ -22,13 +24,14 @@
   --color-ticket: #f59e0b;
   --color-ticket-light: #fef3c7;
 
-  --color-surface: #f1f5f9;
-  --color-surface-elevated: #f8fafc;
-  --color-surface-white: #FFFFFF;
+  /* I1 paper: surfaces and greys are warm so old components sit on the cream page. */
+  --color-surface: #f1ebde;
+  --color-surface-elevated: #faf7f0;
+  --color-surface-white: #fffdf7;
 
-  --color-text: #0f172a;
-  --color-text-secondary: #475569;
-  --color-text-muted: #64748b;
+  --color-text: #1d1b17;
+  --color-text-secondary: #5b564c;
+  --color-text-muted: #6f6a5e;
   --color-text-on-dark: #e2e8f0;
   --color-text-on-primary: #d8dee9;
   --color-text-on-primary-muted: #94a3b8;
@@ -38,8 +41,21 @@
   --color-warning: #f59e0b;
   --color-danger: #ef4444;
 
-  --color-border: #cbd5e1;
-  --color-border-light: #e2e8f0;
+  --color-border: #d6ccb6;
+  --color-border-light: #e4dccb;
+
+  /* I1 "Bonul": thermal receipt layer (round 5). Blue stays the action color. */
+  --font-dots: "Doto Variable", "Geist Mono", ui-monospace, monospace;
+  --color-paper: #f6f2e9;        /* page canvas */
+  --color-paper-white: #fffdf7;  /* receipt and card paper */
+  --color-paper-deep: #e8e3d7;   /* footer, wells */
+  --color-ink: #1d1b17;
+  --color-ink-2: #5b564c;
+  --color-ink-3: #8f897b;
+  --color-rule: #e4dccb;         /* hairlines on paper */
+  --color-perf: #cbc1ab;         /* dotted perforation */
+  --color-stamp: #c8384f;        /* red stripe of an ending paper roll: labels, current page, stamps. Never a button. */
+  --ease-out-soft: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 @layer base {
@@ -57,7 +73,7 @@
     min-height: 100vh;
     min-height: 100dvh;
     color: var(--color-text);
-    background: var(--color-surface);
+    background: var(--color-paper);
     line-height: 1.6;
   }
 
@@ -66,14 +82,13 @@
   }
 
   h1, h2 {
-    font-family: var(--font-display);
-    font-style: italic;
-    letter-spacing: -0.01em;
+    font-family: var(--font-sans);
+    font-weight: 600;
   }
 
-  h1 { font-size: clamp(2.75rem, 5vw + 1rem, 4.25rem); line-height: 1.08; font-weight: 400; }
-  h2 { font-size: clamp(2.25rem, 4vw + 0.5rem, 3.25rem); line-height: 1.12; font-weight: 400; }
-  h3 { font-size: 1.25rem; line-height: 1.35; font-weight: 600; }
+  h1 { font-size: clamp(2.125rem, 2.6vw + 1.3rem, 3.5rem); line-height: 1.04; letter-spacing: -0.04em; }
+  h2 { font-size: clamp(1.5rem, 0.8vw + 1.2rem, 1.75rem); line-height: 1.15; letter-spacing: -0.03em; }
+  h3 { font-size: 1.1875rem; line-height: 1.35; font-weight: 600; letter-spacing: -0.01em; }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -95,11 +110,17 @@
   }
 }
 
-/* Standard content container (.site-container); also used to align the fixed site mascot. */
+/* Standard content container (.site-container): 1200px of content like the mockups; also aligns the site mascot. */
 :root {
-  --site-container-max: 72rem;
+  --site-container-max: 78rem;
   --site-container-pad: 1.5rem;
+  /* Menu bar height. While the bar is hidden on scroll, html has [data-bar-hidden]. */
+  --bar-h: 72px;
+  /* Sticky sub-bars sit under the menu bar (product pages read this). */
+  --pp-sticky-top: var(--bar-h);
 }
+@media (max-width: 1099.98px) { :root { --bar-h: 60px; } }
+@media (max-width: 639.98px) { :root { --site-container-pad: 1.25rem; } }
 
 /* Scroll-triggered animations */
 @layer components {
@@ -126,32 +147,35 @@
     display: block;
   }
 
+  /* Body grid with the 300px right column (TOC + hand-off). Tools wait for 1200px so wide forms keep room. */
   @media (min-width: 1024px) {
-    .guide-layout--reading {
-      display: grid;
-      grid-template-columns: minmax(0, 48rem) minmax(11rem, 1fr);
-      gap: 2rem;
-      align-items: start;
-    }
-
+    .guide-layout--reading,
     .guide-layout--full {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(11rem, 14rem);
-      gap: 2rem;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      column-gap: 3.5rem;
+      align-items: start;
+    }
+
+    .guide-layout--reading {
+      grid-template-columns: minmax(0, 48rem) 300px;
+      justify-content: space-between;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .guide-layout--tool {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      column-gap: 3.5rem;
       align-items: start;
     }
   }
 
+  /* The menu bar is sticky (not fixed), so page tops need no room for it. */
   .site-hero {
-    padding-top: 6rem;
+    padding-top: 2.5rem;
     padding-bottom: 2.5rem;
-  }
-
-  @media (min-width: 768px) {
-    .site-hero {
-      padding-top: 7rem;
-      padding-bottom: 3rem;
-    }
   }
 }
 
@@ -253,14 +277,14 @@
 .kb-prose > * + * { margin-top: 1rem; }
 .kb-prose .kb-h2,
 .kb-prose h2:not([class]),
-.kb-h2 { margin-top: 2.5rem; font-family: var(--font-display); font-size: clamp(1.75rem, 3vw + 0.5rem, 2.25rem); font-style: italic; font-weight: 400; line-height: 1.15; color: var(--color-primary); }
+.kb-h2 { margin-top: 2.5rem; font-family: var(--font-sans); font-size: clamp(1.5rem, 0.8vw + 1.2rem, 1.75rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; color: var(--color-ink); }
   /* Only the very first heading of the prose sits flush; an H2 that opens a later <section> keeps its top margin. */
 .kb-prose > .kb-h2:first-child,
 .kb-prose > :first-child > .kb-h2:first-child { margin-top: 0; }
 .kb-prose .kb-h3,
 .kb-prose h3:not([class]),
-.kb-h3 { margin-top: 1.75rem; font-size: 1.125rem; font-weight: 600; line-height: 1.35; color: var(--color-primary); }
-.kb-prose strong { color: var(--color-primary); font-weight: 700; }
+.kb-h3 { margin-top: 1.75rem; font-size: 1.125rem; font-weight: 600; line-height: 1.35; color: var(--color-ink); }
+.kb-prose strong { color: var(--color-ink); font-weight: 650; }
 .kb-prose a {
     color: var(--color-accent);
     text-decoration: underline;
@@ -274,9 +298,19 @@
 .kb-prose .kb-table { margin-top: 1rem; }
 .kb-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .kb-table th, .kb-table td { border-bottom: 1px solid var(--color-border-light); padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; }
-.kb-table th { color: var(--color-primary); font-weight: 600; background: var(--color-surface); }
+.kb-table th { color: var(--color-ink); font-weight: 600; background: var(--color-surface); }
 .kb-table tr:target td { background: var(--color-ticket-light); }
-section[id], div[id], tr[id] { scroll-margin-top: 5rem; }
+/* Room for the sticky bar and sub-bar when jumping to an anchor. */
+section[id], div[id], tr[id], h2[id], h3[id] { scroll-margin-top: calc(var(--bar-h) + 4.5rem); }
+
+/* I1 headings: old templates still put "font-display italic" on titles; keep them upright Geist.
+   Unlayered, so it wins over the Tailwind utility layer. */
+:is(h1, h2, h3, h4, p, span, div).font-display { font-style: normal; font-weight: 600; letter-spacing: -0.03em; }
+
+/* Sticky sub-bars follow the menu bar up when it hides. Shift `top`, not transform: an unstuck bar
+   ignores `top`, so it never slides over the content above it. */
+.follows-bar, [data-psn] { transition: top .24s var(--ease-out-soft); }
+html[data-bar-hidden] :is(.follows-bar, [data-psn]) { top: 0; }
 
 @layer components {
   /* Paragraph/list rhythm inside nested sections of prose; utilities (mt-*) on an element still win. */
@@ -287,3 +321,36 @@ section[id], div[id], tr[id] { scroll-margin-top: 5rem; }
     margin-top: 0.75rem;
   }
 }
+
+/* I1 receipt utilities (round 5). See BUILD-PLAN.md "Round 5 layer". */
+@layer components {
+  /* Dot-matrix digits: prices, totals, stats. 22px and up only. */
+  .dots { font-family: var(--font-dots); font-weight: 900; font-variation-settings: "ROND" 100; letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+  /* Zigzag tear edge. Put on a section; --tear sets the paper color of the teeth. */
+  .tear-top, .tear-bottom { position: relative; }
+  .tear-top::before, .tear-bottom::after { content: ""; position: absolute; left: 0; right: 0; height: 9px; background: var(--tear, var(--color-paper-white)); pointer-events: none; }
+  .tear-top::before { bottom: 100%; mask: conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) 50% / 18px 100%; }
+  .tear-bottom::after { top: 100%; mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 18px 100%; }
+  /* Dotted perforation rule and dashed receipt rule. */
+  .perf-rule { height: 2px; background: radial-gradient(circle, var(--color-perf) .9px, transparent 1.1px) 0 0 / 6px 2px; }
+  .receipt-rule { border-top: 1px dashed var(--color-perf); }
+  /* Small red-square label ("kicker"). */
+  .stamp-label { display: inline-flex; align-items: center; gap: 9px; font: 500 .72rem/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--color-ink-3); }
+  .stamp-label::before { content: ""; width: 7px; height: 7px; background: var(--color-stamp); }
+}
+
+/* H2/I1 page top for the guide and tool shells: light paper, torn bottom edge, ink title. */
+.pg-top { --tear: var(--color-paper-white); z-index: 1; background: var(--color-paper-white); color: var(--color-ink-2); padding-bottom: 3rem; }
+.pg-h1 { margin-top: 0.875rem; color: var(--color-ink); text-wrap: balance; }
+.pg-lead { margin-top: 1rem; max-width: 44rem; font-size: 1.125rem; line-height: 1.6; color: var(--color-ink-2); text-wrap: pretty; }
+.pg-by { margin-top: 1.5rem; font-size: 0.875rem; color: var(--color-ink-3); }
+.pg-back { font-size: 14px; font-weight: 500; color: var(--color-ink-3); text-decoration: none; }
+.pg-back:hover { color: var(--color-ink); }
+/* Slots written for the old navy hero (bylines, hero actions): turn white text to ink. */
+.pg-top :is(a, span, strong, p, b).text-white:not([class*="bg-"]) { color: var(--color-ink); }
+.pg-top [class*="text-text-on-primary"]:not([class*="bg-"]) { color: var(--color-ink-2); }
+.pg-top a[class*="text-text-on-primary"]:hover { color: var(--color-ink); }
+/* Paper body with dotted perforations on the content edges. */
+@media (min-width: 1024px) { .pg-main > .site-container { background: radial-gradient(circle, var(--color-perf) .9px, transparent 1.1px) var(--site-container-pad) 0 / 2px 7px repeat-y, radial-gradient(circle, var(--color-perf) .9px, transparent 1.1px) calc(100% - var(--site-container-pad)) 0 / 2px 7px repeat-y; } }
+.pg-box { border-radius: 0.75rem; background: var(--color-paper-white); box-shadow: 0 0 0 1px var(--color-rule); }
+.pg-box--accent { box-shadow: 0 0 0 1px #bfd3fb; }

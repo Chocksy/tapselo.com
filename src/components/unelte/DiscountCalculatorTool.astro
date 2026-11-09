@@ -1,5 +1,6 @@
 ---
 /** Interactive discount calculator for /unelte/calculator-reducere/ */
+import Mascot from "../Mascot.astro";
 ---
 
 <section class="ut-card" aria-labelledby="disc-calc-title">
@@ -71,7 +72,10 @@
       <button type="button" class="ut-btn ut-btn-secondary" id="disc-add-step">Adaugă o reducere</button>
     </div>
 
-    <dl class="ut-result" id="disc-result" aria-live="polite"></dl>
+    <div class="ms-row">
+      <dl class="ut-result" id="disc-result" aria-live="polite" data-moment="result"></dl>
+      <Mascot spot="calc" pose="sparkles" rest="left" size={96} sizeSm={72} />
+    </div>
   </div>
 </section>
 
@@ -350,3 +354,9 @@
   ensureStackRows();
   setMode("after_percent");
 </script>
+
+<style>
+  /* J2: Nea Tapselo stands next to the result row (sparkles on a new result) */
+  .ms-row { display: flex; align-items: flex-end; gap: 12px; }
+  .ms-row > :first-child { flex: 1; min-width: 0; }
+</style>

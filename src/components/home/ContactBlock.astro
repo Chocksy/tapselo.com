@@ -1,0 +1,19 @@
+---
+// Wraps the existing <Contact /> (its logic stays as is) in the I1 look: torn paper edge, Geist headings.
+import Contact from "../Contact.astro";
+---
+
+<div class="hm-contact tear-top" data-moment="tear">
+  <Contact />
+</div>
+
+<style>
+  .hm-contact { --tear: var(--color-paper-white); background: var(--color-paper-white); }
+  .hm-contact :global(#contact) { background: transparent; border-top: 0; padding-block: clamp(4rem, 8vw, 7rem); }
+  .hm-contact :global(#contact h2) { font-family: var(--font-sans); font-style: normal; font-size: clamp(2.25rem, 2.6vw + 1rem, 3.5rem); font-weight: 600; line-height: 1.02; letter-spacing: -0.042em; color: var(--color-ink); }
+  .hm-contact :global(#contact h3) { font-size: 15.5px; color: var(--color-ink); }
+  .hm-contact :global(#contact form) { background: var(--color-paper); border-color: var(--color-rule); }
+  .hm-contact :global(#contact .bg-primary-subtle) { background: var(--color-paper); box-shadow: inset 0 0 0 1px var(--color-rule); color: var(--color-ink); }
+  .hm-contact :global(#submit-btn) { background: #2563eb; border-radius: 7px; }
+  .hm-contact :global(#submit-btn:hover) { background: #1d4ed8; }
+</style>

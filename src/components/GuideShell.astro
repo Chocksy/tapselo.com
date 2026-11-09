@@ -10,6 +10,8 @@ import { A4200_CHECKER_PATH } from "../lib/articles/schema.ts";
 import type { BreadcrumbLink } from "../lib/unelte/jsonld.ts";
 import { internalPath } from "../lib/internal-url.ts";
 import GuidePageToc from "./GuidePageToc.astro";
+import ResourceNav from "./ResourceNav.astro";
+import { findResource, GUIDE_GROUPS } from "../data/resources.ts";
 
 function defaultGhidPageToc(pathname: string): boolean {
   const p = pathname.replace(/\/$/, "") || "/";
@@ -92,6 +94,19 @@ const guideLayoutClass =
       : "guide-layout guide-layout--full"
     : "";
 const ctaUrl = ctaHref;
+// Pages without their own trail get one from resources.ts (visual only; no BreadcrumbList JSON-LD is added).
+const res = findResource(Astro.url.pathname);
+const group = GUIDE_GROUPS.find((g) => g.id === res?.group);
+const trail: BreadcrumbLink[] | undefined =
+  breadcrumbs && breadcrumbs.length > 0
+    ? breadcrumbs
+    : breadcrumb && res && res.type !== "p"
+      ? [
+          { label: "Ghiduri", href: internalPath("/ghid/") },
+          ...(group ? [{ label: group.label, href: internalPath(`/ghid/#${group.id}`) }] : []),
+          { label: res.title },
+        ]
+      : undefined;
 const a4200CheckerUrl = internalPath(A4200_CHECKER_PATH);
 const ctaLocation = `ghid-${campaign}`;
 ---
@@ -107,22 +122,24 @@ const ctaLocation = `ghid-${campaign}`;
 >
   <Navbar />
 
-  <header class="site-hero bg-primary">
+  <ResourceNav read={pageToc} />
+
+  <header class="site-hero pg-top tear-bottom">
     <div class="site-container">
       <div class={contentInnerClass}>
-        {breadcrumbs && breadcrumbs.length > 0 ? (
-          <Breadcrumbs items={breadcrumbs} />
+        {trail ? (
+          <Breadcrumbs items={trail} />
         ) : (
           breadcrumb && (
-            <a href={internalPath("/ghid")} class="text-sm font-medium text-text-on-primary-muted transition-colors hover:text-white">&larr; Ghid pentru magazine</a>
+            <a href={internalPath("/ghid")} class="pg-back">&larr; Ghid pentru magazine</a>
           )
         )}
-        <h1 class="mt-3 font-display text-4xl italic text-white sm:text-5xl">{heading}</h1>
-        {lead && <p class="mt-4 text-lg leading-relaxed text-text-on-primary/80">{lead}</p>}
+        <h1 class="pg-h1">{heading}</h1>
+        {lead && <p class="pg-lead">{lead}</p>}
         {hasByline ? (
-          <div class="mt-6 text-sm text-text-on-primary"><slot name="byline" /></div>
+          <div class="pg-by"><slot name="byline" /></div>
         ) : (updatedOn || verifiedOn) && (
-          <p class="mt-6 text-sm text-text-on-primary-muted">
+          <p class="pg-by">
             {updatedOn && <span>Actualizat: <time datetime={updatedOn}>{formatDateRo(updatedOn)}</time></span>}
             {updatedOn && verifiedOn && <span aria-hidden="true"> · </span>}
             {verifiedOn && <span>Verificat la {formatDateRo(verifiedOn)}</span>}
@@ -132,7 +149,7 @@ const ctaLocation = `ghid-${campaign}`;
     </div>
   </header>
 
-  <main class="bg-surface-white py-14">
+  <main class="pg-main py-14">
     <div class="site-container">
       <div class:list={[guideLayoutClass]}>
         <div class:list={["guide-layout__main", contentInnerClass, "min-w-0 space-y-12"]}>
@@ -159,7 +176,7 @@ const ctaLocation = `ghid-${campaign}`;
       )}
 
       {articleCta === "a4200" && (
-        <section class="rounded-xl border border-accent/30 bg-accent/5 p-6 md:p-8">
+        <section class="pg-box pg-box--accent p-6 md:p-8">
           <h2 class="font-display text-3xl italic text-primary">Verifică A4200 gratuit, în browser</h2>
           <p class="mt-3 leading-relaxed text-text-secondary">
             Asistent în patru pași: verifică exportul de la service, obții PDF-ul și știi cum verifici recipisa ANAF. Verificarea inițială nu trimite fișierele de pe calculator.
@@ -175,7 +192,7 @@ const ctaLocation = `ghid-${campaign}`;
       )}
 
       {showCta && (
-      <section class="rounded-xl border border-border bg-surface p-6 md:p-8">
+      <section class="pg-box p-6 md:p-8">
         <h2 class="font-display text-3xl italic text-primary">{ctaTitle}</h2>
         <p class="mt-3 leading-relaxed text-text-secondary">{ctaBody}</p>
         <a
@@ -194,7 +211,7 @@ const ctaLocation = `ghid-${campaign}`;
       </p>
       )}
         </div>
-        {pageToc && <GuidePageToc />}
+        {pageToc && <GuidePageToc mascot />}
       </div>
     </div>
   </main>

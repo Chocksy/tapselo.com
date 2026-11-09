@@ -1,0 +1,67 @@
+---
+// D1 "Pornire": three steps from the USB stick to the first sale.
+---
+
+<section class="hm-sec line" id="how-it-works" data-moment="tear">
+  <div class="site-container">
+    <div class="hm-head">
+      <div>
+        <p class="stamp-label">Pornire</p>
+        <h2 class="hm-h2">Pornești în 20 de minute.</h2>
+      </div>
+      <p class="hm-lead">De la cutie la prima vânzare, în trei pași. Fără tehnician.</p>
+    </div>
+    <ol class="steps">
+      <li>
+        <div class="vz usb" aria-hidden="true">
+          <b>Se pregătește casa de marcat</b>
+          <span class="bar"><i></i></span>
+          <span class="ck">✓ Stick USB pornit</span>
+          <span class="ck">✓ Calculator pregătit</span>
+        </div>
+        <em class="n">01 · ~20 minute</em>
+        <h3>Pornești de pe stick</h3>
+        <p>Pui stickul în orice calculator, și unul mai vechi.</p>
+      </li>
+      <li>
+        <div class="vz code" aria-hidden="true">
+          <b>Activare dispozitiv</b>
+          <div>{"A7K29Q".split("").map((c, i) => <span class="dots" style={`--i:${i}`}>{c}</span>)}</div>
+        </div>
+        <em class="n">02 · 6 caractere</em>
+        <h3>Tastezi codul din admin</h3>
+        <p>Casa e activă. Fără instalări complicate.</p>
+      </li>
+      <li>
+        <div class="vz img">
+          <img src="/videos/v2/first-sale.jpg" width="960" height="560" loading="lazy" decoding="async" alt="Prima vânzare pe casa Tapselo, cu bonul fiscal tipărit" />
+        </div>
+        <em class="n">03 · cu sau fără net</em>
+        <h3>Începi să vinzi</h3>
+        <p>Scanezi, încasezi, tipărești bonul fiscal.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .steps { list-style: none; margin: 56px 0 0; padding: 0; display: grid; gap: 40px 14px; }
+  @media (min-width: 900px) { .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .vz { height: 190px; border-radius: 16px; background: var(--color-paper-white); box-shadow: inset 0 0 0 1px var(--color-rule); overflow: hidden; }
+  .usb, .code { display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 0 28px; }
+  .vz b { font-size: 15px; font-weight: 600; color: var(--color-ink); }
+  .bar { height: 6px; border-radius: 6px; background: #ece5d6; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: #2563eb; border-radius: 6px; transform-origin: 0 50%; animation: fill 4.5s var(--ease-out-soft) infinite; }
+  @keyframes fill { 0% { transform: scaleX(0.08); } 70%, 100% { transform: scaleX(1); } }
+  .ck { font: 500 12.5px/1 var(--font-mono); color: #047857; }
+  .code > div { display: flex; gap: 8px; }
+  .code span { display: grid; place-items: center; width: 40px; height: 48px; border-radius: 9px; background: #fff; box-shadow: inset 0 0 0 1.5px #bfd3f6; font-size: 24px; color: #1d4ed8; animation: key 4.5s var(--ease-out-soft) infinite; animation-delay: calc(var(--i) * 0.18s); }
+  @keyframes key { 0%, 100% { opacity: 1; } 4% { opacity: 0.2; } 10% { opacity: 1; } }
+  .img img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
+  .n { display: block; margin-top: 22px; font: 500 12px/1 var(--font-mono); letter-spacing: 0.06em; font-style: normal; color: var(--color-ink-3); }
+  h3 { margin: 12px 0 0; font-size: 19px; font-weight: 600; letter-spacing: -0.015em; color: var(--color-ink); }
+  li p { margin: 6px 0 0; font-size: 15.5px; line-height: 1.5; color: var(--color-ink-2); }
+  @media (prefers-reduced-motion: reduce) {
+    .bar i, .code span { animation: none; transform: none; }
+  }
+</style>
