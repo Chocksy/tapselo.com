@@ -284,7 +284,7 @@ const firstStep = first.s.split("|")[0].replace(/^[\d.]+:/, "");
       const a = Number(p.dataset.a), still = rm();
       if (!v.src) {
         v.poster = `/videos/admin/${p.dataset.v}.jpg`;
-        if (still) v.preload = "auto";
+        v.preload = "auto"; // with preload="none" Chrome never fires loadedmetadata, so the clip never starts
         v.src = `/videos/v2/${p.dataset.v}.mp4#t=${still ? rt(a) : a}`;
       }
       const go = () => {
