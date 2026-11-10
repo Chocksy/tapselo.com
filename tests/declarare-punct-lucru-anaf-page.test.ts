@@ -32,6 +32,12 @@ test("title, H1, lead și decizie 060/061", () => {
   assert.doesNotMatch(text(html), /\bpână la 30 iunie 2026\b.*\btermen curent/i);
   assert.match(text(html), /minimum 5 angajați|5 salariați/);
   assert.doesNotMatch(text(html), /minimum 5 angajați este obligatoriu/i);
+  assert.doesNotMatch(text(html), /inventează/i);
+  assert.doesNotMatch(text(html), /Meniune/i);
+  assert.match(text(html), /Mențiune/);
+  assert.match(text(html), /D_060_OPANAF_508_2026\.pdf/);
+  assert.match(text(html), /060_A8_OPANAF_3725_2017\.pdf/);
+  assert.match(text(html), /declarația de radiere/);
 });
 
 test("JSON-LD Article + FAQPage", () => {
