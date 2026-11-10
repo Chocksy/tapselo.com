@@ -122,12 +122,14 @@ const REST = [
     const l = a.offsetLeft - sc.scrollLeft;
     if (l < 0 || l + a.offsetWidth > sc.clientWidth) sc.scrollTo({ left: a.offsetLeft - 16, behavior: "smooth" });
   }
-  // The active section is the last one whose top passed a line just under the rail. The line is never
-  // above where an anchor jump lands a section (its scroll-margin-top), or a click marks the previous one.
+  // The active section is the last one whose top passed a line 40% down the visible area under the rail,
+  // so a section that fills the screen is the active one (a line just under the rail lagged a whole
+  // screen behind). The line is never above where an anchor jump lands a section (its scroll-margin-top).
   // Read on every call: --bar-h (and so the margin) changes at 1100px.
   const landing = () => (secs[0] ? parseFloat(getComputedStyle(secs[0]).scrollMarginTop) + 4 : 0);
   function spy() {
-    const y = Math.max(rail.getBoundingClientRect().bottom + 80, landing());
+    const top = rail.getBoundingClientRect().bottom;
+    const y = Math.max(top + (innerHeight - top) * 0.4, landing());
     let id = "";
     for (const s of secs) if (s.getBoundingClientRect().top <= y) id = s.id;
     set(id);

@@ -4,6 +4,8 @@
 export type MascotCharacter = {
   directions: string;
   reactions: string;
+  /** Same 3x3 sheets at half size, for spots up to 48 px (the reading walker). */
+  small: { directions: string; reactions: string };
   /** Romanian label for screen readers, matching the drawing (ș/ț with comma below). */
   label: string;
 };
@@ -13,12 +15,14 @@ export const MASCOTS = {
   shopkeeper: {
     directions: "/mascots/shopkeeper-directions.webp",
     reactions: "/mascots/shopkeeper-reactions.webp",
+    small: { directions: "/mascots/shopkeeper-directions-sm.webp", reactions: "/mascots/shopkeeper-reactions-sm.webp" },
     label: "Mascota Tapselo: un vânzător prietenos cu mustață și șorț roșu",
   },
   /** page-mascot's ready-made chef (fallback). */
   chef: {
     directions: "/mascots/chef-directions.webp",
     reactions: "/mascots/chef-reactions.webp",
+    small: { directions: "/mascots/chef-directions-sm.webp", reactions: "/mascots/chef-reactions-sm.webp" },
     label: "Mascota Tapselo: un bucătar prietenos cu mustață",
   },
 } satisfies Record<string, MascotCharacter>;
@@ -72,15 +76,18 @@ export type MascotOpts = {
 
 const attr = (s: string) => s.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
 
-/** Markup for one mascot spot. Used by Mascot.astro and by client code that renders a spot later. */
+/** Markup for one mascot spot. Used by Mascot.astro and by client code that renders a spot later.
+ *  The reactions sheet is not part of first paint: it sits in `--ri` and the CSS uses it once
+ *  src/scripts/mascot.ts has loaded it (html.ms-rx). The directions sheet (rest frames) loads at once. */
 export function mascotHtml(o: MascotOpts): string {
   const rest = o.rest ?? o.pose;
   const look = rest in LOOKS;
-  const bg = (dir: boolean) => `background-image:url(${dir ? ACTIVE_MASCOT.directions : ACTIVE_MASCOT.reactions})`;
+  const sheet = Math.max(o.size ?? 96, o.sizeSm ?? 80) <= 48 ? ACTIVE_MASCOT.small : ACTIVE_MASCOT;
+  const bg = (dir: boolean) => (dir ? `background-image:url(${sheet.directions})` : `--ri:url(${sheet.reactions})`);
   const css = `--s:${o.size ?? 96}px;--sm:${o.sizeSm ?? 80}px${o.peek ? `;--pk:${o.peek}` : ""}`;
   const flags = [o.still && " data-still", o.keep && " data-keep", o.view && " data-view", o.hover && ` data-hover="${attr(o.hover)}"`].filter(Boolean).join("");
   const cls = ["ms", o.peek && "ms-pk", o.cls].filter(Boolean).join(" ");
   const restAt = cell(look ? LOOKS[rest as Look] : REACTIONS[rest as Reaction]);
   const bubble = o.say ? `<span class="ms-b ms-b-${o.sayAt ?? "t"}${o.sayOn ? " ms-b-on" : ""}">${attr(o.say)}</span>` : "";
-  return `<span class="${cls}" data-spot="${attr(o.spot)}"${flags} style="${css}" aria-hidden="true"><span class="ms-f"><i class="ms-d" style="${bg(look)};background-position:${restAt}"></i><i class="ms-r" style="${bg(false)};--p:${cell(REACTIONS[o.pose])}"></i></span>${bubble}</span>`;
+  return `<span class="${cls}" data-spot="${attr(o.spot)}"${flags} style="${css}" aria-hidden="true"><span class="ms-f"><i class="ms-d"${look ? "" : " data-r"} style="${bg(look)};background-position:${restAt}"></i><i class="ms-r" style="${bg(false)};--p:${cell(REACTIONS[o.pose])}"></i></span>${bubble}</span>`;
 }

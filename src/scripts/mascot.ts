@@ -11,9 +11,24 @@ const off = () => R.classList.contains("ms-off");
 const $$ = <T extends Element = M>(s: string, r: ParentNode = document) => [...r.querySelectorAll<T>(s)];
 const spot = (s: string) => document.querySelector<M>(`.ms[data-spot="${s}"]`);
 
+/* The reactions sheet stays out of first paint (Mascot.astro keeps it in --ri). Fetch it on the first
+   reaction, hover, near a spot that rests on it, or 1.5 s after load; ms-rx then shows it. */
+let rx: Promise<unknown> | undefined;
+const need = () =>
+  (rx ??= Promise.all(
+    [...new Set([ACTIVE_MASCOT.reactions, ...$$<HTMLElement>(".ms-r").map((e) => e.style.getPropertyValue("--ri").slice(4, -1))])].map((u) =>
+      Object.assign(new Image(), { src: u }).decode().catch(() => {}),
+    ),
+  ).then(() => R.classList.add("ms-rx")));
+const lz = new IntersectionObserver((es) => es.some((e) => e.isIntersecting) && (lz.disconnect(), need()), { rootMargin: "300px" });
+for (const m of $$(".ms")) if (m.querySelector(".ms-d[data-r]") || (rm() && !m.hasAttribute("data-keep"))) lz.observe(m);
+addEventListener("load", () => setTimeout(need, 1500));
+for (const e of $$<HTMLElement>(".ms-f, [data-ms-hide], [data-rn-q]")) for (const t of ["pointerenter", "focusin"]) e.addEventListener(t, need, { once: true });
+
 /** Show `pose` (default: the spot's own reaction) for `ms` milliseconds; 0 keeps it on. */
 export function react(m: M | null | undefined, pose?: string, ms = 1600) {
   if (!m || off() || rm()) return;
+  if (!R.classList.contains("ms-rx")) return void need().then(() => react(m, pose, ms));
   m.querySelector<HTMLElement>(".ms-r")!.style.backgroundPosition = pose && pose in REACTIONS ? cell(REACTIONS[pose as Reaction]) : "";
   m.classList.add("on");
   clearTimeout(m._t);
@@ -50,8 +65,10 @@ for (const b of $$("[data-ms-hide]")) {
   b.addEventListener("click", () => {
     if (off()) return setOff(false);
     if (rm()) return setOff(true);
-    R.classList.add("ms-bye");
-    setTimeout(() => (setOff(true), setTimeout(() => R.classList.remove("ms-bye"), 400)), 400);
+    need().then(() => {
+      R.classList.add("ms-bye");
+      setTimeout(() => (setOff(true), setTimeout(() => R.classList.remove("ms-bye"), 400)), 400);
+    });
   });
 }
 
@@ -98,8 +115,9 @@ if (ph && pd) {
 /* footer: asleep on the line, wakes up while you hover the bottom row */
 const ft = spot("footer");
 if (ft?.parentElement) {
-  ft.parentElement.addEventListener("pointerenter", () => react(ft, undefined, 0));
-  ft.parentElement.addEventListener("pointerleave", () => ft.classList.remove("on"));
+  let hov = false; // the sheet may still be loading when the pointer leaves
+  ft.parentElement.addEventListener("pointerenter", () => ((hov = true), need().then(() => hov && react(ft, undefined, 0))));
+  ft.parentElement.addEventListener("pointerleave", () => ((hov = false), ft.classList.remove("on")));
 }
 
 /* guides: reading bar under the sub-nav, he walks along it (sleepy, then smiling, star eyes at the end) */
