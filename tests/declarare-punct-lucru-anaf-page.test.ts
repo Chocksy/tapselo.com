@@ -33,6 +33,8 @@ test("title, H1, lead și decizie 060/061", () => {
   assert.match(text(html), /minimum 5 angajați|5 salariați/);
   assert.doesNotMatch(text(html), /minimum 5 angajați este obligatoriu/i);
   assert.doesNotMatch(text(html), /inventează/i);
+  assert.doesNotMatch(text(html), /formulare de căutare/i);
+  assert.doesNotMatch(text(html), /reflectă regula veche/i);
   assert.doesNotMatch(text(html), /Meniune/i);
   assert.match(text(html), /Mențiune/);
   assert.match(text(html), /D_060_OPANAF_508_2026\.pdf/);
