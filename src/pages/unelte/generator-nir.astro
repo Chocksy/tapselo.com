@@ -5,7 +5,7 @@ import { internalPath } from "../../lib/internal-url.ts";
 import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
 
 const path = "/unelte/generator-nir/";
-const heading = "Generator NIR";
+const heading = "Generator NIR: notă de recepție și constatare de diferențe";
 const faq = [
   {
     q: "Ce este NIR-ul?",
@@ -28,18 +28,19 @@ const faq = [
 const jsonLd = toolJsonLd({
   path,
   heading,
-  appName: "Generator NIR Tapselo",
-  description: "Generator NIR online: model notă de recepție și constatare de diferențe PDF, liniile de marfă, TVA și adaos comercial.",
+  appName: "Generator NIR: notă de recepție și constatare de diferențe Tapselo",
+  description:
+    "Generator NIR gratuit: model de notă de recepție și constatare de diferențe (14-3-1A) în PDF, cu furnizor, factură, linii de marfă, TVA și adaos.",
   faq,
 });
 ---
 
 <ToolShell
-  title="Generator NIR — model NIR PDF gratuit | Tapselo"
-  description="Generator NIR gratuit: model notă de recepție și constatare de diferențe PDF, cu furnizor, factură, liniile de marfă, TVA și adaos. NIR online fără cont."
+  title="Generator NIR — notă de recepție și constatare de diferențe (PDF) | Tapselo"
+  description="Generator NIR gratuit: model de notă de recepție și constatare de diferențe (14-3-1A) în PDF, cu furnizor, factură, linii de marfă, TVA și adaos."
   heading={heading}
   path={path}
-  lead="Completează factura furnizorului și primești un NIR printabil (PDF), cu adaos comercial și TVA — același format folosit în documentele Tapselo."
+  lead="Completează factura furnizorului și primești o notă de recepție și constatare de diferențe (NIR) printabilă (PDF), cu adaos comercial și TVA — același format folosit în documentele Tapselo."
   campaign="generator-nir"
   ctaTitle="NIR din poză de factură, în Tapselo"
   ctaBody="Fotografiezi factura la recepție și Tapselo completează liniile, stocul și NIR-ul — fără rescriere în Excel."
