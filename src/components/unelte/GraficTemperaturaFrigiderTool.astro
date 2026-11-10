@@ -137,8 +137,8 @@ import { CLEANING_TAB_NOTICE, TEMP_LEGAL_NOTICE } from "../../lib/unelte/grafic-
   import { daysInMonth } from "../../lib/generators/fridge-temp-log.ts";
   import {
     applySnapshotToGrid,
+    mergeGridSnapshots,
     snapshotGridByDay,
-    trimSnapshotToDays,
     type GridRowSnapshot,
   } from "../../lib/unelte/fridge-temp-grid.ts";
   import { trackToolUsed } from "../../lib/analytics-client.ts";
@@ -150,6 +150,16 @@ import { CLEANING_TAB_NOTICE, TEMP_LEGAL_NOTICE } from "../../lib/unelte/grafic-
     fridgeCleaningLogHtml,
     fridgeTempLogHtml,
   } from "../../lib/unelte/document-export.ts";
+
+  const daySnapByAppliance = new WeakMap<HTMLElement, Map<number, GridRowSnapshot>>();
+
+  function mergedSnapForAppliance(fs: HTMLElement, tbody: HTMLElement | null): Map<number, GridRowSnapshot> {
+    const fromDom = snapshotGridByDay(tbody);
+    const stored = daySnapByAppliance.get(fs) ?? new Map();
+    const merged = mergeGridSnapshots(stored, fromDom);
+    daySnapByAppliance.set(fs, merged);
+    return merged;
+  }
 
   const MONTHS = [
     "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie",
@@ -249,11 +259,14 @@ import { CLEANING_TAB_NOTICE, TEMP_LEGAL_NOTICE } from "../../lib/unelte/grafic-
     return daysInMonth(month, year);
   }
 
-  function rebuildGridContainer(container: HTMLElement, days: number, prior?: Map<number, GridRowSnapshot>) {
-    const snap = prior ?? snapshotGridByDay(container.querySelector("tbody"));
-    const trimmed = trimSnapshotToDays(snap, days);
+  function rebuildGridContainer(container: HTMLElement, days: number) {
+    const fs = container.closest("fieldset[data-appliance]") as HTMLElement | null;
+    const merged =
+      fs != null
+        ? mergedSnapForAppliance(fs, container.querySelector("tbody"))
+        : mergeGridSnapshots(new Map(), snapshotGridByDay(container.querySelector("tbody")));
     buildDayGrid(container, days);
-    applySnapshotToGrid(container.querySelector("tbody"), trimmed);
+    applySnapshotToGrid(container.querySelector("tbody"), merged);
   }
 
   function rebuildAllGrids() {
@@ -297,17 +310,24 @@ import { CLEANING_TAB_NOTICE, TEMP_LEGAL_NOTICE } from "../../lib/unelte/grafic-
       const temp_min = parseNum((fs.querySelector('[data-f="min"]') as HTMLInputElement).value);
       const temp_max = parseNum((fs.querySelector('[data-f="max"]') as HTMLInputElement).value);
       if (!name) return { ok: false, error: `Completați denumirea aparatului ${ai + 1}.` };
-      const days: FridgeTempDayReading[] = [];
       const tbody = fs.querySelector("tbody");
-      tbody?.querySelectorAll("tr[data-day]").forEach((tr) => {
-        const g = (f: string) => (tr.querySelector(`[data-f="${f}"]`) as HTMLInputElement)?.value.trim() ?? "";
-        days.push({
-          morning_temp: g("m-temp") || undefined,
-          morning_initials: g("m-ini") || undefined,
-          evening_temp: g("e-temp") || undefined,
-          evening_initials: g("e-ini") || undefined,
-          notes: g("notes") || undefined,
-        });
+      const merged = mergedSnapForAppliance(fs as HTMLElement, tbody);
+      const dim = daysInMonth(month, year);
+      const pick = (key: keyof GridRowSnapshot) => (d: number) => merged.get(d)?.[key]?.trim() || undefined;
+      const mTemp = pick("morning_temp");
+      const mIni = pick("morning_initials");
+      const eTemp = pick("evening_temp");
+      const eIni = pick("evening_initials");
+      const notes = pick("notes");
+      const days: FridgeTempDayReading[] = Array.from({ length: dim }, (_, i) => {
+        const d = i + 1;
+        return {
+          morning_temp: mTemp(d),
+          morning_initials: mIni(d),
+          evening_temp: eTemp(d),
+          evening_initials: eIni(d),
+          notes: notes(d),
+        };
       });
       appliances.push({ name, kind, temp_min, temp_max, days });
     }

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { renderFridgeCleaningLog } from "../src/lib/generators/fridge-temp-log.ts";
-import { preserveAllGridsOnResize, trimSnapshotToDays } from "../src/lib/unelte/fridge-temp-grid.ts";
+import { mergeGridSnapshots, preserveAllGridsOnResize, trimSnapshotToDays } from "../src/lib/unelte/fridge-temp-grid.ts";
 
 const row = (temp: string) => ({
   morning_temp: temp,
@@ -11,25 +11,27 @@ const row = (temp: string) => ({
   notes: "",
 });
 
-test("trimSnapshotToDays păstrează citirile la redimensionarea grilei", () => {
-  const snap = new Map([
-    [1, { morning_temp: "3", morning_initials: "AB", evening_temp: "4", evening_initials: "CD", notes: "ok" }],
-    [31, { morning_temp: "2", morning_initials: "", evening_temp: "", evening_initials: "", notes: "" }],
-  ]);
-  const feb = trimSnapshotToDays(snap, 28);
-  assert.equal(feb.size, 1);
-  assert.equal(feb.get(1)?.morning_temp, "3");
-  assert.equal(feb.has(31), false);
+test("luna 31 → februarie → 31: citirea zilei 30 rămâne în stare", () => {
+  let stored = new Map<number, ReturnType<typeof row>>();
+  stored = mergeGridSnapshots(stored, new Map([[30, row("4,5")]]));
+  assert.equal(stored.get(30)?.morning_temp, "4,5");
 
-  const back = trimSnapshotToDays(snap, 31);
-  assert.equal(back.get(31)?.morning_temp, "2");
+  // februarie: grile vizibile doar 1–28; nu pierdem zilele ascunse
+  stored = mergeGridSnapshots(stored, new Map([[1, row("3")]]));
+  assert.equal(stored.get(30)?.morning_temp, "4,5");
+  assert.equal(trimSnapshotToDays(stored, 28).has(30), false);
+  assert.equal(trimSnapshotToDays(stored, 28).get(1)?.morning_temp, "3");
+
+  // înapoi la lună de 31: citirea zilei 30 e încă în stare
+  assert.equal(stored.get(30)?.morning_temp, "4,5");
 });
 
 test("rebuildAllGrids: fiecare aparat își păstrează citirile (fără amestec între grile)", () => {
-  const gridA = new Map([[1, row("3,1")]]);
+  const gridA = new Map([[1, row("3,1")], [30, row("5")]]);
   const gridB = new Map([[1, row("−18")]]);
-  const [a, b] = preserveAllGridsOnResize([gridA, gridB], 31);
+  const [a, b] = preserveAllGridsOnResize([gridA, gridB]);
   assert.equal(a.get(1)?.morning_temp, "3,1");
+  assert.equal(a.get(30)?.morning_temp, "5");
   assert.equal(b.get(1)?.morning_temp, "−18");
 });
 

@@ -38,7 +38,7 @@ export function snapshotGridByDay(tbody: HTMLElement | null): Map<number, GridRo
   return map;
 }
 
-/** Keep readings for day numbers that still exist after month length changes. */
+/** Keep readings for day numbers that still exist after month length changes (e.g. PDF payload). */
 export function trimSnapshotToDays(snap: Map<number, GridRowSnapshot>, daysInMonth: number): Map<number, GridRowSnapshot> {
   const out = new Map<number, GridRowSnapshot>();
   for (const [day, row] of snap) {
@@ -47,12 +47,21 @@ export function trimSnapshotToDays(snap: Map<number, GridRowSnapshot>, daysInMon
   return out;
 }
 
-/** One snapshot map per appliance grid — survives month resize without cross-grid data loss. */
-export function preserveAllGridsOnResize(
-  grids: Map<number, GridRowSnapshot>[],
-  newDaysInMonth: number,
-): Map<number, GridRowSnapshot>[] {
-  return grids.map((g) => trimSnapshotToDays(g, newDaysInMonth));
+/** DOM values override stored; days beyond the visible month stay in the map. */
+export function mergeGridSnapshots(
+  stored: Map<number, GridRowSnapshot>,
+  fromDom: Map<number, GridRowSnapshot>,
+): Map<number, GridRowSnapshot> {
+  const out = new Map(stored);
+  for (const [day, row] of fromDom) {
+    out.set(day, { ...row });
+  }
+  return out;
+}
+
+/** One snapshot map per appliance grid — full day map kept across month length changes. */
+export function preserveAllGridsOnResize(grids: Map<number, GridRowSnapshot>[]): Map<number, GridRowSnapshot>[] {
+  return grids.map((g) => new Map(g));
 }
 
 export function applySnapshotToGrid(tbody: HTMLElement | null, snap: Map<number, GridRowSnapshot>): void {
