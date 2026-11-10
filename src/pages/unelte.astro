@@ -16,6 +16,7 @@ import {
   Percent,
   ScanBarcode,
   ScrollText,
+  Thermometer,
   Truck,
 } from "@lucide/astro";
 import GuideShell from "../components/GuideShell.astro";
@@ -112,6 +113,14 @@ const tools = [
     action: "Deschide generatorul",
     description:
       "Model 14-3-8: intrări, ieșiri și stoc calculat automat pe produs și magazie. Print, PDF sau foaie goală — în browser.",
+  },
+  {
+    href: internalPath("/unelte/grafic-temperatura-frigider"),
+    title: "Grafic temperatură frigider",
+    icon: Thermometer,
+    action: "Deschide generatorul",
+    description:
+      "Grafic lunar A4 pentru frigider și congelator: limitele dumneavoastră, două citiri/zi, PDF sau print. Tab opțional curățenie.",
   },
   {
     href: internalPath("/unelte/generator-borderou-de-achizitie"),

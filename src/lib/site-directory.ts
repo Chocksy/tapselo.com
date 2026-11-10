@@ -19,6 +19,7 @@ export const toolLinks: SiteLink[] = [
   { href: internalPath("/unelte/generator-aviz-de-insotire"), label: "Aviz de însoțire a mărfii" },
   { href: internalPath("/unelte/declaratie-de-conformitate-produse-alimentare"), label: "Declarație conformitate alimente" },
   { href: internalPath("/unelte/fisa-de-magazie"), label: "Fișă de magazie" },
+  { href: internalPath("/unelte/grafic-temperatura-frigider"), label: "Grafic temperatură frigider" },
   { href: internalPath("/unelte/generator-borderou-de-achizitie"), label: "Borderou de achiziție" },
   { href: internalPath("/unelte/calculator-adaos-comercial"), label: "Calculator adaos comercial" },
   { href: internalPath("/unelte/calculator-reducere"), label: "Calculator reducere" },

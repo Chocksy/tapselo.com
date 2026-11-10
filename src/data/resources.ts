@@ -28,6 +28,7 @@ export const tools: Resource[] = [
   ["Registru de casă", "/unelte/registru-de-casa/", "numerar"],
   ["Aviz de însoțire", "/unelte/generator-aviz-de-insotire/", "marfa transport"],
   ["Fișă de magazie", "/unelte/fisa-de-magazie/", "stoc"],
+  ["Grafic temperatură frigider", "/unelte/grafic-temperatura-frigider/", "temperatura frigider congelator"],
   ["Borderou de achiziție", "/unelte/generator-borderou-de-achizitie/", "achizitie persoane fizice"],
   ["Calculator adaos comercial", "/unelte/calculator-adaos-comercial/", "tva marja pret raft"],
   ["Generator cod de bare", "/unelte/generator-cod-de-bare/", "ean etichete"],
