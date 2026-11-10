@@ -135,6 +135,12 @@ import { CLEANING_TAB_NOTICE, TEMP_LEGAL_NOTICE } from "../../lib/unelte/grafic-
 <script>
   import type { ApplianceKind, FridgeAppliance, FridgeCleaningLogPayload, FridgeTempDayReading, FridgeTempLogPayload } from "../../lib/unelte/fridge-temp-types.ts";
   import { daysInMonth } from "../../lib/generators/fridge-temp-log.ts";
+  import {
+    applySnapshotToGrid,
+    snapshotGridByDay,
+    trimSnapshotToDays,
+    type GridRowSnapshot,
+  } from "../../lib/unelte/fridge-temp-grid.ts";
   import { trackToolUsed } from "../../lib/analytics-client.ts";
   import {
     downloadFridgeCleaningLogPdfViaPrint,
@@ -207,7 +213,6 @@ import { CLEANING_TAB_NOTICE, TEMP_LEGAL_NOTICE } from "../../lib/unelte/grafic-
     wrap.querySelector("[data-remove]")?.addEventListener("click", () => {
       wrap.remove();
       reindexAppliances();
-      rebuildAllGrids();
     });
 
     return wrap;
@@ -238,18 +243,30 @@ import { CLEANING_TAB_NOTICE, TEMP_LEGAL_NOTICE } from "../../lib/unelte/grafic-
 </tr></thead><tbody>${rows}</tbody></table>`;
   }
 
-  function rebuildAllGrids() {
+  function currentDaysInMonth(): number {
     const month = Number(monthSel.value);
     const year = Number((document.getElementById("gtf-year") as HTMLInputElement).value);
-    const days = daysInMonth(month, year);
-    appliancesRoot.querySelectorAll("[data-grid]").forEach((g) => buildDayGrid(g as HTMLElement, days));
+    return daysInMonth(month, year);
+  }
+
+  function rebuildGridContainer(container: HTMLElement, days: number, prior?: Map<number, GridRowSnapshot>) {
+    const snap = prior ?? snapshotGridByDay(container.querySelector("tbody"));
+    const trimmed = trimSnapshotToDays(snap, days);
+    buildDayGrid(container, days);
+    applySnapshotToGrid(container.querySelector("tbody"), trimmed);
+  }
+
+  function rebuildAllGrids() {
+    const days = currentDaysInMonth();
+    appliancesRoot.querySelectorAll("[data-grid]").forEach((g) => rebuildGridContainer(g as HTMLElement, days));
   }
 
   function addAppliance(preset?: FridgeAppliance) {
     const idx = appliancesRoot.querySelectorAll("fieldset").length;
     const el = applianceCard(preset ?? { name: "", kind: "frigider" }, idx);
     appliancesRoot.append(el);
-    rebuildAllGrids();
+    const grid = el.querySelector("[data-grid]") as HTMLElement | null;
+    if (grid) buildDayGrid(grid, currentDaysInMonth());
   }
 
   addAppliance({ name: "Frigider 1", kind: "frigider" });

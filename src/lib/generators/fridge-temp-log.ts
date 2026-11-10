@@ -138,10 +138,7 @@ export function renderFridgeCleaningLog(
   opts: RenderOptions = {},
 ): string {
   const blank = opts.blank ?? false;
-  const zones =
-    p.zones.length > 0
-      ? p.zones.map((z) => z.name).filter(Boolean)
-      : ["Vitrină", "Depozit", "WC personal"];
+  const zoneNames = p.zones.map((z) => z.name).filter(Boolean);
 
   const rows = blank
     ? Array.from({ length: 20 }, () => "<tr><td></td><td></td><td></td><td></td><td></td></tr>").join("\n")
@@ -158,7 +155,7 @@ export function renderFridgeCleaningLog(
         })
         .join("\n");
 
-  const zoneList = blank ? "" : escapeHtml(zones.join("; "));
+  const zoneList = blank ? "" : escapeHtml(zoneNames.join("; "));
 
   const body = `<h1 class="doc-title">Grafic de curățenie și dezinfecție</h1>
 <p class="muted ctr">Model lunar opțional — nu este un formular numit în lege</p>

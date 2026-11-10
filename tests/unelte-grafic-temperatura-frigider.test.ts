@@ -46,6 +46,7 @@ test("pagina frigider: notice, title, tabs, FAQ", () => {
   assert.match(html, /<h1[^>]*>Grafic de temperatură frigider și congelator \(model lunar\)<\/h1>/);
   assert.ok(html.includes("gtf-tab-temp") && html.includes("gtf-tab-clean"));
   assert.match(html, /dacă este nevoie/);
+  assert.match(html, /Verificat la 10\.11\.2026/);
   const blocks = [...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].flatMap((m) => {
     const j = JSON.parse(m[1]);
     return Array.isArray(j) ? j : [j];

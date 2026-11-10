@@ -2,7 +2,10 @@
 import ToolShell from "../../components/ToolShell.astro";
 import GraficTemperaturaFrigiderTool from "../../components/unelte/GraficTemperaturaFrigiderTool.astro";
 import { internalPath } from "../../lib/internal-url.ts";
+import { formatDateRo } from "../../lib/mcp/text.ts";
 import { CLEANING_TAB_NOTICE, LEGAL_SOURCES, SOURCES_VERIFIED, TEMP_LEGAL_NOTICE } from "../../lib/unelte/grafic-temperatura-frigider.ts";
+
+const verifiedOnRo = formatDateRo(SOURCES_VERIFIED);
 import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
 
 const path = "/unelte/grafic-temperatura-frigider/";
@@ -93,7 +96,7 @@ const S = LEGAL_SOURCES;
       <p class="text-sm">
         Surse: <a href={S.reg852.href} class={link}>{S.reg852.label}</a>;
         <a href={S.ansvsa.href} class={link}>{S.ansvsa.label}</a>.
-        Verificat la {SOURCES_VERIFIED}. Nu este consultanță sanitar-veterinară sau juridică.
+        Verificat la {verifiedOnRo}. Nu este consultanță sanitar-veterinară sau juridică.
       </p>
     </section>
 
