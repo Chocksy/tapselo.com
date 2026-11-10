@@ -199,7 +199,7 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
   .m-left { position: relative; background: #f1f5f9; padding: 32px 0 32px 24px; overflow: hidden; }
   .m-left::after { content: ""; position: absolute; inset: 0; background: radial-gradient(60% 50% at 40% 30%, rgba(37, 99, 235, 0.07), transparent 70%); pointer-events: none; }
   .m-stage { position: relative; flex: none; width: 990px; height: 520px; }
-  .m-stage .kio { position: absolute; left: 222px; top: 46px; }
+  .m-stage .kio { position: absolute; left: 222px; top: 46px; z-index: 1; } /* own layer: the kit's scan banner stays under the phone */
   .m-stage .pho { position: absolute; left: 0; top: 10px; z-index: 2; filter: drop-shadow(0 30px 40px rgba(15, 23, 42, 0.28)); }
   .m-right { position: relative; z-index: 2; background: #fff; padding: 52px 0 56px; }
   .m .k { color: #2563eb; }
