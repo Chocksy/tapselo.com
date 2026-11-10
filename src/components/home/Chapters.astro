@@ -93,7 +93,7 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
       <div class="t ft"><div class="tp"><em>+1</em><b>O atingere = o bucată</b></div><span>Bulina de pe produs arată câte bucăți sunt în coș.</span></div>
       <div class="t ft"><div class="tp"><em>kg</em><b>Produse la kg din cântar</b></div><span>Cozonacul și fursecurile se cântăresc, nu se tastează.</span></div>
       <div class="t ft"><div class="tp"><em>lei</em><b>Rețete și producție</b></div><span>Vezi costul pe bucată. Ingredientele ies singure din stoc.</span></div>
-      <div class="t ft"><div class="tp"><em>10:00</em><b>Precomenzi</b></div><span>Torturile cu avans, gata de ridicat la ora stabilită.</span><span class="pill">în curând</span></div>
+      <div class="t ft"><div class="tp"><em>10:00</em><b>Precomenzi</b><span class="pill">în curând</span></div><span>Torturile cu avans, gata de ridicat la ora stabilită.</span></div>
     </div>
   </div>
 </section>
@@ -300,12 +300,12 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
   .phx { padding: 23px 29px; }
   .phx > div { filter: drop-shadow(0 20px 28px rgba(80, 45, 10, 0.22)); }
   .ft { background: #f1e6d4; padding: 20px 22px; }
-  .ft .tp { display: flex; align-items: center; gap: 12px; padding-right: 64px; }
+  .ft .tp { display: flex; align-items: center; gap: 12px; }
   .ft em { flex: none; display: grid; place-items: center; min-width: 40px; height: 40px; padding: 0 6px; border-radius: 11px; background: #fffdf8; color: #b45309; font: 600 13px/1 var(--font-mono); font-style: normal; box-shadow: inset 0 0 0 1px #e7d6bb; }
   .ft b { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; }
   .ft > span { display: block; font-size: 13.5px; line-height: 1.42; color: #6b5640; margin-top: 11px; }
-  .ft .pill { position: absolute; right: 16px; top: 16px; margin: 0; }
-  .ft:not(:has(.pill)) .tp { padding-right: 0; }
+  /* The badge sits on the title line, centred with it. */
+  .ft .pill { margin-left: auto; }
   @media (min-width: 1100px) {
     .g { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: minmax(154px, auto) minmax(154px, auto) auto auto; }
     .copy { grid-area: 1 / 1 / 3 / 7; }
@@ -391,7 +391,8 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
   .c-stage .pho { position: absolute; left: 0; top: 0; z-index: 2; filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.5)); }
   @media (min-width: 1100px) {
     .c-g { grid-template-columns: 416px minmax(0, 1fr); gap: 20px; }
-    .c-dev { margin-right: calc(-1 * var(--bleed)); padding-top: 4px; }
+    /* Full bleed: the stage hugs the viewport's right edge (it was ~7px short at 1440). */
+    .c-dev { display: flex; justify-content: flex-end; margin-right: calc(-1 * var(--bleed)); padding-top: 4px; }
   }
   @media (max-width: 1099.98px) {
     .c-stage { width: 726px; height: 415px; }
@@ -447,29 +448,33 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
     km.addEventListener("ts:sale", () => { lines = {}; clearTimeout(hide); sc.classList.add("away"); });
   }
 
-  /* 02: product tiles mirror the Vitrina kiosk, and take real taps */
-  type Tile = HTMLElement & { _q: number };
-  const kv = document.querySelector<HTMLElement>("#brutarie .ts-kiosk");
+  /* 02: product tiles mirror the Vitrina kiosk; a tap adds the product to the kiosk cart (which stops its
+     autoplay), and the kiosk's ts:add then sets the badge. */
+  type Tile = HTMLElement;
+  const kv = document.querySelector<HTMLElement & { ts?: { add?(n: string): boolean; reset?(): void } }>("#brutarie .ts-kiosk");
   const tiles = [...document.querySelectorAll<Tile>("#brutarie .pt")];
   const setT = (t: Tile, q: number) => {
     const b = t.querySelector<HTMLElement>(".bd")!;
     t.classList.toggle("on", q > 0);
-    t._q = q;
     b.textContent = t.dataset.kg ? (q ? q.toFixed(3).replace(/0+$/, "") + " kg" : "0") : String(q);
     b.classList.remove("bump");
     void b.offsetWidth;
     if (q) b.classList.add("bump");
   };
-  tiles.forEach((t) => {
-    t._q = Number(t.querySelector(".bd")!.textContent) || 0;
-    t.addEventListener("click", () => setT(t, t.dataset.kg ? t._q + 0.25 : t._q + 1));
-  });
+  // The first tap takes the kiosk over from autoplay and starts from an empty cart.
+  let mine = false;
+  tiles.forEach((t) => t.addEventListener("click", () => {
+    const ts = kv?.ts;
+    if (!ts?.add) return;
+    if (!mine) { mine = true; ts.reset?.(); tiles.forEach((x) => setT(x, 0)); }
+    ts.add(t.dataset.n!);
+  }));
   kv?.addEventListener("ts:add", (e) => {
-    if (!live(kv)) return;
+    if (!mine && !live(kv)) return;
     const d = (e as CustomEvent).detail || {};
     tiles.forEach((t) => { if (t.dataset.n === d.name) setT(t, d.qty); });
   });
-  kv?.addEventListener("ts:sale", () => { if (live(kv)) tiles.forEach((t) => setT(t, 0)); });
+  kv?.addEventListener("ts:sale", () => tiles.forEach((t) => setT(t, 0)));
 
   /* 03: paid orders from the Bar kiosk land on the rail, the oldest gets Gata */
   const kb = document.querySelector<HTMLElement>("#cafenea .ts-kiosk");

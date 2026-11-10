@@ -27,7 +27,10 @@ const PANELS = [
         <span class="pd-eb"><i></i>Aplicația Tapselo POS pentru iPhone · în test</span>
         <h1 class="pp-h1 pd-h1">Casa de marcat <span>pe telefon.</span></h1>
       </div>
-      <p class="pp-lead">Încearcă o vânzare chiar aici: scanezi, alegi plata, vezi restul. Apasă pe pași sau lasă ecranul să meargă singur.</p>
+      <div>
+        <p class="pp-lead">Încearcă o vânzare chiar aici: scanezi, alegi plata, vezi restul. Apasă pe pași sau lasă ecranul să meargă singur.</p>
+        <a class="pp-btn pd-top" href={DEMO} data-tapselo-cta="phone-hero-top">Încearcă demo <span aria-hidden="true">&rarr;</span></a>
+      </div>
     </div>
 
     <div class="pd-dm" data-s="3" data-pd>
@@ -105,6 +108,7 @@ const PANELS = [
   .pd-ht { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: end; }
   @media (min-width: 1024px) { .pd-ht { grid-template-columns: minmax(0, 1fr) 420px; gap: 60px; } }
   .pd-eb { display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; margin-bottom: 18px; border-radius: 7px; background: var(--color-paper-white); box-shadow: 0 0 0 1px var(--color-rule); font-size: 13px; font-weight: 500; color: var(--color-ink-2); }
+  .pd-top { margin-top: 18px; }
   .pd-eb i { width: 7px; height: 7px; border-radius: 50%; background: #f59e0b; }
   .pd-h1 { font-size: clamp(2.6rem, 4vw + .8rem, 4.25rem); }
 

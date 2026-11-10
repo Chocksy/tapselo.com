@@ -1,5 +1,7 @@
 @import "@fontsource/instrument-serif/latin-ext-400-italic.css";
 @import "@fontsource-variable/geist/index.css";
+/* Mono labels, kickers and prices. One variable file per subset; unicode-range means Romanian pages fetch only latin + latin-ext. */
+@import "@fontsource-variable/geist-mono/index.css";
 @import "@fontsource-variable/doto/rond.css";
 @import "tailwindcss";
 
@@ -7,7 +9,7 @@
   --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   /* I1: headings are Geist 600 too; Instrument Serif is no longer used for titles. */
   --font-display: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-mono: "Geist Mono Variable", "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
   /* Enterprise tokens — matched to POS app palette */
   --color-primary: #0f172a;
@@ -45,13 +47,14 @@
   --color-border-light: #e4dccb;
 
   /* I1 "Bonul": thermal receipt layer (round 5). Blue stays the action color. */
-  --font-dots: "Doto Variable", "Geist Mono", ui-monospace, monospace;
+  --font-dots: "Doto Variable", "Geist Mono Variable", ui-monospace, monospace;
   --color-paper: #f6f2e9;        /* page canvas */
   --color-paper-white: #fffdf7;  /* receipt and card paper */
   --color-paper-deep: #e8e3d7;   /* footer, wells */
   --color-ink: #1d1b17;
   --color-ink-2: #5b564c;
-  --color-ink-3: #8f897b;
+  /* Muted labels. 5.2:1 on paper, 5.7:1 on receipt white, 4.8:1 on the footer #efe9dc (was #8f897b, 2.9-3.4:1). */
+  --color-ink-3: #6a6559;
   --color-rule: #e4dccb;         /* hairlines on paper */
   --color-perf: #cbc1ab;         /* dotted perforation */
   --color-stamp: #c8384f;        /* red stripe of an ending paper roll: labels, current page, stamps. Never a button. */
@@ -350,7 +353,55 @@ html[data-bar-hidden] :is(.follows-bar, [data-psn]) { top: 0; }
 .pg-top :is(a, span, strong, p, b).text-white:not([class*="bg-"]) { color: var(--color-ink); }
 .pg-top [class*="text-text-on-primary"]:not([class*="bg-"]) { color: var(--color-ink-2); }
 .pg-top a[class*="text-text-on-primary"]:hover { color: var(--color-ink); }
-/* Paper body with dotted perforations on the content edges. */
-@media (min-width: 1024px) { .pg-main > .site-container { background: radial-gradient(circle, var(--color-perf) .9px, transparent 1.1px) var(--site-container-pad) 0 / 2px 7px repeat-y, radial-gradient(circle, var(--color-perf) .9px, transparent 1.1px) calc(100% - var(--site-container-pad)) 0 / 2px 7px repeat-y; } }
+/* Paper body with dotted perforations in the margin, 20px out from the text (on the padding edge they touched every paragraph). From 1280px, where the page has a margin for them. */
+@media (min-width: 1280px) { .pg-main > .site-container { background: radial-gradient(circle, var(--color-perf) .9px, transparent 1.1px) calc(var(--site-container-pad) - 20px) 0 / 2px 7px repeat-y, radial-gradient(circle, var(--color-perf) .9px, transparent 1.1px) calc(100% - var(--site-container-pad) + 20px) 0 / 2px 7px repeat-y; } }
 .pg-box { border-radius: 0.75rem; background: var(--color-paper-white); box-shadow: 0 0 0 1px var(--color-rule); }
 .pg-box--accent { box-shadow: 0 0 0 1px #bfd3fb; }
+
+/* A6: guide, tool and comparison pages were written with the old slate --color-primary (text-primary, ut-label,
+   dark CTA boxes). Inside the paper page shells it now resolves to the warm ink of the redesign. */
+.pg-top, .pg-main { --color-primary: var(--color-ink); }
+
+/* A7: reading measure. Paragraphs and lists in page bodies stop at ~75 characters a line (36em; Geist averages
+   about 0.45em a character, so 68ch would still give ~95); tables, cards and grids keep the full width.
+   In a layer, so a max-w-* utility on an element still wins. */
+@layer components {
+  .pg-main [data-guide-toc-root] :is(p, ul, ol, dd, blockquote):not([class*="grid"]):not([class*="flex"]):not(.site-prose) { max-width: 36em; }
+  .pg-main [data-guide-toc-root] :is(table, .ut-card, .pg-box) :is(p, ul, ol, dd, blockquote) { max-width: none; }
+}
+
+/* A8: 44px tap targets on phones for buttons and chips inside page bodies. */
+@media (max-width: 767.98px) {
+  .pg-main a[class*="px-"]:is([data-tapselo-cta], .rounded-full, .rounded-md, .rounded-lg) { min-height: 44px; }
+  .pg-main a[class*="px-"]:is([data-tapselo-cta], .rounded-full, .rounded-md, .rounded-lg):is(.inline-block, :not([class*="block"]):not([class*="flex"])) { display: inline-flex; align-items: center; justify-content: center; }
+  .pg-main a[class*="px-"].block:is([data-tapselo-cta], .rounded-full, .rounded-md, .rounded-lg) { display: flex; align-items: center; justify-content: center; }
+}
+
+/* A9: horizontal chip rails fade at the edge that has more to scroll (scroll-driven; no fade where unsupported
+   or when nothing overflows). */
+@property --fade-l { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --fade-r { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@keyframes edge-fade {
+  0% { --fade-l: 0px; --fade-r: 44px; }
+  6%, 94% { --fade-l: 44px; --fade-r: 44px; }
+  100% { --fade-l: 44px; --fade-r: 0px; }
+}
+@supports (animation-timeline: scroll()) {
+  .hm-rail .sc, .psn-links, .edge-fade {
+    mask-image: linear-gradient(90deg, transparent, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent);
+    animation: edge-fade linear both;
+    animation-timeline: scroll(self inline);
+  }
+  @media (max-width: 1023.98px) {
+    .af-tl {
+      mask-image: linear-gradient(90deg, transparent, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent);
+      animation: edge-fade linear both;
+      animation-timeline: scroll(self inline);
+    }
+  }
+}
+
+/* F7: skip link, first focusable element on every page. */
+.skip-link { position: fixed; left: 12px; top: 12px; z-index: 100; padding: 10px 16px; border-radius: 8px; background: var(--color-ink); color: var(--color-paper-white); font-weight: 600; font-size: 15px; text-decoration: none; transform: translateY(-160%); transition: transform .16s var(--ease-out-soft); }
+.skip-link:focus { transform: none; }
+main[id], #continut { scroll-margin-top: var(--bar-h); }

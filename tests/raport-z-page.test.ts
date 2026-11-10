@@ -88,6 +88,8 @@ test("dumneavoastră, ș/ț only, no banned words, platform line kept", async ()
   assert.ok(!t.includes("reiei"), "leftover tu-form reiei");
   assert.ok(t.includes("reluați"), "paper error row should use reluați");
   assert.ok(t.includes("Închideți orice bon deschis"), "step 1 heading dumneavoastră");
-  assert.ok(t.includes("rulează pe Windows, macOS sau Linux (telefonul e pentru inventar)"));
+  assert.ok(t.includes("rulează pe Windows, macOS sau Linux și poate trimite comanda de raport Z"));
+  assert.ok(t.includes("bonul trimis la casa de marcat Datecs prin rețea sau Bluetooth"));
+  assert.ok(!t.includes("pentru inventar"), "phone is a selling device, not inventory-only");
   for (const m of decode(html).matchAll(/79\/129[^"<]*/g)) assert.equal(m[0], "79/129 lei/lună + TVA");
 });

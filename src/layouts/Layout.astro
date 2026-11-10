@@ -23,7 +23,7 @@ interface Props {
 }
 
 const {
-  title = "Tapselo POS — Casa de marcat pentru magazine alimentare",
+  title = "Tapselo POS: casa de marcat pentru magazine alimentare",
   description = "Casa de marcat care merge și fără internet. Cu bon fiscal, cântar integrat și rapoarte inteligente. Gata în 20 de minute, pe orice calculator.",
   noindex = false,
   jsonLd = [],
@@ -88,12 +88,13 @@ const tapseloAppDescription =
       "@type": "SoftwareApplication",
       "name": "Tapselo POS",
       "applicationCategory": "BusinessApplication",
-      "operatingSystem": "Windows, macOS, Linux",
+      "operatingSystem": "Windows, macOS, Linux, iOS",
       "description": tapseloAppDescription,
       "url": siteUrl,
       "image": defaultOgImageUrl,
       "offers": {
         "@type": "Offer",
+        "price": "0",
         "priceCurrency": "RON",
         "description": "gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA"
       },
@@ -120,8 +121,22 @@ const tapseloAppDescription =
     {mascot && <script is:inline set:html={`try{sessionStorage.getItem(${JSON.stringify(MASCOT_HIDDEN_KEY)})==="1"&&document.documentElement.classList.add("ms-off")}catch(e){}`} />}
   </head>
   <body class="font-sans antialiased">
+    <a class="skip-link" href="#continut">Sari la conținut</a>
     <PostHog />
     <slot />
+    <script is:inline>
+      (() => {
+        // Skip link target: the page's <main>, or the page header when the <h1> sits above <main> (guide and tool shells).
+        const m = document.querySelector("main");
+        const h = document.querySelector("h1");
+        const a = document.querySelector(".skip-link");
+        let t = m;
+        if (h && (!m || (!m.contains(h) && m.compareDocumentPosition(h) & Node.DOCUMENT_POSITION_PRECEDING))) t = h.closest("header, section") || h;
+        if (!t || !a) return;
+        if (!t.id) t.id = "continut";
+        a.setAttribute("href", "#" + t.id);
+      })();
+    </script>
 
     <script is:inline>
       document.addEventListener("DOMContentLoaded", () => {

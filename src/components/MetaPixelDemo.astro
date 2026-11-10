@@ -121,6 +121,11 @@ const { pixelId } = Astro.props;
     document.cookie = attrCookie(carry);
   }
 
+  // While the banner shows, pad the page by its height so it never sits on top of the last content or a CTA.
+  const pad = (on: boolean) => {
+    document.body.style.paddingBottom = on && box ? `${box.offsetHeight + 24}px` : "";
+  };
+
   if (pixelId && box) {
     const consent = readConsent();
     if (consent === "granted") {
@@ -129,6 +134,8 @@ const { pixelId } = Astro.props;
       loadPixel(pixelId);
     } else if (consent !== "denied") {
       box.hidden = false;
+      pad(true);
+      new ResizeObserver(() => { if (!box.hidden) pad(true); }).observe(box);
     }
     box.addEventListener("click", (e) => {
       const choice = (e.target as Element | null)?.closest?.("[data-meta-consent-choice]")?.getAttribute("data-meta-consent-choice");
@@ -139,6 +146,7 @@ const { pixelId } = Astro.props;
         /* ignore */
       }
       box.hidden = true;
+      pad(false);
       for (const c of consentCookies(choice)) document.cookie = c;
       if (choice === "denied") {
         for (const link of document.querySelectorAll<HTMLAnchorElement>("a[href]")) {
@@ -154,6 +162,7 @@ const { pixelId } = Astro.props;
     window.addEventListener(WITHDRAW_EVENT, () => {
       w.fbq?.("consent", "revoke");
       box.hidden = true;
+      pad(false);
     });
   }
 </script>

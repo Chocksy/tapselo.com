@@ -25,8 +25,19 @@ const pixelId = resolvePixelId(import.meta.env.PUBLIC_META_PIXEL_ID);
       <p class="mt-5 max-w-2xl text-lg leading-relaxed text-text-on-primary">
         Un tur de mai puțin de 3 minute. Vânzare, cântar, recepție marfă, inventar, rețete, oferte și comenzi.
       </p>
+      <div class="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
+        <a
+          href="https://app.tapselo.com/?demo=1"
+          data-tapselo-cta="demo_page_top"
+          class="group inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-lg bg-accent px-6 py-3 text-base font-bold text-white transition-all duration-150 hover:bg-accent-hover hover:shadow-lg hover:shadow-accent/25 active:scale-[0.98]"
+        >
+          Încearcă demo-ul
+          <ArrowRight class="h-5 w-5 transition-transform duration-150 group-hover:translate-x-0.5" />
+        </a>
+        <p class="text-sm text-text-on-primary">Fără cont și fără card.</p>
+      </div>
 
-      <div class="mt-10 overflow-hidden rounded-2xl border border-white/15 shadow-2xl shadow-black/50">
+      <div class="mt-8 overflow-hidden rounded-2xl border border-white/15 shadow-2xl shadow-black/50">
         <video
           class="block aspect-video h-auto w-full bg-primary"
           width="1280"
