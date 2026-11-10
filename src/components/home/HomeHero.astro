@@ -232,7 +232,8 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
       gap: 22px;
       margin-top: 12px;
       height: var(--stage-h, 520px);
-      overflow: hidden;
+      /* Cut only the bottom (phone and printer end at the paper edge); the window shadow spills left and right. */
+      clip-path: inset(-2px -80px 0 -80px);
       margin-bottom: -9px;
     }
   }
