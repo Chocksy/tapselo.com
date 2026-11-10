@@ -32,6 +32,7 @@ test("NIR: JSON-LD WebApplication cu denumirea oficială", () => {
     return Array.isArray(j) ? j : [j];
   });
   const app = blocks.find((b) => b["@type"] === "WebApplication");
+  assert.equal(app?.name, "Generator NIR: notă de recepție și constatare de diferențe | Tapselo");
   assert.ok(app?.name?.includes("notă de recepție"));
   assert.match(app?.description ?? "", /14-3-1A/);
 });
