@@ -62,6 +62,10 @@ const ENTRIES: Record<string, Entry> = {
     title: "Certificat de atestare fiscală (SPV)",
     desc: "Cererea gratuită de certificat de atestare fiscală la ANAF prin SPV, termenul legal și valabilitatea.",
   },
+  "/ghid/declarare-punct-de-lucru-anaf/": {
+    title: "Declarare punct de lucru la ANAF (2026)",
+    desc: "ONRC, apoi formularul 060 sau 061: salariați, aceeași UAT, termen de 30 de zile — fără confuzia cu D700.",
+  },
   // Ghiduri: deschiderea unui magazin
   "/ghid/deschide-macelarie/": { title: "Deschiderea unei măcelării", desc: "Codul CAEN, înregistrarea DSVSA, acordul primăriei și casa de marcat." },
   "/ghid/deschide-brutarie-patiserie/": { title: "Deschiderea unei brutării sau patiserii", desc: "Codurile CAEN, DSVSA, acordul primăriei și casa de marcat." },

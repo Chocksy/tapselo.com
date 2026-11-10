@@ -1,0 +1,198 @@
+---
+import GuideShell from "../../components/GuideShell.astro";
+import { OPERATOR_LEGAL_NAME } from "../../data/site.ts";
+import { markdownToHtml } from "../../lib/markdown.ts";
+import { internalPath } from "../../lib/internal-url.ts";
+import {
+  breadcrumbJsonLd,
+  breadcrumbLinks,
+  canonicalUrl,
+  faqPageJsonLd,
+  type FaqItem,
+} from "../../lib/unelte/jsonld.ts";
+
+const path = "/ghid/declarare-punct-de-lucru-anaf";
+const heading = "Cum declari un punct de lucru (sediu secundar) la ANAF în 2026";
+const description =
+  "Cum declari un punct de lucru (sediu secundar) la ANAF și ONRC în 2026: cine depune 060 sau 061, termenul de 30 de zile și regula din aceeași UAT.";
+const verifiedOn = "2026-11-10";
+
+const body = `
+**În 2026**, declararea unui punct de lucru (sediu secundar) la ANAF depinde de două întrebări: ați făcut **mențiunea la ONRC** (pentru persoane juridice) și există **cel puțin o persoană cu venituri din salarii** la adresa respectivă? Dacă da la salarii și magazinul este în **aceeași UAT** cu domiciliul fiscal, nu cereți un CIF nou — folosiți formularul **060, secțiunea A**. Dacă salariile sunt în **altă UAT**, depuneți **060, secțiunea B** (sau sediul secundar desemnat când sunt mai multe puncte în aceeași UAT). Fără salariați la adresă: **061** (fără CIF nou), în 30 de zile de la mențiunea ONRC. **D700** este vector fiscal electronic — nu formularul de punct de lucru.
+
+## Ce este un punct de lucru / sediu secundar
+
+Potrivit **art. 85 alin. (3)** din Codul de procedură fiscală (forma consolidată ANAF), **„sediu secundar"** include, printre altele, „birou, **magazin**, atelier, **depozit** și altele asemenea". Nu include domiciliul folosit pentru telemuncă în condițiile Codului muncii.
+
+Meniunea la registrul comerțului (sau actul constitutiv, în alte cazuri) pornește, pentru declararea la ANAF, termenul de **30 de zile** de la înregistrare/mențiune (**art. 85 alin. (1)** lit. a)).
+
+## Pasul 1: mențiunea la ONRC
+
+Pentru o societate, punctul de lucru se menționează la **Oficiul Național al Registrului Comerțului**. Procedura detaliată (acte, taxe) este publicată de ONRC:
+[infiintarea sau desfiintarea de sedii secundare](https://www.onrc.ro/index.php/ro/mentiuni/persoane-juridice/infiintarea-sau-desfiintarea-de-sedii-secundare) — verificați pagina live înainte de depunere; acest ghid nu inventează liste de documente sau taxe.
+
+## Regula din 2026: cel puțin o persoană cu venituri din salarii
+
+**Legea nr. 245/2025** (MO 1.204 / 29.12.2025) înlocuiește art. 32 alin. (7) din Legea nr. 273/2006: obligația de înregistrare fiscală ca plătitor de salarii apare când există o entitate la altă adresă decât sediul social, cu **cel puțin o persoană care realizează venituri din salarii** — nu pragul vechi de „minimum 5 angajați" (formulare de căutare rămase din practica anterioară).
+
+Termen pentru entități nou-înființate: **30 de zile de la înființare**. Fereastra tranzitorie de 30 de zile pentru entitățile deja existente la intrarea în vigoare a Legii 245/2025 **s-a închis** (nu mai este termen curent).
+
+## Dacă magazinul este în aceeași UAT cu domiciliul fiscal
+
+**OG nr. 6/2026** introduce articolul publicat ca **art. 85¹** în ordonanță și ca **art. 81¹** în consolidarea ANAF a Codului de procedură fiscală (același text, numerotare diferită).
+
+**Art. 85¹ / 81¹ alin. (3):** dacă sediul secundar cu salariați este în **aceeași UAT** cu domiciliul fiscal, **nu** aveți obligația de a solicita înregistrarea fiscală separată; impozitul pe salarii se declară și se plătește cu **codul de identificare fiscală propriu**.
+
+Declararea sediilor se face pe formularul **060, secțiunea A** (OPANAF 508/2026) — listă, nu cerere de CIF nou.
+
+## Dacă magazinul este într-o altă UAT
+
+- Solicitați înregistrarea fiscală ca plătitor de salarii în **30 de zile**, pe **060, secțiunea B** (OPANAF 508/2026).
+- Mai multe sedii secundare cu salariați în **aceeași altă UAT**: desemnați un **sediu secundar desemnat** în 30 de zile de la primul astfel de sediu (**art. 85¹ / 81¹ alin. (1)–(2)**).
+
+## Dacă nu există salariați la acea adresă
+
+**Art. 85** CPF rămâne aplicabil: declarați înființarea sediului secundar la organul fiscal central în 30 de zile, pe formularul **061**, **fără** atribuire de CIF (**OPANAF 3725/2017**).
+
+Dacă la adresă apare ulterior cel puțin o persoană cu venituri din salarii, intră în regimul Legii 273/2006 art. 32 alin. (7) / 060 — **art. 85 alin. (5)** exonerează de declarația duplicat de la art. 85 când sediul este înregistrat ca plătitor de salarii.
+
+## Termene și amenzi
+
+- **30 de zile** de la mențiunea ONRC (art. 85) sau de la înființare (Legea 245/2025 / 060), după caz.
+- **Art. 336 alin. (1) lit. a)** CPF: contravenție pentru nedepunerea declarațiilor de înregistrare/mențiuni/radieră la termen.
+- **Art. 336 alin. (2) lit. d):** amendă **1.000–5.000 lei** (mijlocii/mari) sau **500–1.000 lei** (alți contribuabili), doar cu aceste articole — fără alte sume inventate.
+
+Suspendarea sancțiunilor **până la 30 iunie 2026** din OG 6/2026 pentru contribuabili existenți la Legea 245/2025 **a expirat** — menționăm doar ca istoric.
+
+## Ce nu este D700 / 010 / 070
+
+- **D700** — modificări ale **vectorului fiscal** electronic (catalog ANAF), nu declarația de punct de lucru.
+- **010 / 070** — înregistrare/mențiuni generale ale contribuabilului, nu înlocuitorul specific pentru sediul secundar cu/fără salarii (060 vs 061).
+
+Nu folosiți PDF-ul vechi **060_A8_OPANAF_3725/2017** sau textul de catalog care încă vorbește de „minim 5 angajați"; modelul curent este **D_060_OPANAF_508_2026.pdf**.
+
+## Închiderea punctului de lucru
+
+Mențiunea de **desființare la ONRC** (aceeași pagină oficială ONRC). Dacă există înregistrare fiscală ca plătitor de salarii, depuneți **radiere pe 060** la organul competent — fără a inventa un termen separat față de legislația în vigoare la momentul închiderii.
+
+## Legături utile pentru magazin
+
+După punctul de lucru, verificați și: [deschidere minimarket](${internalPath("/ghid/deschide-minimarket-alimentara/")}), [verificare CUI](${internalPath("/unelte/verificare-cui/")}), [e-Factura](${internalPath("/ghid/e-factura-b2b-b2c/")}), [afișe obligatorii](${internalPath("/unelte/afise-obligatorii-magazin/")}), [grafic temperatură](${internalPath("/unelte/grafic-temperatura-frigider/")}), [program casă de marcat](${internalPath("/program-casa-de-marcat-pe-calculator/")}) — fără noi afirmații legale despre AMEF pe fiecare punct de lucru.
+`;
+
+const faq: FaqItem[] = [
+  {
+    q: "Mai trebuie declarație la ANAF dacă am înregistrat punctul de lucru la ONRC?",
+    a: "Da, în general — exceptând cazul în care urmați art. 85 alin. (5) pentru plătitori de salarii (060 sub Legea 273/2006). Sediu cu salarii în aceeași UAT: nu cere CIF nou, dar se declară pe 060 secțiunea A.",
+  },
+  {
+    q: "Primesc un CUI pentru punctul de lucru?",
+    a: "CIF distinct doar când sediul este înregistrat ca plătitor de salarii într-o UAT diferită de domiciliul fiscal (sau ca sediu secundar desemnat). Aceeași UAT: CIF-ul firmei. 061: fără CIF.",
+  },
+  {
+    q: "Mai e pragul de 5 salariați?",
+    a: "Nu în Legea 245/2025. Testul este cel puțin o persoană cu venituri din salarii la adresă. Căutările «model cu 5 salariați» reflectă regula veche.",
+  },
+  {
+    q: "Ce este D700?",
+    a: "Formularul electronic pentru actualizarea vectorului fiscal, nu declarația de înființare a punctului de lucru.",
+  },
+  {
+    q: "Ce formular completez?",
+    a: "060 (OPANAF 508/2026) pentru sedii cu salariați; 061 pentru declararea fără CIF când art. 32 alin. (7) nu se aplică. Link PDF: static.anaf.ro — D_060_OPANAF_508_2026.pdf și 061_A9_OPANAF_3725_2017.pdf.",
+  },
+];
+
+const crumbs = [
+  { name: "Acasă", path: "/" },
+  { name: "Ghid pentru magazine", path: "/ghid/" },
+  { name: heading, path },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: heading,
+    description,
+    dateModified: verifiedOn,
+    inLanguage: "ro-RO",
+    url: canonicalUrl(path),
+    mainEntityOfPage: canonicalUrl(path),
+    author: {
+      "@type": "Organization",
+      name: "Tapselo",
+      legalName: OPERATOR_LEGAL_NAME,
+      url: "https://tapselo.com",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Tapselo",
+      legalName: OPERATOR_LEGAL_NAME,
+      url: "https://tapselo.com",
+    },
+  },
+  faqPageJsonLd(faq),
+  breadcrumbJsonLd(crumbs),
+];
+
+const sources = [
+  {
+    title: "Legea nr. 245/2025 (MO 1.204 / 29.12.2025) — art. 32 alin. (7) Legea 273/2006",
+    url: "https://static.anaf.ro/static/10/Anaf/legislatie/L_245_2025.pdf",
+  },
+  {
+    title: "OG nr. 6/2026 (MO 77 / 30.01.2026) — art. 85¹ CPF",
+    url: "https://static.anaf.ro/static/10/Anaf/legislatie/OG_6_2026.pdf",
+  },
+  {
+    title: "Cod de procedură fiscală — forma consolidată ANAF",
+    url: "https://static.anaf.ro/static/10/Anaf/cod_procedura/Cod_Procedura_Fiscala_2023.htm",
+  },
+  {
+    title: "Formular 060 — OPANAF 508/2026 (PDF + instrucțiuni)",
+    url: "https://static.anaf.ro/static/10/Anaf/formulare/D_060_OPANAF_508_2026.pdf",
+  },
+  {
+    title: "Formular 061 — OPANAF 3725/2017",
+    url: "https://static.anaf.ro/static/10/Anaf/formulare/061_A9_OPANAF_3725_2017.pdf",
+  },
+  {
+    title: "Catalog formulare ANAF",
+    url: "https://static.anaf.ro/static/10/Anaf/formulare/toate_formularele.htm",
+  },
+  {
+    title: "ONRC — înființare / desființare sedii secundare",
+    url: "https://www.onrc.ro/index.php/ro/mentiuni/persoane-juridice/infiintarea-sau-desfiintarea-de-sedii-secundare",
+  },
+];
+---
+
+<GuideShell
+  title="Declarare punct de lucru la ANAF 2026: ONRC, formulare 060 și 061, termene | Tapselo"
+  description={description}
+  heading={heading}
+  lead="Meniune ONRC, apoi 060 dacă există cel puțin un salariat la adresă (fără CIF nou dacă magazinul e în aceeași UAT cu domiciliul fiscal), sau 061 fără salariați — în 30 de zile. D700 este vector fiscal, nu formularul de punct de lucru."
+  sources={sources}
+  verifiedOn={verifiedOn}
+  campaign="declarare-punct-lucru-anaf"
+  breadcrumbs={breadcrumbLinks(crumbs)}
+  ctaTitle="Documente și casă, mai puțină rescriere"
+  ctaBody="Tapselo vă ajută cu NIR, stocuri și bonul fiscal — gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA."
+  jsonLd={jsonLd}
+  contentWidth="reading"
+>
+  <article class="kb-prose" set:html={markdownToHtml(body)} />
+
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Întrebări frecvente</h2>
+    <div class="mt-6 space-y-6">
+      {faq.map((item) => (
+        <div class="rounded-xl border border-border-light p-5">
+          <h3 class="text-lg font-semibold text-primary">{item.q}</h3>
+          <p class="mt-2 leading-relaxed text-text-secondary">{item.a}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+</GuideShell>
