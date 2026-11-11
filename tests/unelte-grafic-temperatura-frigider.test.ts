@@ -3,7 +3,11 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { test } from "node:test";
 import { renderFridgeTempLog } from "../src/lib/generators/fridge-temp-log.ts";
-import { TEMP_LEGAL_NOTICE } from "../src/lib/unelte/grafic-temperatura-frigider.ts";
+import {
+  ANNEX_II_2D_TEMPERATURE_CLAUSE,
+  CLEANING_TAB_NOTICE,
+  TEMP_LEGAL_NOTICE,
+} from "../src/lib/unelte/grafic-temperatura-frigider.ts";
 import type { FridgeTempLogPayload } from "../src/lib/unelte/fridge-temp-types.ts";
 
 const SAMPLE: FridgeTempLogPayload = {
@@ -39,6 +43,8 @@ test("pagina frigider: notice, title, tabs, FAQ", () => {
   const toolIdx = html.indexOf("gtf-panel-temp");
   assert.ok(noticeIdx > 0 && noticeIdx < toolIdx);
   assert.ok(html.includes(TEMP_LEGAL_NOTICE));
+  assert.ok(html.includes(CLEANING_TAB_NOTICE));
+  assert.match(html, new RegExp(ANNEX_II_2D_TEMPERATURE_CLAUSE.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   assert.match(
     html,
     /<title>Grafic temperatură frigider — model lunar A4 gratuit \(PDF\) \| Tapselo<\/title>/,
@@ -54,6 +60,14 @@ test("pagina frigider: notice, title, tabs, FAQ", () => {
   assert.ok(blocks.some((b) => b["@type"] === "FAQPage"));
   assert.ok(blocks.some((b) => b["@type"] === "WebApplication"));
   const text = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, "").replace(/<[^>]+>/g, " ");
+  assert.doesNotMatch(text, /dezinfectarea incintelor sunt cerute/i);
+  assert.doesNotMatch(text, /monitorizarea temperaturilor adecvate/i);
+  const faqPage = blocks.find((b) => b["@type"] === "FAQPage");
+  assert.ok(faqPage);
+  const faqText = JSON.stringify(faqPage.mainEntity);
+  assert.ok(faqText.includes(ANNEX_II_2D_TEMPERATURE_CLAUSE));
+  assert.ok(faqText.includes(CLEANING_TAB_NOTICE));
+  assert.doesNotMatch(faqText, /dezinfectarea incintelor sunt cerute/i);
   assert.doesNotMatch(text, FORBIDDEN_PAGE);
   assert.doesNotMatch(text, CEDILLA);
 });

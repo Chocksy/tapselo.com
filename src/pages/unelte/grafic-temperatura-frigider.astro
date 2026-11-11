@@ -3,7 +3,13 @@ import ToolShell from "../../components/ToolShell.astro";
 import GraficTemperaturaFrigiderTool from "../../components/unelte/GraficTemperaturaFrigiderTool.astro";
 import { internalPath } from "../../lib/internal-url.ts";
 import { formatDateRo } from "../../lib/mcp/text.ts";
-import { CLEANING_TAB_NOTICE, LEGAL_SOURCES, SOURCES_VERIFIED, TEMP_LEGAL_NOTICE } from "../../lib/unelte/grafic-temperatura-frigider.ts";
+import {
+  ANNEX_II_2D_TEMPERATURE_CLAUSE,
+  CLEANING_TAB_NOTICE,
+  LEGAL_SOURCES,
+  SOURCES_VERIFIED,
+  TEMP_LEGAL_NOTICE,
+} from "../../lib/unelte/grafic-temperatura-frigider.ts";
 
 const verifiedOnRo = formatDateRo(SOURCES_VERIFIED);
 import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
@@ -14,7 +20,7 @@ const heading = "Grafic de temperatură frigider și congelator (model lunar)";
 const faq = [
   {
     q: "Este obligatoriu un grafic de temperatură în magazinul alimentar?",
-    a: "Regulamentul (CE) 852/2004 cere temperaturi sigure, menținerea lanțului criogenic neîntrerupt și monitorizarea temperaturilor adecvate, plus înregistrarea lor dacă este nevoie (anexa II cap. I pct. 2 lit. d). Nu am găsit un formular cu denumirea «grafic de temperatură». Un grafic lunar este un model practic, nu un tipizat din regulament.",
+    a: `${ANNEX_II_2D_TEMPERATURE_CLAUSE} Mențineți temperaturi sigure și lanțul criogenic neîntrerupt. Nu am găsit un formular cu denumirea «grafic de temperatură». Un grafic lunar este un model practic, nu un tipizat din regulament.`,
   },
   {
     q: "Ce temperatură trebuie să aibă frigiderul?",
@@ -30,7 +36,7 @@ const faq = [
   },
   {
     q: "Graficul de curățenie e obligatoriu pe aceeași pagină?",
-    a: "Curățarea și dezinfectarea incintelor sunt cerute de anexa II cap. I din Regulamentul (CE) 852/2004. Tab-ul de curățenie este un model opțional, nu un formular legal separat.",
+    a: CLEANING_TAB_NOTICE,
   },
 ];
 
@@ -52,7 +58,7 @@ const S = LEGAL_SOURCES;
   description="Generator de grafic lunar de temperatură frigider sau congelator: completezi firma, luna și limitele, apoi tipărești A4 sau PDF."
   heading={heading}
   path={path}
-  lead="Într-un magazin alimentar, temperaturile trebuie menținute astfel încât să nu creeze risc pentru sănătate și trebuie monitorizate, iar dacă este nevoie înregistrate (Regulamentul CE 852/2004). Generatorul produce o foaie lunară A4, cu limitele min/max pe care le stabiliți dumneavoastră. Este un model de lucru, nu un formular numit în lege."
+  lead={`Într-un magazin alimentar, temperaturile trebuie menținute astfel încât să nu creeze risc pentru sănătate. ${ANNEX_II_2D_TEMPERATURE_CLAUSE} Generatorul produce o foaie lunară A4, cu limitele min/max pe care le stabiliți dumneavoastră. Este un model de lucru, nu un formular numit în lege.`}
   campaign="grafic-temperatura-frigider"
   ctaTitle="Evidență la recepție și la raft"
   ctaBody="Tapselo vă ajută cu NIR, stocuri și vânzările — gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA."
@@ -86,8 +92,9 @@ const S = LEGAL_SOURCES;
         păstrate la o temperatură care poate cauza un risc pentru sănătate.
       </p>
       <p>
-        Art. 5 alin. (1) și (2) lit. g) și alin. (4): proceduri bazate pe HACCP, documente și înregistrări în funcție de natura și dimensiunea
-        întreprinderii, păstrate pe o perioadă rezonabilă — <strong class="text-primary">fără</strong> număr fix de luni în acest text.
+        Art. 5 alin. (1): proceduri bazate pe HACCP. Alin. (2) lit. g): „definirea unor documente și evidențe în funcție de natura și dimensiunea
+        întreprinderii din sectorul alimentar pentru a demonstra aplicarea efectivă a măsurilor...”. Evidențele sunt proporționale cu natura și
+        dimensiunea întreprinderii.
       </p>
       <p>
         Referatul de evaluare ANSVSA pentru unități de comercializare verifică aceeași formulare din anexă (monitorizare și, dacă este nevoie,
@@ -121,7 +128,7 @@ const S = LEGAL_SOURCES;
     <section>
       <h2 class="font-display text-2xl italic text-primary">Tab curățenie și dezinfecție</h2>
       <p>
-        Anexa II cap. I pct. 1 și 2 lit. a): incintele trebuie să fie curate și întreținute, iar structura să permită curățarea și/sau dezinfectarea.
+        Anexa II cap. I pct. 1: incintele utilizate pentru produsele alimentare trebuie să fie curate și întreținute în bună stare. Anexa II cap. I pct. 2 lit. a): structura să permită curățarea și/sau dezinfectarea.
         {CLEANING_TAB_NOTICE}
       </p>
     </section>

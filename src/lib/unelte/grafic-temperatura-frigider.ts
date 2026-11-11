@@ -1,9 +1,12 @@
+/** Anexa II cap. I pct. 2 lit. d) — formulare identică în notice, lead, FAQ și JSON-LD. */
+export const ANNEX_II_2D_TEMPERATURE_CLAUSE =
+  "Regulamentul (CE) 852/2004 cere ca temperaturile să poată fi monitorizate și, dacă este nevoie, înregistrate (anexa II cap. I pct. 2 lit. d).";
+
 /** Mandatory notice above the form (TAP-FRIGIDER brief). */
-export const TEMP_LEGAL_NOTICE =
-  "Regulamentul (CE) 852/2004 cere monitorizarea temperaturilor adecvate și, dacă este nevoie, înregistrarea lor. Nu am găsit un formular legal cu denumirea «grafic de temperatură». Limitele min/max le completați dumneavoastră, din eticheta produsului sau din cerințele aplicabile alimentelor pe care le țineți. Valorile precompletate sunt doar exemple, nu limite legale generale.";
+export const TEMP_LEGAL_NOTICE = `${ANNEX_II_2D_TEMPERATURE_CLAUSE} Nu am găsit un formular legal cu denumirea «grafic de temperatură». Limitele min/max le completați dumneavoastră, din eticheta produsului sau din cerințele aplicabile alimentelor pe care le țineți. Valorile precompletate sunt doar exemple, nu limite legale generale.`;
 
 export const CLEANING_TAB_NOTICE =
-  "Curățarea și dezinfectarea incintelor sunt cerute de anexa II cap. I din Regulamentul (CE) 852/2004. Acest tab este un model opțional de grafic — nu am găsit un formular legal cu această denumire.";
+  "Anexa II cap. I pct. 1 din Regulamentul (CE) 852/2004 cere ca incintele să fie curate și întreținute în bună stare. Acest tab este un model opțional de grafic — nu am găsit un formular legal cu această denumire.";
 
 export const SOURCES_VERIFIED = "2026-11-10";
 
