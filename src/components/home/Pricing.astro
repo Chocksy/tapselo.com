@@ -3,7 +3,7 @@
 import Mascot from "../Mascot.astro";
 
 const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
-const OFFER = ["Casa de marcat pe PC", "Aplicatia pe telefon", "Admin si rapoarte", "Licente", "Actualizari"];
+const OFFER = ["Casa de marcat pe PC", "Aplicația pe telefon", "Admin și rapoarte", "Licențe", "Actualizări"];
 const INCL = ["Casa care merge și fără internet", "Bon fiscal pe Datecs", "Cântar Dibal integrat", "Rapoarte cu recomandări", "Inventar, rețete, recepție", "Clienți, cupoane, oferte"];
 ---
 
@@ -32,8 +32,8 @@ const INCL = ["Casa care merge și fără internet", "Bon fiscal pe Datecs", "C�
           <hr />
           {OFFER.map((o) => <p class="r"><span>{o}</span><span>0.00</span></p>)}
           <hr />
-          <p class="tt"><span>TOTAL LEI</span><b class="dots">0.00</b></p>
-          <p class="r s"><span>Dupa beta, de la</span><span>79.00 / luna</span></p>
+          <p class="tt"><span>TOTAL LEI</span><b>0.00</b></p>
+          <p class="r s"><span>După beta, de la</span><span>79.00 / lună</span></p>
           <hr />
           <p class="c s">Datecs FP-700 · Dibal · USB</p>
           <span class="stamp">BETA</span>
@@ -94,7 +94,8 @@ const INCL = ["Casa care merge și fără internet", "Bon fiscal pe Datecs", "C�
   .rc hr { border: 0; border-top: 1px dashed #cfc6b2; margin: 10px 0; }
   .r { display: flex; justify-content: space-between; gap: 8px; }
   .tt { display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: var(--color-ink); }
-  .tt b { font-size: 30px; line-height: 1.1; }
+  /* Doto draws 0 as a diamond, so the zero total uses the receipt mono font. */
+  .tt b { font: 700 30px/1.1 var(--font-mono); letter-spacing: -0.02em; }
   .stamp { position: absolute; left: 44%; top: 56%; padding: 3px 9px; border: 2px solid var(--color-stamp); border-radius: 5px; color: var(--color-stamp); font: 700 13px/1.2 var(--font-mono); letter-spacing: 0.14em; transform: rotate(-12deg); opacity: 0.88; }
 
   /* plans */
@@ -124,4 +125,10 @@ const INCL = ["Casa care merge și fără internet", "Bon fiscal pe Datecs", "C�
   .inc dd b { font-size: 22px; color: var(--color-ink); }
   /* ponytail: a lone Doto 0 reads as a diamond at this size, so this one digit uses the receipt mono font. */
   .inc dd b.z { font: 600 22px/1 var(--font-mono); }
+  /* Three columns: the extras sit side by side, so this card is about as tall as the two plans and
+     their buttons do not float under an empty gap. */
+  @media (min-width: 900px) {
+    .inc dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 16px; border-bottom: 1px dashed var(--color-perf); }
+    .inc dl div { flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px 0; border-bottom: 0; }
+  }
 </style>

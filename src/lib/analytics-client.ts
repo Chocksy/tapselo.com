@@ -42,6 +42,11 @@ function startBoot(config: PostHogPublicConfig): Promise<PostHogLike | null> {
         capture_pageleave: true,
         person_profiles: "identified_only",
         disable_session_recording: true,
+        // Only pageviews and our own events: no survey, dead-click, exception or web-vitals scripts and requests.
+        disable_surveys: true,
+        capture_dead_clicks: false,
+        capture_exceptions: false,
+        capture_performance: false,
         loaded: (ph) => {
           ph.config.disable_session_recording = true;
         },

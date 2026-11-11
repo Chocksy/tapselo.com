@@ -45,6 +45,7 @@ export const ruleGuideLinks: SiteLink[] = [
   })),
   { href: internalPath("/ghid/registru-unic-de-control"), label: "Registrul unic de control (RUC)" },
   { href: internalPath("/ghid/certificat-de-atestare-fiscala"), label: "Certificat de atestare fiscală (SPV)" },
+  { href: internalPath("/ghid/declarare-punct-de-lucru-anaf"), label: "Declarare punct de lucru la ANAF (2026)" },
 ];
 
 export const shopGuideLinks: SiteLink[] = checklists.map((c) => ({
@@ -78,6 +79,7 @@ export function allGhidUneltePaths(): string[] {
   paths.add(internalPath("/ghid/cantar-dibal"));
   paths.add(internalPath("/ghid/registru-unic-de-control"));
   paths.add(internalPath("/ghid/certificat-de-atestare-fiscala"));
+  paths.add(internalPath("/ghid/declarare-punct-de-lucru-anaf"));
   paths.add(internalPath("/ghid/articole"));
   return [...paths].sort();
 }

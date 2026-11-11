@@ -31,7 +31,7 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
     <div class="site-container band-in">
       <span class="try">ÎNCEARCĂ</span>
       <span class="band-t"
-        ><b class="bt-l">Atinge un produs. Plătește. Bonul iese pe loc.</b><b class="bt-s">Așa arată o vânzare. Ca să încerci tu, apasă Încearcă demo.</b>
+        ><b class="bt-l">Atinge un produs. Plătește. Bonul iese pe loc.</b><b class="bt-s">Așa vinzi de pe iPhone, cu bonul pe Datecs. Atinge telefonul ca să încerci.</b>
         <span class="demo">Demo-ul merge singur până dai tu primul clic.</span><span class="me">Acum casa e a ta.</span></span
       >
     </div>
@@ -41,7 +41,18 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
     <div class="stage canvas" id="demo" data-hero-demo>
       <div class="win">
         <div class="bar">
-          <div class="tl" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="bl">
+            <div class="tl" aria-hidden="true"><span></span><span></span><span></span></div>
+            <span class="nw">
+              <button type="button" class="net" aria-pressed="true" aria-label="Internet în demo" title="Oprește internetul"
+                ><svg class="n-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.55a11 11 0 0 1 14 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"></path></svg
+                ><svg class="n-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 2l20 20M8.5 16.4a6 6 0 0 1 6.9-.1M5 12.6a11 11 0 0 1 5.2-2.5M16.7 10.8A11 11 0 0 1 19 12.5M1.4 9a16 16 0 0 1 4.7-2.9M10.7 5.1A16 16 0 0 1 22.6 9M12 20h.01"></path></svg
+              ></button>
+              <span class="nchip" aria-hidden="true"><i></i>Fără net · <b>0</b> în așteptare</span>
+              <span class="ntoast" aria-hidden="true"></span>
+            </span>
+            <span class="sr-only" role="status" data-net-sr></span>
+          </div>
           <div class="title"><span class="dot"></span><span class="tt">Magazin Popas</span><span class="cs">· Casa 1</span></div>
           <div class="seg" role="group" aria-label="Tip de magazin">
             <button type="button" data-l="scanare" aria-pressed="true"><span class="dot" style="background:#2563eb"></span>Magazin alimentar</button>
@@ -63,14 +74,15 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
         <div class="prn">
           <div class="pb" aria-hidden="true"><div class="lcd dots">21.50</div><s>DATECS FP-700</s><u><i></i><i></i><i></i></u></div>
           <div class="slot">
-            <div class="rc" aria-live="polite" aria-label="Bon fiscal din demo"></div>
+            <div class="rc" aria-label="Bon fiscal din demo"></div>
           </div>
           <span class="ok"><i><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></i>Bon fiscal tipărit</span>
         </div>
-        <div class="phw">
-          <div data-fit="200"><div class="ts-phone" data-shop="magazin" data-screen="sale" data-w="200"></div></div>
-        </div>
-        <div class="mascot-spot" data-mascot-spot="hero"><Mascot spot="hero" pose="heart" rest="left" size={104} sizeSm={80} say="Bon tipărit. Următorul!" /></div>
+        <a class="phw" href="/casa-de-marcat-pe-telefon/#demo" aria-label="Încearcă pe iPhone, pas cu pas" data-tapselo-cta="hero-phone">
+          <div data-fit="200" data-fit-max="1.12"><div class="ts-phone" data-shop="magazin" data-screen="sale" data-w="200"></div></div>
+          <span class="php" aria-hidden="true">Încearcă pe iPhone <Fragment set:html={arrow} /></span>
+        </a>
+        <div class="mascot-spot" data-mascot-spot="hero"><Mascot spot="hero" pose="heart" rest="left" size={116} sizeSm={80} say="Bon tipărit. Următorul!" /></div>
       </div>
     </div>
   </div>
@@ -79,7 +91,7 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
     <div class="site-container ss-g">
       <p class="ss-lead">Merge cu echipamentul pe care îl ai deja.</p>
       <div><b class="dots">20 min</b><span>de la stick la prima vânzare</span></div>
-      <div><b class="dots">0 lei</b><span>licențe, acum și după beta</span></div>
+      <div><b class="z">0 lei</b><span>licențe, acum și după beta</span></div>
       <div><b class="dots">FP-700</b><span>Datecs, bon fiscal pe USB</span></div>
       <div><b class="dots">D-900</b><span>Cântar Dibal, fără tastat</span></div>
     </div>
@@ -137,7 +149,8 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
     letter-spacing: -0.045em;
     color: var(--color-ink);
   }
-  h1 span { color: #aaa290; }
+  /* F1: warm grey at 3.3:1 on --color-paper (3.6:1 on paper-white), large text */
+  h1 span { color: #8c8471; }
   .hp {
     margin: 0;
     font-size: 18px;
@@ -180,11 +193,30 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
   .me { display: none; }
   :global(.hm-mine) .me { display: inline; }
   :global(.hm-mine) .demo { display: none; }
-  /* Below 700px the kiosk is a thumbnail: the strip says what it shows and points to the real demo. */
+  /* F15: with reduced motion nothing runs by itself, so the "merge singur" line goes. */
+  @media (prefers-reduced-motion: reduce) { .demo { display: none; } }
+  /* F6: below 700px the phone is the demo (the kiosk is hidden): the strip says so. */
   .bt-s { display: none; }
   @media (max-width: 699.98px) {
     .bt-l, .demo, .me, :global(.hm-mine) .me { display: none; }
     .bt-s { display: inline; }
+  }
+
+  /* F10: on desktop the hero is shorter, so FINALIZARE sits inside the first screen (768 px at 1366, 900 at 1440). */
+  @media (min-width: 1024px) {
+    .hero { padding-top: clamp(1.5rem, 2.6vw, 3rem); }
+    h1 { margin-top: 12px; font-size: clamp(2.875rem, 4.4vw + 0.5rem, 5rem); }
+    .band { margin-top: 1.5rem; }
+    .band-in { min-height: 44px; padding-block: 5px; }
+  }
+  @media (min-width: 1024px) and (max-height: 820px) {
+    .hero { padding-top: 22px; }
+    /* the right column sets the height here: a wider column keeps the lead to 3 lines */
+    .hx { grid-template-columns: minmax(0, 1fr) 28rem; }
+    .hb { margin-top: 18px; }
+    h1 { margin-top: 10px; font-size: clamp(2.875rem, 4vw + 0.5rem, 4.5rem); }
+    .band { margin-top: 1rem; }
+    .band-in { min-height: 40px; padding-block: 4px; }
   }
 
   /* stage */
@@ -198,10 +230,15 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
       display: grid;
       grid-template-columns: minmax(0, 1fr) 232px;
       gap: 22px;
-      height: var(--stage-h, 600px);
-      overflow: hidden;
+      margin-top: 12px;
+      height: var(--stage-h, 520px);
+      /* Cut only the bottom (phone and printer end at the paper edge); the window shadow spills left and right. */
+      clip-path: inset(-2px -80px 0 -80px);
       margin-bottom: -9px;
     }
+  }
+  @media (min-width: 1024px) and (max-height: 820px) {
+    .stage { margin-top: 10px; }
   }
   .win {
     position: relative;
@@ -221,7 +258,54 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
     padding: 0 12px 0 16px;
     border-bottom: 1px solid #ececef;
   }
+  @media (min-width: 1024px) and (max-height: 820px) {
+    .bar { min-height: 40px; }
+  }
+  .bl { display: flex; align-items: center; gap: 12px; min-width: 0; }
   .tl { display: flex; gap: 8px; }
+
+  /* D1: offline switch. Front-end only: sales still print, wait in a counter and sync when the net is back. */
+  .nw { position: relative; display: flex; }
+  .net {
+    all: unset;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    color: #52525b;
+    background: #f1f1f3;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .net:hover { background: #e7e7ea; color: var(--color-ink); }
+  .net:focus-visible { outline: 2px solid #2563eb; outline-offset: 1px; }
+  .net[aria-pressed="false"] { background: #fef3c7; color: #92400e; }
+  .net .n-off, .net[aria-pressed="false"] .n-on { display: none; }
+  .net[aria-pressed="false"] .n-off { display: block; }
+  .nchip, .ntoast {
+    position: absolute;
+    left: calc(100% + 8px);
+    top: 50%;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 9px;
+    border-radius: 99px;
+    font: 600 12px/1.2 var(--font-sans);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-4px, -50%);
+    transition: opacity 0.2s, transform 0.3s var(--ease-out-soft), visibility 0s 0.3s;
+  }
+  .nchip { color: #92400e; background: #fef3c7; box-shadow: 0 0 0 1px #fde68a; }
+  .nchip i { width: 6px; height: 6px; border-radius: 50%; background: #d97706; }
+  .nchip b { font-variant-numeric: tabular-nums; }
+  .ntoast { color: #065f46; background: #ecfdf5; box-shadow: 0 0 0 1px #a7f3d0; }
+  .stage[data-net="off"] .nchip,
+  .stage[data-toast="on"] .ntoast { opacity: 1; visibility: visible; transform: translate(0, -50%); transition-delay: 0s; }
   .tl span { width: 12px; height: 12px; border-radius: 50%; background: #ff5f57; }
   .tl span + span { background: #febc2e; }
   .tl span + span + span { background: #28c840; }
@@ -245,8 +329,15 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
   .seg button[aria-pressed="true"] { background: #fff; color: var(--color-ink); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 0 0 0.5px rgba(0, 0, 0, 0.06); }
   .seg button:focus-visible { outline: 2px solid #2563eb; outline-offset: 1px; }
   .scrbox { overflow: hidden; }
-  .scr { position: relative; width: 1062px; height: 598px; overflow: hidden; }
+  /* F10: the kiosk screen is drawn 576 px tall instead of the kit's 768 (the cart list and the
+     brutărie/cafenea grids get shorter, FINALIZARE stays at the bottom). 0.7776 = data-w 1084 / 1394. */
+  .scr { --kh: 576; position: relative; width: 1062px; height: calc(var(--kh) * 0.7776px + 1px); overflow: hidden; }
+  .scr :global(:is(.ts-scr, .ts-sc, .ts-vi, .ts-ba)) { height: calc(var(--kh) * 1px); }
+  .scr :global(.ts-sc .ts-main) { height: calc(var(--kh) * 1px - 56px); }
   .scr > :global(.ts-kiosk) { margin: -10.9px; }
+  /* The kit's dark device bezel showed through the screen's 9 px round corners: the window frame is the bezel here. */
+  .scr :global(.ts-dev) { background: none; box-shadow: none; }
+  .scr :global(.ts-scr) { border-radius: 0; }
   .scr :global(.ts-kiosk [data-a]:focus-visible) { outline: 3px solid #2563eb; outline-offset: -3px; }
 
   /* ghost cursor */
@@ -360,14 +451,15 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
   }
   .ok:global(.on) { opacity: 1; transform: none; }
   .ok i { width: 17px; height: 17px; border-radius: 50%; background: #10b981; display: grid; place-items: center; }
-  .phw { position: relative; z-index: 2; }
+  .phw { position: relative; z-index: 2; display: block; color: inherit; text-decoration: none; }
   .phw > div { width: 200px; filter: drop-shadow(0 24px 30px rgba(60, 45, 20, 0.28)); }
+  .php { display: none; }
   @media (min-width: 1024px) {
     .phw { position: absolute; left: 16px; top: var(--ph-top, 300px); }
   }
-  /* J2: Nea Tapselo behind the counter edge, between kiosk and phone (clear of the phone's scanner hint); heart on every sale */
-  .mascot-spot { position: absolute; right: 196px; bottom: -8px; z-index: 4; }
-  @media (min-width: 1024px) { .mascot-spot :global(.ms) { --sz: 84px; } }
+  /* J2 + F16: Nea Tapselo stands at the counter edge in front of the phone, right of the kiosk, so his
+     bubble (anchored over his head, inside this column) never covers FINALIZARE. Heart on every sale. */
+  .mascot-spot { position: absolute; right: -2px; bottom: 16px; z-index: 4; }
   @media (max-width: 1023.98px) {
     .side { padding-bottom: 60px; }
     .mascot-spot { right: 4px; bottom: 0; }
@@ -383,10 +475,52 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
     .stage { padding-bottom: 28px; }
   }
   @media (max-width: 767.98px) {
-    .bar { grid-template-columns: 1fr; padding: 8px; }
+    .bar { grid-template-columns: auto 1fr; padding: 8px; }
     .tl, .title { display: none; }
     .seg { justify-self: stretch; }
     .seg button { flex: 1; justify-content: center; min-height: 44px; padding: 0 6px; font-size: 13px; gap: 6px; }
+    .net { width: 44px; height: 44px; border-radius: 9px; }
+  }
+  /* a narrow window has no room beside the button (the title would sit under the chip):
+     the chip hangs over the top-left of the kiosk screen instead */
+  .win { container-type: inline-size; }
+  @container (max-width: 919.98px) {
+    .nchip, .ntoast { left: 0; top: calc(100% + 14px); transform: translate(0, -4px); z-index: 25; }
+    .stage[data-net="off"] .nchip, .stage[data-toast="on"] .ntoast { transform: none; }
+  }
+  /* F6: below 700px the kiosk would be a 0.33 thumbnail, so it goes; the phone comes first, bigger,
+     and links to the step-by-step phone demo. The shop switch stays; the Datecs prints each phone sale. */
+  @media (max-width: 699.98px) {
+    .bar { grid-template-columns: 1fr; }
+    .bl, .scrbox { display: none; }
+    .win { border-radius: 14px; }
+    .bar { border-bottom: 0; }
+    .side { gap: 12px; }
+    .phw { order: -1; flex: 0 0 58%; max-width: none; padding-bottom: 34px; }
+    .prn { flex: 1 1 0; }
+    .slot { margin-inline: 3px; padding-inline: 5px; }
+    .pb u { display: none; }
+    .rc { padding: 12px 8px 10px; font-size: 10px; }
+    .rc :global(.t1) { font-size: 11px; letter-spacing: 0; }
+    .rc :global(.tt b) { font-size: 20px; }
+    .ok { margin: 6px 0 0; font-size: 11.5px; padding-right: 8px; }
+    .php {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      translate: -50% 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 32px;
+      padding: 0 12px;
+      border-radius: 99px;
+      background: var(--color-ink);
+      color: #fff;
+      font: 600 13px/1 var(--font-sans);
+      white-space: nowrap;
+    }
+    .phw:focus-visible { outline: 2px solid #2563eb; outline-offset: 4px; border-radius: 18px; }
   }
   @media (max-width: 639.98px) {
     .band-in { flex-direction: column; align-items: flex-start; text-align: left; padding-block: 14px; }
@@ -404,6 +538,8 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
   .ss-lead { grid-column: 1 / -1; margin: 0; padding: 26px 0 20px; font-size: 17px; font-weight: 600; line-height: 1.35; letter-spacing: -0.01em; color: var(--color-ink); }
   .ss b { display: block; font-size: clamp(28px, 3vw, 38px); line-height: 1; letter-spacing: 0.01em; color: var(--color-ink); white-space: nowrap; }
   .ss span { display: block; margin-top: 9px; font-size: 14px; line-height: 1.35; color: var(--color-ink-2); }
+  /* F5: Doto draws a leading 0 as a diamond ("◇ lei"), so this value is set in mono bold. */
+  .ss b.z { font-family: var(--font-mono); font-weight: 700; letter-spacing: -0.02em; }
   @media (min-width: 1024px) {
     .ss-g { grid-template-columns: 1.25fr repeat(4, minmax(0, 1fr)); min-height: 128px; }
     .ss-lead { grid-column: auto; padding: 30px 22px 0 0; }
@@ -412,7 +548,7 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
 
   @media (prefers-reduced-motion: reduce) {
     .rc:global(.go) { animation: none; }
-    .ok, .ghost { transition: none; }
+    .ok, .ghost, .net, .nchip, .ntoast { transition: none; }
   }
 </style>
 
@@ -434,6 +570,8 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
   const tdot = root.querySelector<HTMLElement>(".title .dot")!;
   const segs = root.querySelectorAll<HTMLButtonElement>(".seg button");
   const hero = root.closest("section")!;
+  // F6: below 700px the kiosk is hidden and the phone is the demo.
+  const thumb = matchMedia("(max-width: 699.98px)");
 
   // Demo shops. Store and cashier names are invented for the demo.
   const SH: Record<string, Shop> = {
@@ -489,6 +627,7 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
   K.addEventListener("ts:sale", (e) => {
     const d = (e as CustomEvent).detail;
     if (Date.now() - ign < 1700) return;
+    if (offline) pending++, (pendEl.textContent = String(pending));
     nr++;
     recp(snap && snap.length ? snap : [["Produse", d.items + " linii", d.total.toFixed(2)]], d.total.toFixed(2), d.method, true);
     snap = null;
@@ -529,7 +668,7 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
       const t = () => {
         if (g !== gen || mine) return rej(0);
         if (left <= 0) return res();
-        setTimeout(() => { if (live(K)) left -= 100; t(); }, 100);
+        setTimeout(() => { if (live(K) && !thumb.matches) left -= 100; t(); }, 100);
       };
       t();
     });
@@ -563,6 +702,8 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
     gen++;
     G.classList.add("gone");
     hero.classList.add("hm-mine");
+    // F8: the receipt is announced only for the visitor's own sales, not for the ghost's.
+    paper.setAttribute("aria-live", "polite");
   };
   K.addEventListener("pointerdown", (e) => { if (e.isTrusted) takeOver(); }, true);
 
@@ -600,12 +741,58 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
     }
   };
   new MutationObserver(mark).observe(K, { childList: true, subtree: true });
-  // Below 700px the devices are a thumbnail (the strip points to the real demo): no taps, no Tab stops.
-  const thumb = matchMedia("(max-width: 699.98px)");
-  const devs = [K, root.querySelector<HTMLElement>(".phw")!];
-  const fit = () => devs.forEach((d) => (d.inert = thumb.matches));
+  // Below 700px the kiosk is hidden and the phone links to the phone demo; from 700px up the
+  // kiosk is the demo and the phone is decoration (no tap, no Tab stop).
+  const phA = root.querySelector<HTMLElement>(".phw")!;
+  const fit = () => ((K.inert = thumb.matches), (phA.inert = !thumb.matches));
   fit();
   thumb.addEventListener("change", fit);
+
+  // F6: below 700px the Datecs prints each sale the phone finishes ("Vanzare finalizata").
+  let phDone = false;
+  new MutationObserver(() => {
+    const d = phW.querySelector<HTMLElement>(".ts-done");
+    if (!d) return void (phDone = false);
+    if (phDone || !thumb.matches) return;
+    phDone = true;
+    const total = /Total\s*([\d.]+)/.exec(T(d.innerText))?.[1];
+    if (!total) return;
+    const rows = [...phW.querySelectorAll<HTMLElement>(".ts-pl")]
+      .map((l) => /^(.+?) (\d+(?:\.\d+)?) × ([\d.]+) ([\d.]+)/.exec(T(l.innerText)))
+      .filter((m): m is RegExpExecArray => !!m)
+      .map((m): Row => [m[1], `${m[2]} x ${m[3]}`, m[4]]);
+    nr++;
+    recp(rows.length ? rows : [["Produse", "", total]], total, "Numerar", true);
+  }).observe(phW, { childList: true, subtree: true });
+
+  // D1: offline switch on the window bar.
+  const net = root.querySelector<HTMLButtonElement>(".net")!;
+  const pendEl = root.querySelector<HTMLElement>(".nchip b")!;
+  const toast = root.querySelector<HTMLElement>(".ntoast")!;
+  const netSr = root.querySelector<HTMLElement>("[data-net-sr]")!;
+  let offline = false, pending = 0, toastT = 0;
+  // Romanian plural: 1 vânzare, 2-19 vânzări, 20+ "de vânzări".
+  const sales = (n: number, one: string, many: string) =>
+    n === 1 ? `1 vânzare ${one}` : `${n}${n % 100 >= 20 || (n && n % 100 === 0) ? " de" : ""} vânzări ${many}`;
+  net.addEventListener("click", () => {
+    offline = !offline;
+    net.setAttribute("aria-pressed", String(!offline));
+    net.title = offline ? "Pornește internetul" : "Oprește internetul";
+    root.dataset.net = offline ? "off" : "on";
+    clearTimeout(toastT);
+    if (offline) {
+      pending = 0;
+      pendEl.textContent = "0";
+      root.dataset.toast = "";
+      netSr.textContent = "Fără net. Vânzările și bonurile merg mai departe și se sincronizează când revine netul.";
+    } else {
+      toast.textContent = pending ? sales(pending, "sincronizată", "sincronizate") : "Netul a revenit";
+      netSr.textContent = toast.textContent;
+      root.dataset.toast = "on";
+      pending = 0;
+      toastT = window.setTimeout(() => (root.dataset.toast = ""), 2800);
+    }
+  });
   K.addEventListener("keydown", (e) => {
     const x = (e.target as Element).closest<HTMLElement>(ACT);
     if (!x || (e.key !== "Enter" && e.key !== " ") || e.repeat) return;

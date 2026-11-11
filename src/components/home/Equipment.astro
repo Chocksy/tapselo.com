@@ -37,7 +37,8 @@ const ROWS: { b: string; s: string; nou?: boolean }[] = [
 
 <style>
   .eg { display: grid; gap: 48px; align-items: start; }
-  @media (min-width: 1000px) { .eg { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 64px; } }
+  /* The list is much taller than the image: centre the image against it instead of leaving ~450px empty under it. */
+  @media (min-width: 1000px) { .eg { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 64px; align-items: center; } }
   .el { margin: 36px 0 0; border-top: 1px solid var(--color-rule); }
   .el div { display: grid; gap: 4px 24px; padding: 16px 0; border-bottom: 1px solid var(--color-rule); }
   @media (min-width: 640px) { .el div { grid-template-columns: 13rem minmax(0, 1fr); } }

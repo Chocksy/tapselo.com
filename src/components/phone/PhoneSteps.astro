@@ -79,5 +79,7 @@ import { svg } from "./icons.ts";
   .ps-t { font-size: 26px; font-weight: 800; letter-spacing: -.02em; }
   .ps-rs { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-top: 10px; padding: 9px 12px; border-radius: 10px; background: #f8fafc; font-size: 12.5px; color: #334155; }
   .ps-rs b { font-size: 20px; font-weight: 800; color: #047857; white-space: nowrap; }
-  @media (max-width: 389.98px) { .ps-code { gap: 5px; } .ps-code em { width: 38px; } }
+  /* The 6 code boxes shrink to fit the card (they were cut off at 900-1150px and under 390px). */
+  .ps-z2 > div { width: 100%; max-width: 314px; }
+  .ps-code em { flex: 1 1 0; min-width: 0; width: auto; height: auto; aspect-ratio: 44 / 58; }
 </style>

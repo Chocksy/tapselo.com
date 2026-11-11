@@ -27,7 +27,7 @@ const PRODUCT: [string, Item[]][] = [
   ["Vânzare", [
     { ic: "pc", name: "Casa de marcat", href: "/program-casa-de-marcat-pe-calculator/", line: "Pe orice PC, bon pe Datecs, și fără net" },
     { ic: "ph", name: "Casă de marcat pe telefon", href: "/casa-de-marcat-pe-telefon/", line: "Cauți produsul sau scanezi cu camera", tag: "Nou" },
-    { ic: "cd", name: "Plata cu cardul", href: "/#features", line: "Tap to Pay pe telefon. Fără abonament", tag: "Nou" },
+    { ic: "cd", name: "Plata cu cardul", href: "/admin/#card", line: "Tap to Pay pe telefon. Fără abonament", tag: "Nou" },
   ]],
   ["Administrare", [
     { ic: "ad", name: "Admin", href: "/admin/", line: "Stoc, rețete, rapoarte și campanii" },
@@ -90,7 +90,7 @@ const AR = '<span class="sb-ar" aria-hidden="true">›</span>';
               <p class="sb-h6">Nou</p>
               <a class="sb-fc" href="/casa-de-marcat-pe-telefon/">
                 <span class="sb-fm"><img data-src="/menu/phone-sale.webp" alt="" width="148" height="311" decoding="async" /></span>
-                <span class="sb-fb"><b>Casa de marcat pe telefon</b><span class="sb-fd">Cauți produsul după nume sau scanezi codul cu camera.</span><u>Vezi pagina <Fragment set:html={AR} /></u></span>
+                <span class="sb-fb"><b>Casă de marcat pe telefon</b><span class="sb-fd">Cauți produsul după nume sau scanezi codul cu camera.</span><u>Vezi pagina <Fragment set:html={AR} /></u></span>
               </a>
             </div>
             <div class="sb-ft"><span>Beta gratuit acum · 0 lei licențe</span><a href="/#pricing">Vezi prețurile <Fragment set:html={AR} /></a></div>
@@ -220,10 +220,14 @@ const AR = '<span class="sb-ar" aria-hidden="true">›</span>';
     const W = pa.offsetWidth;
     const maxH = Math.max(...ps.map((x) => x.offsetHeight));
     const H = pa.offsetHeight;
-    const host = pos.parentElement!.getBoundingClientRect();
+    const hostEl = pos.parentElement!;
+    const host = hostEl.getBoundingClientRect();
+    const cs = getComputedStyle(hostEl);
     const cx = trs.offsetLeft + t.offsetLeft + t.offsetWidth / 2;
-    // Keep the box 16px inside the viewport.
-    const L = Math.max(16 - host.left, Math.min(cx - W * 0.3, innerWidth - 16 - host.left - W));
+    // Keep the box inside the container's content edges (the logo's left edge), and 16px inside the viewport.
+    const minL = Math.max(parseFloat(cs.paddingLeft), 16 - host.left);
+    const maxL = Math.min(host.width - parseFloat(cs.paddingRight), innerWidth - 16 - host.left) - W;
+    const L = Math.max(minL, Math.min(cx - W * 0.3, maxL));
     dd.classList.toggle("snap", snap);
     dd.style.width = W + "px";
     dd.style.height = maxH + "px";
@@ -294,7 +298,21 @@ const AR = '<span class="sb-ar" aria-hidden="true">›</span>';
         e.preventDefault();
         ts[(i + (e.key === "ArrowRight" ? 1 : ts.length - 1)) % ts.length].focus();
       }
+      // The panels sit at the end of the bar in DOM order: Tab from an open trigger enters its panel.
+      if (e.key === "Tab" && !e.shiftKey && cur === t.dataset.p) {
+        const first = panelLinks(cur)[0];
+        if (first) { e.preventDefault(); first.focus(); }
+      }
     });
+  });
+  const panelLinks = (p: string) => [...(ps.find((x) => x.dataset.pa === p)?.querySelectorAll<HTMLElement>("a[href]") ?? [])];
+  // Tab past the last panel link goes to the control after the trigger; Shift+Tab from the first goes back to it.
+  dd.addEventListener("keydown", (e) => {
+    if (e.key !== "Tab" || !cur) return;
+    const links = panelLinks(cur), a = document.activeElement as HTMLElement;
+    const t = ts.find((x) => x.dataset.p === cur)!;
+    if (e.shiftKey && a === links[0]) { e.preventDefault(); t.focus(); }
+    else if (!e.shiftKey && a === links[links.length - 1]) { e.preventDefault(); allT[allT.indexOf(t) + 1]?.focus(); }
   });
   for (const t of allT) t.addEventListener("pointerenter", () => { if (!cur || !t.dataset.p) movePill(t); });
   trs.querySelector("a.sb-t")!.addEventListener("pointerenter", () => close());
@@ -310,7 +328,14 @@ const AR = '<span class="sb-ar" aria-hidden="true">›</span>';
     close();
     if (had) t?.focus();
   });
-  bar.addEventListener("focusout", (e) => { if (!bar.contains(e.relatedTarget as Node)) close(); });
+  // Focus leaving the open trigger and its panel closes it (a keyboard user never lands in a hidden-behind panel).
+  bar.addEventListener("focusout", (e) => {
+    const to = e.relatedTarget as Node | null;
+    if (!cur || !to || !bar.contains(to)) return close();
+    const t = ts.find((x) => x.dataset.p === cur);
+    const pa = ps.find((x) => x.dataset.pa === cur);
+    if (!t?.contains(to) && !pa?.contains(to)) close();
+  });
   document.addEventListener("pointerdown", (e) => { if (cur && !bar.contains(e.target as Node)) close(); });
   addEventListener("resize", () => { if (cur) place(cur, true); });
 
@@ -518,7 +543,8 @@ const AR = '<span class="sb-ar" aria-hidden="true">›</span>';
   .mm-q:focus-within { box-shadow: inset 0 0 0 1px var(--color-accent), 0 0 0 3px #dbeafe; }
   .mm-r0 { padding: 10px; font-size: 14px; color: var(--color-ink-2); }
   .mm-pl { display: flex; align-items: center; justify-content: space-between; height: 58px; padding: 0 22px 0 20px; font-size: 18px; font-weight: 600; border-bottom: 1px solid var(--color-rule); }
-  .mm-pb { display: flex; gap: 10px; padding: 16px 16px 0; }
+  /* The two account buttons stay in reach at the bottom while the menu scrolls (-32px cancels the menu's bottom padding). */
+  .mm-pb { position: sticky; bottom: -32px; z-index: 1; display: flex; gap: 10px; margin-top: 16px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: var(--color-paper-white); box-shadow: 0 -1px 0 var(--color-rule); }
   .mm-pb a { flex: 1; height: 50px !important; border-radius: 10px !important; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; }
   .mm-o { box-shadow: inset 0 0 0 1px var(--color-perf); }
 </style>
