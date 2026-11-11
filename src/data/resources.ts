@@ -23,7 +23,7 @@ export const tools: Resource[] = [
   ["Verificare cod de bare", "/unelte/verificare-cod-de-bare/", "ean gtin cantar"],
   ["Afișe obligatorii magazin", "/unelte/afise-obligatorii-magazin/", "orar anpc fumatul"],
   ["Calculator TVA", "/unelte/calculator-tva/", "tva 21 11 cota"],
-  ["Generator NIR", "/unelte/generator-nir/", "nota receptie"],
+  ["Generator NIR (notă de recepție)", "/unelte/generator-nir/", "nota receptie"],
   ["Verificare CUI ANAF", "/unelte/verificare-cui/", "firma cif"],
   ["Registru de casă", "/unelte/registru-de-casa/", "numerar"],
   ["Aviz de însoțire", "/unelte/generator-aviz-de-insotire/", "marfa transport"],

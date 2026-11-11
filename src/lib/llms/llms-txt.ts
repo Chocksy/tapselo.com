@@ -20,7 +20,10 @@ const ENTRIES: Record<string, Entry> = {
     title: "Proces verbal anulare bon fiscal",
     desc: "Sesizare și decizie pentru dosarul art. 36 HG 479/2003, PDF și Word în browser.",
   },
-  "/unelte/generator-nir/": { title: "Generator NIR", desc: "Întocmiți nota de intrare-recepție pentru marfa primită, cu TVA și adaos." },
+  "/unelte/generator-nir/": {
+    title: "Generator NIR (notă de recepție)",
+    desc: "Generați nota de recepție și constatare de diferențe (14-3-1A) din datele facturii, cu TVA și adaos.",
+  },
   "/unelte/generator-aviz-de-insotire/": { title: "Aviz de însoțire a mărfii", desc: "Generează avizul de însoțire a mărfii, gata de printat." },
   "/unelte/declaratie-de-conformitate-produse-alimentare/": {
     title: "Declarație conformitate alimente",
