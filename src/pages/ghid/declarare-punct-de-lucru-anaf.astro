@@ -18,7 +18,7 @@ const description =
 const verifiedOn = "2026-11-10";
 
 const body = `
-**În 2026**, declararea unui punct de lucru (sediu secundar) la ANAF depinde de două întrebări: ați făcut **mențiunea la ONRC** (pentru persoane juridice) și există **cel puțin o persoană cu venituri din salarii** la adresa respectivă? Dacă da la salarii și magazinul este în **aceeași UAT** cu domiciliul fiscal, nu cereți un CIF nou — folosiți formularul **060, secțiunea A**. Dacă salariile sunt în **altă UAT**, depuneți **060, secțiunea B** (sau sediul secundar desemnat când sunt mai multe puncte în aceeași UAT). Fără salariați la adresă: **061** (fără CIF nou), în 30 de zile de la mențiunea ONRC. **D700** este vector fiscal electronic — nu formularul de punct de lucru.
+**În 2026**, declararea unui punct de lucru (sediu secundar) la ANAF depinde de două întrebări: ați făcut **mențiunea la ONRC** (pentru persoane juridice) și există **cel puțin o persoană cu venituri din salarii** la adresa respectivă? Dacă da la salarii și magazinul este în **aceeași UAT** cu domiciliul fiscal, nu cereți un CIF nou — folosiți formularul **060, secțiunea A**. Dacă salariile sunt în **altă UAT**, depuneți **060, secțiunea B** (sau sediul secundar desemnat când sunt mai multe puncte în aceeași UAT). Fără salariați la adresă: formularul **061** sau **D700, secțiunea G** (OPANAF 15/2026) pentru „sedii secundare care nu au obligația înregistrării fiscale” — în 30 de zile de la mențiunea ONRC.
 
 ## Ce este un punct de lucru / sediu secundar
 
@@ -52,7 +52,7 @@ Declararea sediilor se face pe formularul **060, secțiunea A** (OPANAF 508/2026
 
 ## Dacă nu există salariați la acea adresă
 
-**Art. 85** CPF rămâne aplicabil: declarați înființarea sediului secundar la organul fiscal central în 30 de zile, pe formularul **061**, **fără** atribuire de CIF (**OPANAF 3725/2017**).
+**Art. 85** CPF rămâne aplicabil: declarați înființarea sediului secundar la organul fiscal central în 30 de zile. Fără salariați la adresă, căile uzuale sunt formularul **061** (**fără** atribuire de CIF, OPANAF 3725/2017) și **secțiunea G** din **D700** (OPANAF 15/2026) pentru „sedii secundare care nu au obligația înregistrării fiscale”.
 
 Dacă la adresă apare ulterior cel puțin o persoană cu venituri din salarii, intră în regimul Legii 273/2006 art. 32 alin. (7) / 060 — **art. 85 alin. (5)** exonerează de declarația duplicat de la art. 85 când sediul este înregistrat ca plătitor de salarii.
 
@@ -64,10 +64,9 @@ Dacă la adresă apare ulterior cel puțin o persoană cu venituri din salarii, 
 
 Suspendarea sancțiunilor din OG 6/2026 pentru contribuabili existenți la intrarea în vigoare a Legii 245/2025 **a expirat la 30 iunie 2026**.
 
-## Ce nu este D700 / 010 / 070
+## Ce nu este 010 / 070
 
-- **D700** — modificări ale **vectorului fiscal** electronic (catalog ANAF), nu declarația de punct de lucru.
-- **010 / 070** — înregistrare/mențiuni generale ale contribuabilului, nu înlocuitorul specific pentru sediul secundar cu/fără salarii (060 vs 061).
+- **010 / 070** — înregistrare/mențiuni generale ale contribuabilului, nu înlocuitorul specific pentru sediul secundar cu salariați (**060**) sau fără salariați (**061** / **D700, secțiunea G**).
 
 Nu folosiți PDF-ul vechi **060_A8_OPANAF_3725_2017.pdf** sau textul de catalog care încă vorbește de „minim 5 angajați”; modelul curent este **D_060_OPANAF_508_2026.pdf**.
 
@@ -83,7 +82,7 @@ După punctul de lucru: [deschidere minimarket](${internalPath("/ghid/deschide-m
 const faq: FaqItem[] = [
   {
     q: "Mai trebuie declarație la ANAF dacă am înregistrat punctul de lucru la ONRC?",
-    a: "Da. Mențiunea la ONRC nu înlocuiește declarația la ANAF: cu salariați la adresă depuneți formularul 060 (secțiunea A în aceeași UAT, secțiunea B în altă UAT); fără salariați, formularul 061. Dacă sediul este înregistrat ca plătitor de salarii, art. 85 alin. (5) CPF nu mai cere și declarația de la art. 85 pentru același sediu.",
+    a: "Da. Mențiunea la ONRC nu înlocuiește declarația la ANAF: cu salariați la adresă depuneți formularul 060 (secțiunea A în aceeași UAT, secțiunea B în altă UAT); fără salariați, formularul 061 sau D700, secțiunea G. Dacă sediul este înregistrat ca plătitor de salarii, art. 85 alin. (5) CPF nu mai cere și declarația de la art. 85 pentru același sediu.",
   },
   {
     q: "Primesc un CUI pentru punctul de lucru?",
@@ -94,12 +93,12 @@ const faq: FaqItem[] = [
     a: "Nu. Legea 245/2025 folosește testul de cel puțin o persoană cu venituri din salarii la adresa punctului de lucru, nu pragul de cinci salariați din vechile formulări.",
   },
   {
-    q: "Ce este D700?",
-    a: "Formularul electronic pentru actualizarea vectorului fiscal, nu declarația de înființare a punctului de lucru.",
+    q: "Când folosesc D700, secțiunea G?",
+    a: "Pentru sedii secundare fără obligația înregistrării fiscale (de exemplu fără salariați la adresă), secțiunea G din D700 (OPANAF 15/2026) este una dintre căile de declarare, alături de formularul 061.",
   },
   {
     q: "Ce formular completez?",
-    a: "060 (OPANAF 508/2026) pentru sedii cu salariați; 061 pentru declararea fără CIF când art. 32 alin. (7) nu se aplică. PDF-uri oficiale: D_060_OPANAF_508_2026.pdf și 061_A9_OPANAF_3725_2017.pdf pe static.anaf.ro.",
+    a: "060 (OPANAF 508/2026) pentru sedii cu salariați; 061 sau D700, secțiunea G (OPANAF 15/2026) pentru sedii fără obligația înregistrării fiscale când art. 32 alin. (7) nu se aplică. PDF-uri oficiale: D_060_OPANAF_508_2026.pdf, 061_A9_OPANAF_3725_2017.pdf și D_700_OPANAF_15_2026.pdf pe static.anaf.ro.",
   },
 ];
 
@@ -158,6 +157,10 @@ const sources = [
     url: "https://static.anaf.ro/static/10/Anaf/formulare/061_A9_OPANAF_3725_2017.pdf",
   },
   {
+    title: "Formular D700 — OPANAF 15/2026 (secțiunea G)",
+    url: "https://static.anaf.ro/static/10/Anaf/formulare/D_700_OPANAF_15_2026.pdf",
+  },
+  {
     title: "Catalog formulare ANAF",
     url: "https://static.anaf.ro/static/10/Anaf/formulare/toate_formularele.htm",
   },
@@ -172,7 +175,7 @@ const sources = [
   title="Declarare punct de lucru la ANAF 2026: ONRC, formulare 060 și 061, termene | Tapselo"
   description={description}
   heading={heading}
-  lead="Mențiune la ONRC, apoi 060 dacă există cel puțin un salariat la adresă (fără CIF nou dacă magazinul e în aceeași UAT cu domiciliul fiscal), sau 061 fără salariați — în 30 de zile. D700 este vector fiscal, nu formularul de punct de lucru."
+  lead="Mențiune la ONRC, apoi 060 dacă există cel puțin un salariat la adresă (fără CIF nou dacă magazinul e în aceeași UAT cu domiciliul fiscal), sau 061 sau D700 secțiunea G fără salariați — în 30 de zile."
   sources={sources}
   verifiedOn={verifiedOn}
   campaign="declarare-punct-lucru-anaf"
