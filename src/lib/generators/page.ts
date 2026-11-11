@@ -26,6 +26,8 @@ export const KIND_TITLES: Record<string, string> = {
   aviz: "Aviz de însoțire a mărfii",
   food_conformity: "Declarație de conformitate produse alimentare",
   pv_anulare_bon: "Proces verbal anulare bon fiscal",
+  fridge_temp_log: "Grafic temperatură frigider",
+  fridge_cleaning_log: "Grafic curățenie și dezinfecție",
 };
 
 // ---------- number formatting (Romanian: 1.234,56) ----------

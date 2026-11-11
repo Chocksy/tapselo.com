@@ -19,6 +19,7 @@ export const toolLinks: SiteLink[] = [
   { href: internalPath("/unelte/generator-aviz-de-insotire"), label: "Aviz de însoțire a mărfii" },
   { href: internalPath("/unelte/declaratie-de-conformitate-produse-alimentare"), label: "Declarație conformitate alimente" },
   { href: internalPath("/unelte/fisa-de-magazie"), label: "Fișă de magazie" },
+  { href: internalPath("/unelte/grafic-temperatura-frigider"), label: "Grafic temperatură frigider" },
   { href: internalPath("/unelte/generator-borderou-de-achizitie"), label: "Borderou de achiziție" },
   { href: internalPath("/unelte/calculator-adaos-comercial"), label: "Calculator adaos comercial" },
   { href: internalPath("/unelte/calculator-reducere"), label: "Calculator reducere" },
@@ -44,6 +45,7 @@ export const ruleGuideLinks: SiteLink[] = [
   })),
   { href: internalPath("/ghid/registru-unic-de-control"), label: "Registrul unic de control (RUC)" },
   { href: internalPath("/ghid/certificat-de-atestare-fiscala"), label: "Certificat de atestare fiscală (SPV)" },
+  { href: internalPath("/ghid/declarare-punct-de-lucru-anaf"), label: "Declarare punct de lucru la ANAF (2026)" },
 ];
 
 export const shopGuideLinks: SiteLink[] = checklists.map((c) => ({
@@ -77,6 +79,7 @@ export function allGhidUneltePaths(): string[] {
   paths.add(internalPath("/ghid/cantar-dibal"));
   paths.add(internalPath("/ghid/registru-unic-de-control"));
   paths.add(internalPath("/ghid/certificat-de-atestare-fiscala"));
+  paths.add(internalPath("/ghid/declarare-punct-de-lucru-anaf"));
   paths.add(internalPath("/ghid/articole"));
   return [...paths].sort();
 }

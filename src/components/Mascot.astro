@@ -8,6 +8,7 @@ type Props = MascotOpts;
 ---
 
 <Fragment set:html={mascotHtml(Astro.props)} />
+<noscript><style is:inline>:is(.ms-r, .ms-d[data-r]) { background-image: var(--ri) !important; }</style></noscript>
 
 <script>
   import "../scripts/mascot.ts";
@@ -22,6 +23,8 @@ type Props = MascotOpts;
   .ms.on .ms-r, html.ms-bye .ms-r { opacity: 1; transform: none; }
   .ms.on .ms-d, html.ms-bye .ms-d { opacity: 0; }
   html.ms-bye .ms-r { background-position: 0 0 !important; }
+  /* the reactions sheet (in --ri) is fetched after first paint; src/scripts/mascot.ts adds ms-rx once it is decoded */
+  html.ms-rx :is(.ms-r, .ms-d[data-r]) { background-image: var(--ri); }
   /* he takes clicks (src/scripts/mascot.ts) and breathes; the reading walker sits over the sub-nav tabs, so it stays click-through */
   .ms[data-spot]:not([data-still]) .ms-f { pointer-events: auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .rd .ms .ms-f { pointer-events: none; cursor: default; }
@@ -60,7 +63,7 @@ type Props = MascotOpts;
 
   /* "Ascunde mascota" (footer) */
   .ms-hide { gap: 7px; }
-  .ms-hide i { width: 22px; height: 22px; flex: none; border-radius: 50%; background: var(--color-paper-white) url(/mascots/shopkeeper-reactions.webp) 0 0 / 300% 300% no-repeat; box-shadow: 0 0 0 1px var(--color-rule); }
+  .ms-hide i { width: 22px; height: 22px; flex: none; border-radius: 50%; background: var(--color-paper-white) url(/mascots/shopkeeper-reactions-xs.webp) 0 0 / 300% 300% no-repeat; box-shadow: 0 0 0 1px var(--color-rule); }
 
   /* guides: reading bar under the sub-nav; he hangs just under it (clear of the tab labels) and walks along it */
   .rd { position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; z-index: 1; pointer-events: none; }

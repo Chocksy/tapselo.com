@@ -20,7 +20,7 @@ const cols: { title: string; links: L[] }[] = [
       { label: "Casă de marcat pe telefon", href: "/casa-de-marcat-pe-telefon/" },
       { label: "Admin", href: "/admin/" },
       // ponytail: homepage anchors until /plata-cu-cardul/, /echipamente/, /functii/ and /preturi/ exist.
-      { label: "Plata cu cardul", href: "/#features" },
+      { label: "Plata cu cardul", href: "/admin/#card" },
       { label: "Echipamente", href: "/#echipamente" },
       { label: "Toate funcțiile", href: "/#features" },
       { label: "Prețuri", href: "/#pricing" },
@@ -91,7 +91,7 @@ const barcode = `<svg viewBox="0 0 ${x} 22" width="${x}" height="22" preserveAsp
     <div class="ft-cols">
       {cols.map((c) => (
         <nav aria-label={c.title}>
-          <h6>{c.title}</h6>
+          <p class="ft-h">{c.title}</p>
           <ul role="list">
             {c.links.map((l) => (
               <li><a href={internalPath(l.href)} class:list={[{ al: l.more }]}>{l.label}{l.more && " ›"}</a></li>
@@ -107,7 +107,7 @@ const barcode = `<svg viewBox="0 0 ${x} 22" width="${x}" height="22" preserveAsp
       <Mascot spot="footer" pose="smile" rest="sleepy" size={112} sizeSm={80} peek={0.72} say="Revin mâine la 8:00." sayAt="l" keep cls="ft-ms" />
       <div class="ft-id">
         <a href="/" class="ft-brand"><SiteLogo class="ft-logo" />Tapselo</a>
-        <span>© 2026 Tapselo</span>
+        <span>© {new Date().getFullYear()} Tapselo</span>
       </div>
       <nav class="ft-legal" aria-label="Legal">
         {legal.map((l) => <a href={internalPath(l.href)}>{l.label}</a>)}
@@ -150,7 +150,7 @@ const barcode = `<svg viewBox="0 0 ${x} 22" width="${x}" height="22" preserveAsp
   .ft { --tear: #efe9dc; margin-top: 9px; background: #efe9dc; color: var(--color-ink-2); padding: 64px 0 36px; font-size: 14.5px; }
   .ft a, .ft button { color: inherit; text-decoration: none; }
   .ft-cols { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 28px; }
-  .ft h6 { margin: 0 0 18px; padding-bottom: 10px; font: 500 11px/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--color-ink-3); background: radial-gradient(circle, var(--color-perf) .9px, transparent 1.1px) 0 100% / 6px 2px repeat-x; }
+  .ft .ft-h { margin: 0 0 18px; padding-bottom: 10px; font: 500 11px/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--color-ink-3); background: radial-gradient(circle, var(--color-perf) .9px, transparent 1.1px) 0 100% / 6px 2px repeat-x; }
   .ft ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
   .ft-cols a { display: inline-block; padding: 3px 0; line-height: 1.5; color: var(--color-ink); transition: color .15s; }
   .ft-cols a:hover { color: var(--color-accent); }

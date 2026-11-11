@@ -61,7 +61,7 @@ const firstStep = first.s.split("|")[0].replace(/^[\d.]+:/, "");
 
       <div class="af-media">
         <div class="af-md">
-          <div class="af-st" data-fit="900">
+          <div class="af-st" data-fit="900" data-fit-max="1.25">
             {tabs.map((t, i) => (
               <div
                 class:list={["af-pn", { lt: t.lt, on: i === 0 }]}
@@ -162,7 +162,7 @@ const firstStep = first.s.split("|")[0].replace(/^[\d.]+:/, "");
   /* Media pane: a fixed 900 x 524 stage, zoomed to fit (fit.ts). */
   .af-media { min-width: 0; }
   .af-md { position: relative; border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 0 0 1px rgba(29, 27, 23, .1), 0 40px 80px -30px rgba(60, 45, 20, .28), 0 24px 48px -28px rgba(0, 0, 0, .2); }
-  .af-st { position: relative; width: 900px; height: 524px; font-family: "Plus Jakarta Sans Variable", var(--font-sans); color: #0f172a; line-height: 1.3; }
+  .af-st { position: relative; width: 900px; height: 524px; overflow: hidden; font-family: "Plus Jakarta Sans Variable", var(--font-sans); color: #0f172a; line-height: 1.3; }
   .af-pn { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .5s var(--ease-out-soft), visibility 0s .5s; }
   .af-pn.on { opacity: 1; visibility: visible; transition: opacity .5s var(--ease-out-soft); }
   .af-pn > video { position: absolute; left: -150px; top: -14px; width: 1200px; height: 675px; max-width: none; display: block; transition: transform 1.1s cubic-bezier(.65, 0, .35, 1); }
@@ -284,7 +284,7 @@ const firstStep = first.s.split("|")[0].replace(/^[\d.]+:/, "");
       const a = Number(p.dataset.a), still = rm();
       if (!v.src) {
         v.poster = `/videos/admin/${p.dataset.v}.jpg`;
-        if (still) v.preload = "auto";
+        v.preload = "auto"; // with preload="none" Chrome never fires loadedmetadata, so the clip never starts
         v.src = `/videos/v2/${p.dataset.v}.mp4#t=${still ? rt(a) : a}`;
       }
       const go = () => {

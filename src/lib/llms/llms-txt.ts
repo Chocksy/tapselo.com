@@ -30,6 +30,10 @@ const ENTRIES: Record<string, Entry> = {
     desc: "Model voluntar de declarație de conformitate pentru produse alimentare, PDF și DOCX în browser.",
   },
   "/unelte/fisa-de-magazie/": { title: "Fișă de magazie", desc: "Urmăriți intrările, ieșirile și stocul unui produs, document cu document." },
+  "/unelte/grafic-temperatura-frigider/": {
+    title: "Grafic temperatură frigider",
+    desc: "Grafic lunar de temperatură pentru frigider sau congelator, cu limitele setate de dumneavoastră, PDF în browser.",
+  },
   "/unelte/generator-borderou-de-achizitie/": { title: "Borderou de achiziție", desc: "Generează borderoul de achiziție pentru produsele cumpărate de la persoane fizice." },
   "/unelte/calculator-adaos-comercial/": { title: "Calculator adaos comercial", desc: "De la cost la prețul de raft cu TVA și invers, cu rotunjire." },
   "/unelte/calculator-reducere/": { title: "Calculator reducere", desc: "Prețul după reducere, suma economisită și reduceri succesive." },
@@ -64,6 +68,10 @@ const ENTRIES: Record<string, Entry> = {
   "/ghid/certificat-de-atestare-fiscala/": {
     title: "Certificat de atestare fiscală (SPV)",
     desc: "Cererea gratuită de certificat de atestare fiscală la ANAF prin SPV, termenul legal și valabilitatea.",
+  },
+  "/ghid/declarare-punct-de-lucru-anaf/": {
+    title: "Declarare punct de lucru la ANAF (2026)",
+    desc: "ONRC, apoi 060 cu salariați (aceeași UAT, 30 zile); fără salariați la adresă: 061 sau D700 secțiunea G.",
   },
   // Ghiduri: deschiderea unui magazin
   "/ghid/deschide-macelarie/": { title: "Deschiderea unei măcelării", desc: "Codul CAEN, înregistrarea DSVSA, acordul primăriei și casa de marcat." },

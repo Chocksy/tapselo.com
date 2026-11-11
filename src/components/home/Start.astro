@@ -34,7 +34,7 @@
       </li>
       <li>
         <div class="vz img">
-          <img src="/videos/v2/first-sale.jpg" width="960" height="560" loading="lazy" decoding="async" alt="Prima vânzare pe casa Tapselo, cu bonul fiscal tipărit" />
+          <div class="fr"><img src="/videos/v2/first-sale.jpg" width="960" height="560" loading="lazy" decoding="async" alt="Prima vânzare pe casa Tapselo, cu bonul fiscal tipărit" /></div>
         </div>
         <em class="n">03 · cu sau fără net</em>
         <h3>Începi să vinzi</h3>
@@ -57,7 +57,11 @@
   .code > div { display: flex; gap: 8px; }
   .code span { display: grid; place-items: center; width: 40px; height: 48px; border-radius: 9px; background: #fff; box-shadow: inset 0 0 0 1.5px #bfd3f6; font-size: 24px; color: #1d4ed8; animation: key 4.5s var(--ease-out-soft) infinite; animation-delay: calc(var(--i) * 0.18s); }
   @keyframes key { 0%, 100% { opacity: 1; } 4% { opacity: 0.2; } 10% { opacity: 1; } }
-  .img img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
+  /* Step 3 sits framed inside the card like steps 1-2. The image is anchored at its top and shows only
+     the upper ~2/3 of the frame, so the mouse pointer in the capture (near its bottom) stays cropped out. */
+  .img { padding: 12px; }
+  .img .fr { position: relative; height: 100%; overflow: hidden; border-radius: 9px; box-shadow: 0 0 0 1px var(--color-rule); }
+  .img img { position: absolute; left: 50%; top: 0; width: auto; height: 151%; min-width: 100%; max-width: none; transform: translateX(-50%); object-fit: cover; object-position: 50% 0; display: block; }
   .n { display: block; margin-top: 22px; font: 500 12px/1 var(--font-mono); letter-spacing: 0.06em; font-style: normal; color: var(--color-ink-3); }
   h3 { margin: 12px 0 0; font-size: 19px; font-weight: 600; letter-spacing: -0.015em; color: var(--color-ink); }
   li p { margin: 6px 0 0; font-size: 15.5px; line-height: 1.5; color: var(--color-ink-2); }

@@ -7,16 +7,16 @@ import { Mail, Phone, Clock } from "@lucide/astro";
     <div class="grid gap-16 lg:grid-cols-2">
       <!-- Left -->
       <div>
-        <h2 class="animate-on-scroll font-display text-4xl italic text-primary sm:text-5xl">
+        <h2 class="font-display text-4xl italic text-primary sm:text-5xl">
           Hai să vorbim
         </h2>
-        <p class="animate-on-scroll animate-delay-100 mt-4 text-lg leading-relaxed text-text-secondary">
+        <p class="mt-4 text-lg leading-relaxed text-text-secondary">
           Spune-ne despre magazinul tău și îți arătăm cum funcționează.
           Gratuit, fără obligații.
         </p>
 
         <div class="mt-10 space-y-6">
-          <div class="animate-on-scroll flex items-start gap-4">
+          <div class="flex items-start gap-4">
             <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-subtle text-primary transition-transform duration-300 hover:scale-110">
               <Clock class="h-5 w-5" />
             </div>
@@ -25,7 +25,7 @@ import { Mail, Phone, Clock } from "@lucide/astro";
               <p class="text-sm text-text-secondary">Răspundem în 24 de ore</p>
             </div>
           </div>
-          <div class="animate-on-scroll animate-delay-100 flex items-start gap-4">
+          <div class="flex items-start gap-4">
             <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-subtle text-primary transition-transform duration-300 hover:scale-110">
               <Mail class="h-5 w-5" />
             </div>
@@ -34,7 +34,7 @@ import { Mail, Phone, Clock } from "@lucide/astro";
               <!--email_off--><p class="text-sm text-text-secondary">contact@tapselo.com</p><!--/email_off-->
             </div>
           </div>
-          <div class="animate-on-scroll animate-delay-200 flex items-start gap-4">
+          <div class="flex items-start gap-4">
             <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-subtle text-primary transition-transform duration-300 hover:scale-110">
               <Phone class="h-5 w-5" />
             </div>
@@ -47,7 +47,7 @@ import { Mail, Phone, Clock } from "@lucide/astro";
       </div>
 
       <!-- Right: form -->
-      <div class="animate-on-scroll animate-from-right">
+      <div>
         <form
           id="contact-form"
           class="space-y-5 rounded-xl border border-border bg-surface p-6 md:p-8"
@@ -280,4 +280,25 @@ import { Mail, Phone, Clock } from "@lucide/astro";
   })();
 </script>
 
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<!-- Turnstile api.js loads only when the form comes within ~600px of the screen, or on first focus in it. -->
+<script is:inline>
+  (() => {
+    const form = document.getElementById("contact-form");
+    if (!form) return;
+    let io = null;
+    const load = () => {
+      if (load.done) return;
+      load.done = true;
+      io && io.disconnect();
+      form.removeEventListener("focusin", load);
+      const s = document.createElement("script");
+      s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+      s.async = true;
+      document.head.append(s);
+    };
+    form.addEventListener("focusin", load);
+    if (!("IntersectionObserver" in window)) return load();
+    io = new IntersectionObserver((es) => es.some((e) => e.isIntersecting) && load(), { rootMargin: "600px 0px" });
+    io.observe(form);
+  })();
+</script>

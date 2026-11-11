@@ -69,10 +69,10 @@
 .mo-res.mo-go .mo-rck path { animation: mo-draw 0.3s 0.4s var(--mo-e) both; }
 .mo-r { display: inline-block; font-style: normal; animation: mo-roll 0.32s var(--mo-e) both; animation-delay: calc(var(--k) * 30ms); }
 
-/* 06 tear edge on section enter */
-.mo-tear { opacity: 0; transform: translateY(56px); }
+/* 06 tear edge on section enter. Starts at 0.6 (never hidden); JS adds .mo-tear, so with JS off it never applies. */
+.mo-tear { opacity: 0.6; transform: translateY(56px); }
 .mo-tear.mo-in { animation: mo-rise 0.6s var(--mo-e) both; }
-.mo-tear .mo-w { display: inline-block; opacity: 0; }
+.mo-tear .mo-w { display: inline-block; opacity: 0.6; }
 .mo-tear.mo-in .mo-w { animation: mo-word 0.6s var(--mo-e) both; animation-delay: calc(180ms + var(--i) * var(--st, 55ms)); }
 
 /* 10 hold to cancel (kit "Anuleaza cosul") */
@@ -92,8 +92,8 @@
 @keyframes mo-drawer { from { opacity: 1; transform: translateY(-36px); } }
 @keyframes mo-draw { from { stroke-dashoffset: 1; } }
 @keyframes mo-fade { from { opacity: 1; } to { opacity: 0; } }
-@keyframes mo-rise { from { opacity: 0; transform: translateY(56px); } to { opacity: 1; transform: none; } }
-@keyframes mo-word { from { opacity: 0; transform: translateY(10px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes mo-rise { from { opacity: 0.6; transform: translateY(56px); } to { opacity: 1; transform: none; } }
+@keyframes mo-word { from { opacity: 0.6; transform: translateY(10px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
 @keyframes mo-stamp { from { opacity: 0; transform: translate(-50%, -50%) rotate(-8deg) scale(1.6); } }
 
 @media (prefers-reduced-motion: reduce) {

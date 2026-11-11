@@ -19,7 +19,7 @@ import { homepageFaqJsonLd } from "../lib/homepage-faq.ts";
 const jsonLd = [homepageFaqJsonLd()];
 ---
 
-<Layout jsonLd={jsonLd}>
+<Layout title="Tapselo: casă de marcat pe calculator și iPhone" description="Casa de marcat care merge și fără internet: bon fiscal pe Datecs, cântar Dibal, stoc și rapoarte. Pe Windows, macOS, Linux și iPhone. Gratuit în beta." ogImage="https://tapselo.com/og/home.jpg" jsonLd={jsonLd}>
   <Navbar />
   <Kit />
   <main class="hm">
@@ -60,7 +60,7 @@ const jsonLd = [homepageFaqJsonLd()];
     color: var(--color-ink);
     text-wrap: balance;
   }
-  .hm-h2 .mut { color: #aaa290; }
+  .hm-h2 .mut { color: var(--color-ink-2); }
   .hm-h2 + .hm-lead { margin-top: 18px; }
   .hm .nw { white-space: nowrap; }
   .hm-lead { margin: 0; font-size: 17px; line-height: 1.55; color: var(--color-ink-2); text-wrap: pretty; }

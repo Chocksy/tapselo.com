@@ -1,0 +1,136 @@
+---
+import ToolShell from "../../components/ToolShell.astro";
+import GraficTemperaturaFrigiderTool from "../../components/unelte/GraficTemperaturaFrigiderTool.astro";
+import { internalPath } from "../../lib/internal-url.ts";
+import { formatDateRo } from "../../lib/mcp/text.ts";
+import {
+  ANNEX_II_2D_TEMPERATURE_CLAUSE,
+  CLEANING_TAB_NOTICE,
+  LEGAL_SOURCES,
+  SOURCES_VERIFIED,
+  TEMP_LEGAL_NOTICE,
+} from "../../lib/unelte/grafic-temperatura-frigider.ts";
+
+const verifiedOnRo = formatDateRo(SOURCES_VERIFIED);
+import { toolJsonLd } from "../../lib/unelte/jsonld.ts";
+
+const path = "/unelte/grafic-temperatura-frigider/";
+const heading = "Grafic de temperatură frigider și congelator (model lunar)";
+
+const faq = [
+  {
+    q: "Este obligatoriu un grafic de temperatură în magazinul alimentar?",
+    a: `${ANNEX_II_2D_TEMPERATURE_CLAUSE} Mențineți temperaturi sigure și lanțul criogenic neîntrerupt. Nu am găsit un formular cu denumirea «grafic de temperatură». Un grafic lunar este un model practic, nu un tipizat din regulament.`,
+  },
+  {
+    q: "Ce temperatură trebuie să aibă frigiderul?",
+    a: "Regulamentul 852/2004 nu stabilește o singură temperatură generală pentru tot magazinul. Folosiți limita din eticheta produsului și, unde există, cerințele specifice pentru acel aliment. Câmpurile min/max din generator sunt setate de dumneavoastră.",
+  },
+  {
+    q: "De câte ori pe zi notez temperatura?",
+    a: "Regulamentul nu fixează o frecvență. Modelul are două citiri pe zi (dimineața și seara) pentru că așa arată majoritatea fișelor folosite în practică; puteți lăsa gol ce nu folosiți.",
+  },
+  {
+    q: "Pot tipări un PDF gol?",
+    a: "Da — butonul «Model gol (PDF)» deschide o foaie fără date completate, pe care o puteți printa sau salva ca PDF din browser.",
+  },
+  {
+    q: "Graficul de curățenie e obligatoriu pe aceeași pagină?",
+    a: CLEANING_TAB_NOTICE,
+  },
+];
+
+const jsonLd = toolJsonLd({
+  path,
+  heading,
+  appName: "Grafic temperatură frigider Tapselo",
+  description:
+    "Generator de grafic lunar de temperatură frigider sau congelator: completezi firma, luna și limitele, apoi tipărești A4 sau PDF.",
+  faq,
+});
+
+const link = "font-semibold text-accent hover:underline";
+const S = LEGAL_SOURCES;
+---
+
+<ToolShell
+  title="Grafic temperatură frigider — model lunar A4 gratuit (PDF) | Tapselo"
+  description="Generator de grafic lunar de temperatură frigider sau congelator: completezi firma, luna și limitele, apoi tipărești A4 sau PDF."
+  heading={heading}
+  path={path}
+  lead={`Într-un magazin alimentar, temperaturile trebuie menținute astfel încât să nu creeze risc pentru sănătate. ${ANNEX_II_2D_TEMPERATURE_CLAUSE} Generatorul produce o foaie lunară A4, cu limitele min/max pe care le stabiliți dumneavoastră. Este un model de lucru, nu un formular numit în lege.`}
+  campaign="grafic-temperatura-frigider"
+  ctaTitle="Evidență la recepție și la raft"
+  ctaBody="Tapselo vă ajută cu NIR, stocuri și vânzările — gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA."
+  related={[
+    { href: "/ghid/deschide-minimarket-alimentara/", label: "Deschiderea unui minimarket" },
+    { href: "/ghid/deschide-macelarie/", label: "Deschiderea unei măcelării" },
+    { href: internalPath("/unelte/declaratie-de-conformitate-produse-alimentare/"), label: "Declarație conformitate alimente" },
+    { href: internalPath("/unelte/fisa-de-magazie/"), label: "Fișă de magazie" },
+    { href: "/ghid/declarare-punct-de-lucru-anaf/", label: "Declarare punct de lucru la ANAF" },
+  ]}
+  jsonLd={jsonLd}
+  faq={faq}
+>
+  <GraficTemperaturaFrigiderTool />
+
+  <article class="site-prose prose-tapselo space-y-8 text-text-secondary leading-relaxed">
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Ce cere legea</h2>
+      <p>
+        După producția primară, operatorii din sectorul alimentar respectă anexa II din Regulamentul (CE) nr. 852/2004, inclusiv
+        „respectarea cerințelor de control al temperaturii aplicabile produselor alimentare” și „respectarea lanțului criogenic”
+        (art. 4 alin. (3) lit. c) și d)).
+      </p>
+      <p>
+        Anexa II cap. I pct. 2 lit. d) prevede că incintele trebuie, după caz, „să asigure condiții adecvate de manipulare și depozitare, cu
+        reglarea temperaturii și capacitate suficientă pentru a păstra produsele alimentare la temperaturi adecvate care să poată fi monitorizate și,
+        <strong class="text-primary">dacă este nevoie</strong>, înregistrate.”
+      </p>
+      <p>
+        Anexa II cap. IX pct. 5: „Lanțul criogenic nu trebuie întrerupt.” Materiile susceptibile de a favoriza microorganismele patogene nu trebuie
+        păstrate la o temperatură care poate cauza un risc pentru sănătate.
+      </p>
+      <p>
+        Art. 5 alin. (1): proceduri bazate pe HACCP. Alin. (2) lit. g): „definirea unor documente și evidențe în funcție de natura și dimensiunea
+        întreprinderii din sectorul alimentar pentru a demonstra aplicarea efectivă a măsurilor...”. Evidențele sunt proporționale cu natura și
+        dimensiunea întreprinderii.
+      </p>
+      <p>
+        Referatul de evaluare ANSVSA pentru unități de comercializare verifică aceeași formulare din anexă (monitorizare și, dacă este nevoie,
+        înregistrare), fără a prescrie un formular lunar cu o anumită denumire.
+      </p>
+      <p class="text-sm">
+        Surse: <a href={S.reg852.href} class={link}>{S.reg852.label}</a>;
+        <a href={S.ansvsa.href} class={link}>{S.ansvsa.label}</a>.
+        Verificat la {verifiedOnRo}. Nu este consultanță sanitar-veterinară sau juridică.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Cum completați graficul</h2>
+      <p>
+        Completați firma, punctul de lucru și luna. Adăugați fiecare aparat (frigider, congelator, vitrină) cu denumirea și limitele
+        <strong class="text-primary">din eticheta produselor</strong> sau din cerințele aplicabile. Notați dimineața și seara temperatura măsurată,
+        parafa/inițialele și eventualele acțiuni dacă citirea depășește limitele. La final: responsabilul și semnătura.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Limitele de temperatură</h2>
+      <p>
+        Regulamentul 852/2004 <strong class="text-primary">nu</strong> fixează pentru magazin o singură temperatură generală (de exemplu 0–4 °C pentru
+        tot raftul). Limita vine din eticheta fiecărui produs și, unde există, din Regulamentul (CE) 853/2004 pentru categoria respectivă. Valorile din
+        preseturile marcate „exemplu, nu limită legală” sunt doar puncte de plecare editabile.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-2xl italic text-primary">Tab curățenie și dezinfecție</h2>
+      <p>
+        Anexa II cap. I pct. 1: incintele utilizate pentru produsele alimentare trebuie să fie curate și întreținute în bună stare. Anexa II cap. I pct. 2 lit. a): structura să permită curățarea și/sau dezinfectarea.
+        {CLEANING_TAB_NOTICE}
+      </p>
+    </section>
+  </article>
+</ToolShell>

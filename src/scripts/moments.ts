@@ -21,11 +21,6 @@ let gestureAt = 0;
 for (const ev of ["pointerdown", "keydown", "input"]) addEventListener(ev, (e) => e.isTrusted && (gestureAt = Date.now()), true);
 const byUser = (ms = 3000) => Date.now() - gestureAt < ms;
 
-// A plain left click that would follow the link in this tab.
-const plain = (e: MouseEvent, a: HTMLAnchorElement) =>
-  e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey && (!a.target || a.target === "_self");
-const follow = (a: HTMLAnchorElement, ms: number) => later(ms, () => location.assign(a.href));
-
 const CHECK = '<path pathLength="1" d="M4 12.5l5 5L20 6.5"/>';
 const svg = (inner: string, size: number, cls = "", sw = 2.4, box = 24) =>
   `<svg class="${cls}" width="${size}" height="${size}" viewBox="0 0 ${box} ${box}" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
@@ -45,18 +40,19 @@ function scan() {
   const box = a.parentElement!;
   if (getComputedStyle(box).position === "static") box.style.position = "relative";
   box.append(rd);
-  a.addEventListener("click", (e) => {
+  // The beep starts on pointerdown; the click itself navigates at once (any modifier click opens a tab as usual).
+  const play = () => {
     sfx("select");
     if (rm()) return void rd.classList.add("mo-on");
     a.style.setProperty("--mo-w", a.offsetWidth + "px");
     restart(a, "mo-go");
     rd.classList.remove("mo-on");
     later(360, () => restart(rd, "mo-on"));
-    if (plain(e, a)) {
-      e.preventDefault();
-      follow(a, 840);
-    }
-  });
+  };
+  let downAt = 0;
+  a.addEventListener("pointerdown", (e) => !e.button && ((downAt = Date.now()), play()));
+  // Keyboard (Enter) has no pointerdown.
+  a.addEventListener("click", () => Date.now() - downAt > 1000 && play());
   addEventListener("pageshow", (e) => e.persisted && (a.classList.remove("mo-go"), rd.classList.remove("mo-on")));
 }
 
@@ -169,8 +165,8 @@ function drawer() {
     a.addEventListener("pointerup", () => up(true));
     a.addEventListener("pointerleave", () => up(false));
     a.addEventListener("pointercancel", () => up(false));
-    a.addEventListener("click", (e) => {
-      let wait = 420;
+    // The click navigates at once; the drawer already opened on pointerup.
+    a.addEventListener("click", () => {
       if (Date.now() - opened > 1000) {
         // Keyboard (Enter): press and release the key in one go.
         a.style.setProperty("--x", "0.3");
@@ -179,11 +175,6 @@ function drawer() {
         a.classList.add("mo-dn");
         sfx("tap", { theme: "mech" });
         later(rm() ? 0 : 120, () => up(true));
-        wait = 540;
-      }
-      if (!rm() && plain(e, a)) {
-        e.preventDefault();
-        follow(a, wait);
       }
     });
     addEventListener("pageshow", (e) => e.persisted && key.classList.remove("mo-open"));
@@ -339,6 +330,24 @@ function tears() {
     s.classList.add("mo-tear");
     io.observe(s);
   }
+  // An anchor jump ("Vezi prețurile", the section rail) lands on a finished section: the target and
+  // every section above it show at once instead of rising after the jump.
+  const show = (s: El) => (io.unobserve(s), s.classList.remove("mo-tear", "mo-in"), unwords(s));
+  const jump = (hash: string) => {
+    let t: Element | null = null;
+    try {
+      t = hash.length > 1 ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
+    } catch {}
+    if (!t) return;
+    for (const s of secs)
+      if (s.classList.contains("mo-tear") && (s.contains(t) || s.compareDocumentPosition(t) & Node.DOCUMENT_POSITION_FOLLOWING)) show(s);
+  };
+  document.addEventListener("click", (e) => {
+    const a = (e.target as Element).closest?.<HTMLAnchorElement>("a[href*='#']");
+    if (a && a.pathname === location.pathname && a.hash) jump(a.hash);
+  }, true);
+  addEventListener("hashchange", () => jump(location.hash));
+  jump(location.hash);
 }
 
 /* 10 hold to cancel the bon in the hero demo (wraps the kit's "Anuleaza cosul") */
