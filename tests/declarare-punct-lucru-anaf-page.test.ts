@@ -30,6 +30,7 @@ test("title, H1, lead și decizie 060/061", () => {
   assert.match(text(html), /cel puțin o persoană/);
   assert.match(text(html), /D700, secțiunea G/);
   assert.match(text(html), /D_700_OPANAF_15_2026\.pdf/);
+  assert.match(text(html), /Date privind sediile secundare care nu au obligația înregistrării fiscale/);
   assert.doesNotMatch(text(html), /nu formularul de punct de lucru/i);
   assert.doesNotMatch(text(html), /nu declarația de înființare/i);
   assert.doesNotMatch(text(html), /\bpână la 30 iunie 2026\b.*\btermen curent/i);

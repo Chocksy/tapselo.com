@@ -64,7 +64,7 @@ const ENTRIES: Record<string, Entry> = {
   },
   "/ghid/declarare-punct-de-lucru-anaf/": {
     title: "Declarare punct de lucru la ANAF (2026)",
-    desc: "ONRC, apoi formularul 060 sau 061: salariați, aceeași UAT, termen de 30 de zile — fără confuzia cu D700.",
+    desc: "ONRC, apoi 060 cu salariați (aceeași UAT, 30 zile); fără salariați la adresă: 061 sau D700 secțiunea G.",
   },
   // Ghiduri: deschiderea unui magazin
   "/ghid/deschide-macelarie/": { title: "Deschiderea unei măcelării", desc: "Codul CAEN, înregistrarea DSVSA, acordul primăriei și casa de marcat." },
