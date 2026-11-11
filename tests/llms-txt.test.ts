@@ -38,6 +38,15 @@ test("every link resolves to a built route; served as text/plain", () => {
   assert.match(readFileSync("public/_headers", "utf8"), /\/llms\.txt\n\s+Content-Type: text\/plain; charset=utf-8/);
 });
 
+test("declarare punct de lucru: llms line mentions 060 și 061/D700 G, fără negare D700", () => {
+  const line = links.find((m) => m[2] === `${SITE}/ghid/declarare-punct-de-lucru-anaf/`);
+  assert.ok(line, "missing declarare-punct-de-lucru-anaf in llms.txt");
+  assert.match(line![3], /060/);
+  assert.match(line![3], /061|D700/);
+  assert.doesNotMatch(line![3], /confuzia cu D700|fără confuzia|nu D700/i);
+  assert.doesNotMatch(line![3], /nu formularul de punct/i);
+});
+
 test("lists TAP-025 desktop till page under Despre Tapselo without pricing", () => {
   const line = links.find((m) => m[2] === `${SITE}/program-casa-de-marcat-pe-calculator/`);
   assert.ok(line, "missing program-casa-de-marcat-pe-calculator in llms.txt");
