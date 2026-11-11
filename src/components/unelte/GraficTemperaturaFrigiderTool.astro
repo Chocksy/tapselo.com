@@ -1,0 +1,481 @@
+---
+import { CLEANING_TAB_NOTICE, TEMP_LEGAL_NOTICE } from "../../lib/unelte/grafic-temperatura-frigider.ts";
+---
+
+<div class="ut-card" aria-labelledby="gtf-tabs-title">
+  <h2 id="gtf-tabs-title" class="font-display text-2xl italic text-primary">Generator grafic lunar</h2>
+
+  <div
+    class="rounded-lg border border-amber-600/40 bg-amber-50 p-4 text-sm leading-relaxed text-primary"
+    role="note"
+    id="gtf-legal-notice"
+  >
+    <strong class="font-semibold">Important:</strong>
+    {TEMP_LEGAL_NOTICE}
+  </div>
+
+  <div class="mt-6 flex flex-wrap gap-2" role="tablist" aria-label="Tip grafic">
+    <button type="button" class="ut-btn ut-btn-primary gtf-tab" data-tab="temp" role="tab" aria-selected="true" id="gtf-tab-temp">
+      Temperatură
+    </button>
+    <button type="button" class="ut-btn ut-btn-secondary gtf-tab" data-tab="clean" role="tab" aria-selected="false" id="gtf-tab-clean">
+      Curățenie și dezinfecție
+    </button>
+  </div>
+
+  <section id="gtf-panel-temp" class="mt-6 space-y-4" role="tabpanel" aria-labelledby="gtf-tab-temp">
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="gtf-company">Firmă (denumire)</label>
+        <input class="ut-input" id="gtf-company" type="text" maxlength="120" autocomplete="organization" />
+      </div>
+      <div>
+        <label class="ut-label" for="gtf-cui">CUI</label>
+        <input class="ut-input" id="gtf-cui" type="text" maxlength="20" autocomplete="off" />
+      </div>
+    </div>
+    <div>
+      <label class="ut-label" for="gtf-location">Punct de lucru / adresă</label>
+      <input class="ut-input" id="gtf-location" type="text" maxlength="160" />
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="gtf-month">Luna</label>
+        <select class="ut-input" id="gtf-month"></select>
+      </div>
+      <div>
+        <label class="ut-label" for="gtf-year">Anul</label>
+        <input class="ut-input" id="gtf-year" type="number" min="2020" max="2100" step="1" />
+      </div>
+    </div>
+
+    <div class="space-y-4" id="gtf-appliances"></div>
+    <button type="button" class="ut-btn ut-btn-secondary" id="gtf-add-appliance">+ Aparat frigorific</button>
+    <p class="text-xs text-text-muted">
+      Puteți folosi preseturile de exemplu (etichetate «exemplu, nu limită legală»); editați orice valoare înainte de print.
+    </p>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="gtf-resp-name">Responsabil (nume)</label>
+        <input class="ut-input" id="gtf-resp-name" type="text" maxlength="80" />
+      </div>
+      <div>
+        <label class="ut-label" for="gtf-resp-role">Funcție</label>
+        <input class="ut-input" id="gtf-resp-role" type="text" maxlength="80" />
+      </div>
+    </div>
+
+    <p class="ut-err hidden" id="gtf-err" role="alert"></p>
+    <div class="flex flex-wrap gap-3">
+      <button type="button" class="ut-btn ut-btn-primary" id="gtf-pdf">Salvează PDF</button>
+      <button type="button" class="ut-btn ut-btn-secondary" id="gtf-print">Printează</button>
+      <button type="button" class="ut-btn ut-btn-secondary" id="gtf-blank">Model gol (PDF)</button>
+    </div>
+    <p class="text-xs text-text-muted">
+      Generarea rulează în browser; conținutul graficului nu este trimis către serverele Tapselo.
+    </p>
+  </section>
+
+  <section id="gtf-panel-clean" class="mt-6 hidden space-y-4" role="tabpanel" aria-labelledby="gtf-tab-clean" hidden>
+    <div
+      class="rounded-lg border border-border-light bg-surface-muted p-4 text-sm leading-relaxed text-text-secondary"
+      role="note"
+    >
+      {CLEANING_TAB_NOTICE}
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="gtf-clean-company">Firmă</label>
+        <input class="ut-input" id="gtf-clean-company" type="text" maxlength="120" />
+      </div>
+      <div>
+        <label class="ut-label" for="gtf-clean-location">Punct de lucru</label>
+        <input class="ut-input" id="gtf-clean-location" type="text" maxlength="160" />
+      </div>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="ut-label" for="gtf-clean-month">Luna</label>
+        <select class="ut-input" id="gtf-clean-month"></select>
+      </div>
+      <div>
+        <label class="ut-label" for="gtf-clean-year">Anul</label>
+        <input class="ut-input" id="gtf-clean-year" type="number" min="2020" max="2100" />
+      </div>
+    </div>
+    <div>
+      <label class="ut-label" for="gtf-zones">Zone / echipamente (câte unul pe rând)</label>
+      <textarea class="ut-input min-h-[5rem]" id="gtf-zones" placeholder="Vitrină&#10;Depozit&#10;WC personal"></textarea>
+    </div>
+    <div class="ut-table-wrap max-h-[24rem] overflow-y-auto">
+      <table class="ut-table ut-stack" id="gtf-clean-table">
+        <thead>
+          <tr>
+            <th scope="col">Data</th>
+            <th scope="col">Zonă</th>
+            <th scope="col">Bifat</th>
+            <th scope="col">Parafă</th>
+            <th scope="col">Observații</th>
+            <th scope="col"><span class="sr-only">Acțiuni</span></th>
+          </tr>
+        </thead>
+        <tbody id="gtf-clean-rows"></tbody>
+      </table>
+    </div>
+    <button type="button" class="ut-btn ut-btn-secondary" id="gtf-clean-add-row">+ Rând</button>
+    <p class="ut-err hidden" id="gtf-clean-err" role="alert"></p>
+    <div class="flex flex-wrap gap-3">
+      <button type="button" class="ut-btn ut-btn-primary" id="gtf-clean-pdf">Salvează PDF</button>
+      <button type="button" class="ut-btn ut-btn-secondary" id="gtf-clean-print">Printează</button>
+    </div>
+  </section>
+</div>
+
+<script>
+  import type { ApplianceKind, FridgeAppliance, FridgeCleaningLogPayload, FridgeTempDayReading, FridgeTempLogPayload } from "../../lib/unelte/fridge-temp-types.ts";
+  import { daysInMonth } from "../../lib/generators/fridge-temp-log.ts";
+  import {
+    applySnapshotToGrid,
+    mergeGridSnapshots,
+    snapshotGridByDay,
+    type GridRowSnapshot,
+  } from "../../lib/unelte/fridge-temp-grid.ts";
+  import { trackToolUsed } from "../../lib/analytics-client.ts";
+  import {
+    downloadFridgeCleaningLogPdfViaPrint,
+    downloadFridgeTempLogBlankPdfViaPrint,
+    downloadFridgeTempLogPdfViaPrint,
+    openPrintHtml,
+    fridgeCleaningLogHtml,
+    fridgeTempLogHtml,
+  } from "../../lib/unelte/document-export.ts";
+
+  const daySnapByAppliance = new WeakMap<HTMLElement, Map<number, GridRowSnapshot>>();
+
+  function mergedSnapForAppliance(fs: HTMLElement, tbody: HTMLElement | null): Map<number, GridRowSnapshot> {
+    const fromDom = snapshotGridByDay(tbody);
+    const stored = daySnapByAppliance.get(fs) ?? new Map();
+    const merged = mergeGridSnapshots(stored, fromDom);
+    daySnapByAppliance.set(fs, merged);
+    return merged;
+  }
+
+  const MONTHS = [
+    "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie",
+    "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie",
+  ];
+
+  const EXAMPLE_PRESETS: { label: string; min?: number; max?: number; kind: ApplianceKind }[] = [
+    { label: "exemplu frigider lactate", kind: "frigider", min: 2, max: 6 },
+    { label: "exemplu congelator", kind: "congelator", min: -22, max: -18 },
+  ];
+
+  function fillMonthSelect(sel: HTMLSelectElement) {
+    sel.innerHTML = MONTHS.map((m, i) => `<option value="${i + 1}">${m}</option>`).join("");
+  }
+
+  const monthSel = document.getElementById("gtf-month") as HTMLSelectElement;
+  const cleanMonthSel = document.getElementById("gtf-clean-month") as HTMLSelectElement;
+  fillMonthSelect(monthSel);
+  fillMonthSelect(cleanMonthSel);
+
+  const now = new Date();
+  (document.getElementById("gtf-year") as HTMLInputElement).value = String(now.getFullYear());
+  (document.getElementById("gtf-clean-year") as HTMLInputElement).value = String(now.getFullYear());
+  monthSel.value = String(now.getMonth() + 1);
+  cleanMonthSel.value = String(now.getMonth() + 1);
+
+  const appliancesRoot = document.getElementById("gtf-appliances") as HTMLElement;
+
+  function applianceCard(appliance: FridgeAppliance, index: number): HTMLElement {
+    const wrap = document.createElement("fieldset");
+    wrap.className = "rounded-xl border border-border-light p-4 space-y-3";
+    wrap.dataset.appliance = String(index);
+    wrap.innerHTML = `
+<legend class="text-base font-semibold text-primary">Aparat ${index + 1}</legend>
+<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+<div class="lg:col-span-2"><label class="ut-label">Denumire</label><input class="ut-input" data-f="name" type="text" maxlength="80" value="${appliance.name.replace(/"/g, "&quot;")}" placeholder="Frigider lactate" /></div>
+<div><label class="ut-label">Tip</label><select class="ut-input" data-f="kind">
+<option value="frigider">Frigider</option>
+<option value="congelator">Congelator</option>
+<option value="vitrina">Vitrină</option>
+<option value="altul">Altul</option>
+</select></div>
+<div><label class="ut-label">Limită min °C</label><input class="ut-input" data-f="min" type="text" inputmode="decimal" /></div>
+<div><label class="ut-label">Limită max °C</label><input class="ut-input" data-f="max" type="text" inputmode="decimal" /></div>
+</div>
+<div class="flex flex-wrap gap-2">${EXAMPLE_PRESETS.map((p, pi) => `<button type="button" class="ut-btn ut-btn-secondary text-xs" data-preset="${pi}">${p.label} (exemplu, nu limită legală)</button>`).join("")}</div>
+<div class="ut-table-wrap max-h-64 overflow-y-auto" data-grid></div>
+<button type="button" class="ut-btn ut-btn-secondary text-sm" data-remove>Șterge aparatul</button>`;
+    const kindSel = wrap.querySelector('[data-f="kind"]') as HTMLSelectElement;
+    kindSel.value = appliance.kind;
+
+    wrap.querySelectorAll("[data-preset]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const p = EXAMPLE_PRESETS[Number((btn as HTMLElement).dataset.preset)];
+        (wrap.querySelector('[data-f="kind"]') as HTMLSelectElement).value = p.kind;
+        (wrap.querySelector('[data-f="min"]') as HTMLInputElement).value = p.min !== undefined ? String(p.min) : "";
+        (wrap.querySelector('[data-f="max"]') as HTMLInputElement).value = p.max !== undefined ? String(p.max) : "";
+      });
+    });
+
+    wrap.querySelector("[data-remove]")?.addEventListener("click", () => {
+      wrap.remove();
+      reindexAppliances();
+    });
+
+    return wrap;
+  }
+
+  function reindexAppliances() {
+    appliancesRoot.querySelectorAll("fieldset[data-appliance]").forEach((el, i) => {
+      (el as HTMLElement).dataset.appliance = String(i);
+      const leg = el.querySelector("legend");
+      if (leg) leg.textContent = `Aparat ${i + 1}`;
+    });
+  }
+
+  function buildDayGrid(container: HTMLElement, days: number) {
+    const rows = Array.from({ length: days }, (_, i) => {
+      const day = i + 1;
+      return `<tr data-day="${day}">
+<td data-label="Ziua">${day}</td>
+<td data-label="Dimineața temp"><input data-f="m-temp" class="ut-input text-sm" inputmode="decimal" maxlength="8" aria-label="Temperatură dimineața, ziua ${day}" /></td>
+<td data-label="Dimineața parafă"><input data-f="m-ini" class="ut-input text-sm" maxlength="6" aria-label="Parafă dimineața, ziua ${day}" /></td>
+<td data-label="Seara temp"><input data-f="e-temp" class="ut-input text-sm" inputmode="decimal" maxlength="8" aria-label="Temperatură seara, ziua ${day}" /></td>
+<td data-label="Seara parafă"><input data-f="e-ini" class="ut-input text-sm" maxlength="6" aria-label="Parafă seara, ziua ${day}" /></td>
+<td data-label="Observații"><input data-f="notes" class="ut-input text-sm" maxlength="80" aria-label="Observații, ziua ${day}" /></td>
+</tr>`;
+    }).join("");
+    container.innerHTML = `<table class="ut-table ut-stack text-sm"><thead><tr>
+<th>Ziua</th><th>Dimineața °C</th><th>Parafă</th><th>Seara °C</th><th>Parafă</th><th>Observații</th>
+</tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  function currentDaysInMonth(): number {
+    const month = Number(monthSel.value);
+    const year = Number((document.getElementById("gtf-year") as HTMLInputElement).value);
+    return daysInMonth(month, year);
+  }
+
+  function rebuildGridContainer(container: HTMLElement, days: number) {
+    const fs = container.closest("fieldset[data-appliance]") as HTMLElement | null;
+    const merged =
+      fs != null
+        ? mergedSnapForAppliance(fs, container.querySelector("tbody"))
+        : mergeGridSnapshots(new Map(), snapshotGridByDay(container.querySelector("tbody")));
+    buildDayGrid(container, days);
+    applySnapshotToGrid(container.querySelector("tbody"), merged);
+  }
+
+  function rebuildAllGrids() {
+    const days = currentDaysInMonth();
+    appliancesRoot.querySelectorAll("[data-grid]").forEach((g) => rebuildGridContainer(g as HTMLElement, days));
+  }
+
+  function addAppliance(preset?: FridgeAppliance) {
+    const idx = appliancesRoot.querySelectorAll("fieldset").length;
+    const el = applianceCard(preset ?? { name: "", kind: "frigider" }, idx);
+    appliancesRoot.append(el);
+    const grid = el.querySelector("[data-grid]") as HTMLElement | null;
+    if (grid) buildDayGrid(grid, currentDaysInMonth());
+  }
+
+  addAppliance({ name: "Frigider 1", kind: "frigider" });
+  document.getElementById("gtf-add-appliance")?.addEventListener("click", () => addAppliance());
+
+  monthSel.addEventListener("change", rebuildAllGrids);
+  document.getElementById("gtf-year")?.addEventListener("change", rebuildAllGrids);
+
+  function parseNum(s: string): number | undefined {
+    const t = s.trim().replace(",", ".");
+    if (!t) return undefined;
+    const n = Number(t);
+    return Number.isFinite(n) ? n : undefined;
+  }
+
+  function collectTempPayload(): { ok: true; payload: FridgeTempLogPayload } | { ok: false; error: string } {
+    const company = (document.getElementById("gtf-company") as HTMLInputElement).value.trim();
+    if (!company) return { ok: false, error: "Completați denumirea firmei." };
+    const month = Number(monthSel.value);
+    const year = Number((document.getElementById("gtf-year") as HTMLInputElement).value);
+    if (!Number.isFinite(year) || year < 2000) return { ok: false, error: "Anul nu este valid." };
+
+    const appliances: FridgeAppliance[] = [];
+    for (const fs of appliancesRoot.querySelectorAll("fieldset[data-appliance]")) {
+      const ai = appliances.length;
+      const name = (fs.querySelector('[data-f="name"]') as HTMLInputElement).value.trim();
+      const kind = (fs.querySelector('[data-f="kind"]') as HTMLSelectElement).value as ApplianceKind;
+      const temp_min = parseNum((fs.querySelector('[data-f="min"]') as HTMLInputElement).value);
+      const temp_max = parseNum((fs.querySelector('[data-f="max"]') as HTMLInputElement).value);
+      if (!name) return { ok: false, error: `Completați denumirea aparatului ${ai + 1}.` };
+      const tbody = fs.querySelector("tbody");
+      const merged = mergedSnapForAppliance(fs as HTMLElement, tbody);
+      const dim = daysInMonth(month, year);
+      const pick = (key: keyof GridRowSnapshot) => (d: number) => merged.get(d)?.[key]?.trim() || undefined;
+      const mTemp = pick("morning_temp");
+      const mIni = pick("morning_initials");
+      const eTemp = pick("evening_temp");
+      const eIni = pick("evening_initials");
+      const notes = pick("notes");
+      const days: FridgeTempDayReading[] = Array.from({ length: dim }, (_, i) => {
+        const d = i + 1;
+        return {
+          morning_temp: mTemp(d),
+          morning_initials: mIni(d),
+          evening_temp: eTemp(d),
+          evening_initials: eIni(d),
+          notes: notes(d),
+        };
+      });
+      appliances.push({ name, kind, temp_min, temp_max, days });
+    }
+
+    return {
+      ok: true,
+      payload: {
+        company,
+        company_tax_id: (document.getElementById("gtf-cui") as HTMLInputElement).value.trim() || undefined,
+        location: (document.getElementById("gtf-location") as HTMLInputElement).value.trim() || undefined,
+        month,
+        year,
+        appliances,
+        days: [],
+        responsible_name: (document.getElementById("gtf-resp-name") as HTMLInputElement).value.trim() || undefined,
+        responsible_role: (document.getElementById("gtf-resp-role") as HTMLInputElement).value.trim() || undefined,
+      },
+    };
+  }
+
+  const errEl = document.getElementById("gtf-err") as HTMLElement;
+  function showTempErr(msg: string) {
+    errEl.textContent = msg;
+    errEl.classList.remove("hidden");
+  }
+
+  function runTemp(action: "generate_pdf" | "print" | "download_blank") {
+    errEl.classList.add("hidden");
+  let payload: FridgeTempLogPayload;
+    if (action === "download_blank") {
+      const month = Number(monthSel.value);
+      const year = Number((document.getElementById("gtf-year") as HTMLInputElement).value);
+      payload = {
+        company: "",
+        month,
+        year,
+        appliances: [{ name: "", kind: "frigider" }],
+        days: [],
+      };
+      const ok = downloadFridgeTempLogBlankPdfViaPrint(payload);
+      if (!ok) showTempErr("Permiteți ferestrele popup pentru PDF.");
+      else trackToolUsed("grafic_temperatura_frigider", "download_blank");
+      return;
+    }
+    const r = collectTempPayload();
+    if (!r.ok) {
+      showTempErr(r.error);
+      return;
+    }
+    payload = r.payload;
+    const ok =
+      action === "print"
+        ? openPrintHtml(fridgeTempLogHtml(payload))
+        : downloadFridgeTempLogPdfViaPrint(payload);
+    if (!ok) showTempErr("Permiteți ferestrele popup pentru PDF.");
+    else trackToolUsed("grafic_temperatura_frigider", action === "print" ? "print" : "generate_pdf");
+  }
+
+  document.getElementById("gtf-pdf")?.addEventListener("click", () => runTemp("generate_pdf"));
+  document.getElementById("gtf-print")?.addEventListener("click", () => runTemp("print"));
+  document.getElementById("gtf-blank")?.addEventListener("click", () => runTemp("download_blank"));
+
+  // Tabs
+  document.querySelectorAll(".gtf-tab").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const id = (tab as HTMLElement).dataset.tab;
+      document.querySelectorAll(".gtf-tab").forEach((t) => {
+        const on = (t as HTMLElement).dataset.tab === id;
+        t.classList.toggle("ut-btn-primary", on);
+        t.classList.toggle("ut-btn-secondary", !on);
+        t.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      const temp = id === "temp";
+      const pTemp = document.getElementById("gtf-panel-temp")!;
+      const pClean = document.getElementById("gtf-panel-clean")!;
+      pTemp.classList.toggle("hidden", !temp);
+      pTemp.hidden = !temp;
+      pClean.classList.toggle("hidden", temp);
+      pClean.hidden = temp;
+    });
+  });
+
+  // Cleaning rows
+  const cleanBody = document.getElementById("gtf-clean-rows") as HTMLTableSectionElement;
+  function addCleanRow() {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+<td data-label="Data"><input type="date" class="ut-input" data-f="date" /></td>
+<td data-label="Zonă"><input class="ut-input" data-f="zone" /></td>
+<td data-label="Bifat"><input type="checkbox" data-f="done" /></td>
+<td data-label="Parafă"><input class="ut-input" data-f="ini" maxlength="6" /></td>
+<td data-label="Observații"><input class="ut-input" data-f="notes" maxlength="80" /></td>
+<td><button type="button" class="ut-del" data-del>Șterge</button></td>`;
+    tr.querySelector("[data-del]")?.addEventListener("click", () => tr.remove());
+    cleanBody.append(tr);
+  }
+  addCleanRow();
+  addCleanRow();
+  document.getElementById("gtf-clean-add-row")?.addEventListener("click", addCleanRow);
+
+  function collectCleanPayload(): { ok: true; payload: FridgeCleaningLogPayload } | { ok: false; error: string } {
+    const company = (document.getElementById("gtf-clean-company") as HTMLInputElement).value.trim();
+    if (!company) return { ok: false, error: "Completați denumirea firmei." };
+    const month = Number(cleanMonthSel.value);
+    const year = Number((document.getElementById("gtf-clean-year") as HTMLInputElement).value);
+    const zones = (document.getElementById("gtf-zones") as HTMLTextAreaElement).value
+      .split(/\n+/)
+      .map((z) => z.trim())
+      .filter(Boolean)
+      .map((name) => ({ name }));
+    const rows = [...cleanBody.querySelectorAll("tr")].map((tr) => ({
+      date: (tr.querySelector('[data-f="date"]') as HTMLInputElement).value || undefined,
+      zone: (tr.querySelector('[data-f="zone"]') as HTMLInputElement).value.trim() || undefined,
+      done: (tr.querySelector('[data-f="done"]') as HTMLInputElement).checked,
+      initials: (tr.querySelector('[data-f="ini"]') as HTMLInputElement).value.trim() || undefined,
+      notes: (tr.querySelector('[data-f="notes"]') as HTMLInputElement).value.trim() || undefined,
+    }));
+    return {
+      ok: true,
+      payload: {
+        company,
+        location: (document.getElementById("gtf-clean-location") as HTMLInputElement).value.trim() || undefined,
+        month,
+        year,
+        zones,
+        rows,
+      },
+    };
+  }
+
+  const cleanErr = document.getElementById("gtf-clean-err") as HTMLElement;
+  function runClean(action: "generate_pdf" | "print") {
+    cleanErr.classList.add("hidden");
+    const r = collectCleanPayload();
+    if (!r.ok) {
+      cleanErr.textContent = r.error;
+      cleanErr.classList.remove("hidden");
+      return;
+    }
+    const ok =
+      action === "print"
+        ? openPrintHtml(fridgeCleaningLogHtml(r.payload))
+        : downloadFridgeCleaningLogPdfViaPrint(r.payload);
+    if (!ok) {
+      cleanErr.textContent = "Permiteți ferestrele popup pentru PDF.";
+      cleanErr.classList.remove("hidden");
+    } else trackToolUsed("grafic_temperatura_frigider", action === "print" ? "print" : "generate_pdf");
+  }
+  document.getElementById("gtf-clean-pdf")?.addEventListener("click", () => runClean("generate_pdf"));
+  document.getElementById("gtf-clean-print")?.addEventListener("click", () => runClean("print"));
+</script>

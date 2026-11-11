@@ -6,6 +6,8 @@ import { renderPvAnulareBon } from "../generators/pv-anulare-bon.ts";
 import { renderPurchaseSlip } from "../generators/purchase-slip.ts";
 import { renderWarehouseCard } from "../generators/warehouse-card.ts";
 import { renderFoodConformityDeclaration } from "../generators/food-conformity-declaration.ts";
+import { renderFridgeCleaningLog, renderFridgeTempLog } from "../generators/fridge-temp-log.ts";
+import type { FridgeCleaningLogPayload, FridgeTempLogPayload } from "./fridge-temp-types.ts";
 import type {
   AvizPayload,
   CashbookPayload,
@@ -104,6 +106,26 @@ export function foodConformityHtml(payload: FoodConformityPayload): string {
 
 export function downloadFoodConformityPdfViaPrint(payload: FoodConformityPayload): boolean {
   return openPrintHtml(foodConformityHtml(payload));
+}
+
+export function fridgeTempLogHtml(payload: FridgeTempLogPayload, blank = false, landscape = true): string {
+  return renderFridgeTempLog(payload, { ...LOCAL_DRAFT, kind: "local" }, { local: true, blank, landscape });
+}
+
+export function downloadFridgeTempLogPdfViaPrint(payload: FridgeTempLogPayload, landscape = true): boolean {
+  return openPrintHtml(fridgeTempLogHtml(payload, false, landscape));
+}
+
+export function downloadFridgeTempLogBlankPdfViaPrint(payload: FridgeTempLogPayload, landscape = true): boolean {
+  return openPrintHtml(fridgeTempLogHtml(payload, true, landscape));
+}
+
+export function fridgeCleaningLogHtml(payload: FridgeCleaningLogPayload, blank = false): string {
+  return renderFridgeCleaningLog(payload, { ...LOCAL_DRAFT, kind: "local" }, { local: true, blank });
+}
+
+export function downloadFridgeCleaningLogPdfViaPrint(payload: FridgeCleaningLogPayload): boolean {
+  return openPrintHtml(fridgeCleaningLogHtml(payload));
 }
 
 export function pvAnulareBonHtml(payload: PvAnulareBonPayload, blank = false): string {

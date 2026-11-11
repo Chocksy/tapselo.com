@@ -24,7 +24,8 @@ export type AnalyticsTool =
   | "dispozitie_de_plata"
   | "generator_aviz"
   | "declaratie_conformitate_alimente"
-  | "pv_anulare_bon";
+  | "pv_anulare_bon"
+  | "grafic_temperatura_frigider";
 
 export type ToolAction =
   | "check"
