@@ -62,6 +62,6 @@ test("sitemap și hub", () => {
   const sitemap = readFileSync(join(process.cwd(), "dist/sitemap-0.xml"), "utf8");
   assert.match(
     sitemap,
-    /<loc>https:\/\/tapselo\.com\/ghid\/declarare-punct-de-lucru-anaf\/<\/loc>\s*<lastmod>2026-11-10/,
+    /<loc>https:\/\/tapselo\.com\/ghid\/declarare-punct-de-lucru-anaf\/<\/loc>\s*<lastmod>2026-11-11/,
   );
 });

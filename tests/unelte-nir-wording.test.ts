@@ -41,6 +41,6 @@ test("NIR: sitemap lastmod pinned", () => {
   const sitemap = readFileSync(join(process.cwd(), "dist/sitemap-0.xml"), "utf8");
   assert.match(
     sitemap,
-    /<loc>https:\/\/tapselo\.com\/unelte\/generator-nir\/<\/loc>\s*<lastmod>2026-11-10/,
+    /<loc>https:\/\/tapselo\.com\/unelte\/generator-nir\/<\/loc>\s*<lastmod>2026-11-11/,
   );
 });
