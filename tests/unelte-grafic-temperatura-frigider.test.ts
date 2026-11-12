@@ -78,6 +78,6 @@ test("frigider: hub și sitemap", () => {
   const sitemap = readFileSync(join(process.cwd(), "dist/sitemap-0.xml"), "utf8");
   assert.match(
     sitemap,
-    /<loc>https:\/\/tapselo\.com\/unelte\/grafic-temperatura-frigider\/<\/loc>\s*<lastmod>2026-11-10/,
+    /<loc>https:\/\/tapselo\.com\/unelte\/grafic-temperatura-frigider\/<\/loc>\s*<lastmod>2026-11-11/,
   );
 });

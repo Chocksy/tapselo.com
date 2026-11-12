@@ -21,7 +21,7 @@
     "steps": [
       {
         "title": "Înregistrează firma la Registrul Comerțului cu coduri CAEN Rev.3",
-        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru o măcelărie treceți codul 4722 (comerț cu amănuntul al cărnii). Adăugați 1011 sau 1013 doar dacă produceți preparate din carne; discutați întâi cu DSVSA, pentru că producția mare cere autorizare, nu doar înregistrare. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau punctul de lucru și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
+        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru o măcelărie treceți codul 4722 (comerț cu amănuntul al cărnii). Adăugați 1011 sau 1013 doar dacă produceți preparate din carne; discutați întâi cu DSVSA, pentru că producția mare cere autorizare, nu doar înregistrare. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau [punctul de lucru](/ghid/declarare-punct-de-lucru-anaf/) și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
         "authority": "ONRC",
         "sources": [
           {
@@ -89,7 +89,7 @@
       },
       {
         "title": "Aplică proceduri de siguranța alimentelor bazate pe HACCP",
-        "body": "Orice operator din sectorul alimentar trebuie să elaboreze și să aplice permanent una sau mai multe proceduri bazate pe principiile HACCP (art. 5 din Regulamentul (CE) 852/2004). ANSVSA arată că cerințele sunt flexibile pentru unitățile mici: uneori este suficientă aplicarea corectă a cerințelor preliminare de igienă, fără un plan HACCP complex. Inspectorul DSVSA verifică aceste proceduri la control. Păstrați în unitate evidențele de temperatură, curățenie și recepție a mărfii.",
+        "body": "Orice operator din sectorul alimentar trebuie să elaboreze și să aplice permanent una sau mai multe proceduri bazate pe principiile HACCP (art. 5 din Regulamentul (CE) 852/2004). ANSVSA arată că cerințele sunt flexibile pentru unitățile mici: uneori este suficientă aplicarea corectă a cerințelor preliminare de igienă, fără un plan HACCP complex. Inspectorul DSVSA verifică aceste proceduri la control. Păstrați în unitate evidențele de [temperatură](/unelte/grafic-temperatura-frigider/), curățenie și recepție a mărfii.",
         "authority": "DSVSA judeteana (ANSVSA)",
         "sources": [
           {
@@ -262,7 +262,7 @@
     "steps": [
       {
         "title": "Înregistrează firma la Registrul Comerțului cu coduri CAEN Rev.3",
-        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru o brutărie sau patiserie treceți 1071 pentru producție și 4724 pentru vânzarea în magazin; adăugați 1072 doar pentru produse uscate sau conservate. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau punctul de lucru și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
+        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru o brutărie sau patiserie treceți 1071 pentru producție și 4724 pentru vânzarea în magazin; adăugați 1072 doar pentru produse uscate sau conservate. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau [punctul de lucru](/ghid/declarare-punct-de-lucru-anaf/) și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
         "authority": "ONRC",
         "sources": [
           {
@@ -326,7 +326,7 @@
       },
       {
         "title": "Aplică proceduri de siguranța alimentelor bazate pe HACCP",
-        "body": "Orice operator din sectorul alimentar trebuie să elaboreze și să aplice permanent una sau mai multe proceduri bazate pe principiile HACCP (art. 5 din Regulamentul (CE) 852/2004). ANSVSA arată că cerințele sunt flexibile pentru unitățile mici: uneori este suficientă aplicarea corectă a cerințelor preliminare de igienă, fără un plan HACCP complex. Inspectorul DSVSA verifică aceste proceduri la control. Păstrați în unitate evidențele de temperatură, curățenie și recepție a mărfii.",
+        "body": "Orice operator din sectorul alimentar trebuie să elaboreze și să aplice permanent una sau mai multe proceduri bazate pe principiile HACCP (art. 5 din Regulamentul (CE) 852/2004). ANSVSA arată că cerințele sunt flexibile pentru unitățile mici: uneori este suficientă aplicarea corectă a cerințelor preliminare de igienă, fără un plan HACCP complex. Inspectorul DSVSA verifică aceste proceduri la control. Păstrați în unitate evidențele de [temperatură](/unelte/grafic-temperatura-frigider/), curățenie și recepție a mărfii.",
         "authority": "DSVSA judeteana (ANSVSA)",
         "sources": [
           {
@@ -495,7 +495,7 @@
     "steps": [
       {
         "title": "Înregistrează firma la Registrul Comerțului cu coduri CAEN Rev.3",
-        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru o cafenea sau un bistro treceți 5630 pentru servirea băuturilor și 5611 (Restaurante, fostul 5610) dacă serviți mâncare preparată. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau punctul de lucru și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
+        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru o cafenea sau un bistro treceți 5630 pentru servirea băuturilor și 5611 (Restaurante, fostul 5610) dacă serviți mâncare preparată. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau [punctul de lucru](/ghid/declarare-punct-de-lucru-anaf/) și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
         "authority": "ONRC",
         "sources": [
           {
@@ -533,7 +533,7 @@
       },
       {
         "title": "Aplică proceduri de siguranța alimentelor bazate pe HACCP",
-        "body": "Orice operator din sectorul alimentar trebuie să elaboreze și să aplice permanent una sau mai multe proceduri bazate pe principiile HACCP (art. 5 din Regulamentul (CE) 852/2004). ANSVSA arată că cerințele sunt flexibile pentru unitățile mici: uneori este suficientă aplicarea corectă a cerințelor preliminare de igienă, fără un plan HACCP complex. Inspectorul DSVSA verifică aceste proceduri la control. Păstrați în unitate evidențele de temperatură, curățenie și recepție a mărfii.",
+        "body": "Orice operator din sectorul alimentar trebuie să elaboreze și să aplice permanent una sau mai multe proceduri bazate pe principiile HACCP (art. 5 din Regulamentul (CE) 852/2004). ANSVSA arată că cerințele sunt flexibile pentru unitățile mici: uneori este suficientă aplicarea corectă a cerințelor preliminare de igienă, fără un plan HACCP complex. Inspectorul DSVSA verifică aceste proceduri la control. Păstrați în unitate evidențele de [temperatură](/unelte/grafic-temperatura-frigider/), curățenie și recepție a mărfii.",
         "authority": "DSVSA judeteana (ANSVSA)",
         "sources": [
           {
@@ -724,7 +724,7 @@
     "steps": [
       {
         "title": "Înregistrează firma la Registrul Comerțului cu coduri CAEN Rev.3",
-        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru un minimarket treceți 4711 ca activitate principală; 4727 și 4725 sunt opționale pentru magazine specializate. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau punctul de lucru și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
+        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru un minimarket treceți 4711 ca activitate principală; 4727 și 4725 sunt opționale pentru magazine specializate. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau [punctul de lucru](/ghid/declarare-punct-de-lucru-anaf/) și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
         "authority": "ONRC",
         "sources": [
           {
@@ -762,7 +762,7 @@
       },
       {
         "title": "Aplică proceduri de siguranța alimentelor bazate pe HACCP",
-        "body": "Orice operator din sectorul alimentar trebuie să elaboreze și să aplice permanent una sau mai multe proceduri bazate pe principiile HACCP (art. 5 din Regulamentul (CE) 852/2004). ANSVSA arată că cerințele sunt flexibile pentru unitățile mici: uneori este suficientă aplicarea corectă a cerințelor preliminare de igienă, fără un plan HACCP complex. Inspectorul DSVSA verifică aceste proceduri la control. Păstrați în unitate evidențele de temperatură, curățenie și recepție a mărfii.",
+        "body": "Orice operator din sectorul alimentar trebuie să elaboreze și să aplice permanent una sau mai multe proceduri bazate pe principiile HACCP (art. 5 din Regulamentul (CE) 852/2004). ANSVSA arată că cerințele sunt flexibile pentru unitățile mici: uneori este suficientă aplicarea corectă a cerințelor preliminare de igienă, fără un plan HACCP complex. Inspectorul DSVSA verifică aceste proceduri la control. Păstrați în unitate evidențele de [temperatură](/unelte/grafic-temperatura-frigider/), curățenie și recepție a mărfii.",
         "authority": "DSVSA judeteana (ANSVSA)",
         "sources": [
           {
@@ -926,7 +926,7 @@
     "steps": [
       {
         "title": "Înregistrează firma la Registrul Comerțului cu coduri CAEN Rev.3",
-        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru un magazin de legume și fructe treceți codul 4721. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau punctul de lucru și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
+        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru un magazin de legume și fructe treceți codul 4721. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau [punctul de lucru](/ghid/declarare-punct-de-lucru-anaf/) și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
         "authority": "ONRC",
         "sources": [
           {
@@ -964,7 +964,7 @@
       },
       {
         "title": "Aplică proceduri de siguranța alimentelor bazate pe HACCP",
-        "body": "Orice operator din sectorul alimentar trebuie să elaboreze și să aplice permanent una sau mai multe proceduri bazate pe principiile HACCP (art. 5 din Regulamentul (CE) 852/2004). ANSVSA arată că cerințele sunt flexibile pentru unitățile mici: uneori este suficientă aplicarea corectă a cerințelor preliminare de igienă, fără un plan HACCP complex. Inspectorul DSVSA verifică aceste proceduri la control. Păstrați în unitate evidențele de temperatură, curățenie și recepție a mărfii.",
+        "body": "Orice operator din sectorul alimentar trebuie să elaboreze și să aplice permanent una sau mai multe proceduri bazate pe principiile HACCP (art. 5 din Regulamentul (CE) 852/2004). ANSVSA arată că cerințele sunt flexibile pentru unitățile mici: uneori este suficientă aplicarea corectă a cerințelor preliminare de igienă, fără un plan HACCP complex. Inspectorul DSVSA verifică aceste proceduri la control. Păstrați în unitate evidențele de [temperatură](/unelte/grafic-temperatura-frigider/), curățenie și recepție a mărfii.",
         "authority": "DSVSA judeteana (ANSVSA)",
         "sources": [
           {
@@ -1139,7 +1139,7 @@
     "steps": [
       {
         "title": "Înregistrează firma la Registrul Comerțului cu coduri CAEN Rev.3",
-        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru un magazin nealimentar treceți codul care descrie marfa principală: 4712 pentru magazin nespecializat, 4752 pentru fierărie, 4755 pentru articole de uz casnic sau 4778 pentru alte bunuri noi. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau punctul de lucru și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
+        "body": "Înregistrați firma (SRL, PFA sau II) la oficiul registrului comerțului, la ghișeu sau online pe myportal.onrc.ro. Pentru firmele noi, încadrarea în CAEN Rev.3 este obligatorie din 1 ianuarie 2025. Pentru un magazin nealimentar treceți codul care descrie marfa principală: 4712 pentru magazin nespecializat, 4752 pentru fierărie, 4755 pentru articole de uz casnic sau 4778 pentru alte bunuri noi. Depuneți declarația-tip pe propria răspundere privind îndeplinirea condițiilor de funcționare pentru sediu sau [punctul de lucru](/ghid/declarare-punct-de-lucru-anaf/) și dovada dreptului de folosință a spațiului. Dacă spațiul este într-un bloc de locuințe, ONRC cere și avizul asociației de proprietari. Firmele înregistrate înainte de 2025 aveau termen 25 septembrie 2026 pentru actualizarea la CAEN Rev.3.",
         "authority": "ONRC",
         "sources": [
           {
