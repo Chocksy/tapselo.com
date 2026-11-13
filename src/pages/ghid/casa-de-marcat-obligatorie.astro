@@ -1,0 +1,173 @@
+---
+import GuideShell from "../../components/GuideShell.astro";
+import { OPERATOR_LEGAL_NAME } from "../../data/site.ts";
+import { markdownToHtml } from "../../lib/markdown.ts";
+import { internalPath } from "../../lib/internal-url.ts";
+import {
+  breadcrumbJsonLd,
+  breadcrumbLinks,
+  canonicalUrl,
+  faqPageJsonLd,
+  type FaqItem,
+} from "../../lib/unelte/jsonld.ts";
+
+const path = "/ghid/casa-de-marcat-obligatorie";
+const heading = "Casă de marcat obligatorie în 2026: cine trebuie să aibă și ce e valabil la târguri";
+const description =
+  "Când aveți obligația de AMEF (OUG 28/1999): încasări cash sau card, târguri de Crăciun, comerț ocazional îngust și acceptarea cardului din 2026 (OUG 193/2002).";
+const verifiedOn = "2026-11-13";
+const publishedOn = "2026-11-13";
+
+const OUG28 = "https://legislatie.just.ro/Public/DetaliiDocument/17431";
+const NORME479 = "https://legislatie.just.ro/Public/DetaliiDocument/266909";
+const OUG193 = "https://legislatie.just.ro/Public/DetaliiDocument/304522";
+const LEGE239 = "https://legislatie.just.ro/Public/DetaliiDocument/305208";
+
+const body = `
+## Casă de marcat la târgul de Crăciun
+
+La un târg de Crăciun, dacă încasați contravaloarea în **numerar, cu card sau prin substituți de numerar**, sunteți în aria **OUG 28/1999, art. 1 alin. (1)**, cu excepțiile scrise în lege — nu există „scutire doar card”.
+
+> **OUG 28/1999, art. 1 alin. (1):** „Operatorii economici care încasează, integral sau parțial, cu numerar sau prin utilizarea cardurilor de credit/debit sau a substitutelor de numerar contravaloarea bunurilor livrate cu amănuntul, precum și a prestărilor de servicii efectuate direct către populație sunt obligați să utilizeze aparate de marcat electronice fiscale.”
+
+Normele metodologice (**art. 4**) precizează ce înseamnă vânzare cu amănuntul: activitate **permanentă sau sezonieră**. Actul **nu** tratează prezența la târg ca o excepție generală pentru comercianții cu amănuntul; **comerțul ocazional** rămâne o categorie separată, pentru operatori **alții decât** comercianții cu amănuntul.
+
+> **Norme HG 479/2003, art. 4:** „În sensul art. 1 alin. (1) din ordonanța de urgență, prin livrări de bunuri cu amănuntul și prestări de servicii direct către populație se înțelege acele activități desfășurate cu caracter permanent sau sezonier. Nu intră în această categorie livrările de bunuri și prestările de servicii efectuate ocazional, direct către populație, de către operatorii economici, alții decât comercianții cu amănuntul. Prin comerț ocazional se înțelege actele de comerț cu caracter întâmplător, efectuate pe durată limitată de timp cu ocazia unor târguri, saloane, sărbători cu caracter laic, expoziții cu vânzare, precum și livrările de bunuri către proprii angajați pentru uzul propriu.”
+
+Excepția de la **art. 2 lit. a)** este la fel de îngustă: vizează **numai** comerțul ocazional cu **produse agricole din producție proprie**, de către **producători agricoli individuali autorizați**, în piețe, târguri, oboare sau alte locuri publice autorizate. **Nu** acoperă articole artizanale sau handmade în lipsa unui temei distinct în text.
+
+> **OUG 28/1999, art. 2 lit. a):** „Se exceptează de la prevederile art. 1 alin. (1) încasările efectuate din următoarele activități:
+> a) comerțul ocazional cu produse agricole din producție proprie efectuat de către producătorii agricoli individuali, autorizați în condițiile legii, în piețe, târguri, oboare sau în alte locuri publice autorizate;”
+
+Dacă mutați casa de la un târg la altul sau aveți **stand fix** pe durata târgului, **nu detaliem aici** procedura de instalare sau declarație: în sursele citate nu apare un text clar pentru „locație temporară” la stand fix. **Contactați AJFP** competent pentru adresă de utilizare, declarații și fiscalizare.
+
+### Card la stand și AMEF
+
+Din **01.01.2026** (Legea nr. 239/2025, art. III), intră în vigoare obligația de **acceptare** a plăților moderne pentru persoanele din Registrul comerțului — **separat** de AMEF:
+
+> **OUG 193/2002, art. 1 alin. (1^2):** „Persoanele fizice sau juridice prevăzute la art. 4 alin. (1) din Legea nr. 265/2022 privind registrul comerțului și pentru modificarea și completarea altor acte normative cu incidență asupra înregistrării în registrul comerțului, cu modificările și completările ulterioare, au obligația să accepte plăți efectuate și prin intermediul mijloacelor moderne de plată.”
+
+> **OUG 193/2002, art. 1 alin. (1^3):** „Prin excepție de la dispozițiile alin. (1^2), entitățile care efectuează toate operațiunile de plată și încasare exclusiv prin conturi deschise la instituții de credit nu au obligația să accepte plăți efectuate și prin intermediul mijloacelor moderne de plată.”
+
+Alin. **(1^3)** este excepție de la **acceptarea cardului**, nu de la AMEF acolo unde se aplică **OUG 28/1999, art. 1**. Art. 1 alin. **(3), (3^1) și (3^2)** din OUG 193/2002 sunt **abrogate** de la **01.01.2026** (Legea nr. 239/2025, art. III pct. 3).
+
+La stand, bonul fiscal se emite conform reglementărilor AMEF; pentru anulări sau corecții, păstrați documentația prevăzută de lege (vezi [proces-verbal de anulare bon](${internalPath("/unelte/proces-verbal-anulare-bon-fiscal/")})).
+
+## Checklist înainte de târg
+
+- Confirmați dacă vă încadrați în **OUG 28/1999, art. 1 alin. (1)** (încasări cash, card sau substituți la vânzare cu amănuntul către public).
+- Dacă sunteți **comerciant cu amănuntul**, presupuneți activitate de tip **permanent sau sezonier** (Norme, art. 4), nu „comerț ocazional” doar pentru că sta la târg.
+- Verificați dacă intrați în excepția **art. 2 lit. a)** — doar **produse agricole din producție proprie**, producător agricol individual autorizat, în loc autorizat.
+- Pentru **deplasare între târguri** sau **stand fix**: cereți clarificări la **AJFP** (fără a presupune o procedură de locație temporară).
+- Din **01.01.2026**: obligația separată de **acceptare a mijloacelor moderne de plată** (OUG 193/2002, art. 1^2) — nu o confundați cu absența AMEF-ului.
+- Planificați **raportul Z** și transmiterea conform OUG 28/1999; la întreruperi de rețea: [casa de marcat fără internet](${internalPath("/ghid/articole/casa-de-marcat-fara-internet/")}).
+`;
+
+const faq: FaqItem[] = [
+  {
+    q: "Am nevoie de casă de marcat la un târg de Crăciun?",
+    a: "Dacă încasați numerar, card sau substituți de numerar la vânzări cu amănuntul către public, vi se aplică OUG 28/1999, art. 1 alin. (1), cu excepțiile din lege. Normele (art. 4) includ activitatea sezonieră la comercianții cu amănuntul; comerțul ocazional la târguri este prevăzut pentru operatori alții decât comercianții cu amănuntul. Producătorii agricoli individuali cu produse proprii pot intra în art. 2 lit. a), în condițiile citate acolo.",
+  },
+  {
+    q: "Dacă încasez doar cu cardul, mai trebuie casă de marcat?",
+    a: "Da, atunci când vi se aplică OUG 28/1999, art. 1 alin. (1): obligația de AMEF acoperă încasările cu card de credit/debit sau substituți de numerar, nu doar numerarul. Exceptia din OUG 193/2002, art. 1 alin. (1^3) (operațiuni exclusiv prin conturi bancare) este numai despre obligația de a accepta mijloace moderne de plată, nu despre scoaterea AMEF-ului.",
+  },
+  {
+    q: "Ce înseamnă comerț ocazional la târg?",
+    a: "Normele HG 479/2003, art. 4, definesc comerțul cu amănuntul ca activitate permanentă sau sezonieră. Vânzările ocazionale la târguri, pentru operatori alții decât comercianții cu amănuntul, sunt „comerț ocazional” — acte de comerț întâmplătoare, pe durată limitată, la târguri, saloane, sărbători laice sau expoziții cu vânzare. Nu este o excepție generală pentru orice stand de târg.",
+  },
+  {
+    q: "Pot folosi aceeași casă la mai multe târguri?",
+    a: "Depinde de cum este declarat și fiscalizat AMEF-ul dumneavoastră (de exemplu stand fix față de alt regim). În ghidul acesta nu reproducem procedura detaliată din Norme; pentru deplasări între târguri sau utilizare la adresă de târg, verificați cu AJFP competent ce declarații și adresă de utilizare se cer.",
+  },
+  {
+    q: "Din 2026 trebuie să accept cardul la stand?",
+    a: "Pentru persoanele prevăzute la art. 4 alin. (1) din Legea nr. 265/2022 (Registrul comerțului), OUG 193/2002, art. 1 alin. (1^2), introduce din 01.01.2026 obligația de a accepta plăți prin mijloace moderne de plată. Aceasta este separată de obligația de AMEF din OUG 28/1999. Exceptia din alin. (1^3) (doar conturi bancare) nu înlocuiește AMEF acolo unde art. 1 OUG 28/1999 se aplică.",
+  },
+];
+
+const crumbs = [
+  { name: "Acasă", path: "/" },
+  { name: "Ghid pentru magazine", path: "/ghid/" },
+  { name: heading, path },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: heading,
+    description,
+    datePublished: publishedOn,
+    dateModified: verifiedOn,
+    inLanguage: "ro-RO",
+    url: canonicalUrl(path),
+    mainEntityOfPage: canonicalUrl(path),
+    author: {
+      "@type": "Organization",
+      name: "Tapselo",
+      legalName: OPERATOR_LEGAL_NAME,
+      url: "https://tapselo.com",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Tapselo",
+      legalName: OPERATOR_LEGAL_NAME,
+      url: "https://tapselo.com",
+    },
+  },
+  faqPageJsonLd(faq),
+  breadcrumbJsonLd(crumbs),
+];
+
+const sources = [
+  {
+    title: "OUG nr. 28/1999 privind obligația operatorilor economici de a utiliza aparate de marcat electronice fiscale",
+    url: OUG28,
+  },
+  {
+    title: "Norme metodologice HG nr. 479/2003 (republicate, formă consolidată)",
+    url: NORME479,
+  },
+  {
+    title: "OUG nr. 193/2002 privind introducerea sistemelor moderne de plată",
+    url: OUG193,
+  },
+  {
+    title: "Legea nr. 239/2025 pentru modificarea unor acte normative (art. III — OUG 193/2002)",
+    url: LEGE239,
+  },
+];
+---
+
+<GuideShell
+  title="Casă de marcat obligatorie 2026: târg de Crăciun, card și AMEF | Tapselo"
+  description={description}
+  heading={heading}
+  lead="Operatorii care încasează, integral sau parțial, cu numerar sau cu card sau substituți de numerar contravaloarea vânzărilor cu amănuntul sau a serviciilor direct către populație au obligația de AMEF (OUG 28/1999, art. 1 alin. (1)). Din 01.01.2026, persoanele din Registrul comerțului au și obligația de a accepta plăți prin mijloace moderne de plată (OUG 193/2002, art. 1 alin. (1^2)); excepția din alin. (1^3) — doar conturi la instituții de credit — privește această acceptare, nu scoate AMEF. Alin. (3), (3^1) și (3^2) din OUG 193/2002 sunt abrogate de la aceeași dată (Legea 239/2025, art. III pct. 3)."
+  sources={sources}
+  verifiedOn={verifiedOn}
+  publishedOn={publishedOn}
+  updatedOn={verifiedOn}
+  campaign="casa-de-marcat-obligatorie"
+  breadcrumbs={breadcrumbLinks(crumbs)}
+  ctaTitle="Bonuri și vânzări zilnice, cu surse verificate"
+  ctaBody="Tapselo este program de vânzări la tejghea; bonul fiscal îl emite tot aparatul AMEF. Pentru reguli AMEF și ANAF, folosiți ghidurile de mai sus — nu înlocuim consultanța fiscală."
+  ctaHref={internalPath("/ghid/")}
+  jsonLd={jsonLd}
+  contentWidth="reading"
+>
+  <article class="kb-prose" set:html={markdownToHtml(body)} />
+
+  <section>
+    <h2 class="font-display text-3xl italic text-primary">Întrebări frecvente</h2>
+    <div class="mt-6 space-y-6">
+      {faq.map((item) => (
+        <div class="rounded-xl border border-border-light p-5">
+          <h3 class="text-lg font-semibold text-primary">{item.q}</h3>
+          <p class="mt-2 leading-relaxed text-text-secondary">{item.a}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+</GuideShell>
