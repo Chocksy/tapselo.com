@@ -27,6 +27,14 @@ test("markdown: h2/h3 headings with ids and tables", () => {
   assert.equal(slugifyHeading("Cine trebuie să țină registrul"), "cine-trebuie-sa-tina-registrul");
 });
 
+test("markdown: blockquote lines", () => {
+  const html = markdownToHtml("Intro.\n\n> **Legea**, art. 1: „text unu”\n> continuare linia 2\n\nDupă.");
+  assert.match(html, /<blockquote class="kb-blockquote">/);
+  assert.match(html, /<p><strong>Legea<\/strong>, art\. 1: „text unu”<\/p>\s*<p>continuare linia 2<\/p>/);
+  assert.doesNotMatch(html, /<p>&gt;/);
+  assert.match(html, /<p>După\.<\/p>/);
+});
+
 test("markdown: email_off passes through for Cloudflare", () => {
   assert.equal(
     inlineMd("Contact: <!--email_off-->suport@example.ro<!--/email_off-->"),

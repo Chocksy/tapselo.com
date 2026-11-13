@@ -60,6 +60,7 @@ export const guides: Resource[] = [
   g("taxe", "g", "SAF-T (D406) pentru firmele mici", "/ghid/saf-t-d406-firme-mici/", "saft"),
   g("taxe", "g", "Certificat de atestare fiscală", "/ghid/certificat-de-atestare-fiscala/", "anaf"),
   g("taxe", "g", "Declarare punct de lucru la ANAF", "/ghid/declarare-punct-de-lucru-anaf/", "sediu secundar 060 061", true),
+  g("taxe", "g", "Casă de marcat obligatorie", "/ghid/casa-de-marcat-obligatorie/", "amef targ craciun obligatorie", true),
   g("taxe", "a", "Cum depui declarația A4200", "/ghid/articole/depunere-a4200/"),
   g("taxe", "a", "Erori DUKIntegrator la A4200", "/ghid/articole/erori-dukintegrator/"),
   g("deschidere", "g", "Minimarket sau alimentară: deschidere", "/ghid/deschide-minimarket-alimentara/", "magazin alimentar autorizatii"),
