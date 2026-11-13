@@ -137,6 +137,16 @@ test("ș/ț, layout ghid", async () => {
   assert.match(html, /guide-layout/);
 });
 
+test("checklist: formulare art. 4 fără englezisme", async () => {
+  const { main } = await page();
+  const t = text(main);
+  assert.match(t, /nu este o excepție în art\. 4/);
+  assert.match(t, /Excluderea vânzărilor ocazionale din acel articol/);
+  assert.match(t, /nu înlocuiește obligația de AMEF/);
+  assert.doesNotMatch(t, /Carve-out|carve-out/i);
+  assert.doesNotMatch(t, /absența AMEF-ului/);
+});
+
 test("sitemap lastmod și hub", () => {
   const hub = readFileSync(join(process.cwd(), "dist/ghid/index.html"), "utf8");
   assert.match(hub, /href="\/ghid\/casa-de-marcat-obligatorie\/"/);
