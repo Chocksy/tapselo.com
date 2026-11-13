@@ -75,7 +75,7 @@ const ENTRIES: Record<string, Entry> = {
   },
   "/ghid/casa-de-marcat-obligatorie/": {
     title: "Casă de marcat obligatorie (2026)",
-    desc: "Când vi se cere AMEF (OUG 28/1999), târg de Crăciun, comerț ocazional, ambulant și acceptarea cardului din 2026.",
+    desc: "Când vi se cere AMEF (OUG 28/1999), târg de Crăciun, comerț ocazional și acceptarea cardului din 2026.",
   },
   // Ghiduri: deschiderea unui magazin
   "/ghid/deschide-macelarie/": { title: "Deschiderea unei măcelării", desc: "Codul CAEN, înregistrarea DSVSA, acordul primăriei și casa de marcat." },

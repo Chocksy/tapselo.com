@@ -3,6 +3,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { VERIFIED_LEGAL_QUOTES } from "../src/lib/kb/casa-de-marcat-obligatorie-quotes.ts";
 
 const file = join(process.cwd(), "dist/ghid/casa-de-marcat-obligatorie/index.html");
 const decode = (s: string) =>
@@ -88,6 +89,46 @@ test("AJFP stand fix, fără procedură inventată", async () => {
   assert.doesNotMatch(t, /art\. 103 alin/i);
   assert.match(t, /produse agricole din producție proprie/i);
   assert.match(t, /permanent sau sezonier/i);
+  assert.doesNotMatch(t, /raportul Z și transmiterea conform OUG 28/i);
+});
+
+const normQuote = (s: string) =>
+  s
+    .replace(/[„"""]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+function blockquoteBodies(html: string): string[] {
+  return [...html.matchAll(/<blockquote class="kb-blockquote">([\s\S]*?)<\/blockquote>/g)].map((m) =>
+    normQuote(text(m[1])),
+  );
+}
+
+test("citate legale verbatim în blockquote, fără caracter „>” vizibil", async () => {
+  const { html, main } = await page();
+  assert.ok(html.includes('class="kb-blockquote"'));
+  const bqs = blockquoteBodies(html);
+  assert.equal(bqs.length, 5);
+  const joined = bqs.join(" ");
+  for (const q of Object.values(VERIFIED_LEGAL_QUOTES)) {
+    assert.ok(joined.includes(normQuote(q)), `missing quote: ${q.slice(0, 60)}`);
+  }
+  assert.ok(bqs.some((b) => b.includes("(1) Operatorii economici")));
+  assert.ok(bqs.some((b) => b.includes("activități:") && b.includes("a) comerțul ocazional")));
+  const visibleMain = text(main);
+  assert.doesNotMatch(visibleMain, /(^|\s)>\s/);
+  assert.doesNotMatch(visibleMain, /activități:\s*>\s*a\)/);
+});
+
+test("FAQ mai multe târguri: fără regim Norme inventat", async () => {
+  const { main } = await page();
+  const t = text(main);
+  const faqA =
+    /Pot folosi aceeași casă[^?]*\?[\s\S]*?(?=Pot folosi|Din 2026|$)/.exec(t)?.[0] ??
+    t.slice(t.indexOf("Pot folosi aceeași casă"));
+  assert.match(faqA, /nu este descrisă o procedură/i);
+  assert.match(faqA, /AJFP/i);
+  assert.doesNotMatch(faqA, /fiscalizat AMEF|procedura detaliată din Norme|regim ambulant/i);
 });
 
 test("ș/ț, layout ghid", async () => {
