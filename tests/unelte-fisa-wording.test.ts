@@ -7,6 +7,13 @@ import assert from "node:assert/strict";
 const dist = (p: string) => readFileSync(join(process.cwd(), "dist", p, "index.html"), "utf8");
 const PAGE = "unelte/fisa-de-magazie";
 
+const NORMS_VERBATIM = [
+  "Fișa de magazie servește ca document de evidență a intrărilor, ieșirilor și stocurilor de bunuri materiale.",
+  "Fișele de magazie se țin pe fiecare loc de depozitare a valorilor materiale, pe feluri de materiale, ordonate pe conturi, grupe, eventual subgrupe, sau în ordine alfabetică.",
+  "Pentru valori materiale primite spre prelucrare de la terți sau în custodie se întocmesc fișe distincte, care se țin separat de cele aferente propriilor valori materiale.",
+  "Înregistrările în fișele de magazie se fac document cu document.",
+];
+
 const FAQ_EXPECTED = [
   "Ce este fișa de magazie (cod 14-3-8)?",
   "Unde găsesc un model de fișă de magazie?",
@@ -17,7 +24,7 @@ const FAQ_EXPECTED = [
   "Stocul se calculează singur?",
 ];
 
-test("fișă de magazie: title, H1, meta, lead și model gol deasupra pliului", () => {
+test("fișă de magazie: title, H1, meta, lead și model gol în hero", () => {
   const html = dist(PAGE);
   assert.match(html, /<title>Fișă de magazie \(cod 14-3-8\) — model PDF \| Tapselo<\/title>/);
   assert.match(html, /<h1[^>]*>Fișă de magazie \(cod 14-3-8\): model PDF<\/h1>/);
@@ -29,6 +36,19 @@ test("fișă de magazie: title, H1, meta, lead și model gol deasupra pliului", 
   assert.match(html, /modelul gol în PDF/);
   assert.match(html, /id="fm-blank-hero"/);
   assert.match(html, /<link rel="canonical" href="https:\/\/tapselo\.com\/unelte\/fisa-de-magazie\/">/);
+  assert.doesNotMatch(html, /Modelul oficial are/i);
+  assert.doesNotMatch(html, /nomenclator/i);
+  for (const quote of NORMS_VERBATIM) {
+    assert.ok(html.includes(quote), `lipsește citatul norme: ${quote.slice(0, 40)}…`);
+  }
+});
+
+test("llms.txt: intrare fișă de magazie (cod 14-3-8)", () => {
+  const txt = readFileSync(join(process.cwd(), "dist", "llms.txt"), "utf8");
+  assert.match(
+    txt,
+    /- \[Fișă de magazie \(cod 14-3-8\)\]\(https:\/\/tapselo\.com\/unelte\/fisa-de-magazie\/\):/,
+  );
 });
 
 test("fișă de magazie: FAQ vizibil și FAQPage JSON-LD aliniat", () => {
@@ -44,6 +64,12 @@ test("fișă de magazie: FAQ vizibil și FAQPage JSON-LD aliniat", () => {
   assert.ok(faq);
   const names = (faq.mainEntity as { name: string }[]).map((e) => e.name);
   assert.deepEqual(names, FAQ_EXPECTED);
+  const answers = (faq.mainEntity as { acceptedAnswer: { text: string } }[]).map((e) => e.acceptedAnswer.text);
+  assert.match(answers[3], /antet și rânduri goale/);
+  assert.doesNotMatch(answers[2], /Adică o fișă/);
+  for (const quote of NORMS_VERBATIM) {
+    assert.ok(answers.some((a) => a.includes(quote)), `FAQ JSON-LD: lipsește ${quote.slice(0, 30)}…`);
+  }
 });
 
 test("fișă de magazie: JSON-LD WebApplication cu H1 și cod", () => {

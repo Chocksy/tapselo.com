@@ -4,7 +4,7 @@
 <section class="ut-card" aria-labelledby="fisa-magazie-title">
   <h2 id="fisa-magazie-title" class="font-display text-2xl italic text-primary">Generator fișă de magazie</h2>
   <p class="mt-2 text-sm text-text-secondary">
-    Completează antetul și mișcările; stocul se calculează automat (cod formular <strong class="text-primary">14-3-8</strong>, OMFP nr. 2.634/2015). Print sau PDF din browser, plus model gol.
+    Completați antetul și mișcările; stocul se calculează automat (cod formular <strong class="text-primary">14-3-8</strong>, OMFP nr. 2.634/2015). Print sau PDF din browser, plus model gol.
   </p>
 
   <div id="fisa-magazie-tool" class="mt-6 space-y-4">
@@ -269,14 +269,14 @@
   document.getElementById("fm-pdf")?.addEventListener("click", () => {
     const p = collect();
     if (!p) return;
-    if (!downloadWarehouseCardPdfViaPrint(p)) showError("Permite ferestrele pop-up pentru PDF.");
+    if (!downloadWarehouseCardPdfViaPrint(p)) showError("Permiteți ferestrele pop-up pentru PDF.");
     else trackToolUsed("fisa_de_magazie", "generate_pdf");
   });
 
   document.getElementById("fm-print")?.addEventListener("click", () => {
     const p = collect();
     if (!p) return;
-    if (!downloadWarehouseCardPdfViaPrint(p)) showError("Permite ferestrele pop-up pentru print.");
+    if (!downloadWarehouseCardPdfViaPrint(p)) showError("Permiteți ferestrele pop-up pentru print.");
     else trackToolUsed("fisa_de_magazie", "print");
   });
 
