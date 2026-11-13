@@ -6,6 +6,16 @@ import type { DraftRecord, WarehouseCardPayload } from "./types.ts";
 import { roundMoney } from "./validate.ts";
 import { escapeHtml, fmtMoney, fmtQty, formatDate, renderShell } from "./page.ts";
 
+/** Empty 14-3-8 grid for print/PDF; header labels only, no user data required. */
+export const BLANK_WAREHOUSE_CARD: WarehouseCardPayload = {
+  company: "",
+  warehouse: "",
+  product: "",
+  unit: "",
+  opening_stock: 0,
+  rows: [],
+};
+
 export interface WarehouseCardCalcRow {
   stock: number;
 }

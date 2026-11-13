@@ -75,7 +75,7 @@
 
 <script>
   import type { WarehouseCardEntry, WarehouseCardPayload } from "../../lib/generators/types.ts";
-  import { warehouseCardCalc } from "../../lib/generators/warehouse-card.ts";
+  import { BLANK_WAREHOUSE_CARD, warehouseCardCalc } from "../../lib/generators/warehouse-card.ts";
   import { escapeHtml, fmtQty } from "../../lib/generators/page.ts";
   import { parseRoNumber } from "../../lib/unelte/parse.ts";
   import { localIsoDate } from "../../lib/unelte/dates.ts";
@@ -256,27 +256,14 @@
     return payload;
   }
 
-  function headerOnly(): WarehouseCardPayload | null {
-    const company = (document.getElementById("fm-company") as HTMLInputElement).value.trim();
-    const warehouse = (document.getElementById("fm-warehouse") as HTMLInputElement).value.trim();
-    const product = (document.getElementById("fm-product") as HTMLInputElement).value.trim();
-    const unit = (document.getElementById("fm-unit") as HTMLInputElement).value.trim() || "buc";
-    if (!company || !warehouse || !product) {
-      showError("Pentru modelul gol, completează minim unitatea, magazia și produsul.");
-      return null;
-    }
+  function blankModel(): WarehouseCardPayload {
     errEl.classList.add("hidden");
-    const payload: WarehouseCardPayload = {
-      company,
-      warehouse,
-      product,
-      unit,
-      opening_stock: 0,
-      rows: [],
-    };
-    const code = (document.getElementById("fm-code") as HTMLInputElement).value.trim();
-    if (code) payload.product_code = code;
-    return payload;
+    return BLANK_WAREHOUSE_CARD;
+  }
+
+  function onBlankPdf() {
+    if (!downloadWarehouseCardBlankPdfViaPrint(blankModel())) showError("Permiteți ferestrele pop-up pentru PDF.");
+    else trackToolUsed("fisa_de_magazie", "generate_pdf", { variant: "blank" });
   }
 
   document.getElementById("fm-pdf")?.addEventListener("click", () => {
@@ -293,12 +280,9 @@
     else trackToolUsed("fisa_de_magazie", "print");
   });
 
-  document.getElementById("fm-blank")?.addEventListener("click", () => {
-    const p = headerOnly();
-    if (!p) return;
-    if (!downloadWarehouseCardBlankPdfViaPrint(p)) showError("Permite ferestrele pop-up pentru PDF.");
-    else trackToolUsed("fisa_de_magazie", "generate_pdf", { variant: "blank" });
-  });
+  for (const id of ["fm-blank", "fm-blank-hero"]) {
+    document.getElementById(id)?.addEventListener("click", onBlankPdf);
+  }
 </script>
 
 <style>
