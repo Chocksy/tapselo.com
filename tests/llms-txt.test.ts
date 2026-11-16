@@ -50,6 +50,8 @@ test("declarare punct de lucru: llms line mentions 060 și 061/D700 G, fără ne
 test("lists TAP-025 desktop till page under Despre Tapselo without pricing", () => {
   const line = links.find((m) => m[2] === `${SITE}/program-casa-de-marcat-pe-calculator/`);
   assert.ok(line, "missing program-casa-de-marcat-pe-calculator in llms.txt");
+  const grocery = links.find((m) => m[2] === `${SITE}/program-casa-de-marcat-magazin-alimentar/`);
+  assert.ok(grocery, "missing program-casa-de-marcat-magazin-alimentar in llms.txt");
   assert.equal(line![1], "Program casă de marcat pe calculator");
   assert.doesNotMatch(line![3], /\blei\b|79|129|gratuit/i);
 });

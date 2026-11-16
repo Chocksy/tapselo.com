@@ -1,4 +1,6 @@
 ---
+import { internalPath } from "../../lib/internal-url.ts";
+
 // Homepage hero: D1/I1 headline + A1 live demo (interactive kiosk driven by a ghost cursor until
 // the visitor clicks, Datecs printer that prints the receipt at the end of each sale, phone that
 // follows the shop type) + I1 stats strip with a tear edge.
@@ -10,6 +12,7 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
 <section class="hero" id="top">
   <div class="site-container hx">
     <div>
+      <p class="hp-grocery">Casa de marcat pentru magazine alimentare din România: pe calculator și pe iPhone.</p>
       <span class="eb"><b>BETA</b>Gratuit acum · fără card</span>
       <h1>Vinzi non-stop,<br /><span>cu sau fără net.</span></h1>
     </div>
@@ -25,6 +28,21 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
         <a class="hm-btn2" href="#pricing">Vezi prețurile</a>
       </div>
     </div>
+  </div>
+
+  <div class="site-container hp-ans">
+    <p class="hp-answer">
+      Tapselo este un program de casă de marcat (POS) pentru magazine alimentare și minimarketuri: scanezi codul de bare, cântarul Dibal
+      pune greutatea, bonul fiscal iese pe casa de marcat Datecs, iar stocul scade singur. Merge și fără internet. Prețul: gratuit cât timp e
+      în beta, apoi 79/129 lei/lună + TVA.
+    </p>
+    <p class="hp-answer-more">
+      <a href={internalPath("/program-casa-de-marcat-magazin-alimentar/")}>Program casă de marcat pentru magazin alimentar</a>
+      ·
+      <a href={internalPath("/ghid/deschide-minimarket-alimentara/")}>Ghid: cum deschizi o alimentară</a>
+      ·
+      <a href={internalPath("/program-gestiune-magazin/")}>Program gestiune magazin</a>
+    </p>
   </div>
 
   <div class="band">
@@ -91,7 +109,7 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
     <div class="site-container ss-g">
       <p class="ss-lead">Merge cu echipamentul pe care îl ai deja.</p>
       <div><b class="dots">20 min</b><span>de la stick la prima vânzare</span></div>
-      <div><b class="z">0 lei</b><span>licențe, acum și după beta</span></div>
+      <div><b class="dots">79/129</b><span>lei/lună + TVA după beta; gratuit cât timp e în beta</span></div>
       <div><b class="dots">FP-700</b><span>Datecs, bon fiscal pe USB</span></div>
       <div><b class="dots">D-900</b><span>Cântar Dibal, fără tastat</span></div>
     </div>
@@ -151,6 +169,38 @@ const arrow = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" strok
   }
   /* F1: warm grey at 3.3:1 on --color-paper (3.6:1 on paper-white), large text */
   h1 span { color: #8c8471; }
+  .hp-grocery {
+    margin: 0 0 14px;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    text-wrap: pretty;
+  }
+  .hp-ans { position: relative; z-index: 2; padding-bottom: 6px; }
+  .hp-answer {
+    margin: clamp(1.25rem, 3vw, 2rem) 0 0;
+    max-width: 52rem;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--color-ink-2);
+    text-wrap: pretty;
+  }
+  .hp-answer-more {
+    margin: 12px 0 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--color-ink-3);
+  }
+  .hp-answer-more a {
+    color: var(--color-ink);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--color-perf);
+    text-underline-offset: 3px;
+  }
+  .hp-answer-more a:hover { text-decoration-color: currentColor; }
   .hp {
     margin: 0;
     font-size: 18px;
