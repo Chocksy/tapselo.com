@@ -79,14 +79,11 @@ const isMinimarketAlimentara = Astro.params.type === "minimarket-alimentara";
   {
     isMinimarketAlimentara && (
       <p class="kb-prose leading-relaxed text-text-secondary">
-        După ce aveți autorizațiile și casa de marcat, pentru vânzarea zilnică (scanare, cântar Dibal, bon Datecs) puteți folosi
+        După ce aveți autorizațiile și casa de marcat, pentru vânzarea zilnică (scanare, cântar Dibal, bon Datecs) puteți folosi{" "}
         <a
           href={internalPath("/program-casa-de-marcat-magazin-alimentar/")}
           class="font-semibold text-accent hover:underline"
-        >
-          programul de casă de marcat pentru magazin alimentar
-        </a>
-        .
+        >programul de casă de marcat pentru magazin alimentar</a>.
       </p>
     )
   }

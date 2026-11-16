@@ -7,7 +7,6 @@ import EmailLink from "../components/EmailLink.astro";
 import ChatGptOpenButton from "../components/ChatGptOpenButton.astro";
 import { internalPath } from "../lib/internal-url.ts";
 import { CHATGPT_APP_URL } from "../lib/mcp/links.ts";
-import { tapseloSubscriptionAggregateOffer } from "../lib/unelte/jsonld.ts";
 import { answerTools } from "../lib/mcp/tools.ts";
 import { generatorTools } from "../lib/generators/tools.ts";
 
@@ -72,7 +71,12 @@ const connectorJsonLd = {
   installUrl: CHATGPT_APP_URL,
   description:
     "Conector MCP pentru Claude și ChatGPT: reguli fiscale pentru magazine mici din România, erori Datecs, calcule și documente printabile.",
-  offers: tapseloSubscriptionAggregateOffer(),
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "RON",
+    description: "Conectorul MCP este gratuit; nu necesită cont Tapselo pentru conectare.",
+  },
 };
 const a = "font-bold text-accent hover:text-accent-hover";
 const p = "mt-4 leading-relaxed text-text-secondary";

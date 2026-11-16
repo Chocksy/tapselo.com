@@ -7,6 +7,8 @@ import { join } from "node:path";
 const file = join(process.cwd(), "dist/program-casa-de-marcat-magazin-alimentar/index.html");
 const PATH = "https://tapselo.com/program-casa-de-marcat-magazin-alimentar/";
 const approved = "gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA";
+const META_DESCRIPTION =
+  "POS pentru magazin alimentar: scanare, cântar Dibal, bon Datecs, stoc și NIR, pe PC și iPhone. Preț: gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA.";
 
 const decode = (s: string) =>
   s
@@ -68,18 +70,29 @@ test("JSON-LD: WebApplication with canon offer, FAQPage, BreadcrumbList", async 
   assert.equal(app.offers.offers[0].priceSpecification.valueAddedTaxIncluded, false);
 });
 
-test("visible breadcrumb matches BreadcrumbList", async () => {
+test("visible breadcrumb matches BreadcrumbList names and urls", async () => {
   const { html, blocks } = await page();
   const trail = blocks.find((b) => b["@type"] === "BreadcrumbList").itemListElement;
-  assert.match(html, /Program casă de marcat pentru magazin alimentar/);
-  const last = trail.at(-1);
-  assert.equal(last.name, "Program casă de marcat pentru magazin alimentar");
+  const nav = html.match(/<nav aria-label="Breadcrumb"[^>]*>([\s\S]*?)<\/nav>/i)?.[1] ?? "";
+  const visibleAnchors = [...nav.matchAll(/<a href="([^"]+)">([^<]+)<\/a>/g)].map((m) => ({
+    href: m[1],
+    name: m[2].trim(),
+  }));
+  const current = nav.match(/<span class="bc-c"[^>]*>([^<]+)<\/span>/)?.[1]?.trim() ?? "";
+  assert.equal(visibleAnchors.length, trail.length - 1);
+  for (let i = 0; i < visibleAnchors.length; i++) {
+    assert.equal(visibleAnchors[i].name, trail[i].name);
+    const itemUrl = trail[i].item as string;
+    assert.ok(visibleAnchors[i].href === "/" || itemUrl.endsWith(visibleAnchors[i].href));
+  }
+  assert.equal(current, trail.at(-1).name);
+  assert.equal(trail.at(-1).item, PATH);
 });
 
-test("meta description includes price canon", async () => {
+test("meta description is exact approved grocery copy", async () => {
   const { html } = await page();
-  assert.match(html, new RegExp(`content="[^"]*${approved.replace(/[+]/g, "\\+")}`));
-  assert.doesNotMatch(html, /Preț transparent\./);
+  const esc = META_DESCRIPTION.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+  assert.match(html, new RegExp(`<meta name="description" content="${esc.replace(/[+]/g, "\\+")}"`));
 });
 
 test("price canon in article", async () => {

@@ -30,3 +30,15 @@ test("homepage footer Pentru — Magazin alimentar points to grocery POS page", 
   const footer = /<footer class="ft\b[\s\S]*?<\/footer>/i.exec(home)?.[0] ?? "";
   assert.match(footer, new RegExp(`href="${TARGET.replace(/\//g, "\\/")}"[^>]*>Magazin alimentar`));
 });
+
+test("other deschide-* guides do not link to grocery POS page", () => {
+  const slugs = ["deschide-macelarie", "deschide-cafenea-bistro", "deschide-brutarie-patiserie", "deschide-legume-fructe"];
+  for (const slug of slugs) {
+    const html = readFileSync(join(process.cwd(), "dist", "ghid", slug, "index.html"), "utf8");
+    assert.doesNotMatch(
+      articleBody(html),
+      new RegExp(`href="${TARGET.replace(/\//g, "\\/")}"`),
+      `${slug} must not link to grocery POS page`,
+    );
+  }
+});
