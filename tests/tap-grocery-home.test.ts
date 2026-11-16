@@ -38,13 +38,23 @@ test("no banned price strings on homepage", () => {
   assert.doesNotMatch(html, /licențe, acum și după beta/);
 });
 
-test("SoftwareApplication JSON-LD: AggregateOffer 79/129, no price 0", () => {
+test("SoftwareApplication JSON-LD: AggregateOffer 79/129, UnitPriceSpecification, no price 0", () => {
   const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
   const app = blocks.find((b) => b["@type"] === "SoftwareApplication");
   assert.ok(app);
-  assert.equal(app.offers["@type"], "AggregateOffer");
-  assert.equal(app.offers.lowPrice, "79");
-  assert.equal(app.offers.highPrice, "129");
-  assert.equal(app.offers.description, "gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA");
-  assert.equal(app.offers.price, undefined);
+  const offers = app.offers;
+  assert.equal(offers["@type"], "AggregateOffer");
+  assert.equal(offers.lowPrice, "79");
+  assert.equal(offers.highPrice, "129");
+  assert.equal(offers.description, "gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA");
+  assert.equal(offers.price, undefined);
+  assert.equal(offers.offers.length, 2);
+  for (const o of offers.offers) {
+    const spec = o.priceSpecification;
+    assert.equal(spec["@type"], "UnitPriceSpecification");
+    assert.equal(spec.priceCurrency, "RON");
+    assert.equal(spec.unitCode, "MON");
+    assert.equal(spec.billingDuration, "P1M");
+    assert.equal(spec.valueAddedTaxIncluded, false);
+  }
 });

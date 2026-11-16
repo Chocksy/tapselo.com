@@ -37,10 +37,9 @@ test("200, canonical, title and H1", async () => {
   assert.doesNotMatch(html, /name="robots" content="noindex"/);
 });
 
-test("sitemap lists page with lastmod", async () => {
+test("sitemap lists page with lastmod on this URL", async () => {
   const sitemap = await readFile(join(process.cwd(), "dist/sitemap-0.xml"), "utf8");
-  assert.match(sitemap, new RegExp(`<loc>${PATH}</loc>`));
-  assert.match(sitemap, /<lastmod>2026-11-16/);
+  assert.match(sitemap, new RegExp(`<loc>${PATH}</loc>\\s*<lastmod>2026-11-16`));
 });
 
 test("visible FAQ equals FAQPage JSON-LD", async () => {
@@ -62,8 +61,25 @@ test("JSON-LD: WebApplication with canon offer, FAQPage, BreadcrumbList", async 
   const types = blocks.map((b) => b["@type"]).sort();
   assert.deepEqual(types, ["BreadcrumbList", "FAQPage", "WebApplication"]);
   const app = blocks.find((b) => b["@type"] === "WebApplication");
+  assert.equal(app.offers["@type"], "AggregateOffer");
   assert.equal(app.offers.description, approved);
   assert.equal(app.offers.price, undefined);
+  assert.equal(app.offers.offers[0].priceSpecification.unitCode, "MON");
+  assert.equal(app.offers.offers[0].priceSpecification.valueAddedTaxIncluded, false);
+});
+
+test("visible breadcrumb matches BreadcrumbList", async () => {
+  const { html, blocks } = await page();
+  const trail = blocks.find((b) => b["@type"] === "BreadcrumbList").itemListElement;
+  assert.match(html, /Program casă de marcat pentru magazin alimentar/);
+  const last = trail.at(-1);
+  assert.equal(last.name, "Program casă de marcat pentru magazin alimentar");
+});
+
+test("meta description includes price canon", async () => {
+  const { html } = await page();
+  assert.match(html, new RegExp(`content="[^"]*${approved.replace(/[+]/g, "\\+")}`));
+  assert.doesNotMatch(html, /Preț transparent\./);
 });
 
 test("price canon in article", async () => {

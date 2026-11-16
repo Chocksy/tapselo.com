@@ -104,5 +104,8 @@ test("WebApplication JSON-LD: desktop OS and canon offer, not free price-0", asy
   assert.equal(app.operatingSystem, "Windows, macOS, Linux");
   assert.equal(app.isAccessibleForFree, undefined);
   assert.equal(app.offers.price, undefined);
+  assert.equal(app.offers["@type"], "AggregateOffer");
   assert.equal(app.offers.description, "gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA");
+  assert.equal(app.offers.offers[0].priceSpecification.billingDuration, "P1M");
+  assert.equal(app.offers.offers[0].priceSpecification.valueAddedTaxIncluded, false);
 });

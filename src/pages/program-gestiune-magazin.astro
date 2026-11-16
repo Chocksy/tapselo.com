@@ -1,6 +1,7 @@
 ---
 import GuideShell from "../components/GuideShell.astro";
 import { internalPath } from "../lib/internal-url.ts";
+import { TAPS_PRICE_CANON } from "../data/tapselo-product-copy.ts";
 import { toolJsonLd } from "../lib/unelte/jsonld.ts";
 
 const faq = [
@@ -59,7 +60,10 @@ const jsonLd = toolJsonLd({
         Caută un <strong>program gestiune magazin</strong> dacă ai deja vânzări zilnice, dar pierzi timp cu stocuri care nu se leagă de
         facturi, cu NIR-uri întârziate sau cu inventare de weekend făcute din memorie. Tapselo este construit pentru
         <strong>magazine alimentare mici</strong>, băcănii de cartier, <strong>măcelării</strong>, <strong>brutării și patiserii</strong> care
-        vând la tejghea sau la casă și au nevoie de un singur adevăr despre ce au pe raft.
+        vând la tejghea sau la casă și au nevoie de un singur adevăr despre ce au pe raft. La casă, scanarea și bonul fiscal pentru alimentare sunt în
+        <a href={internalPath("/program-casa-de-marcat-magazin-alimentar/")} class="font-semibold text-accent hover:underline"
+          >programul de casă de marcat pentru magazin alimentar</a
+        >.
       </p>
       <p>
         Nu trebuie să fii depozit sau lanț național ca să merită un <strong>soft gestiune</strong> serios. De multe ori, un singur punct de
@@ -168,7 +172,7 @@ const jsonLd = toolJsonLd({
         <li>în <strong>beta</strong> aplicația este <strong>gratuită</strong>, fără card, cu preaviz de 30 de zile înainte de tarif.</li>
       </ul>
       <p>
-        Primele 20 de magazine din beta păstrează prețul afișat pe viață, conform promisiunii de pe homepage. Detalii actualizate pe
+        Tapselo este {TAPS_PRICE_CANON}. Detalii actualizate pe
         <a href={internalPath("/#pricing")} class="font-semibold text-accent hover:underline">secțiunea Prețuri</a>.
       </p>
     </section>

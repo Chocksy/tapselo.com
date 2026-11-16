@@ -14,6 +14,7 @@ export function getStaticPaths() {
 }
 
 const { c } = Astro.props as { c: Checklist };
+const isMinimarketAlimentara = Astro.params.type === "minimarket-alimentara";
 ---
 
 <GuideShell
@@ -74,6 +75,21 @@ const { c } = Astro.props as { c: Checklist };
       {c.documents.map((x) => <li set:html={inlineMd(x)} />)}
     </ul>
   </section>
+
+  {
+    isMinimarketAlimentara && (
+      <p class="kb-prose leading-relaxed text-text-secondary">
+        După ce aveți autorizațiile și casa de marcat, pentru vânzarea zilnică (scanare, cântar Dibal, bon Datecs) puteți folosi
+        <a
+          href={internalPath("/program-casa-de-marcat-magazin-alimentar/")}
+          class="font-semibold text-accent hover:underline"
+        >
+          programul de casă de marcat pentru magazin alimentar
+        </a>
+        .
+      </p>
+    )
+  }
 
   <p class="rounded-xl border border-border-light p-5 text-sm text-text-secondary">
     Unealtă gratuită:{" "}

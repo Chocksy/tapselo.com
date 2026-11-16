@@ -4,6 +4,7 @@ import { internalPath } from "../lib/internal-url.ts";
 import { TAPS_FISCAL_PRINTERS_BLURB, TAPS_PRICE_CANON } from "../data/tapselo-product-copy.ts";
 import {
   breadcrumbJsonLd,
+  breadcrumbLinks,
   faqPageJsonLd,
   webApplicationJsonLd,
   type FaqItem,
@@ -55,11 +56,12 @@ const jsonLd = [
 
 <GuideShell
   title="Program casă de marcat magazin alimentar | Tapselo"
-  description="Program de casă de marcat pentru magazin alimentar: scanare, cântar Dibal, bon Datecs, stoc și recepție NIR. Windows, macOS, Linux și iPhone. Preț transparent."
+  description={`Program de casă de marcat pentru magazin alimentar: scanare, cântar Dibal, bon Datecs, stoc și recepție NIR. Windows, macOS, Linux și iPhone. ${TAPS_PRICE_CANON}.`}
   heading="Program casă de marcat pentru magazin alimentar"
   lead={`Tapselo este program de casă de marcat (POS) pentru magazine alimentare: la tejghea scanezi codul, cântarul Dibal pune greutatea, bonul fiscal iese pe Datecs, stocul se actualizează singur. Funcționează și fără internet. Preț: ${TAPS_PRICE_CANON}.`}
   campaign="program-casa-de-marcat-magazin-alimentar"
-  breadcrumb={false}
+  breadcrumb={true}
+  breadcrumbs={breadcrumbLinks(crumbs)}
   ctaTitle="Vedeți Tapselo la lucru în magazinul alimentar"
   ctaBody="Demo scurt pe echipamentul dumneavoastră: scanare, cântar, bon fiscal și recepție din poză — nu pe slide-uri."
   ctaHref={internalPath("/demo/")}
