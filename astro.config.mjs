@@ -18,6 +18,7 @@ for (const p of datecsPages.pages) articleLastmod.set(`/ghid/erori-datecs/${p.sl
 articleLastmod.set('/ghid/declarare-punct-de-lucru-anaf', '2026-11-11');
 articleLastmod.set('/unelte/generator-nir', '2026-11-11');
 articleLastmod.set('/unelte/grafic-temperatura-frigider', '2026-11-11');
+articleLastmod.set('/program-casa-de-marcat-magazin-alimentar', '2026-11-16');
 
 // https://astro.build/config
 export default defineConfig({

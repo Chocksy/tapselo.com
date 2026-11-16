@@ -1,0 +1,166 @@
+---
+import GuideShell from "../components/GuideShell.astro";
+import { internalPath } from "../lib/internal-url.ts";
+import { TAPS_FISCAL_PRINTERS_BLURB, TAPS_PRICE_CANON } from "../data/tapselo-product-copy.ts";
+import {
+  breadcrumbJsonLd,
+  faqPageJsonLd,
+  webApplicationJsonLd,
+  type FaqItem,
+} from "../lib/unelte/jsonld.ts";
+
+const PATH = "/program-casa-de-marcat-magazin-alimentar/";
+
+const faq: FaqItem[] = [
+  {
+    q: "Ce este programul de casă de marcat Tapselo pentru magazin alimentar?",
+    a: "Tapselo este program de vânzare (POS) pentru magazine alimentare și minimarketuri: scanezi codul de bare la tejghea, prețurile la kg vin din cântarul Dibal, bonul fiscal iese pe casa de marcat Datecs, iar stocul se actualizează la fiecare vânzare. Rulează pe Windows, macOS sau Linux; pe iPhone poți vinde de pe telefon, cu bonul trimis la aceeași casă Datecs.",
+  },
+  {
+    q: "Ce echipamente îmi trebuie la un magazin alimentar?",
+    a: "Un calculator la tejghea (sau stick Tapselo), o casă de marcat fiscală Datecs conectată pe USB sau rețea, opțional cântar Dibal cu etichete EAN-13 cu greutate și un cititor de coduri de bare USB. Telefonul iPhone este opțional pentru vânzare mobilă sau inventar.",
+  },
+  {
+    q: "Pot vinde când pică internetul?",
+    a: "Da. Vânzarea și bonul fiscal merg mai departe local; la reconectare, vânzările și stocul se sincronizează. Regulile ANAF pentru transmiterea datelor rămân cele pentru orice AMEF — detalii în ghidul despre casa de marcat fără internet.",
+  },
+  {
+    q: "Cât costă Tapselo pentru un magazin alimentar?",
+    a: `Tapselo este ${TAPS_PRICE_CANON}. Planul Start acoperă o casă de marcat (79 lei/lună + TVA); planul Magazin, două case (129 lei/lună + TVA). În beta toate funcțiile sunt gratuite, fără card, cu preaviz de 30 de zile înainte de trecerea la tarif.`,
+  },
+  {
+    q: "Merge cu cântarul Dibal și produsele la kilogram?",
+    a: "Da. Etichetele de la cântar cu prefix 28 și PLU trimit greutatea în POS; nu mai tastezi manual kilogramele. Dacă eticheta are preț în loc de greutate, cantitatea din bon poate ieși greșit — formatul trebuie setat pe cântar pe modul cu greutate.",
+  },
+];
+
+const crumbs = [
+  { name: "Acasă", path: "/" },
+  { name: "Program casă de marcat pentru magazin alimentar", path: PATH },
+];
+
+const jsonLd = [
+  webApplicationJsonLd({
+    name: "Tapselo — program casă de marcat magazin alimentar",
+    path: PATH,
+    description:
+      "Program de casă de marcat pentru magazine alimentare: scanare cod de bare, cântar Dibal, bon fiscal Datecs, stoc, recepție NIR și vânzare offline.",
+    operatingSystem: "Windows, macOS, Linux, iOS",
+    tapseloProductPricing: true,
+  }),
+  faqPageJsonLd(faq),
+  breadcrumbJsonLd(crumbs),
+];
+---
+
+<GuideShell
+  title="Program casă de marcat magazin alimentar | Tapselo"
+  description="Program de casă de marcat pentru magazin alimentar: scanare, cântar Dibal, bon Datecs, stoc și recepție NIR. Windows, macOS, Linux și iPhone. Preț transparent."
+  heading="Program casă de marcat pentru magazin alimentar"
+  lead={`Tapselo este program de casă de marcat (POS) pentru magazine alimentare: la tejghea scanezi codul, cântarul Dibal pune greutatea, bonul fiscal iese pe Datecs, stocul se actualizează singur. Funcționează și fără internet. Preț: ${TAPS_PRICE_CANON}.`}
+  campaign="program-casa-de-marcat-magazin-alimentar"
+  breadcrumb={false}
+  ctaTitle="Vedeți Tapselo la lucru în magazinul alimentar"
+  ctaBody="Demo scurt pe echipamentul dumneavoastră: scanare, cântar, bon fiscal și recepție din poză — nu pe slide-uri."
+  ctaHref={internalPath("/demo/")}
+  jsonLd={jsonLd}
+  appJsonLd={false}
+>
+  <article class="kb-prose space-y-10" data-grocery-pos>
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Scanare coduri de bare</h2>
+      <p>
+        Layoutul de <strong>scanare</strong> ține focusul în câmpul de cod: orice cititor USB sau camera telefonului citește
+        EAN-13 din prima. Produsele preambalate intră în coș dintr-o singură citire; la promoții și garanția SGR, liniile se
+        completează conform regulilor din catalog.
+      </p>
+      <p>
+        Pentru detalii despre instalarea pe PC și iPhone, vedeți
+        <a href={internalPath("/program-casa-de-marcat-pe-calculator/")} class="font-semibold text-accent hover:underline"
+          >programul de casă de marcat pe calculator</a
+        >.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Cântar Dibal și produse la kg</h2>
+      <p>
+        La <strong>legume, brânză, carne la kg</strong> sau alte produse cântărite, eticheta Dibal cu cod de bare aduce greutatea
+        în POS. Nu mai tastați manual „2,350 kg” — cantitatea vine din etichetă. Ghidul
+        <a href={internalPath("/ghid/cantar-dibal/")} class="font-semibold text-accent hover:underline">cântar Dibal: PLU și etichete</a>
+        explică formatul EAN-13 recomandat (prefix 28, greutate, nu preț în cod).
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Bon fiscal pe casa de marcat Datecs</h2>
+      <p>
+        Bonul fiscal legal îl emite <strong>AMEF-ul</strong> (casa de marcat fiscală), nu ecranul de vânzare. Tapselo trimite bonul
+        la imprimanta fiscală conectată. {TAPS_FISCAL_PRINTERS_BLURB}
+      </p>
+      <p>
+        Pe <strong>iPhone</strong>, programul de vânzare rulează pe telefon; bonul pleacă la aceeași casă Datecs prin rețea sau
+        Bluetooth — detalii pe pagina
+        <a href={internalPath("/casa-de-marcat-pe-telefon/")} class="font-semibold text-accent hover:underline">casă de marcat pe telefon</a
+        >.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Stoc și recepție NIR din poză</h2>
+      <p>
+        Fiecare vânzare poate descărca stocul. La recepție, poza facturii sau avizului în admin propune liniile de NIR; confirmați,
+        iar stocul și documentele se aliniază cu marfa primită. Pentru gestiune completă (inventar pe telefon, rețete, rapoarte),
+        vedeți
+        <a href={internalPath("/program-gestiune-magazin/")} class="font-semibold text-accent hover:underline"
+          >programul de gestiune pentru magazin</a
+        >.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Funcționare fără internet</h2>
+      <p>
+        Vânzările continuă la casă când pică netul; bonul fiscal iese pe Datecs, iar tranzacțiile așteaptă sincronizarea. La
+        reconectare, datele ajung în admin. Ce cere ANAF pentru transmitere este același ca la orice AMEF — explicat în
+        <a href={internalPath("/ghid/articole/casa-de-marcat-fara-internet/")} class="font-semibold text-accent hover:underline"
+          >ghidul casă de marcat fără internet</a
+        >.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Ce îți trebuie ca să pornești</h2>
+      <p>
+        Lista de acte, echipamente și pași pentru un magazin nou este în ghidul
+        <a href={internalPath("/ghid/deschide-minimarket-alimentara/")} class="font-semibold text-accent hover:underline"
+          >cum deschizi o minimarket sau alimentară</a
+        >. Tapselo pornește de pe stick USB pe calculatorul de la tejghea; la instalare vă ajutăm să validați modelul casei de
+        marcat și conexiunea la cântar.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Comparație cu alte programe POS</h2>
+      <p>
+        Dacă evaluați mai multe soluții, pagina
+        <a href={internalPath("/comparatie/cel-mai-bun-program-casa-de-marcat/")} class="font-semibold text-accent hover:underline"
+          >cel mai bun program de casă de marcat</a
+        >
+        compară Tapselo cu alte programe pe criterii pentru magazine mici (offline, cântar, recepție). Tapselo: {TAPS_PRICE_CANON}.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-display text-3xl italic text-primary">Întrebări frecvente</h2>
+      <dl class="space-y-6">
+        {faq.map((item) => (
+          <div>
+            <dt class="font-bold text-primary">{item.q}</dt>
+            <dd class="mt-2">{item.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  </article>
+</GuideShell>
