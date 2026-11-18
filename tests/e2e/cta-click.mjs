@@ -247,5 +247,31 @@ test("cta_click: double-fire, modifier click, middle-click, queue-before-boot", 
   assert.equal(midCaps.length, 1, "middle-click (auxclick) tracks once");
   assertBeaconOptions(midCaps);
 
+  await page.waitForTimeout(450);
+  const rightAux = await page.evaluate(async () => {
+    window.__ctaCaptures = [];
+    const a = document.querySelector("a.sb-cta");
+    if (!a) return [];
+    a.dispatchEvent(new MouseEvent("auxclick", { bubbles: true, cancelable: true, button: 2 }));
+    await new Promise((r) => setTimeout(r, 50));
+    return window.__ctaCaptures ?? [];
+  });
+  assert.equal(rightAux.length, 0, "auxclick button 2 (right) emits nothing");
+
+  await page.waitForTimeout(450);
+  await page.evaluate(() => {
+    window.__ctaCaptures = [];
+  });
+  await page.evaluate(() => {
+    const a = document.querySelector("a.hm-btn");
+    a?.addEventListener("click", (e) => e.preventDefault(), { once: true, capture: true });
+  });
+  await page.focus("a.hm-btn");
+  await page.keyboard.press("Enter");
+  await page.waitForTimeout(50);
+  const enterCaps = await page.evaluate(() => window.__ctaCaptures ?? []);
+  assert.equal(enterCaps.length, 1, "keyboard Enter on focused demo CTA emits one cta_click");
+  assertBeaconOptions(enterCaps);
+
   await page.close();
 });

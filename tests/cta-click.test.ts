@@ -22,15 +22,20 @@ test("normalizePagePath adds trailing slash and strips index.html", () => {
 test("classifyCtaHref: marketing /demo/, app demo, plain app", () => {
   assert.deepEqual(classifyCtaHref("/demo/", BASE)?.target, "demo");
   assert.deepEqual(classifyCtaHref("/demo", BASE)?.target, "demo");
+  assert.deepEqual(classifyCtaHref("/demo/#section", BASE)?.target, "demo");
+  assert.equal(classifyCtaHref("/demo/sub", BASE), null, "only /demo landing, not child paths");
   assert.deepEqual(classifyCtaHref("http://www.tapselo.com/demo", BASE)?.target, "demo");
   assert.deepEqual(classifyCtaHref("https://tapselo.com/demo/?x=1", BASE)?.target, "demo");
   assert.deepEqual(classifyCtaHref("https://tapselo.com/demo/index.html", BASE)?.target, "demo");
   assert.deepEqual(classifyCtaHref("https://tapselo.com/demo/", BASE)?.targetUrl, "https://tapselo.com/demo/");
+  assert.deepEqual(classifyCtaHref("//tapselo.com/demo/", BASE)?.target, "demo");
+  assert.equal(classifyCtaHref("//evil.example/demo/", BASE), null);
   assert.deepEqual(classifyCtaHref("https://app.tapselo.com/?demo=1", BASE)?.target, "app-demo");
   assert.deepEqual(classifyCtaHref("https://app.tapselo.com", BASE)?.target, "app");
   assert.equal(classifyCtaHref("https://app.tapselo.com/signup", BASE)?.target, "app");
   assert.equal(classifyCtaHref("/ghid/", BASE), null);
   assert.equal(classifyCtaHref("https://evil.example/demo/", BASE), null);
+  assert.equal(classifyCtaHref("https://demo.tapselo.com/", BASE), null);
   assert.equal(classifyCtaHref("https://app.tapselo.com.evil.com/?demo=1", BASE), null);
   assert.equal(classifyCtaHref("https://notapselo.com/demo/", BASE), null);
 });

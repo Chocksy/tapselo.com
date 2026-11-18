@@ -21,6 +21,7 @@ type PostHogLike = {
 
 const BOOT_KEY = "__tapseloPostHogBoot";
 const CTA_QUEUE_MAX = 16;
+/** Suppress duplicate capture from click + auxclick or rapid re-clicks on the same anchor. */
 const CTA_DEDUPE_MS = 400;
 const recentCtaByAnchor = new WeakMap<HTMLAnchorElement, number>();
 
@@ -69,6 +70,7 @@ function startBoot(config: PostHogPublicConfig): Promise<PostHogLike | null> {
         capture_pageleave: true,
         person_profiles: "identified_only",
         disable_session_recording: true,
+        // Only pageviews and our own events: no survey, dead-click, exception or web-vitals scripts and requests.
         disable_surveys: true,
         capture_dead_clicks: false,
         capture_exceptions: false,

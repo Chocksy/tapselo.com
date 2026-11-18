@@ -30,15 +30,15 @@ test("sanitizeEventProperties drops EAN-like strings and sensitive keys", () => 
 test("sanitizeCtaClickProperties keeps utm_campaign with digit runs", () => {
   const out = sanitizeCtaClickProperties({
     location: "header",
-    page_path: "/unelte/calculator-reducere/",
+    page_path: "/ghid/ordin-1802-2014/",
     target: "app-demo",
     target_url: "https://app.tapselo.com/",
-    utm_campaign: "bf-2026-11-18",
+    utm_campaign: "20261118",
     utm_source: "5941234000013-news",
   });
-  assert.equal(out.utm_campaign, "bf-2026-11-18");
+  assert.equal(out.utm_campaign, "20261118");
   assert.equal(out.utm_source, "5941234000013-news");
-  assert.equal(out.page_path, "/unelte/calculator-reducere/");
+  assert.equal(out.page_path, "/ghid/ordin-1802-2014/");
 });
 
 test("toolUsedProperties never includes raw EAN in extras", () => {
@@ -56,14 +56,19 @@ test("isAnalyticsEnabled is false on localhost and in Astro dev", () => {
 
 test("isAnalyticsEnabled: E2E flag only on loopback", () => {
   const g = globalThis as { __TAPSELO_ANALYTICS_E2E__?: boolean };
+  assert.equal(isAnalyticsEnabled("127.0.0.1", false), false);
+  assert.equal(isAnalyticsEnabled("tapselo.com", true), false);
   try {
     g.__TAPSELO_ANALYTICS_E2E__ = true;
     assert.equal(isAnalyticsEnabled("127.0.0.1", false), true);
-    assert.equal(isAnalyticsEnabled("tapselo.com", false), true);
+    assert.equal(isAnalyticsEnabled("localhost", false), true);
+    assert.equal(isAnalyticsEnabled("tapselo.com", true), false, "E2E hook inert on non-loopback");
+    const stagingBefore = isAnalyticsEnabled("preview.pages.dev", false);
+    assert.equal(isAnalyticsEnabled("preview.pages.dev", false), stagingBefore, "E2E does not change non-loopback");
   } finally {
     delete g.__TAPSELO_ANALYTICS_E2E__;
   }
-  assert.equal(isAnalyticsEnabled("tapselo.com", false), true);
+  assert.equal(isAnalyticsEnabled("127.0.0.1", false), false);
 });
 
 test("toolUsedProperties: descărcarea formularului gol trimite doar unealta, acțiunea și formatul", () => {
