@@ -26,7 +26,7 @@ const card = "block rounded-xl border border-border-light p-4 transition-colors 
 ---
 
 <GuideShell
-  title={`${article.title} | Ghid Tapselo`}
+  title={`${article.seoTitle ?? article.title} | Ghid Tapselo`}
   description={article.description}
   heading={article.title}
   lead={article.description}
@@ -48,6 +48,11 @@ const card = "block rounded-xl border border-border-light p-4 transition-colors 
     <Fragment slot="byline">
       <AuthorByline author={author} publishedOn={article.published} updatedOn={article.updated} verifiedOn={article.verifiedOn} />
     </Fragment>
+  )}
+  {article.summaryBox && (
+    <div class="rounded-xl border border-border-light p-5 text-sm leading-relaxed text-text-secondary">
+      <div class="kb-prose text-sm" set:html={markdownToHtml(article.summaryBox)} />
+    </div>
   )}
   <article class="kb-prose" set:html={markdownToHtml(article.body)} />
 
