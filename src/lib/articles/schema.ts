@@ -40,6 +40,8 @@ export type SupportArticle = {
   body: string;
   faq?: ArticleFaq[];
   steps?: ArticleStep[];
+  /** Replaces default „Verificat la …” under Surse when set. */
+  sourcesVerifiedNote?: string;
 };
 
 export type ArticlesFile = {
@@ -141,6 +143,11 @@ function validateArticle(raw: unknown, index: number): SupportArticle {
     author = id;
   }
 
+  let sourcesVerifiedNote: string | undefined;
+  if (o.sourcesVerifiedNote !== undefined) {
+    sourcesVerifiedNote = isNonEmptyString(o.sourcesVerifiedNote, `${field}.sourcesVerifiedNote`);
+  }
+
   return {
     slug,
     title: isNonEmptyString(o.title, `${field}.title`),
@@ -157,6 +164,7 @@ function validateArticle(raw: unknown, index: number): SupportArticle {
     body: isNonEmptyString(o.body, `${field}.body`),
     faq,
     steps,
+    sourcesVerifiedNote,
   };
 }
 
@@ -258,7 +266,10 @@ export function buildArticleJsonLd(article: SupportArticle, all: SupportArticle[
 /** Map pathname → lastmod for sitemap serialize. */
 export function articleLastmodByPath(articles: SupportArticle[]): Map<string, string> {
   const m = new Map<string, string>();
-  for (const a of articles) m.set(articlePath(a.slug), a.updated);
+  for (const a of articles) {
+    const path = articlePath(a.slug).replace(/\/$/, "") || "/";
+    m.set(path, a.updated);
+  }
   m.set("/ghid/articole", articles.reduce((max, a) => (a.updated > max ? a.updated : max), articles[0].updated));
   return m;
 }
