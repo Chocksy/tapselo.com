@@ -44,6 +44,8 @@ export type SupportArticle = {
   body: string;
   faq?: ArticleFaq[];
   steps?: ArticleStep[];
+  /** Replaces default „Verificat la …” under Surse when set. */
+  sourcesVerifiedNote?: string;
 };
 
 export type ArticlesFile = {
@@ -148,6 +150,11 @@ function validateArticle(raw: unknown, index: number): SupportArticle {
   const seoTitle = o.seoTitle === undefined ? undefined : isNonEmptyString(o.seoTitle, `${field}.seoTitle`);
   const summaryBox = o.summaryBox === undefined ? undefined : isNonEmptyString(o.summaryBox, `${field}.summaryBox`);
 
+  let sourcesVerifiedNote: string | undefined;
+  if (o.sourcesVerifiedNote !== undefined) {
+    sourcesVerifiedNote = isNonEmptyString(o.sourcesVerifiedNote, `${field}.sourcesVerifiedNote`);
+  }
+
   return {
     slug,
     title: isNonEmptyString(o.title, `${field}.title`),
@@ -166,6 +173,7 @@ function validateArticle(raw: unknown, index: number): SupportArticle {
     body: isNonEmptyString(o.body, `${field}.body`),
     faq,
     steps,
+    sourcesVerifiedNote,
   };
 }
 
