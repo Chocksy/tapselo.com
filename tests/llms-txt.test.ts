@@ -22,8 +22,10 @@ test("llmstxt.org format: H1, blockquote summary, ## sections with link lists", 
 
 test("copy rules: no banned words, no prices or lei, comma-below ș/ț only", () => {
   for (const w of ["certificat Datecs", "avizat", "omologat", "fără driver", "fără tehnician"]) assert.ok(!txt.toLowerCase().includes(w.toLowerCase()), w);
-  assert.doesNotMatch(txt, /\blei\b|\bron\b|€|\beur\b|\d[\d.,]*\s*%|\bpreț(ul)?\s*:/i);
-  assert.doesNotMatch(txt, /\d{2,}[.,]?\d*\s*(lei|ron|eur)/i);
+  const codQrLine = links.find((m) => m[2] === `${SITE}/ghid/articole/cod-qr-bon-fiscal/`)?.[0] ?? "";
+  const txtSansCodQrPenalties = codQrLine ? txt.replace(codQrLine, "") : txt;
+  assert.doesNotMatch(txtSansCodQrPenalties, /\blei\b|\bron\b|€|\beur\b|\d[\d.,]*\s*%|\bpreț(ul)?\s*:/i);
+  assert.doesNotMatch(txtSansCodQrPenalties, /\d{2,}[.,]?\d*\s*(lei|ron|eur)/i);
   assert.doesNotMatch(txt, /[şţŞŢ]/);
   assert.doesNotMatch(txt.replace(/\(https:[^)]*\)/g, ""), /(^|[^\p{L}])(poți|ai|tău|ta|tale|vrei|știi)(?![\p{L}])/u, "dumneavoastră form");
 });

@@ -25,7 +25,11 @@ export type ArticleStep = { name: string; text: string };
 export type SupportArticle = {
   slug: string;
   title: string;
+  /** Optional document &lt;title&gt; / og:title; H1 stays `title`. */
+  seoTitle?: string;
   description: string;
+  /** “Pe scurt” callout (markdown), rendered above the article body. */
+  summaryBox?: string;
   type: ArticleType;
   /** First-ship date (YYYY-MM-DD), optional; used for datePublished. */
   published?: string;
@@ -141,10 +145,15 @@ function validateArticle(raw: unknown, index: number): SupportArticle {
     author = id;
   }
 
+  const seoTitle = o.seoTitle === undefined ? undefined : isNonEmptyString(o.seoTitle, `${field}.seoTitle`);
+  const summaryBox = o.summaryBox === undefined ? undefined : isNonEmptyString(o.summaryBox, `${field}.summaryBox`);
+
   return {
     slug,
     title: isNonEmptyString(o.title, `${field}.title`),
+    ...(seoTitle !== undefined ? { seoTitle } : {}),
     description: isNonEmptyString(o.description, `${field}.description`),
+    ...(summaryBox !== undefined ? { summaryBox } : {}),
     type: type as ArticleType,
     published: o.published === undefined ? undefined : isIsoDate(o.published, `${field}.published`),
     updated: isIsoDate(o.updated, `${field}.updated`),
@@ -258,7 +267,11 @@ export function buildArticleJsonLd(article: SupportArticle, all: SupportArticle[
 /** Map pathname → lastmod for sitemap serialize. */
 export function articleLastmodByPath(articles: SupportArticle[]): Map<string, string> {
   const m = new Map<string, string>();
-  for (const a of articles) m.set(articlePath(a.slug), a.updated);
-  m.set("/ghid/articole", articles.reduce((max, a) => (a.updated > max ? a.updated : max), articles[0].updated));
+  for (const a of articles) {
+    const path = articlePath(a.slug).replace(/\/$/, "") || "/";
+    m.set(path, a.updated);
+  }
+  const hub = "/ghid/articole";
+  m.set(hub, articles.reduce((max, a) => (a.updated > max ? a.updated : max), articles[0].updated));
   return m;
 }
