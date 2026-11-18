@@ -64,6 +64,12 @@ export function resolvePostHogConfig(env: {
 
 /** No analytics on local dev hosts or Astro dev server. */
 export function isAnalyticsEnabled(hostname: string, astroDev: boolean): boolean {
+  if (
+    typeof globalThis !== "undefined" &&
+    (globalThis as { __TAPSELO_ANALYTICS_E2E__?: boolean }).__TAPSELO_ANALYTICS_E2E__
+  ) {
+    return true;
+  }
   if (astroDev) return false;
   const h = hostname.toLowerCase();
   if (h === "localhost" || h === "127.0.0.1" || h.endsWith(".local")) return false;

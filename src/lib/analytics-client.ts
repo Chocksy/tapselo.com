@@ -8,9 +8,14 @@ import {
   type PostHogPublicConfig,
   type ToolAction,
 } from "./analytics.ts";
+import { buildCtaClickProperties, type CtaClickProperties } from "./cta-click.ts";
 
 type PostHogLike = {
-  capture: (event: string, properties?: Record<string, unknown>) => void;
+  capture: (
+    event: string,
+    properties?: Record<string, unknown>,
+    options?: { send_instantly?: boolean; transport?: "sendBeacon" },
+  ) => void;
 };
 
 const BOOT_KEY = "__tapseloPostHogBoot";
@@ -62,7 +67,12 @@ export function initSiteAnalytics(config: PostHogPublicConfig, astroDev = import
   setBootState({ promise: startBoot(config) });
 }
 
-function capture(event: string, properties: Record<string, unknown>, astroDev = import.meta.env.DEV): void {
+function capture(
+  event: string,
+  properties: Record<string, unknown>,
+  astroDev = import.meta.env.DEV,
+  options?: { send_instantly?: boolean; transport?: "sendBeacon" },
+): void {
   if (!shouldRun(astroDev)) return;
   let state = bootState();
   if (!state) {
@@ -71,7 +81,7 @@ function capture(event: string, properties: Record<string, unknown>, astroDev = 
   }
   void state.promise.then((ph) => {
     if (!ph) return;
-    ph.capture(event, sanitizeEventProperties(properties));
+    ph.capture(event, sanitizeEventProperties(properties), options);
   });
 }
 
@@ -87,18 +97,29 @@ export function trackBarcodeLookup(foundTapselo: boolean, foundOff: boolean): vo
   capture("barcode_lookup", barcodeLookupProperties(foundTapselo, foundOff));
 }
 
-export function trackCtaClick(location: string): void {
-  capture("cta_click", sanitizeEventProperties({ location }));
+/** @deprecated Use delegated cta_click tracking; retained for tests or manual calls. */
+export function trackCtaClick(properties: CtaClickProperties): void {
+  captureCtaClick(properties);
+}
+
+function captureCtaClick(properties: CtaClickProperties): void {
+  capture("cta_click", properties, import.meta.env.DEV, {
+    send_instantly: true,
+    transport: "sendBeacon",
+  });
 }
 
 export function bindCtaClickTracking(root: Document | HTMLElement = document): void {
   root.addEventListener(
     "click",
     (e) => {
-      const el = (e.target as Element | null)?.closest?.("[data-tapselo-cta]");
+      if (e.defaultPrevented) return;
+      if (e.button !== 0) return;
+      const el = (e.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
       if (!el) return;
-      const location = el.getAttribute("data-tapselo-cta");
-      if (location) trackCtaClick(location);
+      const props = buildCtaClickProperties(el, window.location);
+      if (!props) return;
+      captureCtaClick(props);
     },
     true,
   );
