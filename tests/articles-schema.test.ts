@@ -68,13 +68,37 @@ test("article paths match route prefix", () => {
   }
 });
 
+test("optional seoTitle and summaryBox parse when set", () => {
+  const articles = parseArticlesFile(articlesJson);
+  const qr = articles.find((a) => a.slug === "cod-qr-bon-fiscal");
+  assert.ok(qr);
+  assert.equal(qr.seoTitle, "Cod QR pe bonul fiscal: amenzi suspendate până la 31.10.2027");
+  assert.match(qr.summaryBox ?? "", /^\*\*Pe scurt \(verificat la 18\.11\.2026\):\*\*/);
+  const dep = articles.find((a) => a.slug === "depunere-a4200");
+  assert.ok(dep);
+  assert.equal(dep.seoTitle, undefined);
+  assert.equal(dep.summaryBox, undefined);
+});
+
+test("articles.json rejects empty seoTitle or summaryBox", () => {
+  const qr = articlesJson.articles.find((a: { slug: string }) => a.slug === "cod-qr-bon-fiscal");
+  assert.throws(
+    () => parseArticlesFile({ articles: [{ ...qr, seoTitle: "   " }] }),
+    (e: unknown) => e instanceof ArticleSchemaError && e.field.includes("seoTitle"),
+  );
+  assert.throws(
+    () => parseArticlesFile({ articles: [{ ...qr, summaryBox: "" }] }),
+    (e: unknown) => e instanceof ArticleSchemaError && e.field.includes("summaryBox"),
+  );
+});
+
 test("cod-qr-bon-fiscal reflects OUG 43/2026 suspension through 31 Oct 2027", () => {
   const articles = parseArticlesFile(articlesJson);
   const qr = articles.find((a) => a.slug === "cod-qr-bon-fiscal");
   assert.ok(qr);
-  assert.equal(qr.updated, "2026-11-02");
-  assert.equal(qr.verifiedOn, "2026-11-02");
-  assert.match(qr.description, /31 octombrie 2027/);
+  assert.equal(qr.updated, "2026-11-18");
+  assert.equal(qr.verifiedOn, "2026-11-18");
+  assert.match(qr.description, /31\.10\.2027/);
   assert.doesNotMatch(qr.description, /1 noiembrie 2026/);
 
   const corpus = [qr.body, qr.description, ...(qr.faq ?? []).flatMap((f) => [f.q, f.a])].join("\n");
@@ -94,6 +118,7 @@ test("cod-qr-bon-fiscal reflects OUG 43/2026 suspension through 31 Oct 2027", ()
   const nodes = buildArticleJsonLd(qr, articles);
   const faq = nodes.find((n) => n["@type"] === "FAQPage");
   assert.ok(faq);
+  assert.equal((faq.mainEntity as unknown[]).length, 7);
   const faqText = JSON.stringify(faq);
   assert.match(faqText, /31 octombrie 2027 inclusiv/);
   assert.match(faqText, /OUG 43\/2026, art\. III/);

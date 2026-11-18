@@ -88,7 +88,7 @@ const ENTRIES: Record<string, Entry> = {
   "/ghid/articole/casa-de-marcat-fara-internet/": { title: "Casa de marcat fără internet", desc: "Bonuri offline, transmiterea către ANAF și formularul F4110." },
   "/ghid/articole/cod-qr-bon-fiscal/": {
     title: "Cod QR pe bonul fiscal",
-    desc: "Obligația de cod QR pe bon, suspendarea sancțiunilor până la 31 octombrie 2027 și ce verificați la service-ul autorizat.",
+    desc: "Amenda de 2.000–4.000 lei pentru bon fără cod QR e suspendată până la 31.10.2027 inclusiv (OUG 43/2026). Obligația QR rămâne. Ce verifici la casă.",
   },
   // Comparații
   "/comparatie/": { title: "Comparație programe de casă de marcat", desc: "Tabel cu programele POS din România, după informațiile publice ale producătorilor." },
