@@ -174,10 +174,10 @@ const ctaLocation = `ghid-${campaign}`;
               </li>
             ))}
           </ul>
-          {(sourcesVerifiedNote ?? verifiedOn) && (
-            <p class="mt-4 text-sm text-text-muted">
-              {sourcesVerifiedNote ?? `Verificat la ${formatDateRo(verifiedOn!)}.`}
-            </p>
+          {sourcesVerifiedNote ? (
+            <p class="mt-4 text-sm text-text-muted">{sourcesVerifiedNote}</p>
+          ) : (
+            verifiedOn && <p class="mt-4 text-sm text-text-muted">Verificat la {formatDateRo(verifiedOn)}.</p>
           )}
         </section>
       )}
