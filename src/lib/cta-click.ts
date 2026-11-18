@@ -5,9 +5,20 @@ export type CtaTarget = "demo" | "app-demo" | "app";
 const TAPSELO_HOSTS = new Set(["tapselo.com", "www.tapselo.com"]);
 const APP_HOST = "app.tapselo.com";
 
+/** Strips `index.html` suffixes from static pathnames before normalizing. */
+export function stripIndexHtmlPath(pathname: string): string {
+  const raw = (pathname.split(/[?#]/)[0] || "/").trim();
+  if (raw === "/index.html") return "/";
+  if (raw.endsWith("/index.html")) {
+    const without = raw.slice(0, -"/index.html".length);
+    return without || "/";
+  }
+  return raw;
+}
+
 /** Pathname with a trailing slash; root stays `/`. */
 export function normalizePagePath(pathname: string): string {
-  const base = (pathname.split(/[?#]/)[0] || "/").trim();
+  const base = stripIndexHtmlPath(pathname);
   if (base === "/" || base === "") return "/";
   return base.endsWith("/") ? base : `${base}/`;
 }
@@ -40,7 +51,8 @@ export function classifyCtaHref(
 }
 
 function isMarketingDemoPath(pathname: string): boolean {
-  const path = pathname.replace(/\/$/, "") || "/";
+  const stripped = stripIndexHtmlPath(pathname);
+  const path = stripped.replace(/\/$/, "") || "/";
   return path === "/demo";
 }
 

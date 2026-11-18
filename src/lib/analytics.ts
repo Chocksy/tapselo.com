@@ -47,6 +47,17 @@ export type A4200CheckResult = "ok" | "errors";
 const SENSITIVE_KEY = /^(ean|cui|nui|cif|filename|file|name|price|message|query|barcode|product|supplier|company|tax)/i;
 const EAN_BODY = /\d{8,13}/;
 
+/** cta_click fields: never run EAN-like body heuristics (UTM dates, paths, etc.). */
+const CTA_CLICK_PLAIN_STRING_KEYS = new Set([
+  "location",
+  "page_path",
+  "target",
+  "target_url",
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+]);
+
 export interface PostHogPublicConfig {
   key: string;
   apiHost: string;
@@ -64,16 +75,26 @@ export function resolvePostHogConfig(env: {
 
 /** No analytics on local dev hosts or Astro dev server. */
 export function isAnalyticsEnabled(hostname: string, astroDev: boolean): boolean {
-  if (
-    typeof globalThis !== "undefined" &&
-    (globalThis as { __TAPSELO_ANALYTICS_E2E__?: boolean }).__TAPSELO_ANALYTICS_E2E__
-  ) {
-    return true;
-  }
-  if (astroDev) return false;
   const h = hostname.toLowerCase();
+  const e2e =
+    typeof globalThis !== "undefined" &&
+    (globalThis as { __TAPSELO_ANALYTICS_E2E__?: boolean }).__TAPSELO_ANALYTICS_E2E__;
+  if (e2e && (h === "localhost" || h === "127.0.0.1")) return true;
+  if (astroDev) return false;
   if (h === "localhost" || h === "127.0.0.1" || h.endsWith(".local")) return false;
   return true;
+}
+
+function sanitizeValue(key: string, value: unknown, plainStringKeys: Set<string>): string | number | boolean | null | undefined {
+  if (value === null) return null;
+  if (typeof value === "boolean" || typeof value === "number") return value;
+  if (typeof value === "string") {
+    if (plainStringKeys.has(key)) return value;
+    const compact = value.replace(/[\s-]/g, "");
+    if (EAN_BODY.test(compact)) return undefined;
+    return value;
+  }
+  return undefined;
 }
 
 /** Drop sensitive keys and EAN-like digit runs before events leave the browser. */
@@ -83,19 +104,21 @@ export function sanitizeEventProperties(
   const out: Record<string, string | number | boolean | null> = {};
   for (const [key, value] of Object.entries(properties)) {
     if (SENSITIVE_KEY.test(key)) continue;
-    if (value === null) {
-      out[key] = null;
-      continue;
-    }
-    if (typeof value === "boolean" || typeof value === "number") {
-      out[key] = value;
-      continue;
-    }
-    if (typeof value === "string") {
-      const compact = value.replace(/[\s-]/g, "");
-      if (EAN_BODY.test(compact)) continue;
-      out[key] = value;
-    }
+    const v = sanitizeValue(key, value, new Set());
+    if (v !== undefined) out[key] = v;
+  }
+  return out;
+}
+
+/** Sanitize cta_click payloads; UTM and path fields are kept verbatim. */
+export function sanitizeCtaClickProperties(
+  properties: Record<string, unknown>,
+): Record<string, string | number | boolean | null> {
+  const out: Record<string, string | number | boolean | null> = {};
+  for (const [key, value] of Object.entries(properties)) {
+    if (SENSITIVE_KEY.test(key)) continue;
+    const v = sanitizeValue(key, value, CTA_CLICK_PLAIN_STRING_KEYS);
+    if (v !== undefined) out[key] = v;
   }
   return out;
 }

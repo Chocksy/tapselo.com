@@ -1,5 +1,5 @@
 // Headless checks for delegated cta_click (PostHog stub). Build first:
-//   astro build --outDir dist-cta-e2e && node --test tests/e2e/cta-click.mjs dist-cta-e2e
+//   npm run test:e2e:cta
 
 import assert from "node:assert/strict";
 import { createReadStream, existsSync, statSync } from "node:fs";
@@ -8,7 +8,7 @@ import { extname, join, normalize, resolve } from "node:path";
 import { test, before, after } from "node:test";
 import { chromium } from "playwright-core";
 
-const DIST = resolve(process.argv[2] ?? process.env.E2E_DIST ?? "dist-cta-e2e");
+const DIST = resolve(process.env.E2E_DIST ?? "dist-cta-e2e");
 const CHROME = process.env.CHROME_PATH ?? "/usr/local/bin/google-chrome";
 
 const MIME = {
@@ -48,18 +48,28 @@ const INIT = () => {
         if (event === "cta_click") window.__ctaCaptures.push({ properties, options });
       },
     }),
+    client: {
+      capture: (event, properties, options) => {
+        if (event === "cta_click") window.__ctaCaptures.push({ properties, options });
+      },
+    },
   };
 };
 
-async function clickAndCapture(page, selector, preventNav = true) {
+async function clickAndCapture(page, selector, opts = {}) {
+  const { modifiers = [] } = opts;
   await page.evaluate((sel) => {
     const a = document.querySelector(sel);
     if (a) a.addEventListener("click", (e) => e.preventDefault(), { once: true, capture: true });
   }, selector);
-  await page.click(selector, { noWaitAfter: true });
+  await page.click(selector, { modifiers, noWaitAfter: true });
   await page.waitForTimeout(50);
-  const caps = await page.evaluate(() => window.__ctaCaptures ?? []);
-  return caps;
+  return page.evaluate(() => window.__ctaCaptures ?? []);
+}
+
+function assertBeaconOptions(caps) {
+  assert.equal(caps[0].options?.send_instantly, true);
+  assert.equal(caps[0].options?.transport, "sendBeacon");
 }
 
 before(async () => {
@@ -131,21 +141,111 @@ test("cta_click: one event per qualifying click with core properties", async () 
     });
     const caps = await clickAndCapture(page, c.selector);
     assert.equal(caps.length, 1, `${c.path} ${c.selector} should emit one cta_click`);
+    assertBeaconOptions(caps);
     const { properties } = caps[0];
     assert.equal(properties.location, c.location);
     assert.equal(properties.page_path, c.page_path);
     assert.equal(properties.target, c.target);
     assert.ok(properties.target_url);
-    recorded.push({ path: c.path, selector: c.selector, properties });
+    recorded.push({ path: c.path, selector: c.selector, properties, options: caps[0].options });
   }
 
   await page.goto(`${base}/ghid/articole/casa-de-marcat-fara-internet/`, { waitUntil: "domcontentloaded" });
   await page.evaluate(() => {
     window.__ctaCaptures = [];
   });
-  const nonCaps = await clickAndCapture(page, 'a[href="/"]');
+  const nonCaps = await clickAndCapture(page, ".kb-prose a[href='/']");
   assert.equal(nonCaps.length, 0, "Încearcă Tapselo → / should not emit cta_click");
 
   console.log(JSON.stringify(recorded, null, 2));
+  await page.close();
+});
+
+test("cta_click: double-fire, modifier click, middle-click, queue-before-boot", async () => {
+  const page = await browser.newPage();
+
+  await page.addInitScript(() => {
+    window.__TAPSELO_ANALYTICS_E2E__ = true;
+    window.__ctaCaptures = [];
+    let resolveBoot;
+    const promise = new Promise((resolve) => {
+      resolveBoot = resolve;
+    });
+    const client = {
+      capture: (event, properties, options) => {
+        if (event === "cta_click") window.__ctaCaptures.push({ properties, options });
+      },
+    };
+    window.__tapseloPostHogBoot = { promise, client: undefined };
+    window.__flushCtaBoot = () => {
+      window.__tapseloPostHogBoot.client = client;
+      resolveBoot(client);
+    };
+  });
+
+  await page.goto(`${base}/`, { waitUntil: "domcontentloaded" });
+
+  await page.evaluate(() => {
+    window.__ctaCaptures = [];
+  });
+  await clickAndCapture(page, "a.sb-cta");
+  let caps = await page.evaluate(() => window.__ctaCaptures ?? []);
+  assert.equal(caps.length, 0, "queued before boot resolves");
+
+  await page.evaluate(() => window.__flushCtaBoot());
+  await page.waitForTimeout(50);
+  caps = await page.evaluate(() => window.__ctaCaptures ?? []);
+  assert.equal(caps.length, 1, "flush queued cta_click after boot");
+  assertBeaconOptions(caps);
+
+  await page.waitForTimeout(450);
+  await page.evaluate(() => {
+    window.__ctaCaptures = [];
+  });
+  const dbl = await page.evaluate(async () => {
+    const a = document.querySelector("a.hm-btn");
+    if (!a) return [];
+    const stop = (e) => e.preventDefault();
+    a.addEventListener("click", stop, { capture: true });
+    a.click();
+    a.click();
+    a.removeEventListener("click", stop, { capture: true });
+    await new Promise((r) => setTimeout(r, 50));
+    return window.__ctaCaptures ?? [];
+  });
+  assert.equal(dbl.length, 1, "deduped rapid duplicate clicks on same anchor");
+
+  await page.waitForTimeout(450);
+  const modCaps = await page.evaluate(async () => {
+    window.__ctaCaptures = [];
+    const a = document.querySelector("a.sb-cta");
+    if (!a) return [];
+    const stop = (e) => e.preventDefault();
+    a.addEventListener("click", stop, { capture: true });
+    a.dispatchEvent(
+      new MouseEvent("click", { bubbles: true, cancelable: true, button: 0, ctrlKey: true }),
+    );
+    a.removeEventListener("click", stop, { capture: true });
+    await new Promise((r) => setTimeout(r, 50));
+    return window.__ctaCaptures ?? [];
+  });
+  assert.equal(modCaps.length, 1, "ctrl+click still tracks once");
+  assertBeaconOptions(modCaps);
+
+  await page.waitForTimeout(450);
+  const midCaps = await page.evaluate(async () => {
+    window.__ctaCaptures = [];
+    const a = document.querySelector("a.sb-cta");
+    if (!a) return [];
+    const stop = (e) => e.preventDefault();
+    a.addEventListener("auxclick", stop, { capture: true });
+    a.dispatchEvent(new MouseEvent("auxclick", { bubbles: true, cancelable: true, button: 1 }));
+    a.removeEventListener("auxclick", stop, { capture: true });
+    await new Promise((r) => setTimeout(r, 50));
+    return window.__ctaCaptures ?? [];
+  });
+  assert.equal(midCaps.length, 1, "middle-click (auxclick) tracks once");
+  assertBeaconOptions(midCaps);
+
   await page.close();
 });
