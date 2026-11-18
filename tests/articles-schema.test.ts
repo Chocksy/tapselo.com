@@ -68,6 +68,30 @@ test("article paths match route prefix", () => {
   }
 });
 
+test("optional seoTitle and summaryBox parse when set", () => {
+  const articles = parseArticlesFile(articlesJson);
+  const qr = articles.find((a) => a.slug === "cod-qr-bon-fiscal");
+  assert.ok(qr);
+  assert.equal(qr.seoTitle, "Cod QR pe bonul fiscal: amenzi suspendate până la 31.10.2027");
+  assert.match(qr.summaryBox ?? "", /^\*\*Pe scurt \(verificat la 18\.11\.2026\):\*\*/);
+  const dep = articles.find((a) => a.slug === "depunere-a4200");
+  assert.ok(dep);
+  assert.equal(dep.seoTitle, undefined);
+  assert.equal(dep.summaryBox, undefined);
+});
+
+test("articles.json rejects empty seoTitle or summaryBox", () => {
+  const qr = articlesJson.articles.find((a: { slug: string }) => a.slug === "cod-qr-bon-fiscal");
+  assert.throws(
+    () => parseArticlesFile({ articles: [{ ...qr, seoTitle: "   " }] }),
+    (e: unknown) => e instanceof ArticleSchemaError && e.field.includes("seoTitle"),
+  );
+  assert.throws(
+    () => parseArticlesFile({ articles: [{ ...qr, summaryBox: "" }] }),
+    (e: unknown) => e instanceof ArticleSchemaError && e.field.includes("summaryBox"),
+  );
+});
+
 test("cod-qr-bon-fiscal reflects OUG 43/2026 suspension through 31 Oct 2027", () => {
   const articles = parseArticlesFile(articlesJson);
   const qr = articles.find((a) => a.slug === "cod-qr-bon-fiscal");
