@@ -73,6 +73,10 @@ const ENTRIES: Record<string, Entry> = {
     title: "Declarare punct de lucru la ANAF (2026)",
     desc: "ONRC, apoi 060 cu salariați (aceeași UAT, 30 zile); fără salariați la adresă: 061 sau D700 secțiunea G.",
   },
+  "/ghid/casa-de-marcat-obligatorie/": {
+    title: "Casă de marcat obligatorie (2026)",
+    desc: "Când vi se cere AMEF (OUG 28/1999), târg de Crăciun, comerț ocazional și acceptarea cardului din 2026.",
+  },
   // Ghiduri: deschiderea unui magazin
   "/ghid/deschide-macelarie/": { title: "Deschiderea unei măcelării", desc: "Codul CAEN, înregistrarea DSVSA, acordul primăriei și casa de marcat." },
   "/ghid/deschide-brutarie-patiserie/": { title: "Deschiderea unei brutării sau patiserii", desc: "Codurile CAEN, DSVSA, acordul primăriei și casa de marcat." },

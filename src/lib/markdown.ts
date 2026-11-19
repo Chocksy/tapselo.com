@@ -1,6 +1,6 @@
 // Tiny markdown to HTML for the KB bodies on /ghid pages.
 // Supports ##/### headings, paragraphs, **bold**, `code`, "- " and "1. " lists,
-// [text](url) links, and pipe tables. Everything else is escaped.
+// [text](url) links, pipe tables, and consecutive "> " blockquote lines. Everything else is escaped.
 
 import { escapeHtml } from "./offers-render.ts";
 import { internalPath } from "./internal-url.ts";
@@ -128,6 +128,7 @@ export function markdownToHtml(md: string): string {
   let para: string[] = [];
   let list: { tag: "ul" | "ol"; items: string[] } | null = null;
   let tableLines: string[] = [];
+  let blockquote: string[] | null = null;
   const slugCounts = new Map<string, number>();
 
   const headingId = (title: string): string => {
@@ -155,11 +156,31 @@ export function markdownToHtml(md: string): string {
     if (parsed.length) html.push(renderTable(parsed));
     tableLines = [];
   };
+  const flushBlockquote = () => {
+    if (!blockquote?.length) {
+      blockquote = null;
+      return;
+    }
+    const inner = blockquote.map((q) => `<p>${inlineMd(q)}</p>`).join("\n");
+    html.push(`<blockquote class="kb-blockquote">${inner}</blockquote>`);
+    blockquote = null;
+  };
 
   const lines = String(md ?? "").split(/\r?\n/);
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const trimmed = line.trim();
+
+    const bq = /^\s*>\s?(.*)$/.exec(line);
+    if (bq) {
+      flushPara();
+      flushList();
+      flushTable();
+      blockquote ??= [];
+      blockquote.push(bq[1]);
+      continue;
+    }
+    flushBlockquote();
 
     if (isTableRow(line)) {
       flushPara();
@@ -210,5 +231,6 @@ export function markdownToHtml(md: string): string {
   flushPara();
   flushList();
   flushTable();
+  flushBlockquote();
   return html.join("\n");
 }
