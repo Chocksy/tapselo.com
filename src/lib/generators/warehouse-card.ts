@@ -1,10 +1,20 @@
-// Fișă de magazie (kind "warehouse_card", form 14-3-8, OMFP 2634/2015). Layout follows the
-// official model: unitate, magazie, material, U/M, preț unitar; rows with dată, document
-// (număr, fel), intrări, ieșiri, stoc, semnătură de control.
+// Fișă de magazie (kind "warehouse_card", cod formular 14-3-8, OMFP 2634/2015).
+// Tool layout: 14-3-8-style sheet — unitate, magazie, material, U/M, preț unitar; mișcări cu dată,
+// document (număr, fel), intrări, ieșiri, stoc, semnătură de control.
 
 import type { DraftRecord, WarehouseCardPayload } from "./types.ts";
 import { roundMoney } from "./validate.ts";
 import { escapeHtml, fmtMoney, fmtQty, formatDate, renderShell } from "./page.ts";
+
+/** Empty 14-3-8 grid for print/PDF; header labels only, no user data required. */
+export const BLANK_WAREHOUSE_CARD: WarehouseCardPayload = {
+  company: "",
+  warehouse: "",
+  product: "",
+  unit: "",
+  opening_stock: 0,
+  rows: [],
+};
 
 export interface WarehouseCardCalcRow {
   stock: number;

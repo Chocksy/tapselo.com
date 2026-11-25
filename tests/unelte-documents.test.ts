@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { cashbookHtml, cashOrderHtml, nirHtml, warehouseCardHtml } from "../src/lib/unelte/document-export.ts";
+import { BLANK_WAREHOUSE_CARD } from "../src/lib/generators/warehouse-card.ts";
 import { readFileSync } from "node:fs";
 import { BLANK_CASH_ORDER } from "../src/lib/generators/cash-order.ts";
 
@@ -77,6 +78,16 @@ test("local dispoziție de încasare: ÎNCASARE, fără verso beneficiar", () =>
   });
   assert.match(html, /DISPOZIȚIE DE ÎNCASARE/);
   assert.doesNotMatch(html, /Date suplimentare privind beneficiarul/);
+});
+
+test("local fișă de magazie: model gol cu antet și rânduri goale", () => {
+  const html = warehouseCardHtml(BLANK_WAREHOUSE_CARD, true);
+  assert.match(html, /14-3-8/);
+  assert.match(html, /Fișă de magazie \(model gol\)/);
+  assert.match(html, /<b>Unitatea:<\/b>\s*<\/span>/);
+  const emptyRows = html.match(/<tr><td><\/td><td><\/td><td><\/td><td><\/td><td><\/td><td><\/td><td><\/td><td><\/td><\/tr>/g);
+  assert.ok(emptyRows && emptyRows.length >= 10);
+  assert.doesNotMatch(html, /Stoc final/);
 });
 
 test("local fișă de magazie: cod 14-3-8, stoc rulat, UTM unelte", () => {

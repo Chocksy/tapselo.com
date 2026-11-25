@@ -29,7 +29,10 @@ const ENTRIES: Record<string, Entry> = {
     title: "Declarație conformitate alimente",
     desc: "Model voluntar de declarație de conformitate pentru produse alimentare, PDF și DOCX în browser.",
   },
-  "/unelte/fisa-de-magazie/": { title: "Fișă de magazie", desc: "Urmăriți intrările, ieșirile și stocul unui produs, document cu document." },
+  "/unelte/fisa-de-magazie/": {
+    title: "Fișă de magazie (cod 14-3-8)",
+    desc: "Model PDF gratuit de fișă de magazie 14-3-8: generator sau model gol, cu evidența intrărilor, ieșirilor și stocului.",
+  },
   "/unelte/grafic-temperatura-frigider/": {
     title: "Grafic temperatură frigider",
     desc: "Grafic lunar de temperatură pentru frigider sau congelator, cu limitele setate de dumneavoastră, PDF în browser.",

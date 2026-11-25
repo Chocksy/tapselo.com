@@ -90,9 +90,9 @@ const breadcrumbs = breadcrumbLinks(toolBreadcrumbs(heading, path));
                     <div>
                       <h3 class="text-lg font-semibold text-primary">{item.q}</h3>
                       {item.aHtml ? (
-                        <p class="mt-2 leading-relaxed text-text-secondary" set:html={item.aHtml} />
+                        <p class="mt-2 break-words leading-relaxed text-text-secondary" set:html={item.aHtml} />
                       ) : (
-                        <p class="mt-2 leading-relaxed text-text-secondary">{item.a}</p>
+                        <p class="mt-2 break-words leading-relaxed text-text-secondary">{item.a}</p>
                       )}
                     </div>
                   ))}
