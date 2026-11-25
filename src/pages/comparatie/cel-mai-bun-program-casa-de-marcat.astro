@@ -3,6 +3,7 @@
 // Copy is verbatim from cross-app-seo/tapselo/tap-bestof-2026-10-18.md §4; do not reword.
 import GuideShell from "../../components/GuideShell.astro";
 import AuthorByline from "../../components/AuthorByline.astro";
+import EmailLink from "../../components/EmailLink.astro";
 import { AUTHORS, authorPersonJsonLd } from "../../data/authors.ts";
 import { internalPath } from "../../lib/internal-url.ts";
 import {
@@ -215,7 +216,12 @@ const ext = { rel: "noopener", target: "_blank" };
       </ol>
       <p><strong>Cum am verificat:</strong> am citit paginile publice ale fiecărui producător pe 18.10.2026. Fiecare informație are linkul și data în secțiunea „<a href="#surse">Surse</a>” de la final. Nu am făcut conturi la ceilalți producători și nu am folosit note de pe site-uri de recenzii. Când o pagină nu spune nimic despre un criteriu, am scris „nu e menționat”, nu „nu”. Despre Tapselo am scris doar ce apare pe tapselo.com.</p>
       <p><strong>Ce am testat noi:</strong> Încă nu am publicat un test practic cu capturi; informațiile despre Tapselo vin din documentația de pe tapselo.com.</p>
-      <p><strong>Transparență:</strong> Tapselo e produsul nostru, iar autorul paginii este fondatorul Tapselo. Dacă vezi o informație depășită, scrie-ne la <a href="mailto:contact@tapselo.com">contact@tapselo.com</a> și o corectăm. Recitim toate sursele cel puțin o dată la 90 de zile și schimbăm data de actualizare doar când schimbăm conținutul.</p>
+      <p>
+        <strong>Transparență:</strong> Tapselo e produsul nostru, iar autorul paginii este fondatorul Tapselo. Dacă vezi o
+        informație depășită, scrie-ne la <EmailLink class="font-semibold text-accent underline underline-offset-2 hover:text-accent-hover" /> și
+        o corectăm. Recitim toate sursele cel puțin o dată la 90 de zile și schimbăm data de actualizare doar când schimbăm
+        conținutul.
+      </p>
     </section>
 
     <section>
