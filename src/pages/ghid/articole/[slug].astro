@@ -6,7 +6,7 @@ import { AUTHORS } from "../../../data/authors.ts";
 import { getArticleBySlug, supportArticles } from "../../../lib/articles/load.ts";
 import { articlePath, buildArticleJsonLd } from "../../../lib/articles/schema.ts";
 import { internalPath } from "../../../lib/internal-url.ts";
-import { markdownToHtml } from "../../../lib/markdown.ts";
+import { inlineMd, markdownToHtml } from "../../../lib/markdown.ts";
 
 export function getStaticPaths() {
   return supportArticles.map((article) => ({
@@ -63,7 +63,7 @@ const card = "block rounded-xl border border-border-light p-4 transition-colors 
       <ol class="kb-prose mt-4">
         {article.steps.map((step) => (
           <li>
-            <strong>{step.name}.</strong> {step.text}
+            <strong>{step.name}.</strong> <span set:html={inlineMd(step.text)} />
           </li>
         ))}
       </ol>

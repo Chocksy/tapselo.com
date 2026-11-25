@@ -4,6 +4,7 @@
 import GuideShell from "../../../components/GuideShell.astro";
 import { datecsAnchor } from "../../../lib/mcp/answers/datecs.ts";
 import { internalPath } from "../../../lib/internal-url.ts";
+import { inlineMd } from "../../../lib/markdown.ts";
 import { articlePath } from "../../../lib/articles/schema.ts";
 import {
   cite,
@@ -119,6 +120,13 @@ const src = "mt-1 block text-sm text-text-muted";
         </ul>
       </>
     )}
+    {p.slug === "bon-deschis" && (
+      <p
+        set:html={inlineMd(
+          "Dacă alegeți anularea din dialogul manualului, dar bonul greșit a fost deja închis, pe aparat nu mai puteți corecta înregistrarea — pentru dosarul din art. 36 puteți completa [modelul de proces-verbal pentru anularea bonului](/unelte/proces-verbal-anulare-bon-fiscal/) local în browser.",
+        )}
+      />
+    )}
   </section>
 
   <section class="kb-prose">
@@ -147,7 +155,7 @@ const src = "mt-1 block text-sm text-text-muted";
     {p.faq.map((f) => (
       <>
         <h3 class="kb-h3">{f.q}</h3>
-        <p>{f.a}</p>
+        <p set:html={inlineMd(f.a)} />
       </>
     ))}
   </section>
