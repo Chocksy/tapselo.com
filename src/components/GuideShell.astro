@@ -26,6 +26,8 @@ interface Props {
   lead?: string;
   sources?: { title: string; url?: string }[];
   verifiedOn?: string | null;
+  /** Footer under Surse; overrides auto „Verificat la …” when set. */
+  sourcesVerifiedNote?: string | null;
   /** Last content update (YYYY-MM-DD); shown as „Actualizat” and emitted as article:modified_time. */
   updatedOn?: string | null;
   publishedOn?: string | null;
@@ -60,6 +62,7 @@ const {
   lead,
   sources = [],
   verifiedOn,
+  sourcesVerifiedNote,
   updatedOn,
   publishedOn,
   campaign,
@@ -171,7 +174,11 @@ const ctaLocation = `ghid-${campaign}`;
               </li>
             ))}
           </ul>
-          {verifiedOn && <p class="mt-4 text-sm text-text-muted">Verificat la {formatDateRo(verifiedOn)}.</p>}
+          {sourcesVerifiedNote ? (
+            <p class="mt-4 text-sm text-text-muted">{sourcesVerifiedNote}</p>
+          ) : (
+            verifiedOn && <p class="mt-4 text-sm text-text-muted">Verificat la {formatDateRo(verifiedOn)}.</p>
+          )}
         </section>
       )}
 

@@ -3,6 +3,7 @@ import "../styles/global.css";
 import PostHog from "../components/PostHog.astro";
 import { MASCOT_HIDDEN_KEY } from "../data/mascot.ts";
 import { OPERATOR_LEGAL_NAME, PFA_CUI } from "../data/site.ts";
+import { tapseloSubscriptionAggregateOffer } from "../lib/unelte/jsonld.ts";
 
 interface Props {
   title?: string;
@@ -92,12 +93,7 @@ const tapseloAppDescription =
       "description": tapseloAppDescription,
       "url": siteUrl,
       "image": defaultOgImageUrl,
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "RON",
-        "description": "gratuit cât timp e în beta, apoi 79/129 lei/lună + TVA"
-      },
+      "offers": tapseloSubscriptionAggregateOffer(),
       "author": {
         "@type": "Organization",
         "name": "Tapselo",

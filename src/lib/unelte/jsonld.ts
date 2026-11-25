@@ -47,6 +47,48 @@ export function breadcrumbLinks(crumbs: Crumb[]): BreadcrumbLink[] {
   }));
 }
 
+function tapseloUnitPriceSpecification(price: string, label: string): Record<string, unknown> {
+  return {
+    "@type": "UnitPriceSpecification",
+    price,
+    priceCurrency: "RON",
+    unitCode: "MON",
+    billingDuration: "P1M",
+    valueAddedTaxIncluded: false,
+    name: label,
+  };
+}
+
+/** Post-beta plans 79/129 lei/month + VAT; beta-free tier only in `description` (no price 0). */
+export function tapseloSubscriptionAggregateOffer(): Record<string, unknown> {
+  return {
+    "@type": "AggregateOffer",
+    priceCurrency: "RON",
+    lowPrice: "79",
+    highPrice: "129",
+    offerCount: 2,
+    description: TAPS_PRICE_CANON,
+    offers: [
+      {
+        "@type": "Offer",
+        name: "Tapselo Start",
+        price: "79",
+        priceCurrency: "RON",
+        description: TAPS_PRICE_CANON,
+        priceSpecification: tapseloUnitPriceSpecification("79", "Tapselo Start — o casă de marcat"),
+      },
+      {
+        "@type": "Offer",
+        name: "Tapselo Magazin",
+        price: "129",
+        priceCurrency: "RON",
+        description: TAPS_PRICE_CANON,
+        priceSpecification: tapseloUnitPriceSpecification("129", "Tapselo Magazin — două case de marcat"),
+      },
+    ],
+  };
+}
+
 export function webApplicationJsonLd(opts: {
   name: string;
   path: string;
@@ -66,11 +108,7 @@ export function webApplicationJsonLd(opts: {
     description: opts.description,
   };
   if (opts.tapseloProductPricing) {
-    base.offers = {
-      "@type": "Offer",
-      priceCurrency: "RON",
-      description: TAPS_PRICE_CANON,
-    };
+    base.offers = tapseloSubscriptionAggregateOffer();
     return base;
   }
   base.isAccessibleForFree = true;

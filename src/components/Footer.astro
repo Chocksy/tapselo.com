@@ -29,7 +29,7 @@ const cols: { title: string; links: L[] }[] = [
   {
     title: "Pentru",
     links: [
-      { label: "Magazin alimentar", href: "/#magazin" },
+      { label: "Magazin alimentar", href: "/program-casa-de-marcat-magazin-alimentar/" },
       { label: "Brutărie, patiserie, cofetărie", href: "/#brutarie" },
       { label: "Cafenea și bar", href: "/#cafenea" },
       { label: "Legume și fructe", href: "/ghid/deschide-legume-fructe/" },
@@ -66,7 +66,7 @@ const cols: { title: string; links: L[] }[] = [
   },
 ];
 const legal: L[] = [
-  { label: "Confidențialitate", href: "/privacy/" },
+  { label: "Politica de confidențialitate", href: "/privacy/" },
   { label: "Termeni", href: "/terms/" },
   { label: "Acord de prelucrare a datelor", href: "/dpa/" },
   { label: "Ștergerea datelor", href: "/data-deletion/" },
@@ -125,7 +125,7 @@ const barcode = `<svg viewBox="0 0 ${x} 22" width="${x}" height="22" preserveAsp
           <button type="button" class="ft-lnk ms-hide" data-ms-hide><i aria-hidden="true"></i><span>Ascunde mascota</span></button>
         </p>
       </div>
-      <a class="ft-q" href={internalPath("/demo/")} data-ft-qr>
+      <a class="ft-q" href={internalPath("/demo/")} data-ft-qr data-tapselo-cta="footer-demo">
         <span class="ft-qr" set:html={qrSvg} />
         <span class="ft-qt"><b>Demo pe mobil</b>Demo pe telefon: scanează codul.</span>
       </a>

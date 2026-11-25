@@ -1,4 +1,5 @@
 ---
+import { internalPath } from "../../lib/internal-url.ts";
 // B2: three shop chapters, each in its POS accent. Magazin (white, blue), Brutărie (cream sheet, amber),
 // Cafenea (espresso sheet, orange). The kiosks loop on their own; the strips, tiles and tickets react to them.
 import "@fontsource/instrument-serif/latin-ext-400.css";
@@ -55,7 +56,10 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
         <div><em>SGR</em><b>Garanția SGR</b><span>Cei 0,50 lei pe sticlă se adaugă singuri.</span></div>
         <div><em>USB</em><b>Orice cititor</b><span>Și camera telefonului citește EAN-13.</span></div>
       </div>
-      <div class="act"><a class="cta" href="#demo" data-demo="scanare">Vezi demo pentru magazin <Fragment set:html={arrow} /></a></div>
+      <div class="act">
+        <a class="cta" href="#demo" data-demo="scanare">Vezi demo pentru magazin <Fragment set:html={arrow} /></a>
+        <a class="cta2" href={internalPath("/program-casa-de-marcat-magazin-alimentar/")}>Program casă de marcat alimentar <Fragment set:html={arrow} /></a>
+      </div>
       <div class="lay">Layoutul de vânzare: <b>Scanare</b> <span class="pill">disponibil</span></div>
     </div>
   </div>
@@ -211,9 +215,11 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
   .qt em { display: grid; place-items: center; width: 38px; height: 30px; border-radius: 8px; background: #dbeafe; color: #1d4ed8; font: 600 11.5px/1 var(--font-mono); font-style: normal; margin-bottom: 10px; }
   .qt b { display: block; font-size: 14.5px; font-weight: 600; letter-spacing: -0.01em; }
   .qt span { display: block; font-size: 12.5px; line-height: 1.4; color: #64748b; margin-top: 3px; }
-  .m .act { display: flex; align-items: center; gap: 16px; margin-top: 26px; }
+  .m .act { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-top: 26px; }
   .m .cta { background: #2563eb; color: #fff; }
   .m .cta:hover { background: #1d4ed8; }
+  .m .cta2 { background: transparent; color: var(--color-ink); box-shadow: inset 0 0 0 1px var(--color-rule); }
+  .m .cta2:hover { background: var(--color-paper-white); }
   .m .lay { color: #64748b; margin-top: 16px; }
   .m .lay b { color: #0f172a; }
   .m .pill { background: #dcfce7; color: #166534; }

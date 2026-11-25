@@ -76,6 +76,10 @@ const ENTRIES: Record<string, Entry> = {
     title: "Declarare punct de lucru la ANAF (2026)",
     desc: "ONRC, apoi 060 cu salariați (aceeași UAT, 30 zile); fără salariați la adresă: 061 sau D700 secțiunea G.",
   },
+  "/ghid/casa-de-marcat-obligatorie/": {
+    title: "Casă de marcat obligatorie (2026)",
+    desc: "Când vi se cere AMEF (OUG 28/1999), târg de Crăciun, comerț ocazional și acceptarea cardului din 2026.",
+  },
   // Ghiduri: deschiderea unui magazin
   "/ghid/deschide-macelarie/": { title: "Deschiderea unei măcelării", desc: "Codul CAEN, înregistrarea DSVSA, acordul primăriei și casa de marcat." },
   "/ghid/deschide-brutarie-patiserie/": { title: "Deschiderea unei brutării sau patiserii", desc: "Codurile CAEN, DSVSA, acordul primăriei și casa de marcat." },
@@ -91,7 +95,7 @@ const ENTRIES: Record<string, Entry> = {
   "/ghid/articole/casa-de-marcat-fara-internet/": { title: "Casa de marcat fără internet", desc: "Bonuri offline, transmiterea către ANAF și formularul F4110." },
   "/ghid/articole/cod-qr-bon-fiscal/": {
     title: "Cod QR pe bonul fiscal",
-    desc: "Obligația de cod QR pe bon, suspendarea sancțiunilor până la 31 octombrie 2027 și ce verificați la service-ul autorizat.",
+    desc: "Amenda de 2.000–4.000 lei pentru bon fără cod QR e suspendată până la 31.10.2027 inclusiv (OUG 43/2026). Obligația QR rămâne. Ce verifici la casă.",
   },
   // Comparații
   "/comparatie/": { title: "Comparație programe de casă de marcat", desc: "Tabel cu programele POS din România, după informațiile publice ale producătorilor." },
@@ -104,6 +108,10 @@ const ENTRIES: Record<string, Entry> = {
   "/": { title: "Tapselo", desc: "Prezentarea programului de casă de marcat Tapselo." },
   "/demo/": { title: "Demo", desc: "Încercați Tapselo în browser, fără cont." },
   "/program-gestiune-magazin/": { title: "Program gestiune magazin", desc: "Gestiunea stocurilor, recepția mărfii și vânzarea, în același program." },
+  "/program-casa-de-marcat-magazin-alimentar/": {
+    title: "Program casă de marcat magazin alimentar",
+    desc: "POS pentru magazine alimentare: scanare cod de bare, cântar Dibal, bon fiscal Datecs, stoc și recepție NIR, offline.",
+  },
   "/program-casa-de-marcat-pe-calculator/": {
     title: "Program casă de marcat pe calculator",
     desc: "Program POS pe Windows, macOS și Linux cu imprimantă fiscală Datecs, vânzare și pe iPhone, și ce este legal pe dispozitive.",
@@ -134,7 +142,7 @@ export function llmsSections(): { heading: string; links: SiteLink[] }[] {
     { heading: "Unelte gratuite", links: [abs("/unelte"), ...toolLinks] },
     { heading: "Ghiduri", links: [...hubs("/ghid"), ...datecsErrorPageLinks, ...ruleGuideLinks, ...shopGuideLinks, ...articleLinks] },
     { heading: "Comparații", links: hubs("/comparatie") },
-    { heading: "Despre Tapselo", links: ["/", "/demo", "/program-gestiune-magazin", "/program-casa-de-marcat-pe-calculator", "/casa-de-marcat-pe-telefon", "/admin", "/ai"].map(abs) },
+    { heading: "Despre Tapselo", links: ["/", "/demo", "/program-casa-de-marcat-magazin-alimentar", "/program-gestiune-magazin", "/program-casa-de-marcat-pe-calculator", "/casa-de-marcat-pe-telefon", "/admin", "/ai"].map(abs) },
   ];
 }
 

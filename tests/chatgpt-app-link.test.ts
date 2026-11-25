@@ -27,6 +27,13 @@ test("/ai: live ChatGPT link, no stale „mai târziu” copy", () => {
   const app = blocks.find((b) => b["@type"] === "SoftwareApplication" && b.name === "Tapselo");
   assert.ok(app, "connector SoftwareApplication JSON-LD");
   assert.equal(app.installUrl, CHATGPT_APP_URL);
+  assert.equal(app.offers.price, "0");
+  assert.equal(app.offers.priceCurrency, "RON");
+  assert.match(app.offers.description, /gratuit/i);
+  const ldScripts = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+  for (const raw of ldScripts) {
+    assert.doesNotMatch(raw, /79\/129|"lowPrice":"79"|"highPrice":"129"/);
+  }
 });
 
 test("footer and homepage resources expose ChatGPT app link", () => {
