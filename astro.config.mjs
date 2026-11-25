@@ -15,10 +15,11 @@ const articleLastmod = articleLastmodByPath(parseArticlesFile(articlesRaw));
 // Datecs per-error pages (/ghid/erori-datecs/<slug>/): lastmod = verified_on of the data file.
 const datecsPages = JSON.parse(readFileSync(join(__dirname, 'src/lib/kb/datecs-error-pages.json'), 'utf8'));
 for (const p of datecsPages.pages) articleLastmod.set(`/ghid/erori-datecs/${p.slug}`, datecsPages.verified_on);
-articleLastmod.set('/ghid/declarare-punct-de-lucru-anaf', '2026-11-11');
+articleLastmod.set('/ghid/declarare-punct-de-lucru-anaf', '2026-11-25');
+articleLastmod.set('/ghid/erori-datecs/bon-deschis', '2026-11-25');
+articleLastmod.set('/unelte/grafic-temperatura-frigider', '2026-11-25');
 articleLastmod.set('/ghid/casa-de-marcat-obligatorie', '2026-11-13');
 articleLastmod.set('/unelte/generator-nir', '2026-11-11');
-articleLastmod.set('/unelte/grafic-temperatura-frigider', '2026-11-11');
 articleLastmod.set('/program-casa-de-marcat-magazin-alimentar', '2026-11-16');
 
 // https://astro.build/config

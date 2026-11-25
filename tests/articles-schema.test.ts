@@ -96,7 +96,7 @@ test("cod-qr-bon-fiscal reflects OUG 43/2026 suspension through 31 Oct 2027", ()
   const articles = parseArticlesFile(articlesJson);
   const qr = articles.find((a) => a.slug === "cod-qr-bon-fiscal");
   assert.ok(qr);
-  assert.equal(qr.updated, "2026-11-18");
+  assert.equal(qr.updated, "2026-11-25");
   assert.equal(qr.verifiedOn, "2026-11-18");
   assert.match(qr.description, /31\.10\.2027/);
   assert.doesNotMatch(qr.description, /1 noiembrie 2026/);

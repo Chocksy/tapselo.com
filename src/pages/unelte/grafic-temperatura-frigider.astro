@@ -65,7 +65,6 @@ const S = LEGAL_SOURCES;
   related={[
     { href: "/ghid/deschide-minimarket-alimentara/", label: "Deschiderea unui minimarket" },
     { href: "/ghid/deschide-macelarie/", label: "Deschiderea unei măcelării" },
-    { href: internalPath("/unelte/declaratie-de-conformitate-produse-alimentare/"), label: "Declarație conformitate alimente" },
     { href: internalPath("/unelte/fisa-de-magazie/"), label: "Fișă de magazie" },
     { href: "/ghid/declarare-punct-de-lucru-anaf/", label: "Declarare punct de lucru la ANAF" },
   ]}
@@ -112,7 +111,12 @@ const S = LEGAL_SOURCES;
       <p>
         Completați firma, punctul de lucru și luna. Adăugați fiecare aparat (frigider, congelator, vitrină) cu denumirea și limitele
         <strong class="text-primary">din eticheta produselor</strong> sau din cerințele aplicabile. Notați dimineața și seara temperatura măsurată,
-        parafa/inițialele și eventualele acțiuni dacă citirea depășește limitele. La final: responsabilul și semnătura.
+        parafa/inițialele și eventualele acțiuni dacă citirea depășește limitele. La final: responsabilul și semnătura. În patiserie sau cofetărie, graficul
+        de temperatură se folosește adesea împreună cu{" "}
+        <a href={internalPath("/unelte/declaratie-de-conformitate-produse-alimentare/")} class={link}>
+          modelul de declarație de conformitate pentru produse alimentare
+        </a>{" "}
+        pentru torturi și prăjituri livrate către alți operatori.
       </p>
     </section>
 
