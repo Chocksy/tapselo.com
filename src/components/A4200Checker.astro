@@ -95,7 +95,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       Descarcă PDF-ul și semnează-l
     </h2>
     <p class="text-sm leading-relaxed text-text-secondary">
-      Verificarea și curățarea se fac în browser; fișierul semnat nu este trimis la server.
+      Trei pași, de sus în jos. Semnezi o singură dată.
     </p>
     {
       !a4200PdfBase && (
@@ -115,11 +115,10 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     >
       Descarcă PDF-ul
     </a>
-    <p class="text-sm leading-relaxed text-text-secondary">
-      Semnează PDF-ul <strong>o singură dată</strong> cu certificatul calificat al firmei și <strong>nu</strong> îl
-      resalva după semnare (fără „Salvează” sau „Export” în aplicația de semnare).
-    </p>
     <div id="a4200-signed-upload-wrap" class="space-y-3">
+      <p class="text-sm leading-relaxed text-text-secondary">
+        Ai semnat deja PDF-ul (o singură dată, fără „Salvează” după semnare)? Încarcă-l aici și îți dăm fișierul pentru ANAF.
+      </p>
       <label
         id="a4200-signed-upload-label"
         class="flex min-h-14 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-accent bg-ticket-light/30 px-4 py-5 text-center text-sm font-semibold text-primary hover:bg-ticket-light/50"
@@ -144,14 +143,13 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
         Fișierul este gata. Descarcă-l, apoi continuă la pasul următor pentru încărcarea la ANAF.
       </p>
     </div>
-    <div
+    <details
       id="a4200-anaf-troubleshoot"
-      class="rounded-xl border border-amber-200 bg-amber-50/80 p-4 text-sm leading-relaxed text-text-secondary"
-      role="note"
+      class="rounded-lg border border-border-light p-3 text-sm leading-relaxed text-text-secondary"
     >
-      <p class="font-semibold text-primary">
+      <summary class="cursor-pointer font-medium text-primary">
         ANAF respinge cu „Document modificat după aplicarea semnăturii electronice”?
-      </p>
+      </summary>
       <p class="mt-2">
         La depunere folosește <strong>doar</strong> fișierul descărcat cu butonul „Descarcă fișierul pentru ANAF” (nume
         care se termină în <strong>_PENTRU-ANAF.pdf</strong>), nu PDF-ul direct din aplicația de semnare.
@@ -161,7 +159,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
         PDF-ul din arhivă dacă îl ai deja semnat. Dacă ai mai multe exporturi (mai multe luni), încarcă PDF-ul semnat pe
         fiecare card în parte.
       </p>
-    </div>
+    </details>
     <details id="a4200-step3-advanced" class="rounded-lg border border-border-light p-3 text-sm text-text-secondary">
       <summary class="cursor-pointer font-medium text-primary">Opțiuni avansate</summary>
       <div class="mt-3 space-y-2 leading-relaxed">
@@ -345,7 +343,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
 
   function recomputeStep3AnafReady() {
     const ready = lastGroups.filter((g) => g.readyForPdf);
-    if (ready.length > 1) {
+    if (ready.length >= 1) {
       step3AnafReady = ready.every((g) => anafReadyGroupKeys.has(g.group.key));
     } else {
       step3AnafReady = globalSignedAnafReady;
@@ -378,10 +376,11 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   function updateStep3Ui() {
     const readyCount = lastGroups.filter((g) => g.readyForPdf).length;
     const onStep3 = currentStep === 3;
-    setWrapVisible(signedUploadWrap, onStep3 && readyCount <= 1);
-    setWrapVisible(signedResultWrap, onStep3 && readyCount <= 1 && globalSignedAnafReady);
+    setWrapVisible(signedUploadWrap, onStep3 && readyCount === 0);
+    setWrapVisible(signedResultWrap, onStep3 && readyCount === 0 && globalSignedAnafReady);
     if (currentStep === 3) {
-      primaryBtn.classList.toggle("hidden", pdfGenerated && !step3AnafReady);
+      // The cards hold the step-3 actions; the bottom button only moves on once the ANAF file is ready.
+      primaryBtn.classList.toggle("hidden", readyCount > 0 && !step3AnafReady);
     } else {
       primaryBtn.classList.remove("hidden");
     }
@@ -614,7 +613,6 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
 
   function renderPdfGroupCards(groups: GroupCheckResult[], pdfMonthNote: string | null) {
     const ready = groups.filter((g) => g.readyForPdf);
-    const multi = ready.length > 1;
     if (ready.length === 0) {
       pdfGroupsEl.classList.add("hidden");
       pdfGroupsEl.hidden = true;
@@ -637,22 +635,44 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
             g.crossMonthFallback,
             g.group.opis,
           );
-          return `<article class="rounded-xl border border-border-light bg-surface p-4" data-group-key="${g.group.key}">
+          const num = (n: number) =>
+            `<span class="a4200-sub-num flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-bold text-white">${n}</span>`;
+          return `<article class="rounded-xl border border-border-light bg-surface p-4 sm:p-5" data-group-key="${g.group.key}">
           <p class="font-semibold text-primary">${cardLabel}</p>
-          <button type="button" class="a4200-gen-pdf-btn mt-3 min-h-10 rounded-md bg-accent px-4 py-2 text-sm font-bold text-white hover:bg-accent-hover ${multi ? "" : "hidden"}" data-group-key="${g.group.key}" ${multi ? "" : "hidden"}>
-            Generează PDF
-          </button>
-          <p class="a4200-gen-pdf-status mt-2 text-xs text-text-muted" data-group-key="${g.group.key}"></p>
-          <div class="a4200-group-signed mt-4 space-y-2 border-t border-border-light pt-4">
-            <label class="flex min-h-12 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-accent/80 bg-ticket-light/20 px-3 py-4 text-center text-sm font-semibold text-primary hover:bg-ticket-light/40">
-              Încarcă PDF-ul semnat pentru acest export
-              <span class="text-xs font-normal text-text-muted">Un fișier _PENTRU-ANAF per lună</span>
-              <input type="file" class="a4200-group-signed-input hidden" accept=".pdf,application/pdf" data-group-key="${g.group.key}" />
-            </label>
-            <p class="a4200-group-signed-error hidden text-sm text-red-700" data-group-key="${g.group.key}" hidden role="alert"></p>
-            <p class="a4200-group-strip-msg hidden text-sm text-text-secondary" data-group-key="${g.group.key}" hidden></p>
-            <a class="a4200-group-anaf-download hidden mt-1 flex min-h-11 w-full items-center justify-center rounded-md bg-accent px-4 py-2 text-sm font-bold text-white hover:bg-accent-hover" data-group-key="${g.group.key}" hidden download="declarare_PENTRU-ANAF.pdf">Descarcă fișierul pentru ANAF</a>
-          </div>
+          <ol class="mt-4 space-y-5">
+            <li class="flex gap-3">
+              ${num(1)}
+              <div class="min-w-0 flex-1">
+                <p class="font-semibold text-primary">Descarcă PDF-ul</p>
+                <button type="button" class="a4200-gen-pdf-btn mt-2 flex min-h-11 w-full items-center justify-center rounded-md bg-accent px-4 py-2 text-sm font-bold text-white hover:bg-accent-hover disabled:opacity-50" data-group-key="${g.group.key}">
+                  Descarcă PDF-ul
+                </button>
+                <p class="a4200-gen-pdf-status mt-2 text-xs text-text-muted" data-group-key="${g.group.key}"></p>
+              </div>
+            </li>
+            <li class="flex gap-3">
+              ${num(2)}
+              <div class="min-w-0 flex-1 text-sm leading-relaxed text-text-secondary">
+                <p class="font-semibold text-primary">Semnează-l</p>
+                <p class="mt-1">Deschide PDF-ul în <strong>certSIGN webSIGN</strong> (sau aplicația ta de semnare) și semnează-l cu certificatul firmei. <strong>O singură dată.</strong> După semnare nu mai apăsa „Salvează” sau „Export”.</p>
+              </div>
+            </li>
+            <li class="flex gap-3">
+              ${num(3)}
+              <div class="a4200-group-signed min-w-0 flex-1 space-y-2">
+                <p class="font-semibold text-primary">Încarcă aici PDF-ul semnat</p>
+                <label class="flex min-h-12 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-accent/80 bg-ticket-light/20 px-3 py-4 text-center text-sm font-semibold text-primary hover:bg-ticket-light/40">
+                  Alege PDF-ul semnat
+                  <span class="text-xs font-normal text-text-muted">Îl verificăm în browser, nu pleacă de pe calculator</span>
+                  <input type="file" class="a4200-group-signed-input hidden" accept=".pdf,application/pdf" data-group-key="${g.group.key}" />
+                </label>
+                <p class="a4200-group-signed-error hidden text-sm text-red-700" data-group-key="${g.group.key}" hidden role="alert"></p>
+                <p class="a4200-group-strip-msg hidden text-sm text-text-secondary" data-group-key="${g.group.key}" hidden></p>
+                <p class="a4200-group-ready hidden text-sm font-semibold text-green-700" data-group-key="${g.group.key}" hidden>Semnătura e în regulă. Descarcă fișierul final; pe acesta îl depui la ANAF. Nu-l mai semna încă o dată.</p>
+                <a class="a4200-group-anaf-download hidden mt-1 flex min-h-11 w-full items-center justify-center rounded-md bg-green-700 px-4 py-2 text-sm font-bold text-white hover:bg-green-800" data-group-key="${g.group.key}" hidden download="declarare_PENTRU-ANAF.pdf">Descarcă fișierul pentru ANAF</a>
+              </div>
+            </li>
+          </ol>
         </article>`;
         })
         .join("");
@@ -744,6 +764,8 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     const g = lastGroups.find((x) => x.group.key === groupKey);
     if (!g?.readyForPdf) return;
     const statusEl = pdfGroupsEl.querySelector(`.a4200-gen-pdf-status[data-group-key="${groupKey}"]`);
+    const genBtn = pdfGroupsEl.querySelector(`.a4200-gen-pdf-btn[data-group-key="${groupKey}"]`) as HTMLButtonElement | null;
+    if (genBtn) genBtn.disabled = true;
     if (statusEl) statusEl.textContent = "Se generează PDF-ul…";
     try {
       const names = groupP7bLogicalNames(g.group);
@@ -752,12 +774,17 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       const result = await postZipForPdf(p7bPayloadsToZip(payloads));
       if (result.ok) {
         const link = document.createElement("a");
-        link.className =
-          "mt-2 inline-flex min-h-10 items-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-primary hover:border-accent";
+        link.className = "font-semibold text-accent underline";
         link.download = result.filename ?? "A4200.pdf";
-        showActionLink(link as HTMLAnchorElement, URL.createObjectURL(result.blob));
-        link.textContent = "Descarcă PDF generat";
-        statusEl?.replaceWith(link);
+        link.href = URL.createObjectURL(result.blob);
+        link.textContent = "descarcă din nou";
+        link.click();
+        if (statusEl) {
+          statusEl.className = "a4200-gen-pdf-status mt-2 text-sm text-green-700";
+          statusEl.textContent = `✓ PDF-ul ${link.download} e în Descărcări. Treci la pasul 2 (sau `;
+          statusEl.append(link, ")");
+        }
+        genBtn?.classList.add("hidden");
         pdfGenerated = true;
         updateStep3Ui();
         trackToolUsed("a4200", "generate_pdf", { result: "ok" });
@@ -770,6 +797,8 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       }
     } catch {
       if (statusEl) statusEl.textContent = "Nu am putut genera PDF-ul pentru acest export.";
+    } finally {
+      if (genBtn) genBtn.disabled = false;
     }
   }
 
@@ -804,7 +833,9 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
     const dlEl = pdfGroupsEl.querySelector(
       `.a4200-group-anaf-download[data-group-key="${groupKey}"]`,
     ) as HTMLAnchorElement | null;
+    const readyEl = pdfGroupsEl.querySelector(`.a4200-group-ready[data-group-key="${groupKey}"]`) as HTMLElement | null;
     if (dlEl) hideActionLink(dlEl);
+    if (readyEl) setWrapVisible(readyEl, false);
     if (errEl) {
       errEl.hidden = true;
       errEl.classList.add("hidden");
@@ -847,6 +878,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
       stripEl.hidden = false;
       stripEl.classList.remove("hidden");
     }
+    if (readyEl) setWrapVisible(readyEl, true);
     anafReadyGroupKeys.add(groupKey);
     recomputeStep3AnafReady();
     trackToolUsed("a4200", "check", { result: "ok" });
