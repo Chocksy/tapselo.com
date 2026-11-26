@@ -124,7 +124,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
         class="flex min-h-14 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-accent bg-ticket-light/30 px-4 py-5 text-center text-sm font-semibold text-primary hover:bg-ticket-light/50"
       >
         Încarcă PDF-ul semnat
-        <span class="text-xs font-normal text-text-muted">Verificăm semnătura local, în browser</span>
+        <span class="text-xs font-normal text-text-muted">Trage-l aici sau apasă să-l alegi</span>
         <input type="file" id="a4200-signed-pdf-input" class="hidden" accept=".pdf,application/pdf" />
       </label>
       <p id="a4200-signed-error" class="hidden text-sm text-red-700" hidden role="alert" />
@@ -319,6 +319,33 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
   const activeClass = drop.dataset.activeClass ?? "";
   const anafReadyGroupKeys = new Set<string>();
   let globalSignedAnafReady = false;
+
+  // Drag and drop a signed PDF onto any upload box in step 3 (card boxes are re-rendered, so delegate).
+  const step3El = document.getElementById("a4200-step-3")!;
+  const pdfDropLabel = (ev: Event) =>
+    (ev.target as HTMLElement | null)?.closest?.("label:has(input[type=file][accept*='pdf'])") as HTMLLabelElement | null;
+  for (const type of ["dragenter", "dragover"]) {
+    step3El.addEventListener(type, (ev) => {
+      const label = pdfDropLabel(ev);
+      if (!label) return;
+      ev.preventDefault();
+      label.classList.add("ring-2", "ring-accent");
+    });
+  }
+  step3El.addEventListener("dragleave", (ev) => pdfDropLabel(ev)?.classList.remove("ring-2", "ring-accent"));
+  step3El.addEventListener("drop", (ev) => {
+    const label = pdfDropLabel(ev);
+    if (!label) return;
+    ev.preventDefault();
+    label.classList.remove("ring-2", "ring-accent");
+    const input = label.querySelector("input[type=file]") as HTMLInputElement;
+    const pdf = [...(ev.dataTransfer?.files ?? [])].find((f) => /\.pdf$/i.test(f.name) || f.type === "application/pdf");
+    if (!pdf) return;
+    const dt = new DataTransfer();
+    dt.items.add(pdf);
+    input.files = dt.files;
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+  });
 
   pdfGroupsEl.addEventListener("change", (ev) => {
     const t = ev.target;
@@ -663,7 +690,7 @@ const a4200PdfBase = import.meta.env.PUBLIC_A4200_PDF_URL?.replace(/\/$/, "") ??
                 <p class="font-semibold text-primary">Încarcă aici PDF-ul semnat</p>
                 <label class="flex min-h-12 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-accent/80 bg-ticket-light/20 px-3 py-4 text-center text-sm font-semibold text-primary hover:bg-ticket-light/40">
                   Alege PDF-ul semnat
-                  <span class="text-xs font-normal text-text-muted">Îl verificăm în browser, nu pleacă de pe calculator</span>
+                  <span class="text-xs font-normal text-text-muted">Trage-l aici sau apasă să-l alegi</span>
                   <input type="file" class="a4200-group-signed-input hidden" accept=".pdf,application/pdf" data-group-key="${g.group.key}" />
                 </label>
                 <p class="a4200-group-signed-error hidden text-sm text-red-700" data-group-key="${g.group.key}" hidden role="alert"></p>
